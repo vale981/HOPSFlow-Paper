@@ -1,0 +1,67 @@
+* Outline
+** Intro
+- significance of quantum thermo
+- prior art
+- overview of our method and its capabilities/advantages
+- short intro into our example application
+
+*** TODO Find out which papers to cite
+- from my thesis
+- from konstantins
+- new stuff from cyril?
+
+** Energy Flow with HOPS
+- short intro about structure of section
+
+*** NMQSD
+- very brief
+- mostly cite other papers
+
+*** HOPS
+- same: brief and cite
+- introduce notation
+
+*** Energy Flow
+- demonstrate one bath/linear in detail
+- finite temperature too
+
+*** Generalizations
+- list and explain expressions: nonlinear, finite temp, general observables
+- refer to appendix for details?
+
+** Application
+- short outline of applications
+- mention the analytic verification and refer to thesis?
+
+*** One Bath: Energy Transfer Tuning
+- simplest case: one bath, zero T
+
+*** Two Bath
+- otto motor setup
+- cite papers that looked at it
+
+**** Simple: Continously Coupled vs Modulated Coupling
+
+**** TODO verify what has been done
+- carnot eficiency
+- efficiency vs power heatmap?
+
+**** TODO scan timing
+- compression and expansion timing variation in less markovian regime
+- likely: no advantage
+
+** Conclusion
+- brief review of what has been achieved
+- bath sections
+- other bath observables accessible through tricks?
+- other finite temp method... -> advantage: probably no derivatives of
+  stochastic processes, but more hierarchy depth
+
+* Tasks
+** TODO Merge HOPS
+- time dependent coupling
+- online calc
+- tests
+- docs
+
+** TODO sort out richards libraries
