@@ -58,10 +58,24 @@
   stochastic processes, but more hierarchy depth
 
 * Tasks
-** TODO Merge HOPS
+** DONE Merge HOPS
+:LOGBOOK:
+CLOCK: [2022-11-23 Wed 23:39]--[2022-11-24 Thu 00:03] =>  0:24
+CLOCK: [2022-11-23 Wed 22:45]--[2022-11-23 Wed 23:20] =>  0:35
+CLOCK: [2022-11-23 Wed 22:10]--[2022-11-23 Wed 22:38] =>  0:28
+CLOCK: [2022-11-23 Wed 21:39]--[2022-11-23 Wed 22:04] =>  0:25
+:END:
 - time dependent coupling
 - online calc
 - tests
 - docs
 
+** TODO Set up HO calcs with online analysis
+:LOGBOOK:
+CLOCK: [2022-11-24 Thu 17:51]
+:END:
 ** TODO sort out richards libraries
+
+* Nice to Haves
+** HOLD test online calc
+** HOLD test dynamic matrix
