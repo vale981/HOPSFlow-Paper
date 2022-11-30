@@ -39,20 +39,20 @@ Init ray and silence stocproc.
       ω_c=[1, 1],
       ψ_0=qt.basis([2], [1]),
       description=f"An otto cycle on the way to finding the baseline.",
-      k_max=2,
-      bcf_terms=[4]*2,
+      k_max=4,
+      bcf_terms=[6]*2,
       truncation_scheme="simplex",
       driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
       thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
       T = [1, 10],
       therm_methods=["tanhsinh", "fft"],
       Δ=1,
-      num_cycles=2,
+      num_cycles=5,
       Θ=1/.05,
       dt=.001,
       timings_H=(0, .1, .5, .6),
       timings_L=((.6, .7, .9, 1), (.1, .2, .4, .5)),
-      streaming_mode=False,
+      streaming_mode=True,
   )
 #+end_src
 
@@ -68,8 +68,8 @@ Init ray and silence stocproc.
 
 #+RESULTS:
 :RESULTS:
-: <matplotlib.legend.Legend at 0x7f54bb66adc0>
-[[file:./.ob-jupyter/d7bd2c56390fb3ec523d13fc0181d1950f7b648e.svg]]
+: <matplotlib.legend.Legend at 0x7f545fdea250>
+[[file:./.ob-jupyter/eebb82a5e335f4dddadad7a2863b41de48f0faf2.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -82,8 +82,8 @@ Init ray and silence stocproc.
 
 #+RESULTS:
 :RESULTS:
-| <matplotlib.lines.Line2D | at | 0x7f54bb3ddb20> |
-[[file:./.ob-jupyter/be78ac186f304311876954db3750ae94b1ef6728.svg]]
+| <matplotlib.lines.Line2D | at | 0x7f545fc8ad30> |
+[[file:./.ob-jupyter/ee3ba754fa0f582037a99ec2f42d470f971fe91d.svg]]
 :END:
 
 * Integration
@@ -91,21 +91,9 @@ Init ray and silence stocproc.
 CLOCK: [2022-11-30 Wed 16:27]
 :END:
 #+begin_src jupyter-python :tangle nil
-  aux.integrate(model, 10, stream_file="results.fifo", analyze=True, clear_pd=True)
+  aux.integrate(model, 10_000, stream_file="results.fifo", analyze=True)
 #+end_src
 
-#+RESULTS:
-#+begin_example
-  [INFO    hops.core.integration     940019] Choosing the nonlinear integrator.
-  [INFO    root                      940019] Starting analysis process.
-  [INFO    root                      940019] Started analysis process with pid 941154.
-  [INFO    hops.core.integration     940019] Clear HIData contained in <HDF5 file "8d54cdc69199dca1476eede05fd6d6e87e72c0b49a612df65420eb7e79931a10_ecd6651f761cdc4399d98c7b9d6cdfe8_1.h5" (mode r+)>
-  [INFO    hops.core.hierarchy_data  940019] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results.fifo
-  [INFO    hops.core.integration     940019] Using 16 integrators.
-  [INFO    hops.core.integration     940019] Some 10 trajectories have to be integrated.
-  [INFO    hops.core.integration     940019] Using 45 hierarchy states.
-  100% 10/10 [00:08<00:00,  1.22it/s]
-#+end_example
 
 #+begin_src jupyter-python :tangle nil
   f, a = pu.plot_energy_overview(model, strobe_frequency=model.Ω, hybrid=True, bath_names=["C","H"], online=True)
@@ -121,6 +109,6 @@ CLOCK: [2022-11-30 Wed 16:27]
 
 #+RESULTS:
 :RESULTS:
-: <matplotlib.legend.Legend at 0x7f5461df9220>
-[[file:./.ob-jupyter/a0379420b340d130d76aea4bff1bf1aa17bfbd4c.svg]]
+: <matplotlib.legend.Legend at 0x7f545eda5fa0>
+[[file:./.ob-jupyter/24a2a15398d054ad800997d31485ea871537e98c.svg]]
 :END:
