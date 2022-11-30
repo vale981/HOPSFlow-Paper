@@ -1,4 +1,6 @@
-/output/
+output
 /indexNotes.bib
 auto
-/.direnv/
+.direnv
+.ob-jupyter
+__pycache__

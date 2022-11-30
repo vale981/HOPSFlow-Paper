@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "09_dynamic_two_bath_one_qubit"
+version = "1.0.0"
+description = "Testing out the one bath case with time dependent coupling and two baths."
+authors = ["Valentin Boettcher <hiro@protagon.space>"]
+license = "GPLv3"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.11"
+hiro_models = { git = "git@github.com:vale981/two_qubit_model.git", branch="main" }
+#hops = { git = "git@gitlab.hrz.tu-chemnitz.de:s8896854--tu-dresden.de/hops.git", branch="main" }
+matplotlib = "^3.5.0"
+jupyter = "^1.0.0"
+qutip = "^4.6.2"
+lmfit = "=1.0.2"
+ipython = "^8.3.0"
+traitlets = "==5.2.0"
+Cython = "^0.29.30"
+tabulate = "^0.8.9"
+statsmodels = "^0.13.2"
+
+[tool.poetry.dev-dependencies]
+black = "^21.12b0"
+click = "==8.0.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "cython"]
+build-backend = "poetry.core.masonry.api"
