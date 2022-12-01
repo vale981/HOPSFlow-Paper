@@ -12,96 +12,111 @@
   import utilities as ut
   import stocproc
   import matplotlib.pyplot as plt
+  import otto_utilities as ot
 #+end_src
 
 Init ray and silence stocproc.
 #+begin_src jupyter-python
   import ray
   ray.shutdown()
-  #ray.init(address='auto')
-  ray.init()
+  ray.init(address='auto')
+  #ray.init()
 #+end_src
 
 #+RESULTS:
-: RayContext(dashboard_url='', python_version='3.9.15', ray_version='1.13.0', ray_commit='e4ce38d001dbbe09cd21c497fedd03d692b2be3e', address_info={'node_ip_address': '10.0.0.102', 'raylet_ip_address': '10.0.0.102', 'redis_address': None, 'object_store_address': '/tmp/ray/session_2022-11-30_18-22-21_330665_940019/sockets/plasma_store', 'raylet_socket_name': '/tmp/ray/session_2022-11-30_18-22-21_330665_940019/sockets/raylet', 'webui_url': '', 'session_dir': '/tmp/ray/session_2022-11-30_18-22-21_330665_940019', 'metrics_export_port': 56187, 'gcs_address': '10.0.0.102:49774', 'address': '10.0.0.102:49774', 'node_id': '657606fac86410cf9d4a663984fdd108bb4ed71b2bad5450c38f8c7e'})
+: RayContext(dashboard_url='', python_version='3.9.15', ray_version='1.13.0', ray_commit='e4ce38d001dbbe09cd21c497fedd03d692b2be3e', address_info={'node_ip_address': '10.0.0.102', 'raylet_ip_address': '10.0.0.102', 'redis_address': None, 'object_store_address': '/tmp/ray/session_2022-12-01_12-49-01_211839_372329/sockets/plasma_store', 'raylet_socket_name': '/tmp/ray/session_2022-12-01_12-49-01_211839_372329/sockets/raylet', 'webui_url': '', 'session_dir': '/tmp/ray/session_2022-12-01_12-49-01_211839_372329', 'metrics_export_port': 51539, 'gcs_address': '10.0.0.102:6379', 'address': '10.0.0.102:6379', 'node_id': 'a0e22c6e0493add2b51aa52eeaf1e90766c796c1f430527c008a3242'})
 
 #+begin_src jupyter-python :results none
   from hops.util.logging_setup import logging_setup
   import logging
   logging_setup(logging.INFO)
-  plt.rcParams['figure.figsize'] = (16,8)
+  plt.rcParams['figure.figsize'] = (12,4)
 #+end_src
 
-* Model
+* Model: Baseline
 #+begin_src jupyter-python
   model = OttoEngine(
-      δ=[.4, .4],
+      δ=[0.4, 0.4],
       ω_c=[1, 1],
       ψ_0=qt.basis([2], [1]),
-      description=f"An otto cycle on the way to finding the baseline.",
+      description=f"A basic near-markovian, weakly coupled Otto Cycle that actually works.",
       k_max=4,
-      bcf_terms=[6]*2,
+      bcf_terms=[6] * 2,
       truncation_scheme="simplex",
-      driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
-      thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
-      T = [1, 10],
+      driving_process_tolerances=[StocProcTolerances(1e-4, 1e-4)] * 2,
+      thermal_process_tolerances=[StocProcTolerances(1e-4, 1e-4)] * 2,
+      T=[1, 10],
       therm_methods=["tanhsinh", "fft"],
       Δ=1,
       num_cycles=5,
-      Θ=1/.05,
-      dt=.001,
-      timings_H=(0, .1, .5, .6),
-      timings_L=((.6, .7, .9, 1), (.1, .2, .4, .5)),
+      Θ=1.5 / 0.05,
+      dt=0.001,
+      timings_H=(0, 0.1, 0.5, 0.6),
+      timings_L=((0.6, 0.7, 0.9, 1), (0.1, 0.2, 0.4, 0.5)),
       streaming_mode=True,
   )
-#+end_src
 
-#+RESULTS:
+  # model = OttoEngine(
+  #     δ=[0.4, 0.4],
+  #     ω_c=[1, 1],
+  #     ψ_0=qt.basis([2], [1]),
+  #     description=f"An otto cycle on the way to finding the baseline.",
+  #     k_max=3,
+  #     bcf_terms=[4] * 2,
+  #     truncation_scheme="simplex",
+  #     driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
+  #     thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
+  #     T=[1, 10],
+  #     therm_methods=["tanhsinh", "fft"],
+  #     Δ=1,
+  #     num_cycles=4,
+  #     Θ=1.5 / 0.05,
+  #     dt=0.001,
+  #     timings_H=(0, 0.1, 0.3, 0.4),
+  #     timings_L=((0.4, 0.5, 0.9, 1), (0.1, 0.11, 0.29, 0.3)),
+  #     streaming_mode=True,
+  # )
 
-
-#+begin_src jupyter-python
-  plt.plot(model.t, model.H.operator_norm(model.t) - 1, label="H")
-  plt.plot(model.t, model.coupling_operators[0].operator_norm(model.t) * 2, label="cold")
-  plt.plot(model.t, model.coupling_operators[1].operator_norm(model.t) * 2, label="hot")
-  plt.legend()
+  ot.plot_cycle(model)
 #+end_src
 
 #+RESULTS:
 :RESULTS:
-: <matplotlib.legend.Legend at 0x7f545fdea250>
-[[file:./.ob-jupyter/eebb82a5e335f4dddadad7a2863b41de48f0faf2.svg]]
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
+[[file:./.ob-jupyter/16e356aa8afc7a911b3edcfccea6559fe028821c.svg]]
 :END:
 
+
 #+begin_src jupyter-python
-  ω = np.linspace(.01, 3, 1000)
-  plt.plot(ω, model.full_thermal_spectral_density(0)(ω) * model.bcf_scales[0])
-  plt.plot(1, model.full_thermal_spectral_density(0)(1) * model.bcf_scales[0], marker="o")
-  plt.plot(ω, model.full_thermal_spectral_density(1)(ω) * model.bcf_scales[1])
-  plt.plot(2, model.full_thermal_spectral_density(1)(2) * model.bcf_scales[1], marker="o")
+  ot.plot_sd_overview(model)
 #+end_src
 
 #+RESULTS:
 :RESULTS:
-| <matplotlib.lines.Line2D | at | 0x7f545fc8ad30> |
-[[file:./.ob-jupyter/ee3ba754fa0f582037a99ec2f42d470f971fe91d.svg]]
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\omega$ | ylabel= | Spectral Density | > |
+[[file:./.ob-jupyter/dc9e4dff3bc359892e01587cbcba157708c27487.svg]]
 :END:
 
 * Integration
-:LOGBOOK:
-CLOCK: [2022-11-30 Wed 16:27]
-:END:
 #+begin_src jupyter-python :tangle nil
-  aux.integrate(model, 10_000, stream_file="results.fifo", analyze=True)
+  aux.integrate(model, 100, stream_file="results.fifo", analyze=True)
 #+end_src
+
+#+RESULTS:
+: [INFO    hops.core.integration     403378] Choosing the nonlinear integrator.
+: [INFO    root                      403378] Starting analysis process.
+: [INFO    root                      403378] Started analysis process with pid 447894.
+: [INFO    hops.core.hierarchy_data  403378] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results.fifo
+: [INFO    hops.core.integration     403378] Using 16 integrators.
+: [INFO    hops.core.integration     403378] Some 0 trajectories have to be integrated.
+: [INFO    hops.core.integration     403378] Using 1820 hierarchy states.
+: 0it [00:00, ?it/s]
+
 
 
 #+begin_src jupyter-python :tangle nil
   f, a = pu.plot_energy_overview(model, strobe_frequency=model.Ω, hybrid=True, bath_names=["C","H"], online=True)
 
-
-  a.plot(model.t, model.coupling_operators[0].operator_norm(model.t), linestyle="dashed", label="Mod Cold")
-  a.plot(model.t, model.coupling_operators[1].operator_norm(model.t), linestyle="dashed", label="Mod Hot")
-  a.plot(model.t, model.H.operator_norm(model.t) - 1, linestyle="dashed", label="Mod H")
   #   a.set_xlabel(r"$\tau$")
   #   a.plot(model.t, model.coupling_operators[0].operator_norm(model.t), label="cold")
   a.legend()
@@ -109,6 +124,6 @@ CLOCK: [2022-11-30 Wed 16:27]
 
 #+RESULTS:
 :RESULTS:
-: <matplotlib.legend.Legend at 0x7f545eda5fa0>
-[[file:./.ob-jupyter/24a2a15398d054ad800997d31485ea871537e98c.svg]]
+: <matplotlib.legend.Legend at 0x7fbce8788f40>
+[[file:./.ob-jupyter/c7e0e16b981d66a30d3686f1d753d1319794b083.svg]]
 :END:

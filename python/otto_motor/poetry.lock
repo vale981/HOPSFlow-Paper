@@ -135,7 +135,7 @@ test-tox-coverage = ["coverage (>=5.5)"]
 type = "git"
 url = "https://github.com/beartype/beartype"
 reference = "main"
-resolved_reference = "8f33d55d7673dc7f2e57216ed03e27d9b971f443"
+resolved_reference = "91d1d89c8015ba75a3c990e2ab6b93e9c61f8651"
 
 [[package]]
 name = "beautifulsoup4"
@@ -508,7 +508,7 @@ qutip = "^4.6.3"
 type = "git"
 url = "git@github.com:vale981/two_qubit_model.git"
 reference = "main"
-resolved_reference = "256ada3d767b93bec1bb340d89c947f966c8cab1"
+resolved_reference = "5d901b0878e738cb03ce17ceee910db240f1607a"
 
 [[package]]
 name = "hops"
@@ -569,7 +569,7 @@ tqdm = "^4.62.3"
 type = "git"
 url = "https://github.com/vale981/hopsflow"
 reference = "main"
-resolved_reference = "5afd2b6e081591350739b4c483dc0bf356a80b2a"
+resolved_reference = "51a55945cc1953442c8d10852a3793fb0414c853"
 
 [[package]]
 name = "humanfriendly"
