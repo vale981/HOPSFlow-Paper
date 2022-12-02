@@ -42,7 +42,7 @@
 
 - see [[file:notes/cycle_design.xopp][sketch of cycle and units]]
 
-**** Reproduce Basic Cycle
+**** DONE Reproduce Basic Cycle
 :LOGBOOK:
 CLOCK: [2022-11-29 Tue 10:35]--[2022-11-29 Tue 11:01] =>  0:26
 CLOCK: [2022-11-29 Tue 09:41]--[2022-11-29 Tue 10:21] =>  0:40
@@ -56,7 +56,18 @@ CLOCK: [2022-11-28 Mon 14:55]--[2022-11-28 Mon 15:10] =>  0:15
 CLOCK: [2022-11-28 Mon 20:51]--[2022-11-28 Mon 20:54] =>  0:03
 :END:
 
+- reproduced the cycle from the master's thesis with new code
+
 **** Simple: Continously Coupled vs Modulated Coupling
+:LOGBOOK:
+CLOCK: [2022-12-02 Fri 12:40]--[2022-12-02 Fri 13:07] =>  0:27
+CLOCK: [2022-12-02 Fri 11:52]--[2022-12-02 Fri 12:35] =>  0:43
+CLOCK: [2022-12-02 Fri 11:52]--[2022-12-02 Fri 11:52] =>  0:00
+CLOCK: [2022-12-01 Thu 17:30]--[2022-12-01 Thu 18:30] =>  1:00
+CLOCK: [2022-12-01 Thu 11:45]--[2022-12-01 Thu 12:42] =>  0:57
+CLOCK: [2022-12-01 Thu 11:00]--[2022-12-01 Thu 11:30] =>  0:30
+CLOCK: [2022-12-01 Thu 10:33]--[2022-12-01 Thu 10:56] =>  0:23
+:END:
 
 **** TODO verify what has been done
 - carnot eficiency
@@ -86,8 +97,9 @@ CLOCK: [2022-11-23 Wed 21:39]--[2022-11-23 Wed 22:04] =>  0:25
 - tests
 - docs
 
-** TODO Set up HO calcs with online analysis
+** DONE Set up HO calcs with online analysis
 :LOGBOOK:
+CLOCK: [2022-11-30 Wed 16:27]--[2022-11-30 Wed 18:32] =>  2:05
 CLOCK: [2022-11-30 Wed 15:22]--[2022-11-30 Wed 16:07] =>  0:45
 CLOCK: [2022-11-30 Wed 13:21]--[2022-11-30 Wed 14:06] =>  0:45
 CLOCK: [2022-11-30 Wed 12:26]--[2022-11-30 Wed 13:16] =>  0:50

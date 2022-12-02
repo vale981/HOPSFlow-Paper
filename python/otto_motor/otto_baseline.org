@@ -1,39 +1,44 @@
 #+PROPERTY: header-args :session otto_baseline :kernel python :pandoc no :async yes :tangle otto_baseline.py
 
 * Boilerplate
-#+begin_src jupyter-python :results none
-  import figsaver as fs
-  import plot_utils as pu
-  from hiro_models.one_qubit_model import StocProcTolerances
-  from hiro_models.otto_cycle import OttoEngine
-  import hiro_models.model_auxiliary as aux
-  import numpy as np
-  import qutip as qt
-  import utilities as ut
-  import stocproc
-  import matplotlib.pyplot as plt
-  import otto_utilities as ot
-#+end_src
+#+name: boilerplate
+#+begin_src jupyter-python :results none :tangle otto_boilerplate.py
+    import figsaver as fs
+    import plot_utils as pu
+    from hiro_models.one_qubit_model import StocProcTolerances
+    from hiro_models.otto_cycle import OttoEngine
+    import hiro_models.model_auxiliary as aux
+    import numpy as np
+    import qutip as qt
+    import utilities as ut
+    import stocproc
+    import matplotlib.pyplot as plt
+    import otto_utilities as ot
 
-Init ray and silence stocproc.
-#+begin_src jupyter-python
-  import ray
-  ray.shutdown()
-  ray.init(address='auto')
-  #ray.init()
-#+end_src
+    import ray
+    ray.shutdown()
 
-#+RESULTS:
-: RayContext(dashboard_url='', python_version='3.9.15', ray_version='1.13.0', ray_commit='e4ce38d001dbbe09cd21c497fedd03d692b2be3e', address_info={'node_ip_address': '10.0.0.102', 'raylet_ip_address': '10.0.0.102', 'redis_address': None, 'object_store_address': '/tmp/ray/session_2022-12-01_12-49-01_211839_372329/sockets/plasma_store', 'raylet_socket_name': '/tmp/ray/session_2022-12-01_12-49-01_211839_372329/sockets/raylet', 'webui_url': '', 'session_dir': '/tmp/ray/session_2022-12-01_12-49-01_211839_372329', 'metrics_export_port': 51539, 'gcs_address': '10.0.0.102:6379', 'address': '10.0.0.102:6379', 'node_id': 'a0e22c6e0493add2b51aa52eeaf1e90766c796c1f430527c008a3242'})
-
-#+begin_src jupyter-python :results none
-  from hops.util.logging_setup import logging_setup
-  import logging
-  logging_setup(logging.INFO)
-  plt.rcParams['figure.figsize'] = (12,4)
+    ray.init(address='auto')
+    #ray.init()
+    from hops.util.logging_setup import logging_setup
+    import logging
+    logging_setup(logging.INFO)
+    plt.rcParams['figure.figsize'] = (12,4)
 #+end_src
 
 * Model: Baseline
+:PROPERTIES:
+:header-args: :tangle baseline.py :session baseline :noweb yes :async yes
+:END:
+
+A basic otto cycle that has a finite power output.
+
+#+begin_src jupyter-python
+  <<boilerplate>>
+#+end_src
+
+#+RESULTS:
+
 #+begin_src jupyter-python
   model = OttoEngine(
       δ=[0.4, 0.4],
@@ -56,26 +61,69 @@ Init ray and silence stocproc.
       streaming_mode=True,
   )
 
-  # model = OttoEngine(
-  #     δ=[0.4, 0.4],
-  #     ω_c=[1, 1],
-  #     ψ_0=qt.basis([2], [1]),
-  #     description=f"An otto cycle on the way to finding the baseline.",
-  #     k_max=3,
-  #     bcf_terms=[4] * 2,
-  #     truncation_scheme="simplex",
-  #     driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
-  #     thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
-  #     T=[1, 10],
-  #     therm_methods=["tanhsinh", "fft"],
-  #     Δ=1,
-  #     num_cycles=4,
-  #     Θ=1.5 / 0.05,
-  #     dt=0.001,
-  #     timings_H=(0, 0.1, 0.3, 0.4),
-  #     timings_L=((0.4, 0.5, 0.9, 1), (0.1, 0.11, 0.29, 0.3)),
-  #     streaming_mode=True,
-  # )
+  ot.plot_cycle(model)
+#+end_src
+#+RESULTS:
+: [INFO    hops.core.integration     143440] Choosing the nonlinear integrator.
+: [INFO    root                      143440] Starting analysis process.
+: [INFO    root                      143440] Started analysis process with pid 167240.
+: [INFO    hops.core.hierarchy_data  143440] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_cd3f8b0097f9c534dcf1ae820df84eb5360444c29eda1ab03060ef82aad20742.fifo
+: [INFO    hops.core.integration     143440] Using 16 integrators.
+: [INFO    hops.core.integration     143440] Some 0 trajectories have to be integrated.
+: [INFO    hops.core.integration     143440] Using 1820 hierarchy states.
+: 0it [00:00, ?it/s]
+
+#+begin_src jupyter-python :tangle nilorg basics
+  ot.full_report(model)
+#+end_src
+:RESULTS:
+: \(P=-0.002945\pm 0.000029\)
+: \(\eta=30.1\pm 0.5\)
+[[file:./.ob-jupyter/c61e413e66aa7df116b897a2723935020b1c53fe.svg]]
+[[file:./.ob-jupyter/f18ff8e0fb663c3f8ce0d8e0e9251800ed28866d.svg]]
+: \(P=-0.002945\pm 0.000029\)
+: \(\eta=30.1\pm 0.5\)
+[[file:./.ob-jupyter/c532a1d8126a94546c4caacf30830a3abaf9791d.svg]]
+: \(P=-0.002945\pm 0.000029\)
+: \(\eta=30.1\pm 0.5\)
+[[file:./.ob-jupyter/a87593e3ba9c2f50c02156f48c3d9f472939165e.svg]]
+:END:
+
+* Model: Baseline, continously coupled
+:PROPERTIES:
+:header-args: :tangle baseline_cc.py :session baseline_cc :noweb yes :async yes
+:END:
+
+A basic otto cycle that has a finite power output without coupling modulation.
+
+#+begin_src jupyter-python
+  <<boilerplate>>
+#+end_src
+
+#+RESULTS:
+: 2022-12-02 17:22:15,922       INFO worker.py:956 -- Connecting to existing Ray cluster at address: 10.0.0.102:6379
+
+#+begin_src jupyter-python
+  model = OttoEngine(
+      δ=[0.4, 0.4],
+      ω_c=[1, 1],
+      ψ_0=qt.basis([2], [1]),
+      description=f"A basic near-markovian, weakly coupled Otto Cycle that actually works.",
+      k_max=4,
+      bcf_terms=[6] * 2,
+      truncation_scheme="simplex",
+      driving_process_tolerances=[StocProcTolerances(1e-4, 1e-4)] * 2,
+      thermal_process_tolerances=[StocProcTolerances(1e-4, 1e-4)] * 2,
+      T=[1, 10],
+      therm_methods=["tanhsinh", "fft"],
+      Δ=1,
+      num_cycles=5,
+      Θ=1.5 / 0.05,
+      dt=0.001,
+      timings_H=(0, 0.1, 0.5, 0.6),
+      timings_L=(None, None),
+      streaming_mode=True,
+  )
 
   ot.plot_cycle(model)
 #+end_src
@@ -83,47 +131,60 @@ Init ray and silence stocproc.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
-[[file:./.ob-jupyter/16e356aa8afc7a911b3edcfccea6559fe028821c.svg]]
+[[file:./.ob-jupyter/d4e495d3d874fb283bf7adb54b752ec1c1c8a942.svg]]
+:END:
+
+
+#+begin_src jupyter-python :tangle nil
+  ot.integrate_online(model, 5000)
+#+end_src
+
+#+RESULTS:
+: [INFO    hops.core.integration     211210] Choosing the nonlinear integrator.
+: [INFO    root                      211210] Starting analysis process.
+: [INFO    root                      211210] Started analysis process with pid 621102.
+: [INFO    hops.core.hierarchy_data  211210] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_fea83562df42901b66a85396f98a6c69d504e3a6d3dcc59cb83c5f34ec4077ca.fifo
+: [INFO    hops.core.integration     211210] Using 32 integrators.
+: [INFO    hops.core.integration     211210] Some 343 trajectories have to be integrated.
+: [INFO    hops.core.integration     211210] Using 1820 hierarchy states.
+: 100% 343/343 [06:21<00:00,  1.11s/it]
+
+** Results
+:PROPERTIES:
+:header-args:  :session baseline_cc_res :noweb yes :async yes
+:END:
+
+#+begin_src jupyter-python
+    import otto_utilities as ot
+    from baseline_cc import model
+
+    ot.plot_energy(model)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
+[[file:./.ob-jupyter/3d98e3c75769ff8d11e9b3abd5b106b72bef0b1a.svg]]
 :END:
 
 
 #+begin_src jupyter-python
-  ot.plot_sd_overview(model)
+  model.efficiency(), model.power()
 #+end_src
 
 #+RESULTS:
+| EnsembleValue | (((5000 0.013166547143407361 0.0005796013132630898))) | EnsembleValue | (((5000 -0.0004882838891758121 2.125229382647311e-05))) |
+
+
+#+begin_src jupyter-python
+    ot.full_report(model)
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/5c70edfc7d22c62cc00936a4152948a0b6a9a1db.svg]]
 :RESULTS:
-| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\omega$ | ylabel= | Spectral Density | > |
-[[file:./.ob-jupyter/dc9e4dff3bc359892e01587cbcba157708c27487.svg]]
-:END:
-
-* Integration
-#+begin_src jupyter-python :tangle nil
-  aux.integrate(model, 100, stream_file="results.fifo", analyze=True)
-#+end_src
-
-#+RESULTS:
-: [INFO    hops.core.integration     403378] Choosing the nonlinear integrator.
-: [INFO    root                      403378] Starting analysis process.
-: [INFO    root                      403378] Started analysis process with pid 447894.
-: [INFO    hops.core.hierarchy_data  403378] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results.fifo
-: [INFO    hops.core.integration     403378] Using 16 integrators.
-: [INFO    hops.core.integration     403378] Some 0 trajectories have to be integrated.
-: [INFO    hops.core.integration     403378] Using 1820 hierarchy states.
-: 0it [00:00, ?it/s]
-
-
-
-#+begin_src jupyter-python :tangle nil
-  f, a = pu.plot_energy_overview(model, strobe_frequency=model.Ω, hybrid=True, bath_names=["C","H"], online=True)
-
-  #   a.set_xlabel(r"$\tau$")
-  #   a.plot(model.t, model.coupling_operators[0].operator_norm(model.t), label="cold")
-  a.legend()
-#+end_src
-
-#+RESULTS:
-:RESULTS:
-: <matplotlib.legend.Legend at 0x7fbce8788f40>
-[[file:./.ob-jupyter/c7e0e16b981d66a30d3686f1d753d1319794b083.svg]]
+: \(P=-0.000488\pm 0.000021\)
+: \(\eta=1.32\pm 0.06\)
+[[file:./.ob-jupyter/5d6803828c5f069e1abeeca5906cf627ec1a0720.svg]]
+[[file:./.ob-jupyter/d0ac6d4dccf574add7cb85f8a9a8e302e8e13e1a.svg]]
 :END:

@@ -1,25 +1,3 @@
-import figsaver as fs
-import plot_utils as pu
-from hiro_models.one_qubit_model import StocProcTolerances
-from hiro_models.otto_cycle import OttoEngine
-import hiro_models.model_auxiliary as aux
-import numpy as np
-import qutip as qt
-import utilities as ut
-import stocproc
-import matplotlib.pyplot as plt
-import otto_utilities as ot
-
-import ray
-ray.shutdown()
-ray.init(address='auto')
-#ray.init()
-
-from hops.util.logging_setup import logging_setup
-import logging
-logging_setup(logging.INFO)
-plt.rcParams['figure.figsize'] = (12,4)
-
 model = OttoEngine(
     δ=[0.4, 0.4],
     ω_c=[1, 1],
@@ -45,7 +23,7 @@ model = OttoEngine(
 #     δ=[0.4, 0.4],
 #     ω_c=[1, 1],
 #     ψ_0=qt.basis([2], [1]),
-#     description=f"An otto cycle on the way to finding the baseline.",
+#     description=f"An otto cycle with longer cooling.",
 #     k_max=3,
 #     bcf_terms=[4] * 2,
 #     truncation_scheme="simplex",
