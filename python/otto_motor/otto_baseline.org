@@ -2,7 +2,7 @@
 
 * Boilerplate
 #+name: boilerplate
-#+begin_src jupyter-python :results none :tangle otto_boilerplate.py
+#+begin_src jupyter-python :results none
     import figsaver as fs
     import plot_utils as pu
     from hiro_models.one_qubit_model import StocProcTolerances
@@ -73,7 +73,7 @@ A basic otto cycle that has a finite power output.
 : [INFO    hops.core.integration     143440] Using 1820 hierarchy states.
 : 0it [00:00, ?it/s]
 
-#+begin_src jupyter-python :tangle nilorg basics
+#+begin_src jupyter-python
   ot.full_report(model)
 #+end_src
 :RESULTS:
@@ -135,19 +135,19 @@ A basic otto cycle that has a finite power output without coupling modulation.
 :END:
 
 
-#+begin_src jupyter-python :tangle nil
+#+begin_src jupyter-python
   ot.integrate_online(model, 5000)
 #+end_src
 
 #+RESULTS:
 : [INFO    hops.core.integration     211210] Choosing the nonlinear integrator.
 : [INFO    root                      211210] Starting analysis process.
-: [INFO    root                      211210] Started analysis process with pid 621102.
+: [INFO    root                      211210] Started analysis process with pid 630343.
 : [INFO    hops.core.hierarchy_data  211210] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_fea83562df42901b66a85396f98a6c69d504e3a6d3dcc59cb83c5f34ec4077ca.fifo
 : [INFO    hops.core.integration     211210] Using 32 integrators.
-: [INFO    hops.core.integration     211210] Some 343 trajectories have to be integrated.
+: [INFO    hops.core.integration     211210] Some 0 trajectories have to be integrated.
 : [INFO    hops.core.integration     211210] Using 1820 hierarchy states.
-: 100% 343/343 [06:21<00:00,  1.11s/it]
+: 0it [00:00, ?it/s]
 
 ** Results
 :PROPERTIES:
