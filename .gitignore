@@ -4,4 +4,8 @@ auto
 .direnv
 .ob-jupyter
 __pycache__
-.fifo
+*.fifo
+*.npz
+*.h5
+*.#*
+*.lock
