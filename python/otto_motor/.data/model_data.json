@@ -1,0 +1,1788 @@
+{
+    "cd3f8b0097f9c534dcf1ae820df84eb5360444c29eda1ab03060ef82aad20742": {
+        "model_config": {
+            "ψ_0": {
+                "type": "Qobj",
+                "value": {
+                    "type": "array",
+                    "value": [
+                        [
+                            {
+                                "type": "complex",
+                                "re": 0.0,
+                                "im": 0.0
+                            }
+                        ],
+                        [
+                            {
+                                "type": "complex",
+                                "re": 1.0,
+                                "im": 0.0
+                            }
+                        ]
+                    ]
+                },
+                "dims": [
+                    [
+                        2
+                    ],
+                    [
+                        1
+                    ]
+                ],
+                "obj_type": "ket"
+            },
+            "description": "A basic near-markovian, weakly coupled Otto Cycle that actually works.",
+            "timestamp": {
+                "type": "datetime",
+                "value": "2022-12-02T15:05:46.616821"
+            },
+            "δ": [
+                0.4,
+                0.4
+            ],
+            "ω_c": [
+                1,
+                1
+            ],
+            "s": [
+                1,
+                1
+            ],
+            "therm_methods": [
+                "tanhsinh",
+                "fft"
+            ],
+            "L": {
+                "type": "tuple",
+                "value": [
+                    {
+                        "type": "array",
+                        "value": [
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                }
+                            ],
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "value": [
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                }
+                            ],
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                }
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "T": [
+                1,
+                10
+            ],
+            "bcf_terms": [
+                6,
+                6
+            ],
+            "k_fac": [
+                1.7,
+                1.7
+            ],
+            "k_max": 4,
+            "influence_tolerance": 0.01,
+            "truncation_scheme": "simplex",
+            "solver_args": {},
+            "driving_process_tolerances": [
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.0001,
+                        "interpolation": 0.0001
+                    }
+                },
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.0001,
+                        "interpolation": 0.0001
+                    }
+                }
+            ],
+            "thermal_process_tolerances": [
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.0001,
+                        "interpolation": 0.0001
+                    }
+                },
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.0001,
+                        "interpolation": 0.0001
+                    }
+                }
+            ],
+            "streaming_mode": true,
+            "H_0": {
+                "type": "array",
+                "value": [
+                    [
+                        {
+                            "type": "complex",
+                            "re": 1.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ],
+                    [
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ]
+                ]
+            },
+            "H_1": {
+                "type": "array",
+                "value": [
+                    [
+                        {
+                            "type": "complex",
+                            "re": 1.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ],
+                    [
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ]
+                ]
+            },
+            "ω_s_extra": [
+                0,
+                0
+            ],
+            "Θ": 30.0,
+            "Δ": 1,
+            "timings_H": {
+                "type": "tuple",
+                "value": [
+                    0,
+                    0.1,
+                    0.5,
+                    0.6
+                ]
+            },
+            "orders_H": {
+                "type": "tuple",
+                "value": [
+                    2,
+                    2
+                ]
+            },
+            "timings_L": {
+                "type": "tuple",
+                "value": [
+                    {
+                        "type": "tuple",
+                        "value": [
+                            0.6,
+                            0.7,
+                            0.9,
+                            1
+                        ]
+                    },
+                    {
+                        "type": "tuple",
+                        "value": [
+                            0.1,
+                            0.2,
+                            0.4,
+                            0.5
+                        ]
+                    }
+                ]
+            },
+            "orders_L": {
+                "type": "tuple",
+                "value": [
+                    {
+                        "type": "tuple",
+                        "value": [
+                            2,
+                            2
+                        ]
+                    },
+                    {
+                        "type": "tuple",
+                        "value": [
+                            2,
+                            2
+                        ]
+                    }
+                ]
+            },
+            "num_cycles": 5,
+            "dt": 0.001,
+            "__version__": 1,
+            "__base_version__": 1,
+            "__model__": "OttoEngine"
+        },
+        "data_path": "cd3f8b0097f9c534dcf1ae820df84eb5360444c29eda1ab03060ef82aad20742/_e/cd3f8b0097f9c534dcf1ae820df84eb5360444c29eda1ab03060ef82aad20742_e60a4b862e9f697be419f107040a44d5_1.h5",
+        "analysis_files": {
+            "flow": "flow_cd3f8b0097f9c534dcf1ae820df84eb5360444c29eda1ab03060ef82aad20742.npz",
+            "interaction": "interaction_cd3f8b0097f9c534dcf1ae820df84eb5360444c29eda1ab03060ef82aad20742.npz",
+            "interaction_power": "interaction_power_cd3f8b0097f9c534dcf1ae820df84eb5360444c29eda1ab03060ef82aad20742.npz",
+            "system": "system_cd3f8b0097f9c534dcf1ae820df84eb5360444c29eda1ab03060ef82aad20742.npz",
+            "system_power": "system_power_cd3f8b0097f9c534dcf1ae820df84eb5360444c29eda1ab03060ef82aad20742.npz"
+        }
+    },
+    "2ce574de38a854c82f3c18ef530267e81332557b2fa506bacc4a7282d6e31362": {
+        "model_config": {
+            "ψ_0": {
+                "type": "Qobj",
+                "value": {
+                    "type": "array",
+                    "value": [
+                        [
+                            {
+                                "type": "complex",
+                                "re": 0.0,
+                                "im": 0.0
+                            }
+                        ],
+                        [
+                            {
+                                "type": "complex",
+                                "re": 1.0,
+                                "im": 0.0
+                            }
+                        ]
+                    ]
+                },
+                "dims": [
+                    [
+                        2
+                    ],
+                    [
+                        1
+                    ]
+                ],
+                "obj_type": "ket"
+            },
+            "description": "An otto cycle with longer cooling.",
+            "timestamp": {
+                "type": "datetime",
+                "value": "2022-12-01T20:27:43.867752"
+            },
+            "δ": [
+                0.4,
+                0.4
+            ],
+            "ω_c": [
+                1,
+                1
+            ],
+            "s": [
+                1,
+                1
+            ],
+            "therm_methods": [
+                "tanhsinh",
+                "fft"
+            ],
+            "L": {
+                "type": "tuple",
+                "value": [
+                    {
+                        "type": "array",
+                        "value": [
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                }
+                            ],
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "value": [
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                }
+                            ],
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                }
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "T": [
+                1,
+                10
+            ],
+            "bcf_terms": [
+                4,
+                4
+            ],
+            "k_fac": [
+                1.7,
+                1.7
+            ],
+            "k_max": 3,
+            "influence_tolerance": 0.01,
+            "truncation_scheme": "simplex",
+            "solver_args": {},
+            "driving_process_tolerances": [
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.001,
+                        "interpolation": 0.001
+                    }
+                },
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.001,
+                        "interpolation": 0.001
+                    }
+                }
+            ],
+            "thermal_process_tolerances": [
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.001,
+                        "interpolation": 0.001
+                    }
+                },
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.001,
+                        "interpolation": 0.001
+                    }
+                }
+            ],
+            "streaming_mode": true,
+            "H_0": {
+                "type": "array",
+                "value": [
+                    [
+                        {
+                            "type": "complex",
+                            "re": 1.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ],
+                    [
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ]
+                ]
+            },
+            "H_1": {
+                "type": "array",
+                "value": [
+                    [
+                        {
+                            "type": "complex",
+                            "re": 1.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ],
+                    [
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ]
+                ]
+            },
+            "ω_s_extra": [
+                0,
+                0
+            ],
+            "Θ": 30.0,
+            "Δ": 1,
+            "timings_H": {
+                "type": "tuple",
+                "value": [
+                    0,
+                    0.1,
+                    0.3,
+                    0.4
+                ]
+            },
+            "orders_H": {
+                "type": "tuple",
+                "value": [
+                    2,
+                    2
+                ]
+            },
+            "timings_L": {
+                "type": "tuple",
+                "value": [
+                    {
+                        "type": "tuple",
+                        "value": [
+                            0.4,
+                            0.5,
+                            0.9,
+                            1
+                        ]
+                    },
+                    {
+                        "type": "tuple",
+                        "value": [
+                            0.1,
+                            0.11,
+                            0.29,
+                            0.3
+                        ]
+                    }
+                ]
+            },
+            "orders_L": {
+                "type": "tuple",
+                "value": [
+                    {
+                        "type": "tuple",
+                        "value": [
+                            2,
+                            2
+                        ]
+                    },
+                    {
+                        "type": "tuple",
+                        "value": [
+                            2,
+                            2
+                        ]
+                    }
+                ]
+            },
+            "num_cycles": 5,
+            "dt": 0.001,
+            "__version__": 1,
+            "__base_version__": 1,
+            "__model__": "OttoEngine"
+        },
+        "data_path": "2ce574de38a854c82f3c18ef530267e81332557b2fa506bacc4a7282d6e31362/_2/2ce574de38a854c82f3c18ef530267e81332557b2fa506bacc4a7282d6e31362_22d01feaa2e1da7f6aad4b37faef8632_1.h5",
+        "analysis_files": {
+            "flow": "flow_2ce574de38a854c82f3c18ef530267e81332557b2fa506bacc4a7282d6e31362.npz",
+            "interaction": "interaction_2ce574de38a854c82f3c18ef530267e81332557b2fa506bacc4a7282d6e31362.npz",
+            "interaction_power": "interaction_power_2ce574de38a854c82f3c18ef530267e81332557b2fa506bacc4a7282d6e31362.npz",
+            "system": "system_2ce574de38a854c82f3c18ef530267e81332557b2fa506bacc4a7282d6e31362.npz",
+            "system_power": "system_power_2ce574de38a854c82f3c18ef530267e81332557b2fa506bacc4a7282d6e31362.npz"
+        }
+    },
+    "82a2c65b31629dbb4c1af98c5b725ce67dfbe837d76adc055b04d8d0219e82c5": {
+        "model_config": {
+            "ψ_0": {
+                "type": "Qobj",
+                "value": {
+                    "type": "array",
+                    "value": [
+                        [
+                            {
+                                "type": "complex",
+                                "re": 0.0,
+                                "im": 0.0
+                            }
+                        ],
+                        [
+                            {
+                                "type": "complex",
+                                "re": 1.0,
+                                "im": 0.0
+                            }
+                        ]
+                    ]
+                },
+                "dims": [
+                    [
+                        2
+                    ],
+                    [
+                        1
+                    ]
+                ],
+                "obj_type": "ket"
+            },
+            "description": "An otto cycle with longer cooling.",
+            "timestamp": {
+                "type": "datetime",
+                "value": "2022-12-02T12:53:50.804670"
+            },
+            "δ": [
+                0.4,
+                0.4
+            ],
+            "ω_c": [
+                1,
+                1
+            ],
+            "s": [
+                1,
+                1
+            ],
+            "therm_methods": [
+                "tanhsinh",
+                "fft"
+            ],
+            "L": {
+                "type": "tuple",
+                "value": [
+                    {
+                        "type": "array",
+                        "value": [
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                }
+                            ],
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "value": [
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                }
+                            ],
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                }
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "T": [
+                1,
+                10
+            ],
+            "bcf_terms": [
+                4,
+                4
+            ],
+            "k_fac": [
+                1.7,
+                1.7
+            ],
+            "k_max": 3,
+            "influence_tolerance": 0.01,
+            "truncation_scheme": "simplex",
+            "solver_args": {},
+            "driving_process_tolerances": [
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.001,
+                        "interpolation": 0.001
+                    }
+                },
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.001,
+                        "interpolation": 0.001
+                    }
+                }
+            ],
+            "thermal_process_tolerances": [
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.001,
+                        "interpolation": 0.001
+                    }
+                },
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.001,
+                        "interpolation": 0.001
+                    }
+                }
+            ],
+            "streaming_mode": true,
+            "H_0": {
+                "type": "array",
+                "value": [
+                    [
+                        {
+                            "type": "complex",
+                            "re": 1.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ],
+                    [
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ]
+                ]
+            },
+            "H_1": {
+                "type": "array",
+                "value": [
+                    [
+                        {
+                            "type": "complex",
+                            "re": 1.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ],
+                    [
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ]
+                ]
+            },
+            "ω_s_extra": [
+                0,
+                0
+            ],
+            "Θ": 30.0,
+            "Δ": 1,
+            "timings_H": {
+                "type": "tuple",
+                "value": [
+                    0,
+                    0.1,
+                    0.3,
+                    0.4
+                ]
+            },
+            "orders_H": {
+                "type": "tuple",
+                "value": [
+                    2,
+                    2
+                ]
+            },
+            "timings_L": {
+                "type": "tuple",
+                "value": [
+                    {
+                        "type": "tuple",
+                        "value": [
+                            0.4,
+                            0.5,
+                            0.9,
+                            1
+                        ]
+                    },
+                    {
+                        "type": "tuple",
+                        "value": [
+                            0.1,
+                            0.11,
+                            0.29,
+                            0.3
+                        ]
+                    }
+                ]
+            },
+            "orders_L": {
+                "type": "tuple",
+                "value": [
+                    {
+                        "type": "tuple",
+                        "value": [
+                            2,
+                            2
+                        ]
+                    },
+                    {
+                        "type": "tuple",
+                        "value": [
+                            2,
+                            2
+                        ]
+                    }
+                ]
+            },
+            "num_cycles": 4,
+            "dt": 0.001,
+            "__version__": 1,
+            "__base_version__": 1,
+            "__model__": "OttoEngine"
+        },
+        "data_path": "82a2c65b31629dbb4c1af98c5b725ce67dfbe837d76adc055b04d8d0219e82c5/_6/82a2c65b31629dbb4c1af98c5b725ce67dfbe837d76adc055b04d8d0219e82c5_6ab068dce9ca56050650866e687011c8_1.h5",
+        "analysis_files": {
+            "flow": "flow_82a2c65b31629dbb4c1af98c5b725ce67dfbe837d76adc055b04d8d0219e82c5.npz",
+            "interaction": "interaction_82a2c65b31629dbb4c1af98c5b725ce67dfbe837d76adc055b04d8d0219e82c5.npz",
+            "interaction_power": "interaction_power_82a2c65b31629dbb4c1af98c5b725ce67dfbe837d76adc055b04d8d0219e82c5.npz",
+            "system": "system_82a2c65b31629dbb4c1af98c5b725ce67dfbe837d76adc055b04d8d0219e82c5.npz",
+            "system_power": "system_power_82a2c65b31629dbb4c1af98c5b725ce67dfbe837d76adc055b04d8d0219e82c5.npz"
+        }
+    },
+    "3f5b4a709015fc20bee9843ec7de4fa0ca81101a0d915a7f30e4a7866f5a4603": {
+        "model_config": {
+            "ψ_0": {
+                "type": "Qobj",
+                "value": {
+                    "type": "array",
+                    "value": [
+                        [
+                            {
+                                "type": "complex",
+                                "re": 0.0,
+                                "im": 0.0
+                            }
+                        ],
+                        [
+                            {
+                                "type": "complex",
+                                "re": 1.0,
+                                "im": 0.0
+                            }
+                        ]
+                    ]
+                },
+                "dims": [
+                    [
+                        2
+                    ],
+                    [
+                        1
+                    ]
+                ],
+                "obj_type": "ket"
+            },
+            "description": "A basic near-markovian, weakly coupled Otto Cycle that actually works.",
+            "timestamp": {
+                "type": "datetime",
+                "value": "2022-12-02T12:54:32.677595"
+            },
+            "δ": [
+                0.4,
+                0.4
+            ],
+            "ω_c": [
+                1,
+                1
+            ],
+            "s": [
+                1,
+                1
+            ],
+            "therm_methods": [
+                "tanhsinh",
+                "fft"
+            ],
+            "L": {
+                "type": "tuple",
+                "value": [
+                    {
+                        "type": "array",
+                        "value": [
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                }
+                            ],
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "value": [
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                }
+                            ],
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                }
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "T": [
+                1,
+                10
+            ],
+            "bcf_terms": [
+                6,
+                6
+            ],
+            "k_fac": [
+                1.7,
+                1.7
+            ],
+            "k_max": 4,
+            "influence_tolerance": 0.01,
+            "truncation_scheme": "simplex",
+            "solver_args": {},
+            "driving_process_tolerances": [
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.0001,
+                        "interpolation": 0.0001
+                    }
+                },
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.0001,
+                        "interpolation": 0.0001
+                    }
+                }
+            ],
+            "thermal_process_tolerances": [
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.0001,
+                        "interpolation": 0.0001
+                    }
+                },
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.0001,
+                        "interpolation": 0.0001
+                    }
+                }
+            ],
+            "streaming_mode": true,
+            "H_0": {
+                "type": "array",
+                "value": [
+                    [
+                        {
+                            "type": "complex",
+                            "re": 1.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ],
+                    [
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ]
+                ]
+            },
+            "H_1": {
+                "type": "array",
+                "value": [
+                    [
+                        {
+                            "type": "complex",
+                            "re": 1.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ],
+                    [
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ]
+                ]
+            },
+            "ω_s_extra": [
+                0,
+                0
+            ],
+            "Θ": 20.0,
+            "Δ": 1,
+            "timings_H": {
+                "type": "tuple",
+                "value": [
+                    0,
+                    0.1,
+                    0.5,
+                    0.6
+                ]
+            },
+            "orders_H": {
+                "type": "tuple",
+                "value": [
+                    2,
+                    2
+                ]
+            },
+            "timings_L": {
+                "type": "tuple",
+                "value": [
+                    {
+                        "type": "tuple",
+                        "value": [
+                            0.6,
+                            0.7,
+                            0.9,
+                            1
+                        ]
+                    },
+                    {
+                        "type": "tuple",
+                        "value": [
+                            0.1,
+                            0.2,
+                            0.4,
+                            0.5
+                        ]
+                    }
+                ]
+            },
+            "orders_L": {
+                "type": "tuple",
+                "value": [
+                    {
+                        "type": "tuple",
+                        "value": [
+                            2,
+                            2
+                        ]
+                    },
+                    {
+                        "type": "tuple",
+                        "value": [
+                            2,
+                            2
+                        ]
+                    }
+                ]
+            },
+            "num_cycles": 5,
+            "dt": 0.001,
+            "__version__": 1,
+            "__base_version__": 1,
+            "__model__": "OttoEngine"
+        },
+        "data_path": "3f5b4a709015fc20bee9843ec7de4fa0ca81101a0d915a7f30e4a7866f5a4603/_4/3f5b4a709015fc20bee9843ec7de4fa0ca81101a0d915a7f30e4a7866f5a4603_4db6d525f23c0b627e50eeac59a67806_1.h5",
+        "analysis_files": {
+            "flow": "flow_3f5b4a709015fc20bee9843ec7de4fa0ca81101a0d915a7f30e4a7866f5a4603.npz",
+            "interaction": "interaction_3f5b4a709015fc20bee9843ec7de4fa0ca81101a0d915a7f30e4a7866f5a4603.npz",
+            "interaction_power": "interaction_power_3f5b4a709015fc20bee9843ec7de4fa0ca81101a0d915a7f30e4a7866f5a4603.npz",
+            "system": "system_3f5b4a709015fc20bee9843ec7de4fa0ca81101a0d915a7f30e4a7866f5a4603.npz",
+            "system_power": "system_power_3f5b4a709015fc20bee9843ec7de4fa0ca81101a0d915a7f30e4a7866f5a4603.npz"
+        }
+    },
+    "637dbaf6e87dcf4f935200c9cde3357ec439c37ccf3965ec907371d4bf899c99": {
+        "model_config": {
+            "ψ_0": {
+                "type": "Qobj",
+                "value": {
+                    "type": "array",
+                    "value": [
+                        [
+                            {
+                                "type": "complex",
+                                "re": 0.0,
+                                "im": 0.0
+                            }
+                        ],
+                        [
+                            {
+                                "type": "complex",
+                                "re": 1.0,
+                                "im": 0.0
+                            }
+                        ]
+                    ]
+                },
+                "dims": [
+                    [
+                        2
+                    ],
+                    [
+                        1
+                    ]
+                ],
+                "obj_type": "ket"
+            },
+            "description": "A basic near-markovian, weakly coupled Otto Cycle that actually works.",
+            "timestamp": {
+                "type": "datetime",
+                "value": "2022-12-02T15:15:43.022217"
+            },
+            "δ": [
+                0.4,
+                0.4
+            ],
+            "ω_c": [
+                1,
+                1
+            ],
+            "s": [
+                1,
+                1
+            ],
+            "therm_methods": [
+                "tanhsinh",
+                "fft"
+            ],
+            "L": {
+                "type": "tuple",
+                "value": [
+                    {
+                        "type": "array",
+                        "value": [
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                }
+                            ],
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "value": [
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                }
+                            ],
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                }
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "T": [
+                1,
+                10
+            ],
+            "bcf_terms": [
+                6,
+                6
+            ],
+            "k_fac": [
+                1.7,
+                1.7
+            ],
+            "k_max": 4,
+            "influence_tolerance": 0.01,
+            "truncation_scheme": "simplex",
+            "solver_args": {},
+            "driving_process_tolerances": [
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.0001,
+                        "interpolation": 0.0001
+                    }
+                },
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.0001,
+                        "interpolation": 0.0001
+                    }
+                }
+            ],
+            "thermal_process_tolerances": [
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.0001,
+                        "interpolation": 0.0001
+                    }
+                },
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.0001,
+                        "interpolation": 0.0001
+                    }
+                }
+            ],
+            "streaming_mode": true,
+            "H_0": {
+                "type": "array",
+                "value": [
+                    [
+                        {
+                            "type": "complex",
+                            "re": 1.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ],
+                    [
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ]
+                ]
+            },
+            "H_1": {
+                "type": "array",
+                "value": [
+                    [
+                        {
+                            "type": "complex",
+                            "re": 1.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ],
+                    [
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ]
+                ]
+            },
+            "ω_s_extra": [
+                0,
+                0
+            ],
+            "Θ": 30.0,
+            "Δ": 1,
+            "timings_H": {
+                "type": "tuple",
+                "value": [
+                    0,
+                    0.1,
+                    0.5,
+                    0.6
+                ]
+            },
+            "orders_H": {
+                "type": "tuple",
+                "value": [
+                    2,
+                    2
+                ]
+            },
+            "timings_L": {
+                "type": "tuple",
+                "value": [
+                    null,
+                    null
+                ]
+            },
+            "orders_L": {
+                "type": "tuple",
+                "value": [
+                    {
+                        "type": "tuple",
+                        "value": [
+                            2,
+                            2
+                        ]
+                    },
+                    {
+                        "type": "tuple",
+                        "value": [
+                            2,
+                            2
+                        ]
+                    }
+                ]
+            },
+            "num_cycles": 1,
+            "dt": 0.001,
+            "__version__": 1,
+            "__base_version__": 1,
+            "__model__": "OttoEngine"
+        },
+        "data_path": "637dbaf6e87dcf4f935200c9cde3357ec439c37ccf3965ec907371d4bf899c99/_e/637dbaf6e87dcf4f935200c9cde3357ec439c37ccf3965ec907371d4bf899c99_e06bba4be7977b3dd2dc7efb8f967c01_1.h5",
+        "analysis_files": {
+            "flow": "flow_637dbaf6e87dcf4f935200c9cde3357ec439c37ccf3965ec907371d4bf899c99.npz",
+            "interaction": "interaction_637dbaf6e87dcf4f935200c9cde3357ec439c37ccf3965ec907371d4bf899c99.npz",
+            "interaction_power": "interaction_power_637dbaf6e87dcf4f935200c9cde3357ec439c37ccf3965ec907371d4bf899c99.npz",
+            "system": "system_637dbaf6e87dcf4f935200c9cde3357ec439c37ccf3965ec907371d4bf899c99.npz",
+            "system_power": "system_power_637dbaf6e87dcf4f935200c9cde3357ec439c37ccf3965ec907371d4bf899c99.npz"
+        }
+    },
+    "fea83562df42901b66a85396f98a6c69d504e3a6d3dcc59cb83c5f34ec4077ca": {
+        "model_config": {
+            "ψ_0": {
+                "type": "Qobj",
+                "value": {
+                    "type": "array",
+                    "value": [
+                        [
+                            {
+                                "type": "complex",
+                                "re": 0.0,
+                                "im": 0.0
+                            }
+                        ],
+                        [
+                            {
+                                "type": "complex",
+                                "re": 1.0,
+                                "im": 0.0
+                            }
+                        ]
+                    ]
+                },
+                "dims": [
+                    [
+                        2
+                    ],
+                    [
+                        1
+                    ]
+                ],
+                "obj_type": "ket"
+            },
+            "description": "A basic near-markovian, weakly coupled Otto Cycle that actually works.",
+            "timestamp": {
+                "type": "datetime",
+                "value": "2022-12-02T17:22:16.550379"
+            },
+            "δ": [
+                0.4,
+                0.4
+            ],
+            "ω_c": [
+                1,
+                1
+            ],
+            "s": [
+                1,
+                1
+            ],
+            "therm_methods": [
+                "tanhsinh",
+                "fft"
+            ],
+            "L": {
+                "type": "tuple",
+                "value": [
+                    {
+                        "type": "array",
+                        "value": [
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                }
+                            ],
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "type": "array",
+                        "value": [
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                }
+                            ],
+                            [
+                                {
+                                    "type": "complex",
+                                    "re": 0.5,
+                                    "im": 0.0
+                                },
+                                {
+                                    "type": "complex",
+                                    "re": 0.0,
+                                    "im": 0.0
+                                }
+                            ]
+                        ]
+                    }
+                ]
+            },
+            "T": [
+                1,
+                10
+            ],
+            "bcf_terms": [
+                6,
+                6
+            ],
+            "k_fac": [
+                1.7,
+                1.7
+            ],
+            "k_max": 4,
+            "influence_tolerance": 0.01,
+            "truncation_scheme": "simplex",
+            "solver_args": {},
+            "driving_process_tolerances": [
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.0001,
+                        "interpolation": 0.0001
+                    }
+                },
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.0001,
+                        "interpolation": 0.0001
+                    }
+                }
+            ],
+            "thermal_process_tolerances": [
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.0001,
+                        "interpolation": 0.0001
+                    }
+                },
+                {
+                    "type": "StocProcTolerances",
+                    "value": {
+                        "integration": 0.0001,
+                        "interpolation": 0.0001
+                    }
+                }
+            ],
+            "streaming_mode": true,
+            "H_0": {
+                "type": "array",
+                "value": [
+                    [
+                        {
+                            "type": "complex",
+                            "re": 1.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ],
+                    [
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ]
+                ]
+            },
+            "H_1": {
+                "type": "array",
+                "value": [
+                    [
+                        {
+                            "type": "complex",
+                            "re": 1.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ],
+                    [
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        },
+                        {
+                            "type": "complex",
+                            "re": 0.0,
+                            "im": 0.0
+                        }
+                    ]
+                ]
+            },
+            "ω_s_extra": [
+                0,
+                0
+            ],
+            "Θ": 30.0,
+            "Δ": 1,
+            "timings_H": {
+                "type": "tuple",
+                "value": [
+                    0,
+                    0.1,
+                    0.5,
+                    0.6
+                ]
+            },
+            "orders_H": {
+                "type": "tuple",
+                "value": [
+                    2,
+                    2
+                ]
+            },
+            "timings_L": {
+                "type": "tuple",
+                "value": [
+                    null,
+                    null
+                ]
+            },
+            "orders_L": {
+                "type": "tuple",
+                "value": [
+                    {
+                        "type": "tuple",
+                        "value": [
+                            2,
+                            2
+                        ]
+                    },
+                    {
+                        "type": "tuple",
+                        "value": [
+                            2,
+                            2
+                        ]
+                    }
+                ]
+            },
+            "num_cycles": 5,
+            "dt": 0.001,
+            "__version__": 1,
+            "__base_version__": 1,
+            "__model__": "OttoEngine"
+        },
+        "data_path": "fea83562df42901b66a85396f98a6c69d504e3a6d3dcc59cb83c5f34ec4077ca/_c/fea83562df42901b66a85396f98a6c69d504e3a6d3dcc59cb83c5f34ec4077ca_c16c36a068448cc7b7b1eda2aa804227_1.h5",
+        "analysis_files": {
+            "flow": "flow_fea83562df42901b66a85396f98a6c69d504e3a6d3dcc59cb83c5f34ec4077ca.npz",
+            "interaction": "interaction_fea83562df42901b66a85396f98a6c69d504e3a6d3dcc59cb83c5f34ec4077ca.npz",
+            "interaction_power": "interaction_power_fea83562df42901b66a85396f98a6c69d504e3a6d3dcc59cb83c5f34ec4077ca.npz",
+            "system": "system_fea83562df42901b66a85396f98a6c69d504e3a6d3dcc59cb83c5f34ec4077ca.npz",
+            "system_power": "system_power_fea83562df42901b66a85396f98a6c69d504e3a6d3dcc59cb83c5f34ec4077ca.npz"
+        }
+    }
+}
