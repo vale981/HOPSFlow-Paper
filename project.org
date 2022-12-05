@@ -69,9 +69,34 @@ CLOCK: [2022-12-01 Thu 11:00]--[2022-12-01 Thu 11:30] =>  0:30
 CLOCK: [2022-12-01 Thu 10:33]--[2022-12-01 Thu 10:56] =>  0:23
 :END:
 
+- see also what happens if we overlap modulation of hamiltonian and
+  coupling
+
+
 **** TODO verify what has been done
 - carnot eficiency
 - efficiency vs power heatmap?
+
+- cite:Geva1992Feb quasi static efficiency is 1 - ω_c / ω_h
+  - time vs temperature ratio scaling (5.36), for high
+    temperatures... not so useful here
+
+- cite:Wiedmann2021Jun otto fridge with HO as working medium
+  - work over coupling strength, for diffirent cold bath temperatures
+  - separating interaction and drive work
+  - absorbed heat over coupling strength, for diffirent cold , for diffirent cold bath temperaturesbath temperatures
+  - cite cooling condition from cite:Abah2016Apr
+  - compare von neumann entropy of medium with weak coupling thermal state
+- cite:Wiedmann2020Mar an actual engine, not fridge
+  - shows quantities vs coupling
+  - efficiency vs coupling and speed
+  - power as function of modulation time, for different temperatures
+
+
+**** TODO own scans
+- scan compression ratio
+- scan coupling strength
+- scan scan cycle length
 
 **** TODO scan timing
 - compression and expansion timing variation in less markovian regime

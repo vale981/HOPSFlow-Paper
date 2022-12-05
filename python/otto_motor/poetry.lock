@@ -135,7 +135,7 @@ test-tox-coverage = ["coverage (>=5.5)"]
 type = "git"
 url = "https://github.com/beartype/beartype"
 reference = "main"
-resolved_reference = "f536570a1b8dc1d8f5cb3c07e93ce7915eabb899"
+resolved_reference = "c13e1dd3fddc15b4360e3b7a07735d5bf296aa8f"
 
 [[package]]
 name = "beautifulsoup4"

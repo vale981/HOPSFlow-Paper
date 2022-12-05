@@ -18,8 +18,8 @@
     import ray
     ray.shutdown()
 
-    ray.init(address='auto')
-    #ray.init()
+    #ray.init(address='auto')
+    ray.init()
     from hops.util.logging_setup import logging_setup
     import logging
     logging_setup(logging.INFO)
@@ -60,33 +60,187 @@ A basic otto cycle that has a finite power output.
       timings_L=((0.6, 0.7, 0.9, 1), (0.1, 0.2, 0.4, 0.5)),
       streaming_mode=True,
   )
+#+end_src
 
+
+#+begin_src jupyter-python :tangle /dev/null
   ot.plot_cycle(model)
 #+end_src
+
 #+RESULTS:
-: [INFO    hops.core.integration     143440] Choosing the nonlinear integrator.
-: [INFO    root                      143440] Starting analysis process.
-: [INFO    root                      143440] Started analysis process with pid 167240.
-: [INFO    hops.core.hierarchy_data  143440] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_cd3f8b0097f9c534dcf1ae820df84eb5360444c29eda1ab03060ef82aad20742.fifo
-: [INFO    hops.core.integration     143440] Using 16 integrators.
-: [INFO    hops.core.integration     143440] Some 0 trajectories have to be integrated.
-: [INFO    hops.core.integration     143440] Using 1820 hierarchy states.
-: 0it [00:00, ?it/s]
+:RESULTS:
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
+[[file:./.ob-jupyter/87751560c860ffc158656668d6eed3af3aad0106.svg]]
+:END:
+
+
+#+begin_src jupyter-python :tangle no
+  ot.integrate_online(model, 5000)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+#+begin_example
+  [INFO    hops.core.integration     9141] Choosing the nonlinear integrator.
+  [INFO    root                      9141] Starting analysis process.
+  [INFO    root                      9141] Started analysis process with pid 42216.
+  [INFO    hops.core.hierarchy_data  9141] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_b28fda1ae09e50be64694fbb2886a0c43f329c2036a918a72db2346af5779470.fifo
+  [INFO    hops.core.integration     9141] Using 16 integrators.
+  [INFO    hops.core.integration     9141] Some 1449 trajectories have to be integrated.
+  [INFO    hops.core.integration     9141] Using 1820 hierarchy states.
+    8% 116/1449 [05:14<1:00:17,  2.71s/it][INFO    hops.core.signal_delay    9141] caught sig 'SIGINT'
+  [INFO    hops.core.signal_delay    9141] caught 1 signal(s)
+  [INFO    hops.core.signal_delay    9141] emit signal 'SIGINT'
+  [INFO    hops.core.signal_delay    9141] caught sig 'SIGINT'
+  8% 116/1449 [05:16<1:00:36,  2.73s/it]
+  [INFO    hops.core.signal_delay    9141] caught 1 signal(s)
+  [INFO    hops.core.signal_delay    9141] emit signal 'SIGINT'
+  2022-12-05 12:59:51,744       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  [INFO    hops.core.signal_delay    9141] caught sig 'SIGINT'
+  2022-12-05 12:59:51,756       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 12:59:51,757       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 12:59:51,757       WARNING worker.py:1404 -- A worker died or was killed while executing a task by an unexpected system error. To troubleshoot the problem, check the logs for the dead worker. RayTask ID: 29c0a007a262ea4073803b451a9509743e126f1801000000 Worker ID: 5844a594181966d4d986c19d11f49241ecc659fb96d544453a5a72cc Node ID: c599826a63a112bd796f92ce86cc0f08b2668d350413f43aceccef25 Worker IP address: 10.0.0.102 Worker port: 36189 Worker PID: 41146
+  2022-12-05 12:59:51,763       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 12:59:51,764       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 12:59:51,765       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 12:59:51,771       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 12:59:51,773       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 12:59:51,774       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 12:59:51,775       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 12:59:51,779       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 12:59:51,780       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 12:59:51,781       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 12:59:51,784       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 12:59:51,787       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 12:59:51,791       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+#+end_example
+# [goto error]
+#+begin_example
+  [0;31m---------------------------------------------------------------------------[0m
+  [0;31mBeartypeCallHintParamViolation[0m            Traceback (most recent call last)
+  Cell [0;32mIn[7], line 1[0m
+  [0;32m----> 1[0m [43mot[49m[38;5;241;43m.[39;49m[43mintegrate_online[49m[43m([49m[43mmodel[49m[43m,[49m[43m [49m[38;5;241;43m5000[39;49m[43m)[49m
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/otto_utilities.py:103[0m, in [0;36mintegrate_online[0;34m(model, n)[0m
+  [1;32m    102[0m [38;5;28;01mdef[39;00m [38;5;21mintegrate_online[39m(model, n):
+  [0;32m--> 103[0m     [43maux[49m[38;5;241;43m.[39;49m[43mintegrate[49m[43m([49m[43mmodel[49m[43m,[49m[43m [49m[43mn[49m[43m,[49m[43m [49m[43mstream_file[49m[38;5;241;43m=[39;49m[38;5;124;43mf[39;49m[38;5;124;43m"[39;49m[38;5;124;43mresults_[39;49m[38;5;132;43;01m{[39;49;00m[43mmodel[49m[38;5;241;43m.[39;49m[43mhexhash[49m[38;5;132;43;01m}[39;49;00m[38;5;124;43m.fifo[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43manalyze[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m)[49m
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_auxiliary.py:199[0m, in [0;36mintegrate[0;34m(model, n, data_path, clear_pd, single_process, stream_file, analyze, results_path, analyze_kwargs)[0m
+  [1;32m    197[0m         supervisor[38;5;241m.[39mintegrate_single_process(clear_pd)
+  [1;32m    198[0m     [38;5;28;01melse[39;00m:
+  [0;32m--> 199[0m         supervisor[38;5;241m.[39mintegrate(clear_pd)
+  [1;32m    201[0m cleanup([38;5;241m0[39m)
+
+  File [0;32m~/src/hops/hops/core/signal_delay.py:85[0m, in [0;36msig_delay.__exit__[0;34m(self, exc_type, exc_val, exc_tb)[0m
+  [1;32m     83[0m log[38;5;241m.[39mdebug([38;5;124m"[39m[38;5;124msignal_delay context left![39m[38;5;124m"[39m)
+  [1;32m     84[0m [38;5;28;01mif[39;00m [38;5;28mlen[39m([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught) [38;5;241m>[39m [38;5;241m0[39m [38;5;129;01mand[39;00m [38;5;28mself[39m[38;5;241m.[39mhandler [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+  [0;32m---> 85[0m     [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mhandler[49m[43m([49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msigh[49m[38;5;241;43m.[39;49m[43msigs_caught[49m[43m)[49m
+  [1;32m     87[0m [38;5;28mself[39m[38;5;241m.[39m_restore()
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_auxiliary.py:175[0m, in [0;36mintegrate.<locals>.cleanup[0;34m(***failed resolving arguments***)[0m
+  [1;32m    172[0m     analysis_process[38;5;241m.[39mjoin()
+  [1;32m    174[0m [38;5;28;01mwith[39;00m supervisor[38;5;241m.[39mget_data([38;5;28;01mTrue[39;00m, stream[38;5;241m=[39m[38;5;28;01mFalse[39;00m) [38;5;28;01mas[39;00m data:
+  [0;32m--> 175[0m     [38;5;28;01mwith[39;00m model_db(data_path) [38;5;28;01mas[39;00m db:
+  [1;32m    176[0m         dct [38;5;241m=[39m {
+  [1;32m    177[0m             [38;5;124m"[39m[38;5;124mmodel_config[39m[38;5;124m"[39m: model[38;5;241m.[39mto_dict(),
+  [1;32m    178[0m             [38;5;124m"[39m[38;5;124mdata_path[39m[38;5;124m"[39m: [38;5;28mstr[39m(Path(data[38;5;241m.[39mhdf5_name)[38;5;241m.[39mrelative_to(data_path)),
+  [1;32m    179[0m         }
+  [1;32m    181[0m         [38;5;28;01mif[39;00m analysis_process:
+
+  File [0;32m/nix/store/nwpv33bscqyf1d9janfjhw1k716r7fd4-python3-3.9.15/lib/python3.9/contextlib.py:119[0m, in [0;36m_GeneratorContextManager.__enter__[0;34m(self)[0m
+  [1;32m    117[0m [38;5;28;01mdel[39;00m [38;5;28mself[39m[38;5;241m.[39margs, [38;5;28mself[39m[38;5;241m.[39mkwds, [38;5;28mself[39m[38;5;241m.[39mfunc
+  [1;32m    118[0m [38;5;28;01mtry[39;00m:
+  [0;32m--> 119[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mnext[39;49m[43m([49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mgen[49m[43m)[49m
+  [1;32m    120[0m [38;5;28;01mexcept[39;00m [38;5;167;01mStopIteration[39;00m:
+  [1;32m    121[0m     [38;5;28;01mraise[39;00m [38;5;167;01mRuntimeError[39;00m([38;5;124m"[39m[38;5;124mgenerator didn[39m[38;5;124m'[39m[38;5;124mt yield[39m[38;5;124m"[39m) [38;5;28;01mfrom[39;00m [38;5;28mNone[39m
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_auxiliary.py:49[0m, in [0;36mmodel_db[0;34m(data_path)[0m
+  [1;32m     47[0m data [38;5;241m=[39m f[38;5;241m.[39mread()
+  [1;32m     48[0m db [38;5;241m=[39m JSONEncoder[38;5;241m.[39mloads(data) [38;5;28;01mif[39;00m [38;5;28mlen[39m(data) [38;5;241m>[39m [38;5;241m0[39m [38;5;28;01melse[39;00m {}
+  [0;32m---> 49[0m db [38;5;241m=[39m {
+  [1;32m     50[0m     key: model_hook(value) [38;5;28;01mif[39;00m [38;5;28misinstance[39m(value, [38;5;28mdict[39m) [38;5;28;01melse[39;00m value
+  [1;32m     51[0m     [38;5;28;01mfor[39;00m key, value [38;5;129;01min[39;00m db[38;5;241m.[39mitems()
+  [1;32m     52[0m }
+  [1;32m     54[0m [38;5;28;01myield[39;00m db
+  [1;32m     56[0m f[38;5;241m.[39mtruncate([38;5;241m0[39m)
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_auxiliary.py:50[0m, in [0;36m<dictcomp>[0;34m(.0)[0m
+  [1;32m     47[0m data [38;5;241m=[39m f[38;5;241m.[39mread()
+  [1;32m     48[0m db [38;5;241m=[39m JSONEncoder[38;5;241m.[39mloads(data) [38;5;28;01mif[39;00m [38;5;28mlen[39m(data) [38;5;241m>[39m [38;5;241m0[39m [38;5;28;01melse[39;00m {}
+  [1;32m     49[0m db [38;5;241m=[39m {
+  [0;32m---> 50[0m     key: [43mmodel_hook[49m[43m([49m[43mvalue[49m[43m)[49m [38;5;28;01mif[39;00m [38;5;28misinstance[39m(value, [38;5;28mdict[39m) [38;5;28;01melse[39;00m value
+  [1;32m     51[0m     [38;5;28;01mfor[39;00m key, value [38;5;129;01min[39;00m db[38;5;241m.[39mitems()
+  [1;32m     52[0m }
+  [1;32m     54[0m [38;5;28;01myield[39;00m db
+  [1;32m     56[0m f[38;5;241m.[39mtruncate([38;5;241m0[39m)
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_auxiliary.py:85[0m, in [0;36mmodel_hook[0;34m(dct)[0m
+  [1;32m     83[0m [38;5;28;01mfor[39;00m key, value [38;5;129;01min[39;00m dct[38;5;241m.[39mitems():
+  [1;32m     84[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(value, [38;5;28mdict[39m):
+  [0;32m---> 85[0m         dct[key] [38;5;241m=[39m [43mmodel_hook[49m[43m([49m[43mvalue[49m[43m)[49m
+  [1;32m     87[0m [38;5;28;01mreturn[39;00m dct
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_auxiliary.py:81[0m, in [0;36mmodel_hook[0;34m(dct)[0m
+  [1;32m     78[0m         [38;5;28;01mreturn[39;00m QubitModelMutliBath[38;5;241m.[39mfrom_dict(treated_vals)
+  [1;32m     80[0m     [38;5;28;01mif[39;00m model [38;5;241m==[39m [38;5;124m"[39m[38;5;124mOttoEngine[39m[38;5;124m"[39m:
+  [0;32m---> 81[0m         [38;5;28;01mreturn[39;00m [43mOttoEngine[49m[38;5;241;43m.[39;49m[43mfrom_dict[49m[43m([49m[43mtreated_vals[49m[43m)[49m
+  [1;32m     83[0m [38;5;28;01mfor[39;00m key, value [38;5;129;01min[39;00m dct[38;5;241m.[39mitems():
+  [1;32m     84[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(value, [38;5;28mdict[39m):
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_base.py:132[0m, in [0;36mModel.from_dict[0;34m(cls, model_dict)[0m
+  [1;32m    129[0m [38;5;28;01mdel[39;00m model_dict[[38;5;124m"[39m[38;5;124m__base_version__[39m[38;5;124m"[39m]
+  [1;32m    130[0m [38;5;28;01mdel[39;00m model_dict[[38;5;124m"[39m[38;5;124m__model__[39m[38;5;124m"[39m]
+  [0;32m--> 132[0m [38;5;28;01mreturn[39;00m [38;5;28;43mcls[39;49m[43m([49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mmodel_dict[49m[43m)[49m
+
+  File [0;32m<@beartype(hiro_models.otto_cycle.__create_fn__.__init__) at 0x7fcc227e24c0>:340[0m, in [0;36m__init__[0;34m(__beartype_func, __beartype_conf, __beartype_get_violation, __beartype_object_53251328, __beartype_object_140513182631296, __beartype_object_140515230442784, __beartype_object_140515230439008, __beartype_object_140515404495776, __beartype_getrandbits, __beartype_object_14381104, __beartype_object_52885584, __beartype_object_50143248, __beartype_object_140514728879040, __beartype_object_140515433764192, *args, **kwargs)[0m
+
+  [0;31mBeartypeCallHintParamViolation[0m: @beartyped hiro_models.otto_cycle.__create_fn__.__init__() parameter L=[array([[0. +0.j, 0.5+0.j],
+         [0.5+0.j, 0. +0.j]]), array([[0. +0.j, 0.5+0.j],
+         [...+ violates type hint tuple[numpy.ndarray, numpy.ndarray], as list [array([[0. +0.j, 0.5+0.j],
+         [0.5+0.j, 0. +0.j]]), array([[0. +0.j, 0.5+0.j],
+         [...+ not instance of tuple.
+#+end_example
+:END:
+
+** Results
+:PROPERTIES:
+:header-args:  :session baseline_res :noweb yes :async yes
+:END:
 
 #+begin_src jupyter-python
-  ot.full_report(model)
+    import otto_utilities as ot
+    from baseline import model
+
+    ot.plot_energy(model)
 #+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
+[[file:./.ob-jupyter/5982fa67640b7b68288cc339c98ac5bd482c47b1.svg]]
+:END:
+
+
+
+#+begin_src jupyter-python
+  model.efficiency(), model.power()
+#+end_src
+
+#+RESULTS:
+| EnsembleValue | (((5000 0.3010165917009053 0.0048918154339318435))) | EnsembleValue | (((5000 -0.002944840403631359 2.9017372583677964e-05))) |
+
+
+#+begin_src jupyter-python
+    ot.full_report(model)
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/d60576d851410d3314c87dc6f8e9fd29db810a9b.svg]]
 :RESULTS:
 : \(P=-0.002945\pm 0.000029\)
 : \(\eta=30.1\pm 0.5\)
-[[file:./.ob-jupyter/c61e413e66aa7df116b897a2723935020b1c53fe.svg]]
-[[file:./.ob-jupyter/f18ff8e0fb663c3f8ce0d8e0e9251800ed28866d.svg]]
-: \(P=-0.002945\pm 0.000029\)
-: \(\eta=30.1\pm 0.5\)
-[[file:./.ob-jupyter/c532a1d8126a94546c4caacf30830a3abaf9791d.svg]]
-: \(P=-0.002945\pm 0.000029\)
-: \(\eta=30.1\pm 0.5\)
-[[file:./.ob-jupyter/a87593e3ba9c2f50c02156f48c3d9f472939165e.svg]]
+[[file:./.ob-jupyter/4e36c804ebab8d355bc41df70b67a28e5cb93182.svg]]
+[[file:./.ob-jupyter/e3b17f977164a9ddb1a20ecd733087a56696857e.svg]]
 :END:
 
 * Model: Baseline, continously coupled
@@ -99,9 +253,6 @@ A basic otto cycle that has a finite power output without coupling modulation.
 #+begin_src jupyter-python
   <<boilerplate>>
 #+end_src
-
-#+RESULTS:
-: 2022-12-02 17:22:15,922       INFO worker.py:956 -- Connecting to existing Ray cluster at address: 10.0.0.102:6379
 
 #+begin_src jupyter-python
   model = OttoEngine(
@@ -128,26 +279,10 @@ A basic otto cycle that has a finite power output without coupling modulation.
   ot.plot_cycle(model)
 #+end_src
 
-#+RESULTS:
-:RESULTS:
-| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
-[[file:./.ob-jupyter/d4e495d3d874fb283bf7adb54b752ec1c1c8a942.svg]]
-:END:
-
 
 #+begin_src jupyter-python
   ot.integrate_online(model, 5000)
 #+end_src
-
-#+RESULTS:
-: [INFO    hops.core.integration     211210] Choosing the nonlinear integrator.
-: [INFO    root                      211210] Starting analysis process.
-: [INFO    root                      211210] Started analysis process with pid 630343.
-: [INFO    hops.core.hierarchy_data  211210] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_fea83562df42901b66a85396f98a6c69d504e3a6d3dcc59cb83c5f34ec4077ca.fifo
-: [INFO    hops.core.integration     211210] Using 32 integrators.
-: [INFO    hops.core.integration     211210] Some 0 trajectories have to be integrated.
-: [INFO    hops.core.integration     211210] Using 1820 hierarchy states.
-: 0it [00:00, ?it/s]
 
 ** Results
 :PROPERTIES:
@@ -161,30 +296,129 @@ A basic otto cycle that has a finite power output without coupling modulation.
     ot.plot_energy(model)
 #+end_src
 
-#+RESULTS:
-:RESULTS:
-| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
-[[file:./.ob-jupyter/3d98e3c75769ff8d11e9b3abd5b106b72bef0b1a.svg]]
-:END:
-
 
 #+begin_src jupyter-python
   model.efficiency(), model.power()
 #+end_src
 
-#+RESULTS:
-| EnsembleValue | (((5000 0.013166547143407361 0.0005796013132630898))) | EnsembleValue | (((5000 -0.0004882838891758121 2.125229382647311e-05))) |
 
+#+begin_src jupyter-python
+    ot.full_report(model)
+#+end_src
+:RESULTS:
+: \(P=-0.000488\pm 0.000021\)
+: \(\eta=1.32\pm 0.06\)
+[[file:./.ob-jupyter/5d6803828c5f069e1abeeca5906cf627ec1a0720.svg]]
+[[file:./.ob-jupyter/d0ac6d4dccf574add7cb85f8a9a8e302e8e13e1a.svg]]
+:END:
+
+* Model: Baseline Without Resonance
+:PROPERTIES:
+:header-args: :tangle baseline_noshift.py :session baseline_noshift :noweb yes :async yes
+:END:
+
+A basic otto cycle that has a finite power output but without resonance.
+
+#+begin_src jupyter-python
+  <<boilerplate>>
+#+end_src
+
+#+RESULTS:
+: 2022-12-02 23:23:03,887       INFO worker.py:956 -- Connecting to existing Ray cluster at address: 10.0.0.102:6379
+: 2022-12-02 23:23:04,305       WARNING worker.py:1404 -- The node with node id: cf9c384f4453a078fa97e7a2ca912d0f477f664dc6548ec1f69d07ab and address: 10.0.0.10 and node name: 10.0.0.10 has been marked dead because the detector has missed too many heartbeats from it. This can happen when a raylet crashes unexpectedly or has lagging heartbeats.
+
+#+begin_src jupyter-python
+  model = OttoEngine(
+      δ=[0.4, 0.4],
+      ω_c=[1, 1],
+      ψ_0=qt.basis([2], [1]),
+      description=f"A basic near-markovian, weakly coupled Otto Cycle without the shift.",
+      k_max=3,
+      bcf_terms=[4] * 2,
+      truncation_scheme="simplex",
+      driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
+      thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
+      T=[1, 10],
+      therm_methods=["tanhsinh", "tanhsinh"],
+      Δ=1,
+      num_cycles=5,
+      Θ=1.5 / 0.05,
+      dt=0.001,
+      timings_H=(0, 0.1, 0.5, 0.6),
+      timings_L=((0.6, 0.7, 0.9, 1), (0.1, 0.2, 0.4, 0.5)),
+      streaming_mode=True,
+      shift_to_resonance=(False, False)
+  )
+
+  ot.plot_cycle(model)
+#+end_src
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
+[[file:./.ob-jupyter/06bbc24cdb105738ea0323a23177645f1cf4677e.svg]]
+:END:
+
+
+#+begin_src jupyter-python
+  ot.plot_sd_overview(model)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\omega$ | ylabel= | Spectral Density | > |
+[[file:./.ob-jupyter/145c6c9318c65a0628bc0538eef4382e16608372.svg]]
+:END:
+
+
+#+begin_src jupyter-python :tangle integrate
+  ot.integrate_online(model, 5000)
+#+end_src
+
+#+RESULTS:
+: [INFO    hops.core.integration     1543816] Choosing the nonlinear integrator.
+: [INFO    root                      1543816] Starting analysis process.
+: [INFO    root                      1543816] Started analysis process with pid 1607436.
+: [INFO    hops.core.hierarchy_data  1543816] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_38eef199e7641165739bd0003d7c0ec166352385a6ef15241063622fe76c12c6.fifo
+: [INFO    hops.core.integration     1543816] Using 16 integrators.
+: [INFO    hops.core.integration     1543816] Some 0 trajectories have to be integrated.
+: [INFO    hops.core.integration     1543816] Using 165 hierarchy states.
+: 0it [00:00, ?it/s]
+
+** Results
+:PROPERTIES:
+:header-args:  :session baseline_noshift_res :noweb yes :async yes
+:END:
+
+#+begin_src jupyter-python
+    import otto_utilities as ot
+    from baseline_noshift import model
+
+    ot.plot_energy(model)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
+[[file:./.ob-jupyter/eb544322fcb784dbdf891bba48472df1ca875036.svg]]
+:END:
+
+
+#+begin_src jupyter-python
+    model.efficiency(), model.power()
+#+end_src
+
+#+RESULTS:
+| EnsembleValue | (((5000 0.27954064930006456 0.006054065679295331))) | EnsembleValue | (((5000 -0.002388242520476398 3.8430947497255666e-05))) |
 
 #+begin_src jupyter-python
     ot.full_report(model)
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/5c70edfc7d22c62cc00936a4152948a0b6a9a1db.svg]]
+[[file:./.ob-jupyter/c33c83783ebd42bb37695d75981ed3d7a17f5382.svg]]
 :RESULTS:
-: \(P=-0.000488\pm 0.000021\)
-: \(\eta=1.32\pm 0.06\)
-[[file:./.ob-jupyter/5d6803828c5f069e1abeeca5906cf627ec1a0720.svg]]
-[[file:./.ob-jupyter/d0ac6d4dccf574add7cb85f8a9a8e302e8e13e1a.svg]]
+: \(P=-0.002388\pm 0.000038\)
+: \(\eta=28.0\pm 0.6\)
+[[file:./.ob-jupyter/24fdd0953097e9c3b1f525228fe15d95ee52cf99.svg]]
+[[file:./.ob-jupyter/94caa78e07e05758046236248e3527c95dd8d79c.svg]]
 :END:
