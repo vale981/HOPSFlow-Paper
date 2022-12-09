@@ -778,12 +778,12 @@ A basic otto cycle that has a finite power output but without resonance.
       k_max=3,
       bcf_terms=[6] * 2,
       truncation_scheme="simplex",
-      driving_process_tolerances=[StocProcTolerances(1e-4, 1e-4)] * 2,
-      thermal_process_tolerances=[StocProcTolerances(1e-4, 1e-4)] * 2,
+      driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
+      thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
       T=[1, 10],
       therm_methods=["tanhsinh", "tanhsinh"],
       Δ=1,
-      num_cycles=5,
+      num_cycles=4,
       Θ=1.5 / 0.05,
       dt=0.001,
       timings_H=p_H,
@@ -803,17 +803,13 @@ coupling we change the switching speed of the interaction and the coupling stren
 
 
 #+begin_src jupyter-python
-  from speed_coupling_scan import *
-  δs = np.round(np.linspace(.1, 1, 2), 3)
-  τ_Is = np.round(np.linspace(.01, .3, 4), 3)
+  δs = np.round(np.linspace(.1, 1, 5), 3)
+  τ_Is = np.round(np.linspace(.01, .3, 5), 3)
   τ_Is
 #+end_src
 
 #+RESULTS:
-:RESULTS:
-: array([0.01, 0.3 ])
-[[file:./.ob-jupyter/f5f24c1792dd4e341bb5129084138c923c112cff.svg]]
-:END:
+: array([0.01 , 0.082, 0.155, 0.227, 0.3  ])
 
 #+begin_src jupyter-python
   models = []
@@ -836,10 +832,10 @@ coupling we change the switching speed of the interaction and the coupling stren
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
-[[file:./.ob-jupyter/21d6323b0d78ab0ec2e4b4179996c721e63accc5.svg]]
+[[file:./.ob-jupyter/8f0d7d806d9743045a857e591c72016903d9e1da.svg]]
 :END:
 
-*** TODO Integration
+*** Integration
 :PROPERTIES:
 :header-args: :tangle speed_coupling_integration.py :session speed_coupling_integration :noweb yes :async yes
 :END:
@@ -851,43 +847,14 @@ coupling we change the switching speed of the interaction and the coupling stren
 #+end_src
 
 #+RESULTS:
-:RESULTS:
-#+begin_example
-    [INFO    hops.core.integration     886128] Choosing the nonlinear integrator.
-    [INFO    root                      886128] Starting analysis process.
-    [INFO    root                      886128] Started analysis process with pid 897281.
-    [INFO    hops.core.hierarchy_data  886128] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_1b49c110fd8a755b72e61454048bc9cd4fb981374ae3832f619d47b90770109c.fifo
-    [INFO    hops.core.integration     886128] Using 16 integrators.
-    [INFO    hops.core.integration     886128] Some 92 trajectories have to be integrated.
-    [INFO    hops.core.integration     886128] Using 165 hierarchy states.
-    100% 92/92 [01:40<00:00,  1.09s/it]
-    [INFO    hops.core.integration     886128] Choosing the nonlinear integrator.
-    [INFO    root                      886128] Starting analysis process.
-    [INFO    root                      886128] Started analysis process with pid 897607.
-    [INFO    hops.core.hierarchy_data  886128] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_b2f36e79ac179fdfba0e46c5cdbf65cfd97bde215038b8caa3e4de2bb7050124.fifo
-    [INFO    hops.core.integration     886128] Using 16 integrators.
-    [INFO    hops.core.integration     886128] Some 92 trajectories have to be integrated.
-    [INFO    hops.core.integration     886128] Using 165 hierarchy states.
-  100% 92/92 [01:52<00:00,  1.22s/it]
-    [INFO    hops.core.integration     886128] Choosing the nonlinear integrator.
-    [INFO    root                      886128] Starting analysis process.
-    [INFO    root                      886128] Started analysis process with pid 897765.
-    [INFO    hops.core.hierarchy_data  886128] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_6c301efacb83c69c42557b8c3a8de76d09e439cd52f90101f05daf0c71d4427b.fifo
-    [INFO    hops.core.integration     886128] Using 16 integrators.
-    [INFO    hops.core.integration     886128] Some 92 trajectories have to be integrated.
-    [INFO    hops.core.integration     886128] Using 165 hierarchy states.
-  100% 92/92 [01:18<00:00,  1.17it/s]
-    [INFO    hops.core.integration     886128] Choosing the nonlinear integrator.
-    [INFO    root                      886128] Starting analysis process.
-    [INFO    root                      886128] Started analysis process with pid 898045.
-    [INFO    hops.core.hierarchy_data  886128] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_14c86f979bcc5064eb021c0ca50c3e2713a486a461531f459344f70ce09d12f7.fifo
-    [INFO    hops.core.integration     886128] Using 16 integrators.
-    [INFO    hops.core.integration     886128] Some 92 trajectories have to be integrated.
-    [INFO    hops.core.integration     886128] Using 165 hierarchy states.
-  100% 92/92 [01:22<00:00,  1.12it/s]
-#+end_example
-[[file:./.ob-jupyter/a485e34dda49ecacfff0b02110a41beccf2801e6.svg]]
-:END:
+: [INFO    hops.core.integration     15571] Choosing the nonlinear integrator.
+: [INFO    root                      15571] Starting analysis process.
+: [INFO    root                      15571] Started analysis process with pid 24455.
+: [INFO    hops.core.hierarchy_data  15571] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_9a1fcaa6e61c32845fb024d60f2ab5d4db6ed145604b6beb18a1318288c05fa3.fifo
+: [INFO    hops.core.integration     15571] Using 16 integrators.
+: [INFO    hops.core.integration     15571] Some 1000 trajectories have to be integrated.
+: [INFO    hops.core.integration     15571] Using 455 hierarchy states.
+:   2% 15/1000 [01:25<1:33:18,  5.68s/it]
 
 
 *** Analysis
@@ -931,7 +898,6 @@ coupling we change the switching speed of the interaction and the coupling stren
 : Text(0.5, 0, '$P$')
 [[file:./.ob-jupyter/07d359f69dd89aed1ac3d9254801f732bdce9e03.svg]]
 :END:
-
 
 ** Coupling and System Switching overlap
 Let's see if it helps switching system and interaction at the same time.

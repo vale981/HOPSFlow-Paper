@@ -39,12 +39,12 @@ prototype = OttoEngine(
     k_max=3,
     bcf_terms=[6] * 2,
     truncation_scheme="simplex",
-    driving_process_tolerances=[StocProcTolerances(1e-4, 1e-4)] * 2,
-    thermal_process_tolerances=[StocProcTolerances(1e-4, 1e-4)] * 2,
+    driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
+    thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
     T=[1, 10],
     therm_methods=["tanhsinh", "tanhsinh"],
     Δ=1,
-    num_cycles=5,
+    num_cycles=4,
     Θ=1.5 / 0.05,
     dt=0.001,
     timings_H=p_H,
@@ -53,9 +53,8 @@ prototype = OttoEngine(
     shift_to_resonance=(False, False),
 )
 
-from speed_coupling_scan import *
-δs = np.round(np.linspace(.1, 1, 2), 3)
-τ_Is = np.round(np.linspace(.01, .3, 4), 3)
+δs = np.round(np.linspace(.1, 1, 5), 3)
+τ_Is = np.round(np.linspace(.01, .3, 5), 3)
 τ_Is
 
 models = []
