@@ -72,6 +72,9 @@ CLOCK: [2022-12-01 Thu 10:33]--[2022-12-01 Thu 10:56] =>  0:23
 - see also what happens if we overlap modulation of hamiltonian and
   coupling
 
+**** Simple: Coupling Work
+- what happens if coupling modulation and hamiltonian modulation
+  happen at the same time?
 
 **** TODO verify what has been done
 - carnot eficiency
@@ -84,13 +87,15 @@ CLOCK: [2022-12-01 Thu 10:33]--[2022-12-01 Thu 10:56] =>  0:23
 - cite:Wiedmann2021Jun otto fridge with HO as working medium
   - work over coupling strength, for diffirent cold bath temperatures
   - separating interaction and drive work
-  - absorbed heat over coupling strength, for diffirent cold , for diffirent cold bath temperaturesbath temperatures
+  - absorbed heat over coupling strength, for diffirent cold , for
+    diffirent cold bath temperaturesbath temperatures
   - cite cooling condition from cite:Abah2016Apr
   - compare von neumann entropy of medium with weak coupling thermal state
 - cite:Wiedmann2020Mar an actual engine, not fridge
   - shows quantities vs coupling
   - efficiency vs coupling and speed
   - power as function of modulation time, for different temperatures
+  - discusses coupling work
 
 
 **** TODO own scans
@@ -98,6 +103,13 @@ CLOCK: [2022-12-01 Thu 10:33]--[2022-12-01 Thu 10:56] =>  0:23
 - scan coupling strength
 - scan scan cycle length
 
+All nice and good, but we need concrete plans.
+
+***** TODO Cycle Length + Coupling Strength
+- 2D grid with fixed numeber of cycles
+- maybe ~5x5~ for now and later more
+
+***** Compression Ratio at fixed coupling strength and cycle length
 **** TODO scan timing
 - compression and expansion timing variation in less markovian regime
 - likely: no advantage

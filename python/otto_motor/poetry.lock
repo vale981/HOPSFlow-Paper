@@ -135,7 +135,7 @@ test-tox-coverage = ["coverage (>=5.5)"]
 type = "git"
 url = "https://github.com/beartype/beartype"
 reference = "main"
-resolved_reference = "c13e1dd3fddc15b4360e3b7a07735d5bf296aa8f"
+resolved_reference = "7348fc70c19faf0b6853365cda50c85d688911e1"
 
 [[package]]
 name = "beautifulsoup4"
@@ -497,7 +497,7 @@ qutip = "^4.6.3"
 type = "git"
 url = "git@github.com:vale981/two_qubit_model.git"
 reference = "main"
-resolved_reference = "aae9fcac19ee75e6a9a097dfac66cc406ae35ebe"
+resolved_reference = "a9876fd4237789bb8fc1b82d4bd7196d4cbf56fd"
 
 [[package]]
 name = "hops"
@@ -532,7 +532,7 @@ plotting = ["matplotlib (>=3.5.0,<4.0.0)"]
 type = "git"
 url = "git@gitlab.hrz.tu-chemnitz.de:s8896854--tu-dresden.de/hops.git"
 reference = "main"
-resolved_reference = "292cc70678bccbdeaa3e6e7a88cbc56c1694149e"
+resolved_reference = "346a8ff949d1ec0dbd3c96f2adc2368fb2d64114"
 
 [[package]]
 name = "hopsflow"

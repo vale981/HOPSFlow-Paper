@@ -63,7 +63,7 @@ A basic otto cycle that has a finite power output.
 #+end_src
 
 
-#+begin_src jupyter-python :tangle /dev/null
+#+begin_src jupyter-python :tangle no
   ot.plot_cycle(model)
 #+end_src
 
@@ -83,42 +83,38 @@ A basic otto cycle that has a finite power output.
 #+begin_example
   [INFO    hops.core.integration     9141] Choosing the nonlinear integrator.
   [INFO    root                      9141] Starting analysis process.
-  [INFO    root                      9141] Started analysis process with pid 42216.
+  [INFO    root                      9141] Started analysis process with pid 53939.
   [INFO    hops.core.hierarchy_data  9141] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_b28fda1ae09e50be64694fbb2886a0c43f329c2036a918a72db2346af5779470.fifo
   [INFO    hops.core.integration     9141] Using 16 integrators.
-  [INFO    hops.core.integration     9141] Some 1449 trajectories have to be integrated.
+  [INFO    hops.core.integration     9141] Some 1333 trajectories have to be integrated.
   [INFO    hops.core.integration     9141] Using 1820 hierarchy states.
-    8% 116/1449 [05:14<1:00:17,  2.71s/it][INFO    hops.core.signal_delay    9141] caught sig 'SIGINT'
+   38% 510/1333 [20:30<33:05,  2.41s/it][INFO    hops.core.signal_delay    9141] caught sig 'SIGINT'
+   38% 511/1333 [20:36<33:09,  2.42s/it]
   [INFO    hops.core.signal_delay    9141] caught 1 signal(s)
   [INFO    hops.core.signal_delay    9141] emit signal 'SIGINT'
   [INFO    hops.core.signal_delay    9141] caught sig 'SIGINT'
-  8% 116/1449 [05:16<1:00:36,  2.73s/it]
-  [INFO    hops.core.signal_delay    9141] caught 1 signal(s)
-  [INFO    hops.core.signal_delay    9141] emit signal 'SIGINT'
-  2022-12-05 12:59:51,744       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  [INFO    hops.core.signal_delay    9141] caught sig 'SIGINT'
-  2022-12-05 12:59:51,756       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-05 12:59:51,757       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-05 12:59:51,757       WARNING worker.py:1404 -- A worker died or was killed while executing a task by an unexpected system error. To troubleshoot the problem, check the logs for the dead worker. RayTask ID: 29c0a007a262ea4073803b451a9509743e126f1801000000 Worker ID: 5844a594181966d4d986c19d11f49241ecc659fb96d544453a5a72cc Node ID: c599826a63a112bd796f92ce86cc0f08b2668d350413f43aceccef25 Worker IP address: 10.0.0.102 Worker port: 36189 Worker PID: 41146
-  2022-12-05 12:59:51,763       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-05 12:59:51,764       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-05 12:59:51,765       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-05 12:59:51,771       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-05 12:59:51,773       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-05 12:59:51,774       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-05 12:59:51,775       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-05 12:59:51,779       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-05 12:59:51,780       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-05 12:59:51,781       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-05 12:59:51,784       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-05 12:59:51,787       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-05 12:59:51,791       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 13:55:39,840       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 13:55:39,860       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 13:55:39,861       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 13:55:39,862       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 13:55:39,862       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 13:55:39,863       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 13:55:39,864       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 13:55:39,864       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 13:55:39,865       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 13:55:39,866       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 13:55:39,866       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 13:55:39,868       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 13:55:39,868       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 13:55:39,869       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 13:55:39,871       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-05 13:55:39,871       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
 #+end_example
 # [goto error]
 #+begin_example
   [0;31m---------------------------------------------------------------------------[0m
   [0;31mBeartypeCallHintParamViolation[0m            Traceback (most recent call last)
-  Cell [0;32mIn[7], line 1[0m
+  Cell [0;32mIn[8], line 1[0m
   [0;32m----> 1[0m [43mot[49m[38;5;241;43m.[39;49m[43mintegrate_online[49m[43m([49m[43mmodel[49m[43m,[49m[43m [49m[38;5;241;43m5000[39;49m[43m)[49m
 
   File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/otto_utilities.py:103[0m, in [0;36mintegrate_online[0;34m(model, n)[0m
@@ -324,20 +320,18 @@ A basic otto cycle that has a finite power output but without resonance.
 #+end_src
 
 #+RESULTS:
-: 2022-12-02 23:23:03,887       INFO worker.py:956 -- Connecting to existing Ray cluster at address: 10.0.0.102:6379
-: 2022-12-02 23:23:04,305       WARNING worker.py:1404 -- The node with node id: cf9c384f4453a078fa97e7a2ca912d0f477f664dc6548ec1f69d07ab and address: 10.0.0.10 and node name: 10.0.0.10 has been marked dead because the detector has missed too many heartbeats from it. This can happen when a raylet crashes unexpectedly or has lagging heartbeats.
 
 #+begin_src jupyter-python
   model = OttoEngine(
       δ=[0.4, 0.4],
-      ω_c=[1, 1],
+      ω_c=[2, 2],
       ψ_0=qt.basis([2], [1]),
       description=f"A basic near-markovian, weakly coupled Otto Cycle without the shift.",
       k_max=3,
-      bcf_terms=[4] * 2,
+      bcf_terms=[6] * 2,
       truncation_scheme="simplex",
-      driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
-      thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
+      driving_process_tolerances=[StocProcTolerances(1e-4, 1e-4)] * 2,
+      thermal_process_tolerances=[StocProcTolerances(1e-4, 1e-4)] * 2,
       T=[1, 10],
       therm_methods=["tanhsinh", "tanhsinh"],
       Δ=1,
@@ -355,7 +349,7 @@ A basic otto cycle that has a finite power output but without resonance.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
-[[file:./.ob-jupyter/06bbc24cdb105738ea0323a23177645f1cf4677e.svg]]
+[[file:./.ob-jupyter/f20bd31f314971d151bc7670a12df84531cf08e5.svg]]
 :END:
 
 
@@ -366,23 +360,23 @@ A basic otto cycle that has a finite power output but without resonance.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\omega$ | ylabel= | Spectral Density | > |
-[[file:./.ob-jupyter/145c6c9318c65a0628bc0538eef4382e16608372.svg]]
+[[file:./.ob-jupyter/6e23dbc00f1a3114d0302196fd6650b3b628c38e.svg]]
 :END:
 
 
 #+begin_src jupyter-python :tangle integrate
-  ot.integrate_online(model, 5000)
+  ot.integrate_online(model, 500)
 #+end_src
 
 #+RESULTS:
-: [INFO    hops.core.integration     1543816] Choosing the nonlinear integrator.
-: [INFO    root                      1543816] Starting analysis process.
-: [INFO    root                      1543816] Started analysis process with pid 1607436.
-: [INFO    hops.core.hierarchy_data  1543816] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_38eef199e7641165739bd0003d7c0ec166352385a6ef15241063622fe76c12c6.fifo
-: [INFO    hops.core.integration     1543816] Using 16 integrators.
-: [INFO    hops.core.integration     1543816] Some 0 trajectories have to be integrated.
-: [INFO    hops.core.integration     1543816] Using 165 hierarchy states.
-: 0it [00:00, ?it/s]
+: [INFO    hops.core.integration     67618] Choosing the nonlinear integrator.
+: [INFO    root                      67618] Starting analysis process.
+: [INFO    root                      67618] Started analysis process with pid 68727.
+: [INFO    hops.core.hierarchy_data  67618] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_265bfe35dbf31564d0c4034a8ed74e7b3a9c6f38bfc9b356164a7e56e0689d0f.fifo
+: [INFO    hops.core.integration     67618] Using 16 integrators.
+: [INFO    hops.core.integration     67618] Some 400 trajectories have to be integrated.
+: [INFO    hops.core.integration     67618] Using 165 hierarchy states.
+: 100% 400/400 [06:09<00:00,  1.08it/s]
 
 ** Results
 :PROPERTIES:
@@ -399,7 +393,7 @@ A basic otto cycle that has a finite power output but without resonance.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
-[[file:./.ob-jupyter/eb544322fcb784dbdf891bba48472df1ca875036.svg]]
+[[file:./.ob-jupyter/fe150cb2bdc2b283a7adc5afa3e992faf24b6799.svg]]
 :END:
 
 
@@ -408,17 +402,536 @@ A basic otto cycle that has a finite power output but without resonance.
 #+end_src
 
 #+RESULTS:
-| EnsembleValue | (((5000 0.27954064930006456 0.006054065679295331))) | EnsembleValue | (((5000 -0.002388242520476398 3.8430947497255666e-05))) |
+| EnsembleValue | (((100 nan nan))) | EnsembleValue | (((100 nan nan))) |
 
 #+begin_src jupyter-python
     ot.full_report(model)
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/c33c83783ebd42bb37695d75981ed3d7a17f5382.svg]]
+:RESULTS:
+[[file:./.ob-jupyter/85cf6625457669c87daa061903c80468863c5c18.svg]]
+[[file:./.ob-jupyter/2da817963fba328d9cf1e5ae8d525460d6883072.svg]]
+:END:
 :RESULTS:
 : \(P=-0.002388\pm 0.000038\)
 : \(\eta=28.0\pm 0.6\)
 [[file:./.ob-jupyter/24fdd0953097e9c3b1f525228fe15d95ee52cf99.svg]]
 [[file:./.ob-jupyter/94caa78e07e05758046236248e3527c95dd8d79c.svg]]
+[[file:./.ob-jupyter/2cc5de8d17157cfaca597faf7ed8949ddf6d9b75.svg]]
+# [goto error]
+#+begin_example
+  [0;31m---------------------------------------------------------------------------[0m
+  [0;31mOverflowError[0m                             Traceback (most recent call last)
+  Cell [0;32mIn[3], line 1[0m
+  [0;32m----> 1[0m [43mot[49m[38;5;241;43m.[39;49m[43mfull_report[49m[43m([49m[43mmodel[49m[43m)[49m
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/otto_utilities.py:81[0m, in [0;36mfull_report[0;34m(model)[0m
+  [1;32m     77[0m power [38;5;241m=[39m model[38;5;241m.[39mpower()
+  [1;32m     78[0m η [38;5;241m=[39m model[38;5;241m.[39mefficiency() [38;5;241m*[39m [38;5;241m100[39m
+  [1;32m     80[0m [38;5;28mprint[39m(
+  [0;32m---> 81[0m     [43mfs[49m[38;5;241;43m.[39;49m[43mtex_value[49m[43m([49m[43mpower[49m[38;5;241;43m.[39;49m[43mvalue[49m[43m,[49m[43m [49m[43merr[49m[38;5;241;43m=[39;49m[43mpower[49m[38;5;241;43m.[39;49m[43mσ[49m[43m,[49m[43m [49m[43mprefix[49m[38;5;241;43m=[39;49m[38;5;124;43m"[39;49m[38;5;124;43mP=[39;49m[38;5;124;43m"[39;49m[43m)[49m,
+  [1;32m     82[0m )
+  [1;32m     83[0m [38;5;28mprint[39m(
+  [1;32m     84[0m     fs[38;5;241m.[39mtex_value(η[38;5;241m.[39mvalue, err[38;5;241m=[39mη[38;5;241m.[39mσ, prefix[38;5;241m=[39m[38;5;124mr[39m[38;5;124m"[39m[38;5;124m\[39m[38;5;124meta=[39m[38;5;124m"[39m),
+  [1;32m     85[0m )
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/figsaver.py:100[0m, in [0;36mtex_value[0;34m(val, err, unit, prefix, suffix, prec, save)[0m
+  [1;32m     97[0m [38;5;124;03m"""Generates LaTeX output of a value with units and error."""[39;00m
+  [1;32m     99[0m [38;5;28;01mif[39;00m err:
+  [0;32m--> 100[0m     val, err, prec [38;5;241m=[39m [43mscientific_round[49m[43m([49m[43mval[49m[43m,[49m[43m [49m[43merr[49m[43m,[49m[43m [49m[43mretprec[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m)[49m
+  [1;32m    101[0m [38;5;28;01melse[39;00m:
+  [1;32m    102[0m     val [38;5;241m=[39m np[38;5;241m.[39mround(val, prec)
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/figsaver.py:91[0m, in [0;36mscientific_round[0;34m(val, retprec, *err)[0m
+  [1;32m     89[0m prec [38;5;241m=[39m prec[[38;5;241m0[39m]
+  [1;32m     90[0m [38;5;28;01mif[39;00m retprec:
+  [0;32m---> 91[0m     [38;5;28;01mreturn[39;00m ([43msmart_round[49m[43m([49m[43mval[49m[43m,[49m[43m [49m[43mprec[49m[43m)[49m, [38;5;241m*[39msmart_round(err, prec)[[38;5;241m0[39m], prec)
+  [1;32m     92[0m [38;5;28;01melse[39;00m:
+  [1;32m     93[0m     [38;5;28;01mreturn[39;00m (smart_round(val, prec), [38;5;241m*[39msmart_round(err, prec)[[38;5;241m0[39m])
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/figsaver.py:71[0m, in [0;36mscientific_round.<locals>.smart_round[0;34m(value, precision)[0m
+  [1;32m     70[0m [38;5;28;01mdef[39;00m [38;5;21msmart_round[39m(value, precision):
+  [0;32m---> 71[0m     value [38;5;241m=[39m [43mnp[49m[38;5;241;43m.[39;49m[43mround[49m[43m([49m[43mvalue[49m[43m,[49m[43m [49m[43mprecision[49m[43m)[49m
+  [1;32m     72[0m     [38;5;28;01mif[39;00m precision [38;5;241m<[39m[38;5;241m=[39m [38;5;241m0[39m:
+  [1;32m     73[0m         value [38;5;241m=[39m value[38;5;241m.[39mastype([38;5;28mint[39m)
+
+  File [0;32m<__array_function__ internals>:180[0m, in [0;36mround_[0;34m(*args, **kwargs)[0m
+
+  File [0;32m/nix/store/z03mqgq14mjd837rg1v4xir51wz7naqs-python3-3.9.15-env/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3731[0m, in [0;36mround_[0;34m(a, decimals, out)[0m
+  [1;32m   3722[0m [38;5;129m@array_function_dispatch[39m(_around_dispatcher)
+  [1;32m   3723[0m [38;5;28;01mdef[39;00m [38;5;21mround_[39m(a, decimals[38;5;241m=[39m[38;5;241m0[39m, out[38;5;241m=[39m[38;5;28;01mNone[39;00m):
+  [1;32m   3724[0m     [38;5;124;03m"""[39;00m
+  [1;32m   3725[0m [38;5;124;03m    Round an array to the given number of decimals.[39;00m
+  [1;32m   3726[0m
+  [0;32m   (...)[0m
+  [1;32m   3729[0m [38;5;124;03m    around : equivalent function; see for details.[39;00m
+  [1;32m   3730[0m [38;5;124;03m    """[39;00m
+  [0;32m-> 3731[0m     [38;5;28;01mreturn[39;00m [43maround[49m[43m([49m[43ma[49m[43m,[49m[43m [49m[43mdecimals[49m[38;5;241;43m=[39;49m[43mdecimals[49m[43m,[49m[43m [49m[43mout[49m[38;5;241;43m=[39;49m[43mout[49m[43m)[49m
+
+  File [0;32m<__array_function__ internals>:180[0m, in [0;36maround[0;34m(*args, **kwargs)[0m
+
+  File [0;32m/nix/store/z03mqgq14mjd837rg1v4xir51wz7naqs-python3-3.9.15-env/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3305[0m, in [0;36maround[0;34m(a, decimals, out)[0m
+  [1;32m   3214[0m [38;5;129m@array_function_dispatch[39m(_around_dispatcher)
+  [1;32m   3215[0m [38;5;28;01mdef[39;00m [38;5;21maround[39m(a, decimals[38;5;241m=[39m[38;5;241m0[39m, out[38;5;241m=[39m[38;5;28;01mNone[39;00m):
+  [1;32m   3216[0m     [38;5;124;03m"""[39;00m
+  [1;32m   3217[0m [38;5;124;03m    Evenly round to the given number of decimals.[39;00m
+  [1;32m   3218[0m
+  [0;32m   (...)[0m
+  [1;32m   3303[0m
+  [1;32m   3304[0m [38;5;124;03m    """[39;00m
+  [0;32m-> 3305[0m     [38;5;28;01mreturn[39;00m [43m_wrapfunc[49m[43m([49m[43ma[49m[43m,[49m[43m [49m[38;5;124;43m'[39;49m[38;5;124;43mround[39;49m[38;5;124;43m'[39;49m[43m,[49m[43m [49m[43mdecimals[49m[38;5;241;43m=[39;49m[43mdecimals[49m[43m,[49m[43m [49m[43mout[49m[38;5;241;43m=[39;49m[43mout[49m[43m)[49m
+
+  File [0;32m/nix/store/z03mqgq14mjd837rg1v4xir51wz7naqs-python3-3.9.15-env/lib/python3.9/site-packages/numpy/core/fromnumeric.py:57[0m, in [0;36m_wrapfunc[0;34m(obj, method, *args, **kwds)[0m
+  [1;32m     54[0m     [38;5;28;01mreturn[39;00m _wrapit(obj, method, [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwds)
+  [1;32m     56[0m [38;5;28;01mtry[39;00m:
+  [0;32m---> 57[0m     [38;5;28;01mreturn[39;00m [43mbound[49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwds[49m[43m)[49m
+  [1;32m     58[0m [38;5;28;01mexcept[39;00m [38;5;167;01mTypeError[39;00m:
+  [1;32m     59[0m     [38;5;66;03m# A TypeError occurs if the object does have such a method in its[39;00m
+  [1;32m     60[0m     [38;5;66;03m# class, but its signature is not identical to that of NumPy's. This[39;00m
+  [0;32m   (...)[0m
+  [1;32m     64[0m     [38;5;66;03m# Call _wrapit from within the except clause to ensure a potential[39;00m
+  [1;32m     65[0m     [38;5;66;03m# exception has a traceback chain.[39;00m
+  [1;32m     66[0m     [38;5;28;01mreturn[39;00m _wrapit(obj, method, [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwds)
+
+  [0;31mOverflowError[0m: signed integer is less than minimum
+#+end_example
+[[file:./.ob-jupyter/110fb9b41690c93c993cb682424235d36f7d4db1.svg]]
+# [goto error]
+#+begin_example
+  [0;31m---------------------------------------------------------------------------[0m
+  [0;31mOverflowError[0m                             Traceback (most recent call last)
+  Cell [0;32mIn[6], line 1[0m
+  [0;32m----> 1[0m [43mot[49m[38;5;241;43m.[39;49m[43mfull_report[49m[43m([49m[43mmodel[49m[43m)[49m
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/otto_utilities.py:81[0m, in [0;36mfull_report[0;34m(model)[0m
+  [1;32m     77[0m power [38;5;241m=[39m model[38;5;241m.[39mpower()
+  [1;32m     78[0m η [38;5;241m=[39m model[38;5;241m.[39mefficiency() [38;5;241m*[39m [38;5;241m100[39m
+  [1;32m     80[0m [38;5;28mprint[39m(
+  [0;32m---> 81[0m     [43mfs[49m[38;5;241;43m.[39;49m[43mtex_value[49m[43m([49m[43mpower[49m[38;5;241;43m.[39;49m[43mvalue[49m[43m,[49m[43m [49m[43merr[49m[38;5;241;43m=[39;49m[43mpower[49m[38;5;241;43m.[39;49m[43mσ[49m[43m,[49m[43m [49m[43mprefix[49m[38;5;241;43m=[39;49m[38;5;124;43m"[39;49m[38;5;124;43mP=[39;49m[38;5;124;43m"[39;49m[43m)[49m,
+  [1;32m     82[0m )
+  [1;32m     83[0m [38;5;28mprint[39m(
+  [1;32m     84[0m     fs[38;5;241m.[39mtex_value(η[38;5;241m.[39mvalue, err[38;5;241m=[39mη[38;5;241m.[39mσ, prefix[38;5;241m=[39m[38;5;124mr[39m[38;5;124m"[39m[38;5;124m\[39m[38;5;124meta=[39m[38;5;124m"[39m),
+  [1;32m     85[0m )
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/figsaver.py:100[0m, in [0;36mtex_value[0;34m(val, err, unit, prefix, suffix, prec, save)[0m
+  [1;32m     97[0m [38;5;124;03m"""Generates LaTeX output of a value with units and error."""[39;00m
+  [1;32m     99[0m [38;5;28;01mif[39;00m err:
+  [0;32m--> 100[0m     val, err, prec [38;5;241m=[39m [43mscientific_round[49m[43m([49m[43mval[49m[43m,[49m[43m [49m[43merr[49m[43m,[49m[43m [49m[43mretprec[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m)[49m
+  [1;32m    101[0m [38;5;28;01melse[39;00m:
+  [1;32m    102[0m     val [38;5;241m=[39m np[38;5;241m.[39mround(val, prec)
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/figsaver.py:91[0m, in [0;36mscientific_round[0;34m(val, retprec, *err)[0m
+  [1;32m     89[0m prec [38;5;241m=[39m prec[[38;5;241m0[39m]
+  [1;32m     90[0m [38;5;28;01mif[39;00m retprec:
+  [0;32m---> 91[0m     [38;5;28;01mreturn[39;00m ([43msmart_round[49m[43m([49m[43mval[49m[43m,[49m[43m [49m[43mprec[49m[43m)[49m, [38;5;241m*[39msmart_round(err, prec)[[38;5;241m0[39m], prec)
+  [1;32m     92[0m [38;5;28;01melse[39;00m:
+  [1;32m     93[0m     [38;5;28;01mreturn[39;00m (smart_round(val, prec), [38;5;241m*[39msmart_round(err, prec)[[38;5;241m0[39m])
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/figsaver.py:71[0m, in [0;36mscientific_round.<locals>.smart_round[0;34m(value, precision)[0m
+  [1;32m     70[0m [38;5;28;01mdef[39;00m [38;5;21msmart_round[39m(value, precision):
+  [0;32m---> 71[0m     value [38;5;241m=[39m [43mnp[49m[38;5;241;43m.[39;49m[43mround[49m[43m([49m[43mvalue[49m[43m,[49m[43m [49m[43mprecision[49m[43m)[49m
+  [1;32m     72[0m     [38;5;28;01mif[39;00m precision [38;5;241m<[39m[38;5;241m=[39m [38;5;241m0[39m:
+  [1;32m     73[0m         value [38;5;241m=[39m value[38;5;241m.[39mastype([38;5;28mint[39m)
+
+  File [0;32m<__array_function__ internals>:180[0m, in [0;36mround_[0;34m(*args, **kwargs)[0m
+
+  File [0;32m/nix/store/z03mqgq14mjd837rg1v4xir51wz7naqs-python3-3.9.15-env/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3731[0m, in [0;36mround_[0;34m(a, decimals, out)[0m
+  [1;32m   3722[0m [38;5;129m@array_function_dispatch[39m(_around_dispatcher)
+  [1;32m   3723[0m [38;5;28;01mdef[39;00m [38;5;21mround_[39m(a, decimals[38;5;241m=[39m[38;5;241m0[39m, out[38;5;241m=[39m[38;5;28;01mNone[39;00m):
+  [1;32m   3724[0m     [38;5;124;03m"""[39;00m
+  [1;32m   3725[0m [38;5;124;03m    Round an array to the given number of decimals.[39;00m
+  [1;32m   3726[0m
+  [0;32m   (...)[0m
+  [1;32m   3729[0m [38;5;124;03m    around : equivalent function; see for details.[39;00m
+  [1;32m   3730[0m [38;5;124;03m    """[39;00m
+  [0;32m-> 3731[0m     [38;5;28;01mreturn[39;00m [43maround[49m[43m([49m[43ma[49m[43m,[49m[43m [49m[43mdecimals[49m[38;5;241;43m=[39;49m[43mdecimals[49m[43m,[49m[43m [49m[43mout[49m[38;5;241;43m=[39;49m[43mout[49m[43m)[49m
+
+  File [0;32m<__array_function__ internals>:180[0m, in [0;36maround[0;34m(*args, **kwargs)[0m
+
+  File [0;32m/nix/store/z03mqgq14mjd837rg1v4xir51wz7naqs-python3-3.9.15-env/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3305[0m, in [0;36maround[0;34m(a, decimals, out)[0m
+  [1;32m   3214[0m [38;5;129m@array_function_dispatch[39m(_around_dispatcher)
+  [1;32m   3215[0m [38;5;28;01mdef[39;00m [38;5;21maround[39m(a, decimals[38;5;241m=[39m[38;5;241m0[39m, out[38;5;241m=[39m[38;5;28;01mNone[39;00m):
+  [1;32m   3216[0m     [38;5;124;03m"""[39;00m
+  [1;32m   3217[0m [38;5;124;03m    Evenly round to the given number of decimals.[39;00m
+  [1;32m   3218[0m
+  [0;32m   (...)[0m
+  [1;32m   3303[0m
+  [1;32m   3304[0m [38;5;124;03m    """[39;00m
+  [0;32m-> 3305[0m     [38;5;28;01mreturn[39;00m [43m_wrapfunc[49m[43m([49m[43ma[49m[43m,[49m[43m [49m[38;5;124;43m'[39;49m[38;5;124;43mround[39;49m[38;5;124;43m'[39;49m[43m,[49m[43m [49m[43mdecimals[49m[38;5;241;43m=[39;49m[43mdecimals[49m[43m,[49m[43m [49m[43mout[49m[38;5;241;43m=[39;49m[43mout[49m[43m)[49m
+
+  File [0;32m/nix/store/z03mqgq14mjd837rg1v4xir51wz7naqs-python3-3.9.15-env/lib/python3.9/site-packages/numpy/core/fromnumeric.py:57[0m, in [0;36m_wrapfunc[0;34m(obj, method, *args, **kwds)[0m
+  [1;32m     54[0m     [38;5;28;01mreturn[39;00m _wrapit(obj, method, [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwds)
+  [1;32m     56[0m [38;5;28;01mtry[39;00m:
+  [0;32m---> 57[0m     [38;5;28;01mreturn[39;00m [43mbound[49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwds[49m[43m)[49m
+  [1;32m     58[0m [38;5;28;01mexcept[39;00m [38;5;167;01mTypeError[39;00m:
+  [1;32m     59[0m     [38;5;66;03m# A TypeError occurs if the object does have such a method in its[39;00m
+  [1;32m     60[0m     [38;5;66;03m# class, but its signature is not identical to that of NumPy's. This[39;00m
+  [0;32m   (...)[0m
+  [1;32m     64[0m     [38;5;66;03m# Call _wrapit from within the except clause to ensure a potential[39;00m
+  [1;32m     65[0m     [38;5;66;03m# exception has a traceback chain.[39;00m
+  [1;32m     66[0m     [38;5;28;01mreturn[39;00m _wrapit(obj, method, [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwds)
+
+  [0;31mOverflowError[0m: signed integer is less than minimum
+#+end_example
+[[file:./.ob-jupyter/2c8faefa7d6c46f3246c0aaffeba599f2c178a3c.svg]]
+# [goto error]
+#+begin_example
+  [0;31m---------------------------------------------------------------------------[0m
+  [0;31mOverflowError[0m                             Traceback (most recent call last)
+  Cell [0;32mIn[9], line 1[0m
+  [0;32m----> 1[0m [43mot[49m[38;5;241;43m.[39;49m[43mfull_report[49m[43m([49m[43mmodel[49m[43m)[49m
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/otto_utilities.py:81[0m, in [0;36mfull_report[0;34m(model)[0m
+  [1;32m     77[0m power [38;5;241m=[39m model[38;5;241m.[39mpower()
+  [1;32m     78[0m η [38;5;241m=[39m model[38;5;241m.[39mefficiency() [38;5;241m*[39m [38;5;241m100[39m
+  [1;32m     80[0m [38;5;28mprint[39m(
+  [0;32m---> 81[0m     [43mfs[49m[38;5;241;43m.[39;49m[43mtex_value[49m[43m([49m[43mpower[49m[38;5;241;43m.[39;49m[43mvalue[49m[43m,[49m[43m [49m[43merr[49m[38;5;241;43m=[39;49m[43mpower[49m[38;5;241;43m.[39;49m[43mσ[49m[43m,[49m[43m [49m[43mprefix[49m[38;5;241;43m=[39;49m[38;5;124;43m"[39;49m[38;5;124;43mP=[39;49m[38;5;124;43m"[39;49m[43m)[49m,
+  [1;32m     82[0m )
+  [1;32m     83[0m [38;5;28mprint[39m(
+  [1;32m     84[0m     fs[38;5;241m.[39mtex_value(η[38;5;241m.[39mvalue, err[38;5;241m=[39mη[38;5;241m.[39mσ, prefix[38;5;241m=[39m[38;5;124mr[39m[38;5;124m"[39m[38;5;124m\[39m[38;5;124meta=[39m[38;5;124m"[39m),
+  [1;32m     85[0m )
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/figsaver.py:100[0m, in [0;36mtex_value[0;34m(val, err, unit, prefix, suffix, prec, save)[0m
+  [1;32m     97[0m [38;5;124;03m"""Generates LaTeX output of a value with units and error."""[39;00m
+  [1;32m     99[0m [38;5;28;01mif[39;00m err:
+  [0;32m--> 100[0m     val, err, prec [38;5;241m=[39m [43mscientific_round[49m[43m([49m[43mval[49m[43m,[49m[43m [49m[43merr[49m[43m,[49m[43m [49m[43mretprec[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m)[49m
+  [1;32m    101[0m [38;5;28;01melse[39;00m:
+  [1;32m    102[0m     val [38;5;241m=[39m np[38;5;241m.[39mround(val, prec)
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/figsaver.py:91[0m, in [0;36mscientific_round[0;34m(val, retprec, *err)[0m
+  [1;32m     89[0m prec [38;5;241m=[39m prec[[38;5;241m0[39m]
+  [1;32m     90[0m [38;5;28;01mif[39;00m retprec:
+  [0;32m---> 91[0m     [38;5;28;01mreturn[39;00m ([43msmart_round[49m[43m([49m[43mval[49m[43m,[49m[43m [49m[43mprec[49m[43m)[49m, [38;5;241m*[39msmart_round(err, prec)[[38;5;241m0[39m], prec)
+  [1;32m     92[0m [38;5;28;01melse[39;00m:
+  [1;32m     93[0m     [38;5;28;01mreturn[39;00m (smart_round(val, prec), [38;5;241m*[39msmart_round(err, prec)[[38;5;241m0[39m])
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/figsaver.py:71[0m, in [0;36mscientific_round.<locals>.smart_round[0;34m(value, precision)[0m
+  [1;32m     70[0m [38;5;28;01mdef[39;00m [38;5;21msmart_round[39m(value, precision):
+  [0;32m---> 71[0m     value [38;5;241m=[39m [43mnp[49m[38;5;241;43m.[39;49m[43mround[49m[43m([49m[43mvalue[49m[43m,[49m[43m [49m[43mprecision[49m[43m)[49m
+  [1;32m     72[0m     [38;5;28;01mif[39;00m precision [38;5;241m<[39m[38;5;241m=[39m [38;5;241m0[39m:
+  [1;32m     73[0m         value [38;5;241m=[39m value[38;5;241m.[39mastype([38;5;28mint[39m)
+
+  File [0;32m<__array_function__ internals>:180[0m, in [0;36mround_[0;34m(*args, **kwargs)[0m
+
+  File [0;32m/nix/store/z03mqgq14mjd837rg1v4xir51wz7naqs-python3-3.9.15-env/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3731[0m, in [0;36mround_[0;34m(a, decimals, out)[0m
+  [1;32m   3722[0m [38;5;129m@array_function_dispatch[39m(_around_dispatcher)
+  [1;32m   3723[0m [38;5;28;01mdef[39;00m [38;5;21mround_[39m(a, decimals[38;5;241m=[39m[38;5;241m0[39m, out[38;5;241m=[39m[38;5;28;01mNone[39;00m):
+  [1;32m   3724[0m     [38;5;124;03m"""[39;00m
+  [1;32m   3725[0m [38;5;124;03m    Round an array to the given number of decimals.[39;00m
+  [1;32m   3726[0m
+  [0;32m   (...)[0m
+  [1;32m   3729[0m [38;5;124;03m    around : equivalent function; see for details.[39;00m
+  [1;32m   3730[0m [38;5;124;03m    """[39;00m
+  [0;32m-> 3731[0m     [38;5;28;01mreturn[39;00m [43maround[49m[43m([49m[43ma[49m[43m,[49m[43m [49m[43mdecimals[49m[38;5;241;43m=[39;49m[43mdecimals[49m[43m,[49m[43m [49m[43mout[49m[38;5;241;43m=[39;49m[43mout[49m[43m)[49m
+
+  File [0;32m<__array_function__ internals>:180[0m, in [0;36maround[0;34m(*args, **kwargs)[0m
+
+  File [0;32m/nix/store/z03mqgq14mjd837rg1v4xir51wz7naqs-python3-3.9.15-env/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3305[0m, in [0;36maround[0;34m(a, decimals, out)[0m
+  [1;32m   3214[0m [38;5;129m@array_function_dispatch[39m(_around_dispatcher)
+  [1;32m   3215[0m [38;5;28;01mdef[39;00m [38;5;21maround[39m(a, decimals[38;5;241m=[39m[38;5;241m0[39m, out[38;5;241m=[39m[38;5;28;01mNone[39;00m):
+  [1;32m   3216[0m     [38;5;124;03m"""[39;00m
+  [1;32m   3217[0m [38;5;124;03m    Evenly round to the given number of decimals.[39;00m
+  [1;32m   3218[0m
+  [0;32m   (...)[0m
+  [1;32m   3303[0m
+  [1;32m   3304[0m [38;5;124;03m    """[39;00m
+  [0;32m-> 3305[0m     [38;5;28;01mreturn[39;00m [43m_wrapfunc[49m[43m([49m[43ma[49m[43m,[49m[43m [49m[38;5;124;43m'[39;49m[38;5;124;43mround[39;49m[38;5;124;43m'[39;49m[43m,[49m[43m [49m[43mdecimals[49m[38;5;241;43m=[39;49m[43mdecimals[49m[43m,[49m[43m [49m[43mout[49m[38;5;241;43m=[39;49m[43mout[49m[43m)[49m
+
+  File [0;32m/nix/store/z03mqgq14mjd837rg1v4xir51wz7naqs-python3-3.9.15-env/lib/python3.9/site-packages/numpy/core/fromnumeric.py:57[0m, in [0;36m_wrapfunc[0;34m(obj, method, *args, **kwds)[0m
+  [1;32m     54[0m     [38;5;28;01mreturn[39;00m _wrapit(obj, method, [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwds)
+  [1;32m     56[0m [38;5;28;01mtry[39;00m:
+  [0;32m---> 57[0m     [38;5;28;01mreturn[39;00m [43mbound[49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwds[49m[43m)[49m
+  [1;32m     58[0m [38;5;28;01mexcept[39;00m [38;5;167;01mTypeError[39;00m:
+  [1;32m     59[0m     [38;5;66;03m# A TypeError occurs if the object does have such a method in its[39;00m
+  [1;32m     60[0m     [38;5;66;03m# class, but its signature is not identical to that of NumPy's. This[39;00m
+  [0;32m   (...)[0m
+  [1;32m     64[0m     [38;5;66;03m# Call _wrapit from within the except clause to ensure a potential[39;00m
+  [1;32m     65[0m     [38;5;66;03m# exception has a traceback chain.[39;00m
+  [1;32m     66[0m     [38;5;28;01mreturn[39;00m _wrapit(obj, method, [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwds)
+
+  [0;31mOverflowError[0m: signed integer is less than minimum
+#+end_example
+[[file:./.ob-jupyter/e4ba8a91693f3814bb875910a11a004e4edd227b.svg]]
+# [goto error]
+#+begin_example
+  [0;31m---------------------------------------------------------------------------[0m
+  [0;31mOverflowError[0m                             Traceback (most recent call last)
+  Cell [0;32mIn[12], line 1[0m
+  [0;32m----> 1[0m [43mot[49m[38;5;241;43m.[39;49m[43mfull_report[49m[43m([49m[43mmodel[49m[43m)[49m
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/otto_utilities.py:81[0m, in [0;36mfull_report[0;34m(model)[0m
+  [1;32m     77[0m power [38;5;241m=[39m model[38;5;241m.[39mpower()
+  [1;32m     78[0m η [38;5;241m=[39m model[38;5;241m.[39mefficiency() [38;5;241m*[39m [38;5;241m100[39m
+  [1;32m     80[0m [38;5;28mprint[39m(
+  [0;32m---> 81[0m     [43mfs[49m[38;5;241;43m.[39;49m[43mtex_value[49m[43m([49m[43mpower[49m[38;5;241;43m.[39;49m[43mvalue[49m[43m,[49m[43m [49m[43merr[49m[38;5;241;43m=[39;49m[43mpower[49m[38;5;241;43m.[39;49m[43mσ[49m[43m,[49m[43m [49m[43mprefix[49m[38;5;241;43m=[39;49m[38;5;124;43m"[39;49m[38;5;124;43mP=[39;49m[38;5;124;43m"[39;49m[43m)[49m,
+  [1;32m     82[0m )
+  [1;32m     83[0m [38;5;28mprint[39m(
+  [1;32m     84[0m     fs[38;5;241m.[39mtex_value(η[38;5;241m.[39mvalue, err[38;5;241m=[39mη[38;5;241m.[39mσ, prefix[38;5;241m=[39m[38;5;124mr[39m[38;5;124m"[39m[38;5;124m\[39m[38;5;124meta=[39m[38;5;124m"[39m),
+  [1;32m     85[0m )
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/figsaver.py:100[0m, in [0;36mtex_value[0;34m(val, err, unit, prefix, suffix, prec, save)[0m
+  [1;32m     97[0m [38;5;124;03m"""Generates LaTeX output of a value with units and error."""[39;00m
+  [1;32m     99[0m [38;5;28;01mif[39;00m err:
+  [0;32m--> 100[0m     val, err, prec [38;5;241m=[39m [43mscientific_round[49m[43m([49m[43mval[49m[43m,[49m[43m [49m[43merr[49m[43m,[49m[43m [49m[43mretprec[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m)[49m
+  [1;32m    101[0m [38;5;28;01melse[39;00m:
+  [1;32m    102[0m     val [38;5;241m=[39m np[38;5;241m.[39mround(val, prec)
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/figsaver.py:91[0m, in [0;36mscientific_round[0;34m(val, retprec, *err)[0m
+  [1;32m     89[0m prec [38;5;241m=[39m prec[[38;5;241m0[39m]
+  [1;32m     90[0m [38;5;28;01mif[39;00m retprec:
+  [0;32m---> 91[0m     [38;5;28;01mreturn[39;00m ([43msmart_round[49m[43m([49m[43mval[49m[43m,[49m[43m [49m[43mprec[49m[43m)[49m, [38;5;241m*[39msmart_round(err, prec)[[38;5;241m0[39m], prec)
+  [1;32m     92[0m [38;5;28;01melse[39;00m:
+  [1;32m     93[0m     [38;5;28;01mreturn[39;00m (smart_round(val, prec), [38;5;241m*[39msmart_round(err, prec)[[38;5;241m0[39m])
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/figsaver.py:71[0m, in [0;36mscientific_round.<locals>.smart_round[0;34m(value, precision)[0m
+  [1;32m     70[0m [38;5;28;01mdef[39;00m [38;5;21msmart_round[39m(value, precision):
+  [0;32m---> 71[0m     value [38;5;241m=[39m [43mnp[49m[38;5;241;43m.[39;49m[43mround[49m[43m([49m[43mvalue[49m[43m,[49m[43m [49m[43mprecision[49m[43m)[49m
+  [1;32m     72[0m     [38;5;28;01mif[39;00m precision [38;5;241m<[39m[38;5;241m=[39m [38;5;241m0[39m:
+  [1;32m     73[0m         value [38;5;241m=[39m value[38;5;241m.[39mastype([38;5;28mint[39m)
+
+  File [0;32m<__array_function__ internals>:180[0m, in [0;36mround_[0;34m(*args, **kwargs)[0m
+
+  File [0;32m/nix/store/z03mqgq14mjd837rg1v4xir51wz7naqs-python3-3.9.15-env/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3731[0m, in [0;36mround_[0;34m(a, decimals, out)[0m
+  [1;32m   3722[0m [38;5;129m@array_function_dispatch[39m(_around_dispatcher)
+  [1;32m   3723[0m [38;5;28;01mdef[39;00m [38;5;21mround_[39m(a, decimals[38;5;241m=[39m[38;5;241m0[39m, out[38;5;241m=[39m[38;5;28;01mNone[39;00m):
+  [1;32m   3724[0m     [38;5;124;03m"""[39;00m
+  [1;32m   3725[0m [38;5;124;03m    Round an array to the given number of decimals.[39;00m
+  [1;32m   3726[0m
+  [0;32m   (...)[0m
+  [1;32m   3729[0m [38;5;124;03m    around : equivalent function; see for details.[39;00m
+  [1;32m   3730[0m [38;5;124;03m    """[39;00m
+  [0;32m-> 3731[0m     [38;5;28;01mreturn[39;00m [43maround[49m[43m([49m[43ma[49m[43m,[49m[43m [49m[43mdecimals[49m[38;5;241;43m=[39;49m[43mdecimals[49m[43m,[49m[43m [49m[43mout[49m[38;5;241;43m=[39;49m[43mout[49m[43m)[49m
+
+  File [0;32m<__array_function__ internals>:180[0m, in [0;36maround[0;34m(*args, **kwargs)[0m
+
+  File [0;32m/nix/store/z03mqgq14mjd837rg1v4xir51wz7naqs-python3-3.9.15-env/lib/python3.9/site-packages/numpy/core/fromnumeric.py:3305[0m, in [0;36maround[0;34m(a, decimals, out)[0m
+  [1;32m   3214[0m [38;5;129m@array_function_dispatch[39m(_around_dispatcher)
+  [1;32m   3215[0m [38;5;28;01mdef[39;00m [38;5;21maround[39m(a, decimals[38;5;241m=[39m[38;5;241m0[39m, out[38;5;241m=[39m[38;5;28;01mNone[39;00m):
+  [1;32m   3216[0m     [38;5;124;03m"""[39;00m
+  [1;32m   3217[0m [38;5;124;03m    Evenly round to the given number of decimals.[39;00m
+  [1;32m   3218[0m
+  [0;32m   (...)[0m
+  [1;32m   3303[0m
+  [1;32m   3304[0m [38;5;124;03m    """[39;00m
+  [0;32m-> 3305[0m     [38;5;28;01mreturn[39;00m [43m_wrapfunc[49m[43m([49m[43ma[49m[43m,[49m[43m [49m[38;5;124;43m'[39;49m[38;5;124;43mround[39;49m[38;5;124;43m'[39;49m[43m,[49m[43m [49m[43mdecimals[49m[38;5;241;43m=[39;49m[43mdecimals[49m[43m,[49m[43m [49m[43mout[49m[38;5;241;43m=[39;49m[43mout[49m[43m)[49m
+
+  File [0;32m/nix/store/z03mqgq14mjd837rg1v4xir51wz7naqs-python3-3.9.15-env/lib/python3.9/site-packages/numpy/core/fromnumeric.py:57[0m, in [0;36m_wrapfunc[0;34m(obj, method, *args, **kwds)[0m
+  [1;32m     54[0m     [38;5;28;01mreturn[39;00m _wrapit(obj, method, [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwds)
+  [1;32m     56[0m [38;5;28;01mtry[39;00m:
+  [0;32m---> 57[0m     [38;5;28;01mreturn[39;00m [43mbound[49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwds[49m[43m)[49m
+  [1;32m     58[0m [38;5;28;01mexcept[39;00m [38;5;167;01mTypeError[39;00m:
+  [1;32m     59[0m     [38;5;66;03m# A TypeError occurs if the object does have such a method in its[39;00m
+  [1;32m     60[0m     [38;5;66;03m# class, but its signature is not identical to that of NumPy's. This[39;00m
+  [0;32m   (...)[0m
+  [1;32m     64[0m     [38;5;66;03m# Call _wrapit from within the except clause to ensure a potential[39;00m
+  [1;32m     65[0m     [38;5;66;03m# exception has a traceback chain.[39;00m
+  [1;32m     66[0m     [38;5;28;01mreturn[39;00m _wrapit(obj, method, [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwds)
+
+  [0;31mOverflowError[0m: signed integer is less than minimum
+#+end_example
+[[file:./.ob-jupyter/cf200e352c6e8ce6af5a5ae0654c7b8f9fe7ed12.svg]]
 :END:
+
+* Scans
+In this section we run some parameter scans on the otto cycle.
+
+** Switching Speed
+:PROPERTIES:
+:header-args: :tangle speed_coupling_scan.py :session speed_coupling_scan :noweb yes :async yes
+:END:
+Inspired by cite:Wiedmann2020Mar, we will begin with a scan of coupling strength vs coupling switching speed.
+
+*** Model
+A basic otto cycle that has a finite power output but without resonance.
+
+#+begin_src jupyter-python
+  <<boilerplate>>
+#+end_src
+
+#+RESULTS:
+
+#+begin_src jupyter-python
+  def timings(τ_c, τ_i):
+      τ_th = (1 - 2 * τ_c) / 2
+      τ_i_on = (τ_th - 2*τ_i)
+      timings_H = (0, τ_c, τ_c + τ_th, 2*τ_c + τ_th)
+      timings_L_hot = (τ_c, τ_c + τ_i, τ_c + τ_i + τ_i_on, τ_c + 2 * τ_i + τ_i_on)
+
+      timings_L_cold = tuple(time + timings_H[2] for time in timings_L_hot)
+
+      return timings_H, (timings_L_cold, timings_L_hot)
+#+end_src
+
+#+RESULTS:
+
+
+- no shift, to keep things simple
+
+#+begin_src jupyter-python
+  (p_H, p_L) = timings(0.1, 0.3)
+  prototype = OttoEngine(
+      δ=[0.4, 0.4],
+      ω_c=[2, 2],
+      ψ_0=qt.basis([2], [1]),
+      description=f"A model for scanning coupling strength and interactin switch times.",
+      k_max=3,
+      bcf_terms=[6] * 2,
+      truncation_scheme="simplex",
+      driving_process_tolerances=[StocProcTolerances(1e-4, 1e-4)] * 2,
+      thermal_process_tolerances=[StocProcTolerances(1e-4, 1e-4)] * 2,
+      T=[1, 10],
+      therm_methods=["tanhsinh", "tanhsinh"],
+      Δ=1,
+      num_cycles=5,
+      Θ=1.5 / 0.05,
+      dt=0.001,
+      timings_H=p_H,
+      timings_L=p_L,
+      streaming_mode=True,
+      shift_to_resonance=(False, False),
+  )
+
+#+end_src
+
+#+RESULTS:
+
+*** Scan Definition
+As hamiltonian switching is not very interesting per-se, as it is
+diagonal and directly translates into addional power vs longer
+coupling we change the switching speed of the interaction and the coupling strength.
+
+
+#+begin_src jupyter-python
+  from speed_coupling_scan import *
+  δs = np.round(np.linspace(.1, 1, 2), 3)
+  τ_Is = np.round(np.linspace(.01, .3, 4), 3)
+  τ_Is
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+: array([0.01, 0.3 ])
+[[file:./.ob-jupyter/f5f24c1792dd4e341bb5129084138c923c112cff.svg]]
+:END:
+
+#+begin_src jupyter-python
+  models = []
+
+  import itertools
+
+  for τ_I, δ in itertools.product(τ_Is, δs):
+      (p_H, p_L) = timings(0.1, τ_I)
+
+      model = prototype.copy()
+      model.δ = [δ, δ]
+      model.timings_H = p_H
+      model.timings_L = p_L
+      models.append(model)
+
+
+  ot.plot_cycles(models[:: len(δs)])
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
+[[file:./.ob-jupyter/21d6323b0d78ab0ec2e4b4179996c721e63accc5.svg]]
+:END:
+
+*** TODO Integration
+:PROPERTIES:
+:header-args: :tangle speed_coupling_integration.py :session speed_coupling_integration :noweb yes :async yes
+:END:
+
+#+begin_src jupyter-python
+  from speed_coupling_scan import *
+
+  ot.integrate_online_multi(models, 1000)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+#+begin_example
+    [INFO    hops.core.integration     886128] Choosing the nonlinear integrator.
+    [INFO    root                      886128] Starting analysis process.
+    [INFO    root                      886128] Started analysis process with pid 897281.
+    [INFO    hops.core.hierarchy_data  886128] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_1b49c110fd8a755b72e61454048bc9cd4fb981374ae3832f619d47b90770109c.fifo
+    [INFO    hops.core.integration     886128] Using 16 integrators.
+    [INFO    hops.core.integration     886128] Some 92 trajectories have to be integrated.
+    [INFO    hops.core.integration     886128] Using 165 hierarchy states.
+    100% 92/92 [01:40<00:00,  1.09s/it]
+    [INFO    hops.core.integration     886128] Choosing the nonlinear integrator.
+    [INFO    root                      886128] Starting analysis process.
+    [INFO    root                      886128] Started analysis process with pid 897607.
+    [INFO    hops.core.hierarchy_data  886128] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_b2f36e79ac179fdfba0e46c5cdbf65cfd97bde215038b8caa3e4de2bb7050124.fifo
+    [INFO    hops.core.integration     886128] Using 16 integrators.
+    [INFO    hops.core.integration     886128] Some 92 trajectories have to be integrated.
+    [INFO    hops.core.integration     886128] Using 165 hierarchy states.
+  100% 92/92 [01:52<00:00,  1.22s/it]
+    [INFO    hops.core.integration     886128] Choosing the nonlinear integrator.
+    [INFO    root                      886128] Starting analysis process.
+    [INFO    root                      886128] Started analysis process with pid 897765.
+    [INFO    hops.core.hierarchy_data  886128] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_6c301efacb83c69c42557b8c3a8de76d09e439cd52f90101f05daf0c71d4427b.fifo
+    [INFO    hops.core.integration     886128] Using 16 integrators.
+    [INFO    hops.core.integration     886128] Some 92 trajectories have to be integrated.
+    [INFO    hops.core.integration     886128] Using 165 hierarchy states.
+  100% 92/92 [01:18<00:00,  1.17it/s]
+    [INFO    hops.core.integration     886128] Choosing the nonlinear integrator.
+    [INFO    root                      886128] Starting analysis process.
+    [INFO    root                      886128] Started analysis process with pid 898045.
+    [INFO    hops.core.hierarchy_data  886128] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_14c86f979bcc5064eb021c0ca50c3e2713a486a461531f459344f70ce09d12f7.fifo
+    [INFO    hops.core.integration     886128] Using 16 integrators.
+    [INFO    hops.core.integration     886128] Some 92 trajectories have to be integrated.
+    [INFO    hops.core.integration     886128] Using 165 hierarchy states.
+  100% 92/92 [01:22<00:00,  1.12it/s]
+#+end_example
+[[file:./.ob-jupyter/a485e34dda49ecacfff0b02110a41beccf2801e6.svg]]
+:END:
+
+
+*** Analysis
+:PROPERTIES:
+:header-args: :tangle speed_coupling_analysis.py :session speed_coupling_analysis :noweb yes :async yes
+:END:
+
+#+begin_src jupyter-python
+  from speed_coupling_scan import *
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/aca5fea36261a89e371f65460fe5438b4e38708d.svg]]
+
+#+begin_src jupyter-python
+  import random
+  #powers = np.array([model.power().value for model in models])
+  powers = np.array([random.random() for model in models])
+  normalized_powers = powers - powers.min()
+  normalized_powers /= normalized_powers.max()
+  colors = [Blues(power) for power in normalized_powers]
+  ax1 = plt.gcf().add_subplot(111, projection='3d')
+
+  _xx, _yy = np.meshgrid(δs, τ_Is)
+  x, y = _xx.ravel(), _yy.ravel()
+  dx = (δs[1] - δs[0])
+  dy = (τ_Is[1] - τ_Is[0])
+  x -= dx /2
+  y -= dy /2
+  ax1.bar3d(x, y, np.zeros_like(powers), dx, dy, powers, color=colors)
+  ax1.set_xticks(δs)
+  ax1.set_yticks(τ_Is)
+
+  ax1.set_xlabel(r"$\delta$")
+  ax1.set_ylabel(r"$\tau_I$")
+  ax1.set_zlabel(r"$P$")
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+: Text(0.5, 0, '$P$')
+[[file:./.ob-jupyter/07d359f69dd89aed1ac3d9254801f732bdce9e03.svg]]
+:END:
+
+
+** Coupling and System Switching overlap
+Let's see if it helps switching system and interaction at the same time.

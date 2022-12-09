@@ -4,6 +4,7 @@ from hiro_models.otto_cycle import OttoEngine
 import numpy as np
 import figsaver as fs
 import hiro_models.model_auxiliary as aux
+from typing import Iterable
 
 
 @pu.wrap_plot
@@ -25,6 +26,57 @@ def plot_cycle(model: OttoEngine, ax=None):
     ax.set_xlim((0, model.Θ))
     ax.set_xlabel(r"$\tau$")
     ax.set_ylabel(r"Operator Norm")
+    ax.legend()
+
+
+@pu.wrap_plot
+def plot_cycles(models: list[OttoEngine], ax=None, H_for_all=False, L_for_all=True):
+    assert ax is not None
+
+    model = models[0]
+
+    ax.plot(
+        model.t,
+        (model.H.operator_norm(model.t)) / model.H.operator_norm(model.τ_compressed),
+        label=f"$H_1$",
+    )
+
+    ax.plot(
+        model.t,
+        model.coupling_operators[0].operator_norm(model.t) * 2,
+        label=r"$L_{c,1}$",
+    )
+    ax.plot(
+        model.t,
+        model.coupling_operators[1].operator_norm(model.t) * 2,
+        label=r"$L_{h,1}$",
+    )
+
+    ax.set_xlim((0, model.Θ))
+    ax.set_xlabel(r"$\tau$")
+    ax.set_ylabel(r"Operator Norm")
+
+    for i, model in enumerate(models[1:]):
+        if H_for_all:
+            ax.plot(
+                model.t,
+                (model.H.operator_norm(model.t))
+                / model.H.operator_norm(model.τ_compressed),
+                label=f"$H_1$",
+            )
+
+        if L_for_all:
+            ax.plot(
+                model.t,
+                model.coupling_operators[0].operator_norm(model.t) * 2,
+                label=rf"$L_{{c,{i+2}}}$",
+            )
+            ax.plot(
+                model.t,
+                model.coupling_operators[1].operator_norm(model.t) * 2,
+                label=rf"$L_{{h,{i+2}}}$",
+            )
+
     ax.legend()
 
 
@@ -99,5 +151,16 @@ def plot_energy(model):
     return f, a
 
 
-def integrate_online(model, n):
-    aux.integrate(model, n, stream_file=f"results_{model.hexhash}.fifo", analyze=True)
+def integrate_online(model, n, stream_folder=None):
+    aux.integrate(
+        model,
+        n,
+        stream_file=("" if stream_folder is None else stream_folder)
+        + f"results_{model.hexhash}.fifo",
+        analyze=True,
+    )
+
+
+def integrate_online_multi(models, *args, **kwargs):
+    for model in models:
+        integrate_online(model, *args, **kwargs)
