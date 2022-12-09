@@ -532,7 +532,7 @@ plotting = ["matplotlib (>=3.5.0,<4.0.0)"]
 type = "git"
 url = "git@gitlab.hrz.tu-chemnitz.de:s8896854--tu-dresden.de/hops.git"
 reference = "main"
-resolved_reference = "346a8ff949d1ec0dbd3c96f2adc2368fb2d64114"
+resolved_reference = "573274ec04be0a65f0e035885ce387247887b1e8"
 
 [[package]]
 name = "hopsflow"
