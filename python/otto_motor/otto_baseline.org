@@ -448,144 +448,6 @@ A basic otto cycle that has a finite power output but without resonance.
   ot.integrate_online(model, 5000)
 #+end_src
 
-#+RESULTS:
-:RESULTS:
-: [INFO    hops.core.signal_delay    1570847] emit signal 'SIGINT'
-# [goto error]
-#+begin_example
-  [0;31m---------------------------------------------------------------------------[0m
-  [0;31mKeyboardInterrupt[0m                         Traceback (most recent call last)
-  Cell [0;32mIn[47], line 1[0m
-  [0;32m----> 1[0m [43mot[49m[38;5;241;43m.[39;49m[43mintegrate_online[49m[43m([49m[43mmodel[49m[43m,[49m[43m [49m[38;5;241;43m5000[39;49m[43m)[49m
-
-  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/otto_utilities.py:155[0m, in [0;36mintegrate_online[0;34m(model, n, stream_folder, **kwargs)[0m
-  [1;32m    154[0m [38;5;28;01mdef[39;00m [38;5;21mintegrate_online[39m(model, n, stream_folder[38;5;241m=[39m[38;5;28;01mNone[39;00m, [38;5;241m*[39m[38;5;241m*[39mkwargs):
-  [0;32m--> 155[0m     [43maux[49m[38;5;241;43m.[39;49m[43mintegrate[49m[43m([49m
-  [1;32m    156[0m [43m        [49m[43mmodel[49m[43m,[49m
-  [1;32m    157[0m [43m        [49m[43mn[49m[43m,[49m
-  [1;32m    158[0m [43m        [49m[43mstream_file[49m[38;5;241;43m=[39;49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43m"[39;49m[43m [49m[38;5;28;43;01mif[39;49;00m[43m [49m[43mstream_folder[49m[43m [49m[38;5;129;43;01mis[39;49;00m[43m [49m[38;5;28;43;01mNone[39;49;00m[43m [49m[38;5;28;43;01melse[39;49;00m[43m [49m[43mstream_folder[49m[43m)[49m
-  [1;32m    159[0m [43m        [49m[38;5;241;43m+[39;49m[43m [49m[38;5;124;43mf[39;49m[38;5;124;43m"[39;49m[38;5;124;43mresults_[39;49m[38;5;132;43;01m{[39;49;00m[43mmodel[49m[38;5;241;43m.[39;49m[43mhexhash[49m[38;5;132;43;01m}[39;49;00m[38;5;124;43m.fifo[39;49m[38;5;124;43m"[39;49m[43m,[49m
-  [1;32m    160[0m [43m        [49m[43manalyze[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
-  [1;32m    161[0m [43m        [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m,[49m
-  [1;32m    162[0m [43m    [49m[43m)[49m
-
-  File [0;32m~/src/two_qubit_model/hiro_models/model_auxiliary.py:201[0m, in [0;36mintegrate[0;34m(model, n, data_path, clear_pd, single_process, stream_file, analyze, results_path, analyze_kwargs)[0m
-  [1;32m    199[0m         supervisor[38;5;241m.[39mintegrate_single_process(clear_pd)
-  [1;32m    200[0m     [38;5;28;01melse[39;00m:
-  [0;32m--> 201[0m         supervisor[38;5;241m.[39mintegrate(clear_pd)
-  [1;32m    203[0m cleanup([38;5;241m0[39m)
-
-  File [0;32m~/src/hops/hops/core/signal_delay.py:87[0m, in [0;36msig_delay.__exit__[0;34m(self, exc_type, exc_val, exc_tb)[0m
-  [1;32m     84[0m [38;5;28;01mif[39;00m [38;5;28mlen[39m([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught) [38;5;241m>[39m [38;5;241m0[39m [38;5;129;01mand[39;00m [38;5;28mself[39m[38;5;241m.[39mhandler [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
-  [1;32m     85[0m     [38;5;28mself[39m[38;5;241m.[39mhandler([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught)
-  [0;32m---> 87[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_restore[49m[43m([49m[43m)[49m
-
-  File [0;32m~/src/hops/hops/core/signal_delay.py:68[0m, in [0;36msig_delay._restore[0;34m(self)[0m
-  [1;32m     66[0m [38;5;28;01mfor[39;00m i, s [38;5;129;01min[39;00m [38;5;28menumerate[39m([38;5;28mself[39m[38;5;241m.[39msigs):
-  [1;32m     67[0m     signal[38;5;241m.[39msignal(s, [38;5;28mself[39m[38;5;241m.[39mold_handlers[i])
-  [0;32m---> 68[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msigh[49m[38;5;241;43m.[39;49m[43memit[49m[43m([49m[43m)[49m
-
-  File [0;32m~/src/hops/hops/core/signal_delay.py:42[0m, in [0;36mSigHandler.emit[0;34m(self)[0m
-  [1;32m     40[0m [38;5;28;01mfor[39;00m s [38;5;129;01min[39;00m [38;5;28mself[39m[38;5;241m.[39msigs_caught:
-  [1;32m     41[0m     log[38;5;241m.[39minfo([38;5;124m"[39m[38;5;124memit signal [39m[38;5;124m'[39m[38;5;132;01m{}[39;00m[38;5;124m'[39m[38;5;124m"[39m[38;5;241m.[39mformat(SIG_MAP[s]))
-  [0;32m---> 42[0m     [43mos[49m[38;5;241;43m.[39;49m[43mkill[49m[43m([49m[43mos[49m[38;5;241;43m.[39;49m[43mgetpid[49m[43m([49m[43m)[49m[43m,[49m[43m [49m[43ms[49m[43m)[49m
-
-  [0;31mKeyboardInterrupt[0m:
-  [INFO    hops.core.integration     1570847] Choosing the nonlinear integrator.
-  [INFO    root                      1570847] Starting analysis process.
-  [INFO    root                      1570847] Started analysis process with pid 1591390.
-  [INFO    hops.core.hierarchy_data  1570847] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_624d57566d8901608d64e1679da331daba8e879560df92da9b38b36470bdb719.fifo
-  [INFO    hops.core.integration     1570847] Using 32 integrators.
-  [INFO    hops.core.integration     1570847] Some 5000 trajectories have to be integrated.
-  [INFO    hops.core.integration     1570847] Using 1820 hierarchy states.
- 11% 530/5000 [10:07<1:25:24,  1.15s/it][INFO    hops.core.signal_delay    1570847] caught sig 'SIGINT'
-  [INFO    hops.core.signal_delay    1570847] caught 1 signal(s)
-  [INFO    hops.core.signal_delay    1570847] emit signal 'SIGINT'
-  [INFO    hops.core.signal_delay    1570847] caught sig 'SIGINT'
- 11% 530/5000 [10:08<1:25:31,  1.15s/it]
-  2022-12-12 18:38:50,225       WARNING worker.py:1404 -- A worker died or was killed while executing a task by an unexpected system error. To troubleshoot the problem, check the logs for the dead worker. RayTask ID: b2e812ea065894d48757aee2829dd7b57b77d4871c000000 Worker ID: bcf1d2469b152acd74133ec1976b7646b149079955ee10d3335a8df5 Node ID: e07627c1480611828c4c69e3a9f3198eaba4819e531c859088c91737 Worker IP address: 10.0.0.10 Worker port: 10242 Worker PID: 197359
-  2022-12-12 18:38:50,244       WARNING worker.py:1404 -- A worker died or was killed while executing a task by an unexpected system error. To troubleshoot the problem, check the logs for the dead worker. RayTask ID: a9e15e2f0cd954a4c2d67c75c5bc88a995a104ad1c000000 Worker ID: 015d3e521346c70a0da508b576f40564b642299dec2ecb54927d4abe Node ID: e07627c1480611828c4c69e3a9f3198eaba4819e531c859088c91737 Worker IP address: 10.0.0.10 Worker port: 10258 Worker PID: 197524
-  2022-12-12 18:38:50,253       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,255       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,256       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,256       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  [INFO    hops.core.signal_delay    1570847] caught 1 signal(s)
-  2022-12-12 18:38:50,257       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  [INFO    hops.core.signal_delay    1570847] emit signal 'SIGINT'
-  2022-12-12 18:38:50,258       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,259       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  [INFO    hops.core.signal_delay    1570847] caught sig 'SIGINT'
-  2022-12-12 18:38:50,260       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,260       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,261       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,261       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,262       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,263       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,263       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,264       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,264       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,265       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,266       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,266       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,267       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,268       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,268       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,268       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,269       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,270       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,270       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,271       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,272       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,272       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,273       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,274       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2022-12-12 18:38:50,274       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  [INFO    hops.core.signal_delay    1570847] caught 1 signal(s)
-  [INFO    hops.core.signal_delay    1570847] emit signal 'SIGINT'
-#+end_example
-# [goto error]
-#+begin_example
-  [0;31m---------------------------------------------------------------------------[0m
-  [0;31mKeyboardInterrupt[0m                         Traceback (most recent call last)
-  Cell [0;32mIn[50], line 1[0m
-  [0;32m----> 1[0m [43mot[49m[38;5;241;43m.[39;49m[43mintegrate_online[49m[43m([49m[43mmodel[49m[43m,[49m[43m [49m[38;5;241;43m5000[39;49m[43m)[49m
-
-  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/otto_utilities.py:155[0m, in [0;36mintegrate_online[0;34m(model, n, stream_folder, **kwargs)[0m
-  [1;32m    154[0m [38;5;28;01mdef[39;00m [38;5;21mintegrate_online[39m(model, n, stream_folder[38;5;241m=[39m[38;5;28;01mNone[39;00m, [38;5;241m*[39m[38;5;241m*[39mkwargs):
-  [0;32m--> 155[0m     [43maux[49m[38;5;241;43m.[39;49m[43mintegrate[49m[43m([49m
-  [1;32m    156[0m [43m        [49m[43mmodel[49m[43m,[49m
-  [1;32m    157[0m [43m        [49m[43mn[49m[43m,[49m
-  [1;32m    158[0m [43m        [49m[43mstream_file[49m[38;5;241;43m=[39;49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43m"[39;49m[43m [49m[38;5;28;43;01mif[39;49;00m[43m [49m[43mstream_folder[49m[43m [49m[38;5;129;43;01mis[39;49;00m[43m [49m[38;5;28;43;01mNone[39;49;00m[43m [49m[38;5;28;43;01melse[39;49;00m[43m [49m[43mstream_folder[49m[43m)[49m
-  [1;32m    159[0m [43m        [49m[38;5;241;43m+[39;49m[43m [49m[38;5;124;43mf[39;49m[38;5;124;43m"[39;49m[38;5;124;43mresults_[39;49m[38;5;132;43;01m{[39;49;00m[43mmodel[49m[38;5;241;43m.[39;49m[43mhexhash[49m[38;5;132;43;01m}[39;49;00m[38;5;124;43m.fifo[39;49m[38;5;124;43m"[39;49m[43m,[49m
-  [1;32m    160[0m [43m        [49m[43manalyze[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
-  [1;32m    161[0m [43m        [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m,[49m
-  [1;32m    162[0m [43m    [49m[43m)[49m
-
-  File [0;32m~/src/two_qubit_model/hiro_models/model_auxiliary.py:201[0m, in [0;36mintegrate[0;34m(model, n, data_path, clear_pd, single_process, stream_file, analyze, results_path, analyze_kwargs)[0m
-  [1;32m    199[0m         supervisor[38;5;241m.[39mintegrate_single_process(clear_pd)
-  [1;32m    200[0m     [38;5;28;01melse[39;00m:
-  [0;32m--> 201[0m         supervisor[38;5;241m.[39mintegrate(clear_pd)
-  [1;32m    203[0m cleanup([38;5;241m0[39m)
-
-  File [0;32m~/src/hops/hops/core/signal_delay.py:87[0m, in [0;36msig_delay.__exit__[0;34m(self, exc_type, exc_val, exc_tb)[0m
-  [1;32m     84[0m [38;5;28;01mif[39;00m [38;5;28mlen[39m([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught) [38;5;241m>[39m [38;5;241m0[39m [38;5;129;01mand[39;00m [38;5;28mself[39m[38;5;241m.[39mhandler [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
-  [1;32m     85[0m     [38;5;28mself[39m[38;5;241m.[39mhandler([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught)
-  [0;32m---> 87[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_restore[49m[43m([49m[43m)[49m
-
-  File [0;32m~/src/hops/hops/core/signal_delay.py:68[0m, in [0;36msig_delay._restore[0;34m(self)[0m
-  [1;32m     66[0m [38;5;28;01mfor[39;00m i, s [38;5;129;01min[39;00m [38;5;28menumerate[39m([38;5;28mself[39m[38;5;241m.[39msigs):
-  [1;32m     67[0m     signal[38;5;241m.[39msignal(s, [38;5;28mself[39m[38;5;241m.[39mold_handlers[i])
-  [0;32m---> 68[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msigh[49m[38;5;241;43m.[39;49m[43memit[49m[43m([49m[43m)[49m
-
-  File [0;32m~/src/hops/hops/core/signal_delay.py:42[0m, in [0;36mSigHandler.emit[0;34m(self)[0m
-  [1;32m     40[0m [38;5;28;01mfor[39;00m s [38;5;129;01min[39;00m [38;5;28mself[39m[38;5;241m.[39msigs_caught:
-  [1;32m     41[0m     log[38;5;241m.[39minfo([38;5;124m"[39m[38;5;124memit signal [39m[38;5;124m'[39m[38;5;132;01m{}[39;00m[38;5;124m'[39m[38;5;124m"[39m[38;5;241m.[39mformat(SIG_MAP[s]))
-  [0;32m---> 42[0m     [43mos[49m[38;5;241;43m.[39;49m[43mkill[49m[43m([49m[43mos[49m[38;5;241;43m.[39;49m[43mgetpid[49m[43m([49m[43m)[49m[43m,[49m[43m [49m[43ms[49m[43m)[49m
-
-  [0;31mKeyboardInterrupt[0m:
-#+end_example
-:END:
-
 
 ** Results
 :PROPERTIES:
@@ -642,7 +504,6 @@ A basic otto cycle that has a finite power output but without resonance.
 
 #+RESULTS:
 [[file:./.ob-jupyter/3d5ba68b7cd6f8a9ccd027aeebc434cb64bd1986.svg]]
-
 
 
 
@@ -789,7 +650,6 @@ A basic otto cycle that has a finite power output but without resonance.
 [[file:./.ob-jupyter/3d5ba68b7cd6f8a9ccd027aeebc434cb64bd1986.svg]]
 
 
-
 * Scans
 In this section we run some parameter scans on the otto cycle.
 
@@ -832,17 +692,17 @@ A basic otto cycle that has a finite power output but without resonance.
       ω_c=[2, 2],
       ψ_0=qt.basis([2], [1]),
       description=f"A model for scanning coupling strength and interactin switch times.",
-      k_max=4,
-      bcf_terms=[6] * 2,
+      k_max=3,
+      bcf_terms=[4] * 2,
       truncation_scheme="simplex",
       driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
       thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
-      T=[1, 10],
+      T=[1, 4],
       therm_methods=["tanhsinh", "tanhsinh"],
       Δ=1,
       num_cycles=4,
       Θ=1.5 / 0.05,
-      dt=0.01,
+      dt=0.001,
       timings_H=p_H,
       timings_L=p_L,
       streaming_mode=True,
@@ -860,13 +720,13 @@ coupling we change the switching speed of the interaction and the coupling stren
 
 
 #+begin_src jupyter-python
-  δs = np.round(np.linspace(.1, 1, 5), 3)
-  τ_Is = np.round(np.linspace(.01, .3, 5), 3)
+  δs = np.round(np.linspace(.1, .5, 3), 3)
+  τ_Is = np.round(np.linspace(.01, .3, 3), 3)
   τ_Is
 #+end_src
 
 #+RESULTS:
-: array([0.01 , 0.082, 0.155, 0.227, 0.3  ])
+: array([0.01 , 0.155, 0.3  ])
 
 #+begin_src jupyter-python
   models = []
@@ -889,7 +749,7 @@ coupling we change the switching speed of the interaction and the coupling stren
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
-[[file:./.ob-jupyter/b8a87003ac33e1b1bd5e51db2b0e26ac18ef52eb.svg]]
+[[file:./.ob-jupyter/faba4e9d38438c35b68a6a07a5e649d2deb0cb77.svg]]
 :END:
 
 *** Integration
@@ -906,90 +766,27 @@ coupling we change the switching speed of the interaction and the coupling stren
 #+RESULTS:
 :RESULTS:
 #+begin_example
-   [INFO    hops.core.integration     15571] Choosing the nonlinear integrator.
-   [INFO    root                      15571] Starting analysis process.
-   [INFO    root                      15571] Started analysis process with pid 24455.
-   [INFO    hops.core.hierarchy_data  15571] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_9a1fcaa6e61c32845fb024d60f2ab5d4db6ed145604b6beb18a1318288c05fa3.fifo
-   [INFO    hops.core.integration     15571] Using 16 integrators.
-   [INFO    hops.core.integration     15571] Some 1000 trajectories have to be integrated.
-   [INFO    hops.core.integration     15571] Using 455 hierarchy states.
-    27% 273/1000 [16:41<44:26,  3.67s/it][INFO    hops.core.signal_delay    15571] caught sig 'SIGINT'
-   [INFO    hops.core.signal_delay    15571] caught 1 signal(s)
-   [INFO    hops.core.signal_delay    15571] emit signal 'SIGINT'
-   [INFO    hops.core.signal_delay    15571] caught sig 'SIGINT'
-  27% 274/1000 [16:51<44:39,  3.69s/it]
-   2022-12-09 12:30:00,217      ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-   2022-12-09 12:30:00,221      ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-   2022-12-09 12:30:00,222      ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-   2022-12-09 12:30:00,223      ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-   [INFO    hops.core.signal_delay    15571] caught 1 signal(s)
-   2022-12-09 12:30:00,225      ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-   [INFO    hops.core.signal_delay    15571] emit signal 'SIGINT'
-   2022-12-09 12:30:00,226      ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-   [INFO    hops.core.signal_delay    15571] caught sig 'SIGINT'
-   2022-12-09 12:30:00,230      ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-   2022-12-09 12:30:00,231      ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-   2022-12-09 12:30:00,239      ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-   2022-12-09 12:30:00,240      ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-   2022-12-09 12:30:00,242      ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-   2022-12-09 12:30:00,243      ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-   2022-12-09 12:30:00,245      ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-   2022-12-09 12:30:00,246      ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-   2022-12-09 12:30:00,247      ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-   2022-12-09 12:30:00,248      ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-   2022-12-09 12:30:00,256      WARNING worker.py:1404 -- A worker died or was killed while executing a task by an unexpected system error. To troubleshoot the problem, check the logs for the dead worker. RayTask ID: 4aad93ca0144cfd466f7c538c1f973bce532a5b001000000 Worker ID: 6614947cc8aa9bee091895343da3721bdd280daba735cf241411846f Node ID: 9c47dfc4d392dd3e27cbaf9b61a64c51c008187c958d91f7405f9a90 Worker IP address: 10.0.0.102 Worker port: 34075 Worker PID: 23600
-   2022-12-09 12:30:00,257      WARNING worker.py:1404 -- A worker died or was killed while executing a task by an unexpected system error. To troubleshoot the problem, check the logs for the dead worker. RayTask ID: 4685e2bbb803928ba5d3d2526dc35f643ffe982101000000 Worker ID: 2dd3f41be7b13460bb7a25cd2108f3a8307d5e1ec1bf32336cbe0e0f Node ID: 9c47dfc4d392dd3e27cbaf9b61a64c51c008187c958d91f7405f9a90 Worker IP address: 10.0.0.102 Worker port: 44333 Worker PID: 23601
-   [INFO    hops.core.signal_delay    15571] caught 1 signal(s)
-   [INFO    hops.core.signal_delay    15571] emit signal 'SIGINT'
+
+  [INFO    hops.core.signal_delay    1605339] caught 1 signal(s)
+  2022-12-12 18:48:19,281       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  [INFO    hops.core.signal_delay    1605339] emit signal 'SIGINT'
+  [INFO    hops.core.signal_delay    1605339] caught sig 'SIGINT'
+  2022-12-12 18:48:19,300       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-12 18:48:19,333       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-12 18:48:19,366       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  [INFO    hops.core.signal_delay    1605339] caught 1 signal(s)
+  [INFO    hops.core.signal_delay    1605339] emit signal 'SIGINT'[INFO    hops.core.integration     1613157] Choosing the nonlinear integrator.
+  [INFO    root                      1613157] Starting analysis process.
+  [INFO    root                      1613157] Started analysis process with pid 1613248.
+  [INFO    hops.core.hierarchy_data  1613157] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_6b30625f81756df2be8568042e1779d7630b1af0b54cd55d66f47350e8e3560b.fifo
+  [INFO    hops.core.integration     1613157] Using 32 integrators.
+  [INFO    hops.core.integration     1613157] Some 1000 trajectories have to be integrated.
+  [INFO    hops.core.integration     1613157] Using 165 hierarchy states.
+  1% 13/1000 [00:37<47:03,  2.86s/it]
 #+end_example
-# [goto error]
-#+begin_example
-  [0;31m---------------------------------------------------------------------------[0m
-  [0;31mKeyboardInterrupt[0m                         Traceback (most recent call last)
-  Cell [0;32mIn[2], line 3[0m
-  [1;32m      1[0m [38;5;28;01mfrom[39;00m [38;5;21;01mspeed_coupling_scan[39;00m [38;5;28;01mimport[39;00m [38;5;241m*[39m
-  [0;32m----> 3[0m [43mot[49m[38;5;241;43m.[39;49m[43mintegrate_online_multi[49m[43m([49m[43mmodels[49m[43m,[49m[43m [49m[38;5;241;43m1000[39;49m[43m)[49m
-
-  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/otto_utilities.py:166[0m, in [0;36mintegrate_online_multi[0;34m(models, *args, **kwargs)[0m
-  [1;32m    164[0m [38;5;28;01mdef[39;00m [38;5;21mintegrate_online_multi[39m(models, [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs):
-  [1;32m    165[0m     [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models:
-  [0;32m--> 166[0m         [43mintegrate_online[49m[43m([49m[43mmodel[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
-
-  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/otto_utilities.py:155[0m, in [0;36mintegrate_online[0;34m(model, n, stream_folder)[0m
-  [1;32m    154[0m [38;5;28;01mdef[39;00m [38;5;21mintegrate_online[39m(model, n, stream_folder[38;5;241m=[39m[38;5;28;01mNone[39;00m):
-  [0;32m--> 155[0m     [43maux[49m[38;5;241;43m.[39;49m[43mintegrate[49m[43m([49m
-  [1;32m    156[0m [43m        [49m[43mmodel[49m[43m,[49m
-  [1;32m    157[0m [43m        [49m[43mn[49m[43m,[49m
-  [1;32m    158[0m [43m        [49m[43mstream_file[49m[38;5;241;43m=[39;49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43m"[39;49m[43m [49m[38;5;28;43;01mif[39;49;00m[43m [49m[43mstream_folder[49m[43m [49m[38;5;129;43;01mis[39;49;00m[43m [49m[38;5;28;43;01mNone[39;49;00m[43m [49m[38;5;28;43;01melse[39;49;00m[43m [49m[43mstream_folder[49m[43m)[49m
-  [1;32m    159[0m [43m        [49m[38;5;241;43m+[39;49m[43m [49m[38;5;124;43mf[39;49m[38;5;124;43m"[39;49m[38;5;124;43mresults_[39;49m[38;5;132;43;01m{[39;49;00m[43mmodel[49m[38;5;241;43m.[39;49m[43mhexhash[49m[38;5;132;43;01m}[39;49;00m[38;5;124;43m.fifo[39;49m[38;5;124;43m"[39;49m[43m,[49m
-  [1;32m    160[0m [43m        [49m[43manalyze[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
-  [1;32m    161[0m [43m    [49m[43m)[49m
-
-  File [0;32m~/src/two_qubit_model/hiro_models/model_auxiliary.py:200[0m, in [0;36mintegrate[0;34m(model, n, data_path, clear_pd, single_process, stream_file, analyze, results_path, analyze_kwargs)[0m
-  [1;32m    198[0m         supervisor[38;5;241m.[39mintegrate_single_process(clear_pd)
-  [1;32m    199[0m     [38;5;28;01melse[39;00m:
-  [0;32m--> 200[0m         supervisor[38;5;241m.[39mintegrate(clear_pd)
-  [1;32m    202[0m cleanup([38;5;241m0[39m)
-
-  File [0;32m~/src/hops/hops/core/signal_delay.py:87[0m, in [0;36msig_delay.__exit__[0;34m(self, exc_type, exc_val, exc_tb)[0m
-  [1;32m     84[0m [38;5;28;01mif[39;00m [38;5;28mlen[39m([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught) [38;5;241m>[39m [38;5;241m0[39m [38;5;129;01mand[39;00m [38;5;28mself[39m[38;5;241m.[39mhandler [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
-  [1;32m     85[0m     [38;5;28mself[39m[38;5;241m.[39mhandler([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught)
-  [0;32m---> 87[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_restore[49m[43m([49m[43m)[49m
-
-  File [0;32m~/src/hops/hops/core/signal_delay.py:68[0m, in [0;36msig_delay._restore[0;34m(self)[0m
-  [1;32m     66[0m [38;5;28;01mfor[39;00m i, s [38;5;129;01min[39;00m [38;5;28menumerate[39m([38;5;28mself[39m[38;5;241m.[39msigs):
-  [1;32m     67[0m     signal[38;5;241m.[39msignal(s, [38;5;28mself[39m[38;5;241m.[39mold_handlers[i])
-  [0;32m---> 68[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msigh[49m[38;5;241;43m.[39;49m[43memit[49m[43m([49m[43m)[49m
-
-  File [0;32m~/src/hops/hops/core/signal_delay.py:42[0m, in [0;36mSigHandler.emit[0;34m(self)[0m
-  [1;32m     40[0m [38;5;28;01mfor[39;00m s [38;5;129;01min[39;00m [38;5;28mself[39m[38;5;241m.[39msigs_caught:
-  [1;32m     41[0m     log[38;5;241m.[39minfo([38;5;124m"[39m[38;5;124memit signal [39m[38;5;124m'[39m[38;5;132;01m{}[39;00m[38;5;124m'[39m[38;5;124m"[39m[38;5;241m.[39mformat(SIG_MAP[s]))
-  [0;32m---> 42[0m     [43mos[49m[38;5;241;43m.[39;49m[43mkill[49m[43m([49m[43mos[49m[38;5;241;43m.[39;49m[43mgetpid[49m[43m([49m[43m)[49m[43m,[49m[43m [49m[43ms[49m[43m)[49m
-
-  [0;31mKeyboardInterrupt[0m:
-#+end_example
-[[file:./.ob-jupyter/3855db61f0f4ad19d82995c1192d5cfeb54a12df.svg]]
 :END:
+
+
 
 *** Analysis
 :PROPERTIES:

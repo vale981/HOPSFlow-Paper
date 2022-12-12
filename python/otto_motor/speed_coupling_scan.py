@@ -36,25 +36,25 @@ prototype = OttoEngine(
     ω_c=[2, 2],
     ψ_0=qt.basis([2], [1]),
     description=f"A model for scanning coupling strength and interactin switch times.",
-    k_max=4,
-    bcf_terms=[6] * 2,
+    k_max=3,
+    bcf_terms=[4] * 2,
     truncation_scheme="simplex",
     driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
     thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
-    T=[1, 10],
+    T=[1, 4],
     therm_methods=["tanhsinh", "tanhsinh"],
     Δ=1,
     num_cycles=4,
     Θ=1.5 / 0.05,
-    dt=0.01,
+    dt=0.001,
     timings_H=p_H,
     timings_L=p_L,
     streaming_mode=True,
     shift_to_resonance=(False, False),
 )
 
-δs = np.round(np.linspace(.1, 1, 5), 3)
-τ_Is = np.round(np.linspace(.01, .3, 5), 3)
+δs = np.round(np.linspace(.1, .5, 3), 3)
+τ_Is = np.round(np.linspace(.01, .3, 3), 3)
 τ_Is
 
 models = []
