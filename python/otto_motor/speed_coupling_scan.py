@@ -13,8 +13,8 @@ import otto_utilities as ot
 import ray
 ray.shutdown()
 
-#ray.init(address='auto')
-ray.init()
+ray.init(address='auto')
+#ray.init()
 from hops.util.logging_setup import logging_setup
 import logging
 logging_setup(logging.INFO)
@@ -36,7 +36,7 @@ prototype = OttoEngine(
     ω_c=[2, 2],
     ψ_0=qt.basis([2], [1]),
     description=f"A model for scanning coupling strength and interactin switch times.",
-    k_max=3,
+    k_max=4,
     bcf_terms=[6] * 2,
     truncation_scheme="simplex",
     driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
@@ -46,7 +46,7 @@ prototype = OttoEngine(
     Δ=1,
     num_cycles=4,
     Θ=1.5 / 0.05,
-    dt=0.001,
+    dt=0.01,
     timings_H=p_H,
     timings_L=p_L,
     streaming_mode=True,

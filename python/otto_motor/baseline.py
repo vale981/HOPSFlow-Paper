@@ -13,8 +13,8 @@ import otto_utilities as ot
 import ray
 ray.shutdown()
 
-#ray.init(address='auto')
-ray.init()
+ray.init(address='auto')
+#ray.init()
 from hops.util.logging_setup import logging_setup
 import logging
 logging_setup(logging.INFO)
@@ -39,4 +39,5 @@ model = OttoEngine(
     timings_H=(0, 0.1, 0.5, 0.6),
     timings_L=((0.6, 0.7, 0.9, 1), (0.1, 0.2, 0.4, 0.5)),
     streaming_mode=True,
+    # solver_args=dict(rtol=1e-3, atol=1e-3)
 )

@@ -85,7 +85,7 @@ def plot_sd_overview(model: OttoEngine, ax=None):
     assert ax is not None
 
     gaps = model.energy_gaps
-    ω = np.linspace(0.001, gaps[-1] + gaps[0], 1000)
+    ω = np.linspace(0.0001, gaps[-1] + gaps[0], 1000)
 
     for ω_i, label, i in zip(gaps, ["Cold", "Hot"], range(len(gaps))):
         lines = ax.plot(
@@ -151,13 +151,14 @@ def plot_energy(model):
     return f, a
 
 
-def integrate_online(model, n, stream_folder=None):
+def integrate_online(model, n, stream_folder=None, **kwargs):
     aux.integrate(
         model,
         n,
         stream_file=("" if stream_folder is None else stream_folder)
         + f"results_{model.hexhash}.fifo",
         analyze=True,
+        **kwargs,
     )
 
 

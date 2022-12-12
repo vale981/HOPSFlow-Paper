@@ -135,7 +135,7 @@ test-tox-coverage = ["coverage (>=5.5)"]
 type = "git"
 url = "https://github.com/beartype/beartype"
 reference = "main"
-resolved_reference = "b48a56fb497b36aa9640c107caa6bc85e02f5782"
+resolved_reference = "ecb059a5200c460d76a9741f788e06059ab48a9d"
 
 [[package]]
 name = "beautifulsoup4"
@@ -497,7 +497,7 @@ qutip = "^4.6.3"
 type = "git"
 url = "git@github.com:vale981/two_qubit_model.git"
 reference = "main"
-resolved_reference = "0e34b40d32e1ee960482b01940851fd011bb10d6"
+resolved_reference = "098c83ab44b811e22b6c9d69be83c522596e3577"
 
 [[package]]
 name = "hops"
@@ -558,7 +558,7 @@ tqdm = "^4.62.3"
 type = "git"
 url = "https://github.com/vale981/hopsflow"
 reference = "main"
-resolved_reference = "8ede222312e67970c07d72356d756d6e24a3e94c"
+resolved_reference = "e27e38b656b18e0bf3066d72e76ed1d467f26a5c"
 
 [[package]]
 name = "humanfriendly"
@@ -1706,7 +1706,7 @@ setuptools = "*"
 type = "git"
 url = "https://github.com/vale981/stocproc"
 reference = "HEAD"
-resolved_reference = "06b692b20fe45071839b8fdd8995a557a46e662b"
+resolved_reference = "7d735091dea36f4f63b5dbaaec78df9c1af1abbf"
 
 [[package]]
 name = "tabulate"
