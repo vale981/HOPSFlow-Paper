@@ -9,3 +9,7 @@ __pycache__
 *.h5
 *.#*
 *.lock
+taurus
+taurus_b
+results
+.data
