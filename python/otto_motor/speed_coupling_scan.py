@@ -44,7 +44,7 @@ prototype = OttoEngine(
     T=[1, 4],
     therm_methods=["tanhsinh", "tanhsinh"],
     Δ=1,
-    num_cycles=4,
+    num_cycles=5,
     Θ=1.5 / 0.05,
     dt=0.01/5,
     timings_H=p_H,
@@ -53,7 +53,7 @@ prototype = OttoEngine(
     shift_to_resonance=(False, False),
 )
 
-δs = np.round(np.linspace(.1, .5, 3), 3)
+δs = np.round(np.linspace(.3, .5, 3), 3)
 τ_Is = np.round(np.linspace(.01, .3, 3), 3)
 τ_Is
 
