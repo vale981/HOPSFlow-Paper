@@ -573,7 +573,7 @@ A basic otto cycle that has a finite power output but without resonance.
       Δ=1,
       num_cycles=5,
       Θ=1.5 / 0.05,
-      dt=0.01/5,
+      dt=0.01/8,
       timings_H=p_H,
       timings_L=p_L,
       streaming_mode=True,
@@ -592,12 +592,12 @@ coupling we change the switching speed of the interaction and the coupling stren
 
 #+begin_src jupyter-python
   δs = np.round(np.linspace(.3, .5, 3), 3)
-  τ_Is = np.round(np.linspace(.01, .3, 3), 3)
-  τ_Is
+  τ_Is = np.array([.05, .1, .15])
+  δs, τ_Is
 #+end_src
 
 #+RESULTS:
-: array([0.01 , 0.155, 0.3  ])
+| array | ((0.3 0.4 0.5)) | array | ((0.05 0.1 0.15)) |
 
 #+begin_src jupyter-python
   models = []
@@ -620,7 +620,7 @@ coupling we change the switching speed of the interaction and the coupling stren
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
-[[file:./.ob-jupyter/e523be7372b5ff485486fc45675e5b909236cd1a.svg]]
+[[file:./.ob-jupyter/a4dcb30ebb23207546d755ada71d8688c1e425e6.svg]]
 :END:
 
 *** Integration
@@ -631,7 +631,7 @@ coupling we change the switching speed of the interaction and the coupling stren
 #+begin_src jupyter-python
   from speed_coupling_scan import *
 
-  ot.integrate_online_multi(models, 30)
+  ot.integrate_online_multi(models, 5000)
 #+end_src
 
 #+RESULTS:

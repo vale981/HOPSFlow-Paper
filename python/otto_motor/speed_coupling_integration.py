@@ -1,3 +1,3 @@
 from speed_coupling_scan import *
 
-ot.integrate_online_multi(models, 30)
+ot.integrate_online_multi(models, 5000)

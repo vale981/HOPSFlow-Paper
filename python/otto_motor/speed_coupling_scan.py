@@ -46,7 +46,7 @@ prototype = OttoEngine(
     Δ=1,
     num_cycles=5,
     Θ=1.5 / 0.05,
-    dt=0.01/5,
+    dt=0.01/8,
     timings_H=p_H,
     timings_L=p_L,
     streaming_mode=True,
@@ -54,8 +54,8 @@ prototype = OttoEngine(
 )
 
 δs = np.round(np.linspace(.3, .5, 3), 3)
-τ_Is = np.round(np.linspace(.01, .3, 3), 3)
-τ_Is
+τ_Is = np.array([.05, .1, .15])
+δs, τ_Is
 
 models = []
 
