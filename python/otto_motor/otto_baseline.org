@@ -18,8 +18,8 @@
     import ray
     ray.shutdown()
 
-    #ray.init(address='auto')
-    ray.init()
+    ray.init(address='auto')
+    #ray.init()
     from hops.util.logging_setup import logging_setup
     import logging
     logging_setup(logging.INFO)
@@ -720,6 +720,7 @@ coupling we change the switching speed of the interaction and the coupling stren
 #+end_src
 
 #+RESULTS:
+[[file:./.ob-jupyter/7c4d9c744859da500d4a828001441bf13524e4ef.svg]]
 
 **** Import from taurus
 #+begin_src bash :results none
@@ -733,12 +734,91 @@ coupling we change the switching speed of the interaction and the coupling stren
   import_results(other_data_path="./taurus/.data", other_results_path="./taurus/results", interactive=False, models_to_import=models)
 #+end_src
 
+#+RESULTS:
+#+begin_example
+  [INFO    root                      1759248] Skipping 2c92f58615625aa8f53a46159c05375069313e5566ba2e7e5e3d4f23be9b0812.
+  [INFO    root                      1759248] Skipping 7ab00d286619067e63866cb9df3e159b51ebdbeea557b6ed0181f106e9127be2.
+  [INFO    root                      1759248] Skipping 9f89257094dd5215bf7cd36b6bcda76657047a6cc14f7e1cc3b4ac451c72dddd.
+  [INFO    root                      1759248] Skipping 750ccbb5b693f77ef025d7e0bbe10d41151e75b7732ce85b227303f6b6ce369d.
+  [INFO    root                      1759248] Skipping dd468201c5433723b82946b50f425e79f44ca5ffb5b26a2211b7ade7720035c7.
+  [INFO    root                      1759248] Skipping 7290a763c090c9bd24fc0c678b9d30a7c568342fcb1af2feb47dcb9ec213dc55.
+  [INFO    root                      1759248] Skipping 9c08cd39e95fb7db9f55852d940635d3ac2242c8a84951e6ff7b0be4a45be183.
+  [INFO    root                      1759248] Skipping 510d300d2bc8796a92179affa7add161003a1947b092423ba8968c06b13d9138.
+  [INFO    root                      1759248] Skipping 8b00ac385c8c38c60c11b7de70b19cc2fe773b6d747205addd41636027531f21.
+  [WARNING root                      1759248] Importing taurus/.data/913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830/_6/913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830_67321c87e1d2d8f639d35064183119b8_1.h5 to .data/913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830/_6/913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830_67321c87e1d2d8f639d35064183119b8_1.h5.
+  [WARNING root                      1759248] The model description is 'A model for scanning coupling strength and interactin switch times.'.
+  [WARNING root                      1759248] Importing taurus/results/flow_913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830.npz to results/flow_913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830.npz.
+  [WARNING root                      1759248] Importing taurus/results/interaction_913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830.npz to results/interaction_913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830.npz.
+  [WARNING root                      1759248] Importing taurus/results/interaction_power_913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830.npz to results/interaction_power_913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830.npz.
+  [WARNING root                      1759248] Importing taurus/results/system_913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830.npz to results/system_913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830.npz.
+  [WARNING root                      1759248] Importing taurus/results/system_power_913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830.npz to results/system_power_913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830.npz.
+  [WARNING root                      1759248] Importing taurus/.data/44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544/_a/44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544_a8304901cb05c594217b6c1de52ccd7a_1.h5 to .data/44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544/_a/44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544_a8304901cb05c594217b6c1de52ccd7a_1.h5.
+  [WARNING root                      1759248] The model description is 'A model for scanning coupling strength and interactin switch times.'.
+  [WARNING root                      1759248] Importing taurus/results/flow_44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544.npz to results/flow_44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544.npz.
+  [WARNING root                      1759248] Importing taurus/results/interaction_44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544.npz to results/interaction_44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544.npz.
+  [WARNING root                      1759248] Importing taurus/results/interaction_power_44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544.npz to results/interaction_power_44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544.npz.
+  [WARNING root                      1759248] Importing taurus/results/system_44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544.npz to results/system_44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544.npz.
+  [WARNING root                      1759248] Importing taurus/results/system_power_44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544.npz to results/system_power_44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544.npz.
+  [WARNING root                      1759248] Importing taurus/.data/348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca/_2/348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca_20ab37bf426bc1c4612228c63f546820_1.h5 to .data/348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca/_2/348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca_20ab37bf426bc1c4612228c63f546820_1.h5.
+  [WARNING root                      1759248] The model description is 'A model for scanning coupling strength and interactin switch times.'.
+  [WARNING root                      1759248] Importing taurus/results/flow_348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca.npz to results/flow_348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca.npz.
+  [WARNING root                      1759248] Importing taurus/results/interaction_348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca.npz to results/interaction_348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca.npz.
+  [WARNING root                      1759248] Importing taurus/results/interaction_power_348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca.npz to results/interaction_power_348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca.npz.
+  [WARNING root                      1759248] Importing taurus/results/system_348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca.npz to results/system_348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca.npz.
+  [WARNING root                      1759248] Importing taurus/results/system_power_348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca.npz to results/system_power_348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca.npz.
+  [WARNING root                      1759248] Importing taurus/.data/2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe/_d/2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe_dc60fe0a91d132da0eac69d4797ab92a_1.h5 to .data/2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe/_d/2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe_dc60fe0a91d132da0eac69d4797ab92a_1.h5.
+  [WARNING root                      1759248] The model description is 'A model for scanning coupling strength and interactin switch times.'.
+  [WARNING root                      1759248] Importing taurus/results/flow_2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe.npz to results/flow_2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe.npz.
+  [WARNING root                      1759248] Importing taurus/results/interaction_2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe.npz to results/interaction_2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe.npz.
+  [WARNING root                      1759248] Importing taurus/results/interaction_power_2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe.npz to results/interaction_power_2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe.npz.
+  [WARNING root                      1759248] Importing taurus/results/system_2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe.npz to results/system_2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe.npz.
+  [WARNING root                      1759248] Importing taurus/results/system_power_2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe.npz to results/system_power_2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe.npz.
+  [WARNING root                      1759248] Importing taurus/.data/de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f/_f/de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f_f390995e85d558452efefa6cdd6c95ae_1.h5 to .data/de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f/_f/de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f_f390995e85d558452efefa6cdd6c95ae_1.h5.
+  [WARNING root                      1759248] The model description is 'A model for scanning coupling strength and interactin switch times.'.
+  [WARNING root                      1759248] Importing taurus/results/flow_de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f.npz to results/flow_de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f.npz.
+  [WARNING root                      1759248] Importing taurus/results/interaction_de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f.npz to results/interaction_de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f.npz.
+  [WARNING root                      1759248] Importing taurus/results/interaction_power_de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f.npz to results/interaction_power_de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f.npz.
+  [WARNING root                      1759248] Importing taurus/results/system_de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f.npz to results/system_de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f.npz.
+  [WARNING root                      1759248] Importing taurus/results/system_power_de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f.npz to results/system_power_de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f.npz.
+  [WARNING root                      1759248] Importing taurus/.data/e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4/_a/e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4_a2a39083e4064f94d5bb57ed03e5d090_1.h5 to .data/e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4/_a/e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4_a2a39083e4064f94d5bb57ed03e5d090_1.h5.
+  [WARNING root                      1759248] The model description is 'A model for scanning coupling strength and interactin switch times.'.
+  [WARNING root                      1759248] Importing taurus/results/flow_e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4.npz to results/flow_e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4.npz.
+  [WARNING root                      1759248] Importing taurus/results/interaction_e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4.npz to results/interaction_e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4.npz.
+  [WARNING root                      1759248] Importing taurus/results/interaction_power_e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4.npz to results/interaction_power_e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4.npz.
+  [WARNING root                      1759248] Importing taurus/results/system_e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4.npz to results/system_e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4.npz.
+  [WARNING root                      1759248] Importing taurus/results/system_power_e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4.npz to results/system_power_e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4.npz.
+  [WARNING root                      1759248] Importing taurus/.data/c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d/_7/c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d_7795de4c5eddccf955fd370b952f15fd_1.h5 to .data/c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d/_7/c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d_7795de4c5eddccf955fd370b952f15fd_1.h5.
+  [WARNING root                      1759248] The model description is 'A model for scanning coupling strength and interactin switch times.'.
+  [WARNING root                      1759248] Importing taurus/results/flow_c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d.npz to results/flow_c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d.npz.
+  [WARNING root                      1759248] Importing taurus/results/interaction_c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d.npz to results/interaction_c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d.npz.
+  [WARNING root                      1759248] Importing taurus/results/interaction_power_c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d.npz to results/interaction_power_c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d.npz.
+  [WARNING root                      1759248] Importing taurus/results/system_c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d.npz to results/system_c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d.npz.
+  [WARNING root                      1759248] Importing taurus/results/system_power_c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d.npz to results/system_power_c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d.npz.
+  [WARNING root                      1759248] Importing taurus/.data/b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22/_3/b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22_31d3d3f46c1aca339afda39399de3fbe_1.h5 to .data/b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22/_3/b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22_31d3d3f46c1aca339afda39399de3fbe_1.h5.
+  [WARNING root                      1759248] The model description is 'A model for scanning coupling strength and interactin switch times.'.
+  [WARNING root                      1759248] Importing taurus/results/flow_b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22.npz to results/flow_b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22.npz.
+  [WARNING root                      1759248] Importing taurus/results/interaction_b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22.npz to results/interaction_b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22.npz.
+  [WARNING root                      1759248] Importing taurus/results/interaction_power_b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22.npz to results/interaction_power_b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22.npz.
+  [WARNING root                      1759248] Importing taurus/results/system_b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22.npz to results/system_b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22.npz.
+  [WARNING root                      1759248] Importing taurus/results/system_power_b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22.npz to results/system_power_b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22.npz.
+  [WARNING root                      1759248] Importing taurus/.data/4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7/_b/4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7_b62e41a101508c05eca9c780a31ef3a5_1.h5 to .data/4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7/_b/4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7_b62e41a101508c05eca9c780a31ef3a5_1.h5.
+  [WARNING root                      1759248] The model description is 'A model for scanning coupling strength and interactin switch times.'.
+  [WARNING root                      1759248] Importing taurus/results/flow_4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7.npz to results/flow_4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7.npz.
+  [WARNING root                      1759248] Importing taurus/results/interaction_4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7.npz to results/interaction_4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7.npz.
+  [WARNING root                      1759248] Importing taurus/results/interaction_power_4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7.npz to results/interaction_power_4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7.npz.
+  [WARNING root                      1759248] Importing taurus/results/system_4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7.npz to results/system_4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7.npz.
+  [WARNING root                      1759248] Importing taurus/results/system_power_4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7.npz to results/system_power_4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7.npz.
+#+end_example
+
 **** Plots
 #+begin_src jupyter-python
+  %matplotlib inline
+
   f, a = plt.subplots()
 
   for model in models:
       try:
+          pu.plot_with_σ(model.t, model.total_energy_from_power().sum_baths(), ax=a, label=fr"$\delta={model.δ[0]}$, $\tau_I={model.timings_L[0][1] - model.timings_L[0][0]:.3}$")
           pu.plot_with_σ(model.t, model.total_energy().sum_baths(), ax=a, label=fr"$\delta={model.δ[0]}$, $\tau_I={model.timings_L[0][1] - model.timings_L[0][0]:.3}$")
       except:
           pass
@@ -746,7 +826,10 @@ coupling we change the switching speed of the interaction and the coupling stren
 #+end_src
 
 #+RESULTS:
-: <matplotlib.legend.Legend at 0x7fe8b5dca970>
+:RESULTS:
+: <matplotlib.legend.Legend at 0x7f6718afd2b0>
+[[file:./.ob-jupyter/d66868b1529c3799d4ba8ce6d5dd4f7af85da34c.svg]]
+:END:
 
 
 
@@ -756,6 +839,7 @@ coupling we change the switching speed of the interaction and the coupling stren
   powers = []
   for model in models:
       try:
+          print(-model.power().N)
           powers.append(-model.power().value)
       except:
           powers.append(0.)
@@ -784,7 +868,17 @@ coupling we change the switching speed of the interaction and the coupling stren
 #+end_src
 
 #+RESULTS:
+:RESULTS:
+: -2000
+: -2000
+: -2000
+: -2000
+: -2000
+: -2000
+: -2000
+: -2000
 : Text(0.5, 0, '$P$')
+:END:
 
 ** Coupling and System Switching overlap
 :PROPERTIES:
@@ -850,7 +944,7 @@ Let's see if it helps switching system and interaction at the same time.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
-[[file:./.ob-jupyter/715f1a84b193dcb92aee672f411246fbee3b5508.svg]]
+[[file:./.ob-jupyter/ff171635624e8254b2fe630a2a5d2ae761f33219.svg]]
 :END:
 
 
@@ -870,6 +964,7 @@ where the baths are not coupled at the same time.
   import itertools
 
   for overlap, shift in itertools.product(overlaps, shifts):
+      print(overlap, shift)
       (p_H, p_L) = timings(τ_mod, τ_I, overlap)
 
       model = prototype.copy()
@@ -884,8 +979,17 @@ where the baths are not coupled at the same time.
 
 #+RESULTS:
 :RESULTS:
+: 0.0 0.0
+: 0.0 0.05
+: 0.0 0.1
+: 0.5 0.0
+: 0.5 0.05
+: 0.5 0.1
+: 1.0 0.0
+: 1.0 0.05
+: 1.0 0.1
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
-[[file:./.ob-jupyter/b7d97662c04862a559dcd4bdfee83e64c2691b1a.svg]]
+[[file:./.ob-jupyter/edd98256780d14f2d4f5f83983b88cc64bed3f55.svg]]
 :END:
 
 *** Integration
@@ -896,103 +1000,60 @@ where the baths are not coupled at the same time.
 #+begin_src jupyter-python
   from timing_scan import *
 
-  ot.integrate_online_multi(models, 1000)
+  ot.integrate_online_multi(models, 5000, analyze_kwargs=dict(every=100))
 #+end_src
 
-#+RESULTS:
-:RESULTS:
-#+begin_example
-    [INFO    hops.core.integration     3096512] Choosing the nonlinear integrator.
-    [INFO    root                      3096512] Starting analysis process.
-    [INFO    root                      3096512] Started analysis process with pid 3097148.
-    [INFO    hops.core.hierarchy_data  3096512] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_0ae2ca3483c49a2a1c0280dfc0f2ac52460f12201bc7e679f25b690ffc867a77.fifo
-    [INFO    hops.core.integration     3096512] Using 16 integrators.
-    [INFO    hops.core.integration     3096512] Some 0 trajectories have to be integrated.
-    [INFO    hops.core.integration     3096512] Using 1820 hierarchy states.
-    0it [00:00, ?it/s]
-    [INFO    hops.core.integration     3096512] Choosing the nonlinear integrator.
-    [INFO    root                      3096512] Starting analysis process.
-    [INFO    root                      3096512] Started analysis process with pid 3097154.
-    [INFO    hops.core.hierarchy_data  3096512] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_c4ffcc018e0fad01ca35903f166e03ae3e28215d7e8b4f2a8d3a22e69a69866f.fifo
-    [INFO    hops.core.integration     3096512] Using 16 integrators.
-    [INFO    hops.core.integration     3096512] Some 0 trajectories have to be integrated.
-    [INFO    hops.core.integration     3096512] Using 1820 hierarchy states.
-  0it [00:00, ?it/s]
-    [INFO    hops.core.integration     3096512] Choosing the nonlinear integrator.
-    [INFO    root                      3096512] Starting analysis process.
-    [INFO    root                      3096512] Started analysis process with pid 3097159.
-    [INFO    hops.core.hierarchy_data  3096512] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_b5d2774406d4926e3037f019b1d286baecda88125439768183d77b62be9e485d.fifo
-    [INFO    hops.core.integration     3096512] Using 16 integrators.
-    [INFO    hops.core.integration     3096512] Some 553 trajectories have to be integrated.
-    [INFO    hops.core.integration     3096512] Using 1820 hierarchy states.
-  100% 553/553 [26:21<00:00,  2.86s/it]
-    [INFO    hops.core.integration     3096512] Choosing the nonlinear integrator.
-    [INFO    root                      3096512] Starting analysis process.
-    [INFO    root                      3096512] Started analysis process with pid 3101150.
-    [INFO    hops.core.hierarchy_data  3096512] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_4759cede806dea32e6115a827b2d33e52a66f8d18f40f512f534b5475c8caef0.fifo
-    [INFO    hops.core.integration     3096512] Using 16 integrators.
-    [INFO    hops.core.integration     3096512] Some 970 trajectories have to be integrated.
-    [INFO    hops.core.integration     3096512] Using 1820 hierarchy states.
-  100% 970/970 [45:21<00:00,  2.81s/it]
-    [INFO    hops.core.integration     3096512] Choosing the nonlinear integrator.
-    [INFO    root                      3096512] Starting analysis process.
-    [INFO    root                      3096512] Started analysis process with pid 3107760.
-    [INFO    hops.core.hierarchy_data  3096512] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_1410bb9ebb987280f2d2208c1e47a2619f8f6572d2d0a3ce20aadd16776fc3d0.fifo
-    [INFO    hops.core.integration     3096512] Using 16 integrators.
-    [INFO    hops.core.integration     3096512] Some 970 trajectories have to be integrated.
-    [INFO    hops.core.integration     3096512] Using 1820 hierarchy states.
-  100% 970/970 [46:07<00:00,  2.85s/it]
-    [INFO    hops.core.integration     3096512] Choosing the nonlinear integrator.
-    [INFO    root                      3096512] Starting analysis process.
-    [INFO    root                      3096512] Started analysis process with pid 3114351.
-    [INFO    hops.core.hierarchy_data  3096512] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_736a1897845d638b4f3bc296842933aa936337ead26304ee13fa3b29d5c071b3.fifo
-    [INFO    hops.core.integration     3096512] Using 16 integrators.
-    [INFO    hops.core.integration     3096512] Some 970 trajectories have to be integrated.
-    [INFO    hops.core.integration     3096512] Using 1820 hierarchy states.
-  100% 970/970 [45:46<00:00,  2.83s/it]
-    [INFO    hops.core.integration     3096512] Choosing the nonlinear integrator.
-    [INFO    root                      3096512] Starting analysis process.
-    [INFO    root                      3096512] Started analysis process with pid 3120948.
-    [INFO    hops.core.hierarchy_data  3096512] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_bb3025682df8d676d76e6202a3c5a8fb9381a50cc1ae8da56f38745376ee30c4.fifo
-    [INFO    hops.core.integration     3096512] Using 16 integrators.
-    [INFO    hops.core.integration     3096512] Some 970 trajectories have to be integrated.
-    [INFO    hops.core.integration     3096512] Using 1820 hierarchy states.
-  100% 970/970 [44:57<00:00,  2.78s/it]
-    [INFO    hops.core.integration     3096512] Choosing the nonlinear integrator.
-    [INFO    root                      3096512] Starting analysis process.
-    [INFO    root                      3096512] Started analysis process with pid 3127516.
-    [INFO    hops.core.hierarchy_data  3096512] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_7a917c6d6fc01ab8a539cf0be9f0d315e9317bbe51674ee673e74760e35e3531.fifo
-    [INFO    hops.core.integration     3096512] Using 16 integrators.
-    [INFO    hops.core.integration     3096512] Some 970 trajectories have to be integrated.
-    [INFO    hops.core.integration     3096512] Using 1820 hierarchy states.
-  100% 970/970 [45:00<00:00,  2.78s/it]
-    [INFO    hops.core.integration     3096512] Choosing the nonlinear integrator.
-    [INFO    root                      3096512] Starting analysis process.
-    [INFO    root                      3096512] Started analysis process with pid 3134106.
-    [INFO    hops.core.hierarchy_data  3096512] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_ff8373ff48a0ea02cd400a513eb5ce08ea239178a58fb926260ee433554fab6a.fifo
-    [INFO    hops.core.integration     3096512] Using 16 integrators.
-    [INFO    hops.core.integration     3096512] Some 970 trajectories have to be integrated.
-    [INFO    hops.core.integration     3096512] Using 1820 hierarchy states.
-  100% 970/970 [45:04<00:00,  2.79s/it]
-#+end_example
-[[file:./.ob-jupyter/4a2358e0dc247a8d9328ce80db6ada045da1614b.svg]]
-[[file:./.ob-jupyter/31c7c50f104e5fe8f7efe4f6fe4d37100bd9d4ad.svg]]
+
+
+
+*** Analysis
+:PROPERTIES:
+:header-args: :tangle no :session timing_scan_analysis :noweb yes :async yes
 :END:
 
 #+begin_src jupyter-python
-  f, a = plt.subplots()
-  powers = []
-  for model in models:
-      pu.plot_with_σ(model.t, model.total_power(), ax=a)
-      #print(model.power().value, model.efficiency().value)
-      powers.append(model.total_power().value.max())
-
-  plt.matshow(np.array(powers).reshape((3,3)))
+  from timing_scan import *
 #+end_src
 
 #+RESULTS:
 :RESULTS:
-: <matplotlib.image.AxesImage at 0x7fb863798a30>
-[[file:./.ob-jupyter/71231b5ed5743908c56def5e94cc3edf780ea9c1.svg]]
-[[file:./.ob-jupyter/2a19804a1b0b621776af79982521674ceeb6284d.svg]]
+: 0.0 0.0
+: 0.0 0.05
+: 0.0 0.1
+: 0.5 0.0
+: 0.5 0.05
+: 0.5 0.1
+: 1.0 0.0
+: 1.0 0.05
+: 1.0 0.1
+[[file:./.ob-jupyter/26dc34838476424c900f849dc4e14dbc7f2a841b.svg]]
+[[file:./.ob-jupyter/dd4e26fb4b28de1911ab3d1fe77f2e6d4245df6e.svg]]
+:END:
+
+#+begin_src jupyter-python
+  powers = []
+  efficiencies = []
+  for model in models:
+      #pu.plot_with_σ(model.t, model.total_power(), ax=a)
+      #print(model.power().value, model.efficiency().value)
+      powers.append(-float(model.power().value))
+      efficiencies.append(model.efficiency().value)
+
+  #plt.matshow(np.array(powers).reshape((3,3)))
+  f, a =ot.plot_3d_heatmap(np.array(powers), np.array(overlaps), np.array(shifts))
+  a.set_xlabel("overlaps")
+  a.set_ylabel("shifts")
+  a.set_zlabel("Power")
+
+  f, a =ot.plot_3d_heatmap(np.array(efficiencies), np.array(overlaps), np.array(shifts))
+  a.set_xlabel("overlaps")
+  a.set_ylabel("shifts")
+  a.set_zlabel("Efficiency")
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+: Text(0.5, 0, 'Efficiency')
+[[file:./.ob-jupyter/8127fbd513a3f16846f7a4f17285ce70e9c1a899.svg]]
+[[file:./.ob-jupyter/1e5f39b4710ab00b6c68292db4c69b8d0a126bb6.svg]]
 :END:

@@ -13,8 +13,8 @@ import otto_utilities as ot
 import ray
 ray.shutdown()
 
-#ray.init(address='auto')
-ray.init()
+ray.init(address='auto')
+#ray.init()
 from hops.util.logging_setup import logging_setup
 import logging
 logging_setup(logging.INFO)

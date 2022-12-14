@@ -165,3 +165,29 @@ def integrate_online(model, n, stream_folder=None, **kwargs):
 def integrate_online_multi(models, *args, **kwargs):
     for model in models:
         integrate_online(model, *args, **kwargs)
+
+
+def plot_3d_heatmap(values, x_labels, y_labels):
+    f, _ = plt.subplots()
+
+    normalized_values = abs(values) - abs(values).min()
+    normalized_values /= abs(normalized_values).max()
+
+    cmap = plt.get_cmap("plasma")
+    colors = [cmap(power) for power in normalized_values]
+
+    ax1 = plt.gcf().add_subplot(111, projection="3d")
+
+    _xx, _yy = np.meshgrid(x_labels, y_labels, indexing="ij")
+    x, y = _xx.ravel(), _yy.ravel()
+    dx = x_labels[1] - x_labels[0]
+    dy = y_labels[1] - y_labels[0]
+
+    x -= dx / 2
+    y -= dy / 2
+
+    ax1.bar3d(x, y, np.zeros_like(values), dx, dy, values, color=colors)
+    ax1.set_xticks(x_labels)
+    ax1.set_yticks(y_labels)
+
+    return f, ax1

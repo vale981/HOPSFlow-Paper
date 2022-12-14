@@ -13,8 +13,8 @@ import otto_utilities as ot
 import ray
 ray.shutdown()
 
-#ray.init(address='auto')
-ray.init()
+ray.init(address='auto')
+#ray.init()
 from hops.util.logging_setup import logging_setup
 import logging
 logging_setup(logging.INFO)
@@ -68,6 +68,7 @@ models = []
 import itertools
 
 for overlap, shift in itertools.product(overlaps, shifts):
+    print(overlap, shift)
     (p_H, p_L) = timings(τ_mod, τ_I, overlap)
 
     model = prototype.copy()
