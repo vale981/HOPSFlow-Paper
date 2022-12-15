@@ -1,14 +1,36 @@
-\documentclass[reprint,aps,prl,superscriptaddress]{revtex4-2}
+\documentclass[reprint,aps,superscriptaddress]{revtex4-2}
 \usepackage[unicode=true,bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,breaklinks=false,pdfborder={0 0 1}, backref=false,colorlinks=true]{hyperref}
 \usepackage{orcidlink}
 \usepackage{microtype}
 \usepackage{mathtools}
 \usepackage{graphicx}
 \usepackage{physics}
-\usepackage[math,random]{blindtext}
+\usepackage{cleveref}
 \usepackage{bm}
 \bibliographystyle{apsrev4-2}
-\blindmathtrue
+
+
+% HOPS/NMQSD
+\def\sys{\ensuremath{\mathrm{S}}}
+\def\bath{\ensuremath{\mathrm{B}}}
+\def\inter{\ensuremath{\mathrm{I}}}
+\def\nth{\ensuremath{^{(n)}}}
+
+% unicode math
+\iftutex
+\usepackage{unicode-math}
+\else
+\usepackage{amssymb}
+\def\z"{}
+\def\UnicodeMathSymbol#1#2#3#4{%
+ \ifnum#1>"A0
+   \DeclareUnicodeCharacter{\z#1}{#2}%
+  \fi}
+\input{unicode-math-table}
+\let\muprho\rho
+\def\BbbR{\mathbb{R}}
+\fi
+
 
 \begin{document}
 \preprint{APS/123-QED}
@@ -37,24 +59,138 @@
 
 
 
+
 \begin{abstract}
-\blindtext
 \end{abstract}
 \maketitle
 
+\tableofcontents
+
 \section{Introduction}
 \label{sec:introduction}
-\blindtext
+The field of quantum thermodynamics has attracted much interest
+recently~\cite{Talkner2020Oct,Rivas2019Oct,Riechers2021Apr,Vinjanampathy2016Oct,Binder2018,Kurizki2021Dec,Mukherjee2020Jan,Xu2022Mar}.
+Quantum thermodynamics is, among other issues, concerned with
+extending the standard phenomenological thermodynamic notions to
+microscopic open systems.
 
-\blindtext
+The general type of model that is being investigated in this field is
+given by the Hamiltonian
+\begin{equation}
+  \label{eq:4}
+  H = H_{\sys} + ∑_{n} \qty[H_{\inter}^{(n)} + H_{\bath}^{(n)}],
+\end{equation}
+where \(H_{\sys}\) models a ``small'' system (from here on called
+simply the \emph{system}) of arbitrary structure and the
+\(H_{\bath}^{(n)}\) model the ``large'' bath systems with simple
+structure but a large number of degrees of freedom. The
+\(H_{I}^{(n)}\) acts on system and bath, mediating their interaction.
 
-\blindtext
+In this setting may make be possible to formulate rigorous microscopic
+definitions of thermodynamic quantities such as internal energy, heat
+and work that are consistent with the well-known laws of
+thermodynamics. Currently, there is no consensus on this matter yet,
+as is demonstrated by the plethora of proposals and discussions in
+\cite{Rivas2019Oct,Talkner2020Oct,Motz2018Nov,Wiedmann2020Mar,Senior2020Feb,Kato2015Aug,Kato2016Dec,Strasberg2021Aug,Talkner2016Aug,Bera2021Feb,Bera2021Jun,Esposito2015Dec,Elouard2022Jul}.
 
+This is particularly true for the general case where the coupling to
+the baths may be arbitrarily strong. In this case the weak coupling
+treatment that allows separate system and bath dynamics is not
+applicable. Even the simple seeming question of how internal energy is
+to be defined becomes non-trivial~\cite{Rivas2012,Binder2018} due to
+the fact that \(\ev{H_{\inter}}\neq 0\).
+
+In this way the bath degrees of freedom interesting in themselves,
+which necessitates a treatment of the exact global unitary dynamics of
+system and bath.
+
+If no analytical solution for these dynamics is available, numerical
+methods have to be relied upon. Notably there are perturbative methods
+such as the Redfield equations for non-Markovian weak coupling
+dynamics~\cite{Davidovic2020Sep} and also exact methods like the
+Hierarchical Equations of Motion
+HEOM~\cite{Tanimura1990Jun,Tang2015Dec}, multilayer
+MCTDH~\cite{Wang2010May}, TEMPO~\cite{Strathearn2018Aug} and the
+Hierarchy of Pure States HOPS~\cite{Suess2014Oct}\footnote{See
+  \cite{RichardDiss} for a detailed account.}. Although the focus of
+these methods is on the reduced system dynamics, exact treatments of
+open systems can provide access to the global unitary evolution of the
+system and the baths.
+
+In this work we will focus on the framework of the ``Non-Markovian
+Quantum State Diffusion'' (NMQSD)~\cite{Diosi1998Mar}, which is
+briefly reviewed in~\cref{sec:nmqsd}. We will show in \cref{chap:flow}
+that the NMQSD allows access to interaction and bath related
+quantities. This novel application of the formalism constitutes the
+main result of this work.
+
+Based on the NMQSD and inspired by the ideas behind HEOM, a numerical
+method, the ``Hierarchy of Pure States''
+(HOPS)~\cite{RichardDiss,Hartmann2017Dec}, can be formulated. A brief
+account of the method is given in \cref{sec:hops}.
+
+The results of \cref{sec:flow}, most importantly the calculation of
+bath and interaction energy expectation values, can be easily
+implemented within this numerical framework. By doing so we will
+elucidate the role of certain features inherent to the method. The
+most general case we will be able to handle is a system coupled to
+multiple baths of differing temperatures under arbitrary time
+dependent modulation. As HOPS on its own is already a method with a
+very broad range of applicability~\cite{RichardDiss}, we will find it
+to be suitable for the exploration of thermodynamical settings.
+
+In \cref{sec:applications} we apply this result to two simple systems.
+As an elementary application, a brief study of the characteristics of
+the energy flow out of a qubit into a zero temperature bath is
+presented in \cref{sec:qubit-relax-char}. To demonstrate the current
+capabilities of our method to the fullest we will turn to the
+simulation of a quantum Otto-like
+cycle~\cite{cite:Geva1992Feb,cite:Wiedmann2020Mar,cite:Wiedmann2021Jun}
+in \cref{sec:quantum-otto-cycle}, which features a simultaneous time
+dependence in both \(H_{\inter}\) and \(H_{\sys}\).
 
 \section{Energy Flow with HOPS}
-\label{sec:method}
+\label{sec:flow}
+
+\subsection{The NMQSD}
+\label{sec:nmqsd}
+
+\subsection{The HOPS}
+\label{sec:hops}
+
+\subsection{Bath Observables}
+\label{sec:bath-observables}
+
+\subsubsection{Bath Energy Change}
+\label{sec:bath-energy-change}
+
+\subsubsection{General Collective Bath Observables}
+\label{sec:gener-coll-bath}
 
 
+\section{Applications}
+\label{sec:applications}
+
+\subsection{Qubit Relaxation Characteristics}
+\label{sec:qubit-relax-char}
+
+\subsection{A Quantum Otto Cycle}
+\label{sec:quantum-otto-cycle}
+
+
+
+\begin{itemize}
+\item see the chapter in my thesis
+\item \textbf{Ask richard about phase transitions in spin boson}
+\end{itemize}
+
+
+\section{Outlook and Open Questions}
+\label{sec:outl-open-quest}
+\begin{itemize}
+\item steady state methods
+\item energy flow for portions of the bath -> adaptive method?
+\end{itemize}
 
 \bibliography{index}
 \end{document}
