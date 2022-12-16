@@ -54,7 +54,8 @@ prototype = OttoEngine(
 )
 
 δs = np.round(np.linspace(.3, .5, 3), 3)
-τ_Is = np.array([.05, .1, .15])
+τ_Is = np.array([# .05,
+                 .1, .15, .2])
 δs, τ_Is
 
 models = []

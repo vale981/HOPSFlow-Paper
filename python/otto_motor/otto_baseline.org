@@ -89,33 +89,6 @@ A basic otto cycle that has a finite power output.
   ot.integrate_online(model, 5000, analyze_kwargs=dict(every=100))
 #+end_src
 
-#+RESULTS:
-:RESULTS:
-# [goto error]
-: [0;31m---------------------------------------------------------------------------[0m
-: [0;31mNameError[0m                                 Traceback (most recent call last)
-: Cell [0;32mIn[1], line 1[0m
-: [0;32m----> 1[0m [43mot[49m[38;5;241m.[39mintegrate_online(model, [38;5;241m5000[39m, analyze_kwargs[38;5;241m=[39m[38;5;28mdict[39m(every[38;5;241m=[39m[38;5;241m100[39m))
-:
-: [0;31mNameError[0m: name 'ot' is not defined
-:END:
-
-
-
-
-#+begin_example
-  100% 1314/1314 [31:39<00:00,  1.45s/it]
-  [INFO    hops.core.integration     177538] Choosing the nonlinear integrator.
-  [INFO    root                      177538] Starting analysis process.
-  [INFO    root                      177538] Started analysis process with pid 218822.
-  [INFO    hops.core.hierarchy_data  177538] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_b28fda1ae09e50be64694fbb2886a0c43f329c2036a918a72db2346af5779470.fifo
-  [INFO    hops.core.integration     177538] Using 32 integrators.
-  [INFO    hops.core.integration     177538] Some 0 trajectories have to be integrated.
-  [INFO    hops.core.integration     177538] Using 1820 hierarchy states.
-  0it [00:00, ?it/s]
-  [2m[36m(raylet)[0m Spilled 2746 MiB, 1285 objects, write throughput 121 MiB/s. Set RAY_verbose_spill_logs=0 to disable this message.
-#+end_example
-
 ** Results
 :PROPERTIES:
 :header-args:  :session baseline_res :noweb yes :async yes
@@ -592,12 +565,13 @@ coupling we change the switching speed of the interaction and the coupling stren
 
 #+begin_src jupyter-python
   δs = np.round(np.linspace(.3, .5, 3), 3)
-  τ_Is = np.array([.05, .1, .15])
+  τ_Is = np.array([# .05,
+                   .1, .15, .2])
   δs, τ_Is
 #+end_src
 
 #+RESULTS:
-| array | ((0.3 0.4 0.5)) | array | ((0.05 0.1 0.15)) |
+| array | ((0.3 0.4 0.5)) | array | ((0.1 0.15 0.2)) |
 
 #+begin_src jupyter-python
   models = []
@@ -620,7 +594,7 @@ coupling we change the switching speed of the interaction and the coupling stren
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
-[[file:./.ob-jupyter/a4dcb30ebb23207546d755ada71d8688c1e425e6.svg]]
+[[file:./.ob-jupyter/55ffa13bcc23073c28bc5a33e0a8111932c8ffdb.svg]]
 :END:
 
 *** Integration
@@ -631,84 +605,154 @@ coupling we change the switching speed of the interaction and the coupling stren
 #+begin_src jupyter-python
   from speed_coupling_scan import *
 
-  ot.integrate_online_multi(models, 5000)
+  ot.integrate_online_multi(models, 10_000, increment=10, analyze_kwargs=dict(every=100))
 #+end_src
 
 #+RESULTS:
+:RESULTS:
 #+begin_example
-  [INFO    hops.core.integration     1613157] Choosing the nonlinear integrator.
-  [INFO    root                      1613157] Starting analysis process.
-  [INFO    root                      1613157] Started analysis process with pid 1622138.
-  [INFO    hops.core.hierarchy_data  1613157] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_1dc8c283ae780328a30ecbf32a23e06b14036027991ff24316228cb36d1b4945.fifo
-  [INFO    hops.core.integration     1613157] Using 32 integrators.
-  [INFO    hops.core.integration     1613157] Some 0 trajectories have to be integrated.
-  [INFO    hops.core.integration     1613157] Using 1820 hierarchy states.
+    [INFO    hops.core.integration     352083] Choosing the nonlinear integrator.
+    [INFO    root                      352083] Starting analysis process.
+    [INFO    root                      352083] Started analysis process with pid 354078.
+    [INFO    hops.core.hierarchy_data  352083] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.fifo
+    [INFO    hops.core.integration     352083] Using 15 integrators.
+    [INFO    hops.core.integration     352083] Some 0 trajectories have to be integrated.
+    [INFO    hops.core.integration     352083] Using 1820 hierarchy states.
+    0it [00:00, ?it/s]
+    [INFO    hops.core.integration     352083] Choosing the nonlinear integrator.
+    [INFO    root                      352083] Starting analysis process.
+    [INFO    root                      352083] Started analysis process with pid 354089.
+    [INFO    hops.core.hierarchy_data  352083] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.fifo
+    [INFO    hops.core.integration     352083] Using 15 integrators.
+    [INFO    hops.core.integration     352083] Some 0 trajectories have to be integrated.
+    [INFO    hops.core.integration     352083] Using 1820 hierarchy states.
   0it [00:00, ?it/s]
-  [INFO    hops.core.integration     1613157] Choosing the nonlinear integrator.
-  [INFO    root                      1613157] Starting analysis process.
-  [INFO    root                      1613157] Started analysis process with pid 1622143.
-  [INFO    hops.core.hierarchy_data  1613157] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_d30d711ff9941f452949b6687f0d65e2c8596cd1bd966f351bd44893b38ed6cc.fifo
-  [INFO    hops.core.integration     1613157] Using 32 integrators.
-  [INFO    hops.core.integration     1613157] Some 30 trajectories have to be integrated.
-  [INFO    hops.core.integration     1613157] Using 1820 hierarchy states.
-100% 30/30 [01:04<00:00,  2.16s/it]
-  [INFO    hops.core.integration     1613157] Choosing the nonlinear integrator.
-  [INFO    root                      1613157] Starting analysis process.
-  [INFO    root                      1613157] Started analysis process with pid 1622904.
-  [INFO    hops.core.hierarchy_data  1613157] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_3078e0270324c2117d454140522b004ece6981829ee14877bef0fb77f57cba19.fifo
-  [INFO    hops.core.integration     1613157] Using 31 integrators.
-  [INFO    hops.core.integration     1613157] Some 30 trajectories have to be integrated.
-  [INFO    hops.core.integration     1613157] Using 1820 hierarchy states.
-100% 30/30 [00:56<00:00,  1.88s/it]
-  [INFO    hops.core.integration     1613157] Choosing the nonlinear integrator.
-  [INFO    root                      1613157] Starting analysis process.
-  [INFO    root                      1613157] Started analysis process with pid 1623127.
-  [INFO    hops.core.hierarchy_data  1613157] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_dd47ec9271fca79dcc73eef99399d2467bf926b0dd190c3ed4fc72282733124a.fifo
-  [INFO    hops.core.integration     1613157] Using 32 integrators.
-  [INFO    hops.core.integration     1613157] Some 30 trajectories have to be integrated.
-  [INFO    hops.core.integration     1613157] Using 1820 hierarchy states.
-100% 30/30 [01:01<00:00,  2.04s/it]
-  [INFO    hops.core.integration     1613157] Choosing the nonlinear integrator.
-  [INFO    root                      1613157] Starting analysis process.
-  [INFO    root                      1613157] Started analysis process with pid 1623393.
-  [INFO    hops.core.hierarchy_data  1613157] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_d5b0e9f8818e88200975a5d384e0a9c4945a35ad6b1a38f283ec2f0fe7a01d7f.fifo
-  [INFO    hops.core.integration     1613157] Using 32 integrators.
-  [INFO    hops.core.integration     1613157] Some 30 trajectories have to be integrated.
-  [INFO    hops.core.integration     1613157] Using 1820 hierarchy states.
-100% 30/30 [01:01<00:00,  2.06s/it]
-  [INFO    hops.core.integration     1613157] Choosing the nonlinear integrator.
-  [INFO    root                      1613157] Starting analysis process.
-  [INFO    root                      1613157] Started analysis process with pid 1623611.
-  [INFO    hops.core.hierarchy_data  1613157] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_96bf5679dd97e33f459e5fff6f6a4a56c12673121be09900fa51237de9c358f3.fifo
-  [INFO    hops.core.integration     1613157] Using 32 integrators.
-  [INFO    hops.core.integration     1613157] Some 30 trajectories have to be integrated.
-  [INFO    hops.core.integration     1613157] Using 1820 hierarchy states.
-100% 30/30 [01:00<00:00,  2.01s/it]
-  [INFO    hops.core.integration     1613157] Choosing the nonlinear integrator.
-  [INFO    root                      1613157] Starting analysis process.
-  [INFO    root                      1613157] Started analysis process with pid 1623830.
-  [INFO    hops.core.hierarchy_data  1613157] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_e36d79668e6a3cec1b70fe38ecf5b02eee25be9ee013bac78d38de4aa75d20df.fifo
-  [INFO    hops.core.integration     1613157] Using 32 integrators.
-  [INFO    hops.core.integration     1613157] Some 30 trajectories have to be integrated.
-  [INFO    hops.core.integration     1613157] Using 1820 hierarchy states.
-100% 30/30 [01:03<00:00,  2.11s/it]
-  [INFO    hops.core.integration     1613157] Choosing the nonlinear integrator.
-  [INFO    root                      1613157] Starting analysis process.
-  [INFO    root                      1613157] Started analysis process with pid 1624016.
-  [INFO    hops.core.hierarchy_data  1613157] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_2009a17bd9369ce31a989ea0ff41781580c4955bf36879d0dc985c2dd83bca56.fifo
-  [INFO    hops.core.integration     1613157] Using 32 integrators.
-  [INFO    hops.core.integration     1613157] Some 30 trajectories have to be integrated.
-  [INFO    hops.core.integration     1613157] Using 1820 hierarchy states.
-100% 30/30 [01:01<00:00,  2.04s/it]
-  [INFO    hops.core.integration     1613157] Choosing the nonlinear integrator.
-  [INFO    root                      1613157] Starting analysis process.
-  [INFO    root                      1613157] Started analysis process with pid 1624258.
-  [INFO    hops.core.hierarchy_data  1613157] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_9691c39a98410a756834442e8a29d970fc185f3f951ae49fe836b30c520597f1.fifo
-  [INFO    hops.core.integration     1613157] Using 31 integrators.
-  [INFO    hops.core.integration     1613157] Some 30 trajectories have to be integrated.
-  [INFO    hops.core.integration     1613157] Using 1820 hierarchy states.
-100% 30/30 [01:02<00:00,  2.07s/it]
+    [INFO    hops.core.integration     352083] Choosing the nonlinear integrator.
+    [INFO    root                      352083] Starting analysis process.
+    [INFO    root                      352083] Started analysis process with pid 354094.
+    [INFO    hops.core.hierarchy_data  352083] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_c2bcedc47683a9e450b1a3aafc381ef41cb40159f3e10249baf530d53e0a5616.fifo
+    [INFO    hops.core.integration     352083] Using 15 integrators.
+    [INFO    hops.core.integration     352083] Some 0 trajectories have to be integrated.
+    [INFO    hops.core.integration     352083] Using 1820 hierarchy states.
+  0it [00:00, ?it/s]
+    [INFO    hops.core.integration     352083] Choosing the nonlinear integrator.
+    [INFO    root                      352083] Starting analysis process.
+    [INFO    root                      352083] Started analysis process with pid 354099.
+    [INFO    hops.core.hierarchy_data  352083] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_f586285b358dfece5758ee19367305af5c90f9e7fa3495bfc6e1e343146ac224.fifo
+    [INFO    hops.core.integration     352083] Using 15 integrators.
+    [INFO    hops.core.integration     352083] Some 0 trajectories have to be integrated.
+    [INFO    hops.core.integration     352083] Using 1820 hierarchy states.
+  0it [00:00, ?it/s]
+    [INFO    hops.core.integration     352083] Choosing the nonlinear integrator.
+    [INFO    root                      352083] Starting analysis process.
+    [INFO    root                      352083] Started analysis process with pid 354105.
+    [INFO    hops.core.hierarchy_data  352083] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_b3b72b5d8b5ea5633b8ffb42f0ccdc0756692bf830113311a2529bbddd998ca5.fifo
+    [INFO    hops.core.integration     352083] Using 15 integrators.
+    [INFO    hops.core.integration     352083] Some 0 trajectories have to be integrated.
+    [INFO    hops.core.integration     352083] Using 1820 hierarchy states.
+  0it [00:00, ?it/s]
+    [INFO    hops.core.integration     352083] Choosing the nonlinear integrator.
+    [INFO    root                      352083] Starting analysis process.
+    [INFO    root                      352083] Started analysis process with pid 354112.
+    [INFO    hops.core.hierarchy_data  352083] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_366624b15e7635d88ee87c805715d9c117c8dd942a0e448546d500d4ee54d3d5.fifo
+    [INFO    hops.core.integration     352083] Using 15 integrators.
+    [INFO    hops.core.integration     352083] Some 0 trajectories have to be integrated.
+    [INFO    hops.core.integration     352083] Using 1820 hierarchy states.
+  0it [00:00, ?it/s]
+    [INFO    hops.core.integration     352083] Choosing the nonlinear integrator.
+    [INFO    root                      352083] Starting analysis process.
+    [INFO    root                      352083] Started analysis process with pid 354121.
+    [INFO    hops.core.hierarchy_data  352083] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_d9fb3c190979ca8d420ffb8e3aa87d802d6ca8456c03a31ce1628f98159deca6.fifo
+    [INFO    hops.core.integration     352083] Using 15 integrators.
+    [INFO    hops.core.integration     352083] Some 0 trajectories have to be integrated.
+    [INFO    hops.core.integration     352083] Using 1820 hierarchy states.
+  0it [00:00, ?it/s]
+    [INFO    hops.core.integration     352083] Choosing the nonlinear integrator.
+    [INFO    root                      352083] Starting analysis process.
+    [INFO    root                      352083] Started analysis process with pid 354126.
+    [INFO    hops.core.hierarchy_data  352083] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_23143a028d6739074cf61fa89b51996bf37334e4892df36d9f2929d4b3f20326.fifo
+    [INFO    hops.core.integration     352083] Using 15 integrators.
+    [INFO    hops.core.integration     352083] Some 10 trajectories have to be integrated.
+    [INFO    hops.core.integration     352083] Using 1820 hierarchy states.
+  100% 10/10 [00:42<00:00,  4.20s/it]
+    [INFO    hops.core.integration     352083] Choosing the nonlinear integrator.
+    [INFO    root                      352083] Starting analysis process.
+    [INFO    root                      352083] Started analysis process with pid 354556.
+    [INFO    hops.core.hierarchy_data  352083] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_070424f37f903b024112bee7192fa44b1edf3556fce0d7578023243a83db0b03.fifo
+    [INFO    hops.core.integration     352083] Using 15 integrators.
+    [INFO    hops.core.integration     352083] Some 10 trajectories have to be integrated.
+    [INFO    hops.core.integration     352083] Using 1820 hierarchy states.
+    0% 0/10 [00:00<?, ?it/s][INFO    hops.core.signal_delay    352083] caught sig 'SIGINT'
+    [INFO    hops.core.signal_delay    352083] caught sig 'SIGINT'
+    0% 0/10 [00:20<?, ?it/s]
+    [INFO    hops.core.signal_delay    352083] caught 2 signal(s)
+    [INFO    hops.core.signal_delay    352083] emit signal 'SIGINT'
+    [INFO    hops.core.signal_delay    352083] caught sig 'SIGINT'
+    [INFO    hops.core.signal_delay    352083] emit signal 'SIGINT'
+    [INFO    hops.core.signal_delay    352083] caught sig 'SIGINT'
+    2022-12-16 18:36:05,698     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2022-12-16 18:36:05,703     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2022-12-16 18:36:05,714     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2022-12-16 18:36:05,736     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2022-12-16 18:36:05,746     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2022-12-16 18:36:05,777     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2022-12-16 18:36:05,778     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2022-12-16 18:36:05,778     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2022-12-16 18:36:05,779     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2022-12-16 18:36:05,780     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    [INFO    hops.core.signal_delay    352083] caught 2 signal(s)
+    [INFO    hops.core.signal_delay    352083] emit signal 'SIGINT'
 #+end_example
+# [goto error]
+#+begin_example
+  [0;31m---------------------------------------------------------------------------[0m
+  [0;31mKeyboardInterrupt[0m                         Traceback (most recent call last)
+  Cell [0;32mIn[6], line 3[0m
+  [1;32m      1[0m [38;5;28;01mfrom[39;00m [38;5;21;01mspeed_coupling_scan[39;00m [38;5;28;01mimport[39;00m [38;5;241m*[39m
+  [0;32m----> 3[0m [43mot[49m[38;5;241;43m.[39;49m[43mintegrate_online_multi[49m[43m([49m[43mmodels[49m[43m,[49m[43m [49m[38;5;241;43m1000[39;49m[43m,[49m[43m [49m[43mincrement[49m[38;5;241;43m=[39;49m[38;5;241;43m10[39;49m[43m,[49m[43m [49m[43manalyze_kwargs[49m[38;5;241;43m=[39;49m[38;5;28;43mdict[39;49m[43m([49m[43mevery[49m[38;5;241;43m=[39;49m[38;5;241;43m100[39;49m[43m)[49m[43m)[49m
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/otto_utilities.py:170[0m, in [0;36mintegrate_online_multi[0;34m(models, n, increment, *args, **kwargs)[0m
+  [1;32m    168[0m [38;5;28;01mwhile[39;00m target [38;5;241m<[39m n:
+  [1;32m    169[0m     [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models:
+  [0;32m--> 170[0m         [43mintegrate_online[49m[43m([49m[43mmodel[49m[43m,[49m[43m [49m[38;5;28;43mmin[39;49m[43m([49m[43m[[49m[43mn[49m[43m,[49m[43m [49m[43mtarget[49m[43m][49m[43m)[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
+  [1;32m    172[0m     target [38;5;241m+[39m[38;5;241m=[39m increment
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/otto_utilities.py:155[0m, in [0;36mintegrate_online[0;34m(model, n, stream_folder, **kwargs)[0m
+  [1;32m    154[0m [38;5;28;01mdef[39;00m [38;5;21mintegrate_online[39m(model, n, stream_folder[38;5;241m=[39m[38;5;28;01mNone[39;00m, [38;5;241m*[39m[38;5;241m*[39mkwargs):
+  [0;32m--> 155[0m     [43maux[49m[38;5;241;43m.[39;49m[43mintegrate[49m[43m([49m
+  [1;32m    156[0m [43m        [49m[43mmodel[49m[43m,[49m
+  [1;32m    157[0m [43m        [49m[43mn[49m[43m,[49m
+  [1;32m    158[0m [43m        [49m[43mstream_file[49m[38;5;241;43m=[39;49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43m"[39;49m[43m [49m[38;5;28;43;01mif[39;49;00m[43m [49m[43mstream_folder[49m[43m [49m[38;5;129;43;01mis[39;49;00m[43m [49m[38;5;28;43;01mNone[39;49;00m[43m [49m[38;5;28;43;01melse[39;49;00m[43m [49m[43mstream_folder[49m[43m)[49m
+  [1;32m    159[0m [43m        [49m[38;5;241;43m+[39;49m[43m [49m[38;5;124;43mf[39;49m[38;5;124;43m"[39;49m[38;5;124;43mresults_[39;49m[38;5;132;43;01m{[39;49;00m[43mmodel[49m[38;5;241;43m.[39;49m[43mhexhash[49m[38;5;132;43;01m}[39;49;00m[38;5;124;43m.fifo[39;49m[38;5;124;43m"[39;49m[43m,[49m
+  [1;32m    160[0m [43m        [49m[43manalyze[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
+  [1;32m    161[0m [43m        [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m,[49m
+  [1;32m    162[0m [43m    [49m[43m)[49m
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_auxiliary.py:201[0m, in [0;36mintegrate[0;34m(model, n, data_path, clear_pd, single_process, stream_file, analyze, results_path, analyze_kwargs)[0m
+  [1;32m    199[0m         supervisor[38;5;241m.[39mintegrate_single_process(clear_pd)
+  [1;32m    200[0m     [38;5;28;01melse[39;00m:
+  [0;32m--> 201[0m         supervisor[38;5;241m.[39mintegrate(clear_pd)
+  [1;32m    203[0m cleanup([38;5;241m0[39m)
+
+  File [0;32m~/src/hops/hops/core/signal_delay.py:87[0m, in [0;36msig_delay.__exit__[0;34m(self, exc_type, exc_val, exc_tb)[0m
+  [1;32m     84[0m [38;5;28;01mif[39;00m [38;5;28mlen[39m([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught) [38;5;241m>[39m [38;5;241m0[39m [38;5;129;01mand[39;00m [38;5;28mself[39m[38;5;241m.[39mhandler [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+  [1;32m     85[0m     [38;5;28mself[39m[38;5;241m.[39mhandler([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught)
+  [0;32m---> 87[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_restore[49m[43m([49m[43m)[49m
+
+  File [0;32m~/src/hops/hops/core/signal_delay.py:68[0m, in [0;36msig_delay._restore[0;34m(self)[0m
+  [1;32m     66[0m [38;5;28;01mfor[39;00m i, s [38;5;129;01min[39;00m [38;5;28menumerate[39m([38;5;28mself[39m[38;5;241m.[39msigs):
+  [1;32m     67[0m     signal[38;5;241m.[39msignal(s, [38;5;28mself[39m[38;5;241m.[39mold_handlers[i])
+  [0;32m---> 68[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msigh[49m[38;5;241;43m.[39;49m[43memit[49m[43m([49m[43m)[49m
+
+  File [0;32m~/src/hops/hops/core/signal_delay.py:42[0m, in [0;36mSigHandler.emit[0;34m(self)[0m
+  [1;32m     40[0m [38;5;28;01mfor[39;00m s [38;5;129;01min[39;00m [38;5;28mself[39m[38;5;241m.[39msigs_caught:
+  [1;32m     41[0m     log[38;5;241m.[39minfo([38;5;124m"[39m[38;5;124memit signal [39m[38;5;124m'[39m[38;5;132;01m{}[39;00m[38;5;124m'[39m[38;5;124m"[39m[38;5;241m.[39mformat(SIG_MAP[s]))
+  [0;32m---> 42[0m     [43mos[49m[38;5;241;43m.[39;49m[43mkill[49m[43m([49m[43mos[49m[38;5;241;43m.[39;49m[43mgetpid[49m[43m([49m[43m)[49m[43m,[49m[43m [49m[43ms[49m[43m)[49m
+
+  [0;31mKeyboardInterrupt[0m:
+#+end_example
+:END:
+
 
 *** Analysis
 :PROPERTIES:
@@ -720,7 +764,7 @@ coupling we change the switching speed of the interaction and the coupling stren
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/7c4d9c744859da500d4a828001441bf13524e4ef.svg]]
+[[file:./.ob-jupyter/704431a3f5ccc8a1e1152c01f90c9fd4428dedd8.svg]]
 
 **** Import from taurus
 #+begin_src bash :results none
@@ -736,79 +780,166 @@ coupling we change the switching speed of the interaction and the coupling stren
 
 #+RESULTS:
 #+begin_example
-  [INFO    root                      1759248] Skipping 2c92f58615625aa8f53a46159c05375069313e5566ba2e7e5e3d4f23be9b0812.
-  [INFO    root                      1759248] Skipping 7ab00d286619067e63866cb9df3e159b51ebdbeea557b6ed0181f106e9127be2.
-  [INFO    root                      1759248] Skipping 9f89257094dd5215bf7cd36b6bcda76657047a6cc14f7e1cc3b4ac451c72dddd.
-  [INFO    root                      1759248] Skipping 750ccbb5b693f77ef025d7e0bbe10d41151e75b7732ce85b227303f6b6ce369d.
-  [INFO    root                      1759248] Skipping dd468201c5433723b82946b50f425e79f44ca5ffb5b26a2211b7ade7720035c7.
-  [INFO    root                      1759248] Skipping 7290a763c090c9bd24fc0c678b9d30a7c568342fcb1af2feb47dcb9ec213dc55.
-  [INFO    root                      1759248] Skipping 9c08cd39e95fb7db9f55852d940635d3ac2242c8a84951e6ff7b0be4a45be183.
-  [INFO    root                      1759248] Skipping 510d300d2bc8796a92179affa7add161003a1947b092423ba8968c06b13d9138.
-  [INFO    root                      1759248] Skipping 8b00ac385c8c38c60c11b7de70b19cc2fe773b6d747205addd41636027531f21.
-  [WARNING root                      1759248] Importing taurus/.data/913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830/_6/913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830_67321c87e1d2d8f639d35064183119b8_1.h5 to .data/913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830/_6/913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830_67321c87e1d2d8f639d35064183119b8_1.h5.
-  [WARNING root                      1759248] The model description is 'A model for scanning coupling strength and interactin switch times.'.
-  [WARNING root                      1759248] Importing taurus/results/flow_913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830.npz to results/flow_913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830.npz.
-  [WARNING root                      1759248] Importing taurus/results/interaction_913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830.npz to results/interaction_913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830.npz.
-  [WARNING root                      1759248] Importing taurus/results/interaction_power_913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830.npz to results/interaction_power_913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830.npz.
-  [WARNING root                      1759248] Importing taurus/results/system_913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830.npz to results/system_913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830.npz.
-  [WARNING root                      1759248] Importing taurus/results/system_power_913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830.npz to results/system_power_913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830.npz.
-  [WARNING root                      1759248] Importing taurus/.data/44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544/_a/44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544_a8304901cb05c594217b6c1de52ccd7a_1.h5 to .data/44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544/_a/44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544_a8304901cb05c594217b6c1de52ccd7a_1.h5.
-  [WARNING root                      1759248] The model description is 'A model for scanning coupling strength and interactin switch times.'.
-  [WARNING root                      1759248] Importing taurus/results/flow_44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544.npz to results/flow_44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544.npz.
-  [WARNING root                      1759248] Importing taurus/results/interaction_44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544.npz to results/interaction_44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544.npz.
-  [WARNING root                      1759248] Importing taurus/results/interaction_power_44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544.npz to results/interaction_power_44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544.npz.
-  [WARNING root                      1759248] Importing taurus/results/system_44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544.npz to results/system_44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544.npz.
-  [WARNING root                      1759248] Importing taurus/results/system_power_44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544.npz to results/system_power_44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544.npz.
-  [WARNING root                      1759248] Importing taurus/.data/348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca/_2/348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca_20ab37bf426bc1c4612228c63f546820_1.h5 to .data/348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca/_2/348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca_20ab37bf426bc1c4612228c63f546820_1.h5.
-  [WARNING root                      1759248] The model description is 'A model for scanning coupling strength and interactin switch times.'.
-  [WARNING root                      1759248] Importing taurus/results/flow_348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca.npz to results/flow_348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca.npz.
-  [WARNING root                      1759248] Importing taurus/results/interaction_348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca.npz to results/interaction_348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca.npz.
-  [WARNING root                      1759248] Importing taurus/results/interaction_power_348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca.npz to results/interaction_power_348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca.npz.
-  [WARNING root                      1759248] Importing taurus/results/system_348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca.npz to results/system_348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca.npz.
-  [WARNING root                      1759248] Importing taurus/results/system_power_348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca.npz to results/system_power_348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca.npz.
-  [WARNING root                      1759248] Importing taurus/.data/2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe/_d/2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe_dc60fe0a91d132da0eac69d4797ab92a_1.h5 to .data/2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe/_d/2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe_dc60fe0a91d132da0eac69d4797ab92a_1.h5.
-  [WARNING root                      1759248] The model description is 'A model for scanning coupling strength and interactin switch times.'.
-  [WARNING root                      1759248] Importing taurus/results/flow_2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe.npz to results/flow_2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe.npz.
-  [WARNING root                      1759248] Importing taurus/results/interaction_2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe.npz to results/interaction_2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe.npz.
-  [WARNING root                      1759248] Importing taurus/results/interaction_power_2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe.npz to results/interaction_power_2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe.npz.
-  [WARNING root                      1759248] Importing taurus/results/system_2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe.npz to results/system_2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe.npz.
-  [WARNING root                      1759248] Importing taurus/results/system_power_2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe.npz to results/system_power_2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe.npz.
-  [WARNING root                      1759248] Importing taurus/.data/de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f/_f/de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f_f390995e85d558452efefa6cdd6c95ae_1.h5 to .data/de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f/_f/de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f_f390995e85d558452efefa6cdd6c95ae_1.h5.
-  [WARNING root                      1759248] The model description is 'A model for scanning coupling strength and interactin switch times.'.
-  [WARNING root                      1759248] Importing taurus/results/flow_de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f.npz to results/flow_de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f.npz.
-  [WARNING root                      1759248] Importing taurus/results/interaction_de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f.npz to results/interaction_de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f.npz.
-  [WARNING root                      1759248] Importing taurus/results/interaction_power_de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f.npz to results/interaction_power_de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f.npz.
-  [WARNING root                      1759248] Importing taurus/results/system_de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f.npz to results/system_de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f.npz.
-  [WARNING root                      1759248] Importing taurus/results/system_power_de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f.npz to results/system_power_de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f.npz.
-  [WARNING root                      1759248] Importing taurus/.data/e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4/_a/e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4_a2a39083e4064f94d5bb57ed03e5d090_1.h5 to .data/e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4/_a/e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4_a2a39083e4064f94d5bb57ed03e5d090_1.h5.
-  [WARNING root                      1759248] The model description is 'A model for scanning coupling strength and interactin switch times.'.
-  [WARNING root                      1759248] Importing taurus/results/flow_e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4.npz to results/flow_e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4.npz.
-  [WARNING root                      1759248] Importing taurus/results/interaction_e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4.npz to results/interaction_e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4.npz.
-  [WARNING root                      1759248] Importing taurus/results/interaction_power_e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4.npz to results/interaction_power_e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4.npz.
-  [WARNING root                      1759248] Importing taurus/results/system_e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4.npz to results/system_e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4.npz.
-  [WARNING root                      1759248] Importing taurus/results/system_power_e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4.npz to results/system_power_e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4.npz.
-  [WARNING root                      1759248] Importing taurus/.data/c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d/_7/c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d_7795de4c5eddccf955fd370b952f15fd_1.h5 to .data/c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d/_7/c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d_7795de4c5eddccf955fd370b952f15fd_1.h5.
-  [WARNING root                      1759248] The model description is 'A model for scanning coupling strength and interactin switch times.'.
-  [WARNING root                      1759248] Importing taurus/results/flow_c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d.npz to results/flow_c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d.npz.
-  [WARNING root                      1759248] Importing taurus/results/interaction_c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d.npz to results/interaction_c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d.npz.
-  [WARNING root                      1759248] Importing taurus/results/interaction_power_c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d.npz to results/interaction_power_c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d.npz.
-  [WARNING root                      1759248] Importing taurus/results/system_c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d.npz to results/system_c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d.npz.
-  [WARNING root                      1759248] Importing taurus/results/system_power_c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d.npz to results/system_power_c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d.npz.
-  [WARNING root                      1759248] Importing taurus/.data/b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22/_3/b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22_31d3d3f46c1aca339afda39399de3fbe_1.h5 to .data/b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22/_3/b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22_31d3d3f46c1aca339afda39399de3fbe_1.h5.
-  [WARNING root                      1759248] The model description is 'A model for scanning coupling strength and interactin switch times.'.
-  [WARNING root                      1759248] Importing taurus/results/flow_b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22.npz to results/flow_b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22.npz.
-  [WARNING root                      1759248] Importing taurus/results/interaction_b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22.npz to results/interaction_b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22.npz.
-  [WARNING root                      1759248] Importing taurus/results/interaction_power_b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22.npz to results/interaction_power_b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22.npz.
-  [WARNING root                      1759248] Importing taurus/results/system_b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22.npz to results/system_b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22.npz.
-  [WARNING root                      1759248] Importing taurus/results/system_power_b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22.npz to results/system_power_b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22.npz.
-  [WARNING root                      1759248] Importing taurus/.data/4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7/_b/4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7_b62e41a101508c05eca9c780a31ef3a5_1.h5 to .data/4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7/_b/4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7_b62e41a101508c05eca9c780a31ef3a5_1.h5.
-  [WARNING root                      1759248] The model description is 'A model for scanning coupling strength and interactin switch times.'.
-  [WARNING root                      1759248] Importing taurus/results/flow_4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7.npz to results/flow_4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7.npz.
-  [WARNING root                      1759248] Importing taurus/results/interaction_4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7.npz to results/interaction_4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7.npz.
-  [WARNING root                      1759248] Importing taurus/results/interaction_power_4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7.npz to results/interaction_power_4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7.npz.
-  [WARNING root                      1759248] Importing taurus/results/system_4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7.npz to results/system_4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7.npz.
-  [WARNING root                      1759248] Importing taurus/results/system_power_4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7.npz to results/system_power_4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7.npz.
+  [INFO    root                      350005] Skipping 2c92f58615625aa8f53a46159c05375069313e5566ba2e7e5e3d4f23be9b0812.
+  [INFO    root                      350005] Skipping 7ab00d286619067e63866cb9df3e159b51ebdbeea557b6ed0181f106e9127be2.
+  [INFO    root                      350005] Skipping 9f89257094dd5215bf7cd36b6bcda76657047a6cc14f7e1cc3b4ac451c72dddd.
+  [INFO    root                      350005] Skipping 750ccbb5b693f77ef025d7e0bbe10d41151e75b7732ce85b227303f6b6ce369d.
+  [INFO    root                      350005] Skipping dd468201c5433723b82946b50f425e79f44ca5ffb5b26a2211b7ade7720035c7.
+  [INFO    root                      350005] Skipping 7290a763c090c9bd24fc0c678b9d30a7c568342fcb1af2feb47dcb9ec213dc55.
+  [INFO    root                      350005] Skipping 9c08cd39e95fb7db9f55852d940635d3ac2242c8a84951e6ff7b0be4a45be183.
+  [INFO    root                      350005] Skipping 510d300d2bc8796a92179affa7add161003a1947b092423ba8968c06b13d9138.
+  [INFO    root                      350005] Skipping 8b00ac385c8c38c60c11b7de70b19cc2fe773b6d747205addd41636027531f21.
+  [INFO    root                      350005] Skipping 913b21d6d0452c46fbb09dd2108db0bd158066ec2615d4f06db16ee7a1383830.
+  [INFO    root                      350005] Skipping 44dff06de2fb486af71ff81ed6fb1c3f2a2cec05e9c79b20c79f8929dc8c2544.
+  [INFO    root                      350005] Skipping 348972f31c5626ba07814028d2be2d01047bd8b288aea974d5850cc617815eca.
+  [INFO    root                      350005] Skipping 2525cfc57bde76caa763082a2d3b1845d1233ffcf2829eae3807b7aa843fc1fe.
+  [INFO    root                      350005] Skipping de1d26626b9cb1caaaafa560fc9317fd09f3b084829ee36f4b00d3b04932b44f.
+  [INFO    root                      350005] Skipping e987a624a179f89e3abbd7ac4491c48b222c900b8e9600a146433456790381c4.
+  [INFO    root                      350005] Skipping c28edd0b75c02bf9ea9fd14535441f816332c5b6c30f78e65d36ea3d936cf41d.
+  [INFO    root                      350005] Skipping b451c850bace96a3c9333d9809cd16158bcafd250f755a7b8ea895b2372c1d22.
+  [INFO    root                      350005] Skipping 4debe070f35626a0073bb6a60cf48907d9c11574bf91fd5785eedb75c83988e7.
+  [INFO    root                      350005] Not importing 369386763a9e87d131786a59a68e8270f5f9c199ccc166c289120c96afb8ebc5.
+  [INFO    root                      350005] Not importing f38b81c68cfcd3264318b416e914ba1e5db02587757e9de323b092c87e175ce9.
+  [INFO    root                      350005] Not importing 5192d74969d0922ee2a17c3804628178175b6e0aa12b80fe55689f88d14ddb8c.
+  [WARNING root                      350005] Importing taurus/.data/85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938/_2/85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_29ec55e10f631000566052c93979057a_1.h5 to .data/85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938/_2/85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_29ec55e10f631000566052c93979057a_1.h5.
+  [WARNING root                      350005] The model description is 'A model for scanning coupling strength and interactin switch times.'.
+  [WARNING root                      350005] Importing taurus/results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_3000.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_2500.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_4500.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_3500.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_5000.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_500.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_1500.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_5500.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_2000.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_1000.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_4000.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/flow_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_6000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_5500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_3000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_2000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_4000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_5000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_1000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_2500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_3500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_1500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_4500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_6000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_5500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_1500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_6000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_2000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_4000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_2500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_5000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_3000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_1000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_4500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/interaction_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_3500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_5500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_4000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz.
+  [WARNING root                      350005] Importing taurus/results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_3500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_1500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_3000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_6000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_4500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_5000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_2000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_1000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_2500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_6000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_5500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_1500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_5000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_4500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_3000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_3500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_1000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_2000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_4000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938.npz to results/system_power_85a27fef0b9414534ff9661e5c85e5efc8bf683a95ef66765b966922dfe2f938_2500.npz.
+  [WARNING root                      350005] Importing taurus/.data/0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de/_3/0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_3c7dc4ef811607de9b04bec72de0d9a9_1.h5 to .data/0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de/_3/0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_3c7dc4ef811607de9b04bec72de0d9a9_1.h5.
+  [WARNING root                      350005] The model description is 'A model for scanning coupling strength and interactin switch times.'.
+  [WARNING root                      350005] Importing taurus/results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_2000.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_1000.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_5000.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_500.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_4500.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_3500.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_4000.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_1500.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_3000.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz.
+  [WARNING root                      350005] Importing taurus/results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/flow_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_2500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_2500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_2000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_1500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_3500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_4000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_1000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_4500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_5000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_3000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_5000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_1500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_3500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_3000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_1000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_2000.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_2500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_4500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_500.npz.
+  [WARNING root                      350005] Importing taurus/results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/interaction_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_4000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_1500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_4500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_3500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz.
+  [WARNING root                      350005] Importing taurus/results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_3000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_2000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_5000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_4000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_1000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_2500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_4000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_3000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_1000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_4500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_1500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_2000.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_2500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_3500.npz.
+  [WARNING root                      350005] Importing taurus/results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de.npz to results/system_power_0d3b2f0628d019008395ce59b9a89844a3c7a8e449a07023abe8e9d41bb2f0de_5000.npz.
+  [INFO    root                      350005] Not importing c2bcedc47683a9e450b1a3aafc381ef41cb40159f3e10249baf530d53e0a5616.
+  [INFO    root                      350005] Not importing f586285b358dfece5758ee19367305af5c90f9e7fa3495bfc6e1e343146ac224.
+  [INFO    root                      350005] Not importing b3b72b5d8b5ea5633b8ffb42f0ccdc0756692bf830113311a2529bbddd998ca5.
+  [INFO    root                      350005] Not importing 366624b15e7635d88ee87c805715d9c117c8dd942a0e448546d500d4ee54d3d5.
+  [INFO    root                      350005] Skipping 490f2adc6984d340d3ac20253f73ea341983d9b3a64a7c5c6244e054fb631ec3.
+  [INFO    root                      350005] Skipping 5f1eed9e766eada9c318a67e2c86078cca2a8a5c2c39bb6b4436da0a645b3110.
+  [INFO    root                      350005] Skipping 98a0f3426650aed9123b4d7d832821c86622f97ee39c51bfd2e2986a19b65c4c.
+  [INFO    root                      350005] Skipping bc0c3d63dd79c5fce61aec56329ecf0b9ded4e136280d70bd01b79d7e2898eaf.
+  [INFO    root                      350005] Skipping 22e10f301c20fb50d56b8d94d369ac3da032cc7a94338e5ef2678eed582221c9.
+  [INFO    root                      350005] Skipping 0da6da607a0a2c352b1a132b6af894996d3694db8cb5c216a30f7b2603ef72aa.
+  [INFO    root                      350005] Skipping 493418760d0d1a98007f81bd62273f293ee475b1279e198626c123475e992ac1.
+  [INFO    root                      350005] Skipping 7099e4b1e08ac8c1afe693410844a493f0e214ea7bc5384cc2832137c075e31d.
+  [INFO    root                      350005] Skipping f8120d503a880c711dd9fee44f3d5e683b7f1b81ff7e69f9cdfe8f885a89be2a.
 #+end_example
+
 
 **** Plots
 #+begin_src jupyter-python
@@ -818,8 +949,10 @@ coupling we change the switching speed of the interaction and the coupling stren
 
   for model in models:
       try:
-          pu.plot_with_σ(model.t, model.total_energy_from_power().sum_baths(), ax=a, label=fr"$\delta={model.δ[0]}$, $\tau_I={model.timings_L[0][1] - model.timings_L[0][0]:.3}$")
-          pu.plot_with_σ(model.t, model.total_energy().sum_baths(), ax=a, label=fr"$\delta={model.δ[0]}$, $\tau_I={model.timings_L[0][1] - model.timings_L[0][0]:.3}$")
+          # pu.plot_with_σ(model.t, model.total_energy_from_power().sum_baths(), ax=a, label=fr"$\delta={model.δ[0]}$, $\tau_I={model.timings_L[0][1] - model.timings_L[0][0]:.3}$")
+          # pu.plot_with_σ(model.t, model.total_energy().sum_baths(), ax=a, label=fr"$\delta={model.δ[0]}$, $\tau_I={model.timings_L[0][1] - model.timings_L[0][0]:.3}$")
+          pu.plot_with_σ(model.t, model.bath_energy().for_bath(1), ax=a, label=fr"$\delta={model.δ[0]}$, $\tau_I={model.timings_L[0][1] - model.timings_L[0][0]:.3}$")
+          print(model.power().N)
       except:
           pass
   a.legend()
@@ -827,19 +960,28 @@ coupling we change the switching speed of the interaction and the coupling stren
 
 #+RESULTS:
 :RESULTS:
-: <matplotlib.legend.Legend at 0x7f6718afd2b0>
-[[file:./.ob-jupyter/d66868b1529c3799d4ba8ce6d5dd4f7af85da34c.svg]]
+: 6000
+: 6000
+: 6000
+: 6000
+: 5091
+: 4000
+: 4000
+: 4000
+: 4000
+: <matplotlib.legend.Legend at 0x7fcfb3ed18e0>
+[[file:./.ob-jupyter/bf8ed338455b7a1f406e7384eb55d79338aa73cc.svg]]
 :END:
 
 
 
 #+begin_src jupyter-python
-  %matplotlib tk
+  %matplotlib inline
   import random
   powers = []
   for model in models:
       try:
-          print(-model.power().N)
+          print(model.power().N)
           powers.append(-model.power().value)
       except:
           powers.append(0.)
@@ -869,15 +1011,17 @@ coupling we change the switching speed of the interaction and the coupling stren
 
 #+RESULTS:
 :RESULTS:
-: -2000
-: -2000
-: -2000
-: -2000
-: -2000
-: -2000
-: -2000
-: -2000
+: 6000
+: 6000
+: 6000
+: 6000
+: 5091
+: 4000
+: 4000
+: 4000
+: 4000
 : Text(0.5, 0, '$P$')
+[[file:./.ob-jupyter/7f77383278a6fba4f390f9b4e50141c663db06e2.svg]]
 :END:
 
 ** Coupling and System Switching overlap
@@ -924,8 +1068,8 @@ Let's see if it helps switching system and interaction at the same time.
       k_max=4,
       bcf_terms=[6] * 2,
       truncation_scheme="simplex",
-      driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
-      thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
+      driving_process_tolerances=[StocProcTolerances(1e-5, 1e-5)] * 2,
+      thermal_process_tolerances=[StocProcTolerances(1e-5, 1e-5)] * 2,
       T=[1, 4],
       therm_methods=["tanhsinh", "tanhsinh"],
       Δ=1,
@@ -944,7 +1088,7 @@ Let's see if it helps switching system and interaction at the same time.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
-[[file:./.ob-jupyter/ff171635624e8254b2fe630a2a5d2ae761f33219.svg]]
+[[file:./.ob-jupyter/62e8c8e17864f59b422c319b70a24297cec13f64.svg]]
 :END:
 
 
@@ -989,7 +1133,7 @@ where the baths are not coupled at the same time.
 : 1.0 0.05
 : 1.0 0.1
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
-[[file:./.ob-jupyter/edd98256780d14f2d4f5f83983b88cc64bed3f55.svg]]
+[[file:./.ob-jupyter/45d57fc054b1b52f2f73f7312056f2d893b4b509.svg]]
 :END:
 
 *** Integration
@@ -1000,8 +1144,124 @@ where the baths are not coupled at the same time.
 #+begin_src jupyter-python
   from timing_scan import *
 
-  ot.integrate_online_multi(models, 5000, analyze_kwargs=dict(every=100))
+  ot.integrate_online_multi(models, 1000, analyze_kwargs=dict(every=100))
+  ot.integrate_online_multi(models, 2000, analyze_kwargs=dict(every=100))
+  ot.integrate_online_multi(models, 4000, analyze_kwargs=dict(every=100))
 #+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/98dd37ab9f7fb351532d5011d5ce23e77891e6bf.svg]]
+:RESULTS:
+#+begin_example
+  0.0 0.0
+  0.0 0.05
+  0.0 0.1
+  0.5 0.0
+  0.5 0.05
+  0.5 0.1
+  1.0 0.0
+  1.0 0.05
+  1.0 0.1
+  [INFO    hops.core.integration     2528809] Choosing the nonlinear integrator.
+  [INFO    root                      2528809] Starting analysis process.
+  [INFO    root                      2528809] Started analysis process with pid 2529077.
+  [INFO    hops.core.hierarchy_data  2528809] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_90fadc67c2414cd2d90f293e30b3f3845a179a0a2bfa979d301a693399ebdf9a.fifo
+  [INFO    hops.core.integration     2528809] Using 32 integrators.
+  [INFO    hops.core.integration     2528809] Some 5000 trajectories have to be integrated.
+  [INFO    hops.core.integration     2528809] Using 1820 hierarchy states.
+  0% 0/5000 [00:00<?, ?it/s][INFO    hops.core.signal_delay    2528809] caught sig 'SIGINT'
+  0% 0/5000 [00:10<?, ?it/s]
+  2022-12-14 13:52:18,108       WARNING worker.py:1404 -- A worker died or was killed while executing a task by an unexpected system error. To troubleshoot the problem, check the logs for the dead worker. RayTask ID: b309d3a73e78f5b2b50c42306e5a32041125cfc10b000000 Worker ID: 64bc45a18eb412c6d6f84112a7db980903cb3e3ea9906f3b09d443d8 Node ID: 0bdeca53c997eb53b259895d3c4dd7ac669151098dcb22ae9627e60f Worker IP address: 10.0.0.102 Worker port: 10114 Worker PID: 2529153
+  2022-12-14 13:52:18,145       WARNING worker.py:1404 -- A worker died or was killed while executing a task by an unexpected system error. To troubleshoot the problem, check the logs for the dead worker. RayTask ID: ced707e7670a2fb8943c3793888187459d05ccb60b000000 Worker ID: 57a3439898472c6a46f62690c7d4f00ffb4dbb18d84c2f89fd364443 Node ID: 0bdeca53c997eb53b259895d3c4dd7ac669151098dcb22ae9627e60f Worker IP address: 10.0.0.102 Worker port: 10118 Worker PID: 2529346
+  2022-12-14 13:52:18,201       WARNING worker.py:1404 -- A worker died or was killed while executing a task by an unexpected system error. To troubleshoot the problem, check the logs for the dead worker. RayTask ID: 5777b585ec213b4bcef6ebb69daee0075d82861f0b000000 Worker ID: 87965d34ae50809a6e04d8b4d9d407545ce1c0123c5eb1637e24e3af Node ID: 0bdeca53c997eb53b259895d3c4dd7ac669151098dcb22ae9627e60f Worker IP address: 10.0.0.102 Worker port: 10113 Worker PID: 2529093
+  2022-12-14 13:52:18,211       WARNING worker.py:1404 -- A worker died or was killed while executing a task by an unexpected system error. To troubleshoot the problem, check the logs for the dead worker. RayTask ID: e298adec5e827c2cf6e41744572c36652487697b0b000000 Worker ID: 13fcc47e3f17d59f538e9d3555552407bb8835717b745b08cfa927e4 Node ID: 0bdeca53c997eb53b259895d3c4dd7ac669151098dcb22ae9627e60f Worker IP address: 10.0.0.102 Worker port: 10111 Worker PID: 2529094
+  2022-12-14 13:52:18,230       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,232       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,233       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,234       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,235       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,236       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,236       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,237       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,238       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,238       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,239       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,239       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,240       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  [INFO    hops.core.signal_delay    2528809] caught 1 signal(s)
+  2022-12-14 13:52:18,241       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,241       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  [INFO    hops.core.signal_delay    2528809] emit signal 'SIGINT'
+  2022-12-14 13:52:18,242       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  [INFO    hops.core.signal_delay    2528809] caught sig 'SIGINT'
+  2022-12-14 13:52:18,243       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,244       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,245       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,246       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,246       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,248       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,249       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,249       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,250       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,251       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,251       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,264       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,267       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,267       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  [INFO    hops.core.signal_delay    2528809] caught 1 signal(s)
+  [INFO    hops.core.signal_delay    2528809] emit signal 'SIGINT'
+#+end_example
+# [goto error]
+#+begin_example
+  [0;31m---------------------------------------------------------------------------[0m
+  [0;31mKeyboardInterrupt[0m                         Traceback (most recent call last)
+  Cell [0;32mIn[1], line 3[0m
+  [1;32m      1[0m [38;5;28;01mfrom[39;00m [38;5;21;01mtiming_scan[39;00m [38;5;28;01mimport[39;00m [38;5;241m*[39m
+  [0;32m----> 3[0m [43mot[49m[38;5;241;43m.[39;49m[43mintegrate_online_multi[49m[43m([49m[43mmodels[49m[43m,[49m[43m [49m[38;5;241;43m5000[39;49m[43m,[49m[43m [49m[43manalyze_kwargs[49m[38;5;241;43m=[39;49m[38;5;28;43mdict[39;49m[43m([49m[43mevery[49m[38;5;241;43m=[39;49m[38;5;241;43m100[39;49m[43m)[49m[43m)[49m
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/otto_utilities.py:167[0m, in [0;36mintegrate_online_multi[0;34m(models, *args, **kwargs)[0m
+  [1;32m    165[0m [38;5;28;01mdef[39;00m [38;5;21mintegrate_online_multi[39m(models, [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs):
+  [1;32m    166[0m     [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models:
+  [0;32m--> 167[0m         [43mintegrate_online[49m[43m([49m[43mmodel[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/otto_utilities.py:155[0m, in [0;36mintegrate_online[0;34m(model, n, stream_folder, **kwargs)[0m
+  [1;32m    154[0m [38;5;28;01mdef[39;00m [38;5;21mintegrate_online[39m(model, n, stream_folder[38;5;241m=[39m[38;5;28;01mNone[39;00m, [38;5;241m*[39m[38;5;241m*[39mkwargs):
+  [0;32m--> 155[0m     [43maux[49m[38;5;241;43m.[39;49m[43mintegrate[49m[43m([49m
+  [1;32m    156[0m [43m        [49m[43mmodel[49m[43m,[49m
+  [1;32m    157[0m [43m        [49m[43mn[49m[43m,[49m
+  [1;32m    158[0m [43m        [49m[43mstream_file[49m[38;5;241;43m=[39;49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43m"[39;49m[43m [49m[38;5;28;43;01mif[39;49;00m[43m [49m[43mstream_folder[49m[43m [49m[38;5;129;43;01mis[39;49;00m[43m [49m[38;5;28;43;01mNone[39;49;00m[43m [49m[38;5;28;43;01melse[39;49;00m[43m [49m[43mstream_folder[49m[43m)[49m
+  [1;32m    159[0m [43m        [49m[38;5;241;43m+[39;49m[43m [49m[38;5;124;43mf[39;49m[38;5;124;43m"[39;49m[38;5;124;43mresults_[39;49m[38;5;132;43;01m{[39;49;00m[43mmodel[49m[38;5;241;43m.[39;49m[43mhexhash[49m[38;5;132;43;01m}[39;49;00m[38;5;124;43m.fifo[39;49m[38;5;124;43m"[39;49m[43m,[49m
+  [1;32m    160[0m [43m        [49m[43manalyze[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
+  [1;32m    161[0m [43m        [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m,[49m
+  [1;32m    162[0m [43m    [49m[43m)[49m
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_auxiliary.py:201[0m, in [0;36mintegrate[0;34m(model, n, data_path, clear_pd, single_process, stream_file, analyze, results_path, analyze_kwargs)[0m
+  [1;32m    199[0m         supervisor[38;5;241m.[39mintegrate_single_process(clear_pd)
+  [1;32m    200[0m     [38;5;28;01melse[39;00m:
+  [0;32m--> 201[0m         supervisor[38;5;241m.[39mintegrate(clear_pd)
+  [1;32m    203[0m cleanup([38;5;241m0[39m)
+
+  File [0;32m~/src/hops/hops/core/signal_delay.py:87[0m, in [0;36msig_delay.__exit__[0;34m(self, exc_type, exc_val, exc_tb)[0m
+  [1;32m     84[0m [38;5;28;01mif[39;00m [38;5;28mlen[39m([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught) [38;5;241m>[39m [38;5;241m0[39m [38;5;129;01mand[39;00m [38;5;28mself[39m[38;5;241m.[39mhandler [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+  [1;32m     85[0m     [38;5;28mself[39m[38;5;241m.[39mhandler([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught)
+  [0;32m---> 87[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_restore[49m[43m([49m[43m)[49m
+
+  File [0;32m~/src/hops/hops/core/signal_delay.py:68[0m, in [0;36msig_delay._restore[0;34m(self)[0m
+  [1;32m     66[0m [38;5;28;01mfor[39;00m i, s [38;5;129;01min[39;00m [38;5;28menumerate[39m([38;5;28mself[39m[38;5;241m.[39msigs):
+  [1;32m     67[0m     signal[38;5;241m.[39msignal(s, [38;5;28mself[39m[38;5;241m.[39mold_handlers[i])
+  [0;32m---> 68[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msigh[49m[38;5;241;43m.[39;49m[43memit[49m[43m([49m[43m)[49m
+
+  File [0;32m~/src/hops/hops/core/signal_delay.py:42[0m, in [0;36mSigHandler.emit[0;34m(self)[0m
+  [1;32m     40[0m [38;5;28;01mfor[39;00m s [38;5;129;01min[39;00m [38;5;28mself[39m[38;5;241m.[39msigs_caught:
+  [1;32m     41[0m     log[38;5;241m.[39minfo([38;5;124m"[39m[38;5;124memit signal [39m[38;5;124m'[39m[38;5;132;01m{}[39;00m[38;5;124m'[39m[38;5;124m"[39m[38;5;241m.[39mformat(SIG_MAP[s]))
+  [0;32m---> 42[0m     [43mos[49m[38;5;241;43m.[39;49m[43mkill[49m[43m([49m[43mos[49m[38;5;241;43m.[39;49m[43mgetpid[49m[43m([49m[43m)[49m[43m,[49m[43m [49m[43ms[49m[43m)[49m
+
+  [0;31mKeyboardInterrupt[0m:
+  2022-12-14 13:52:18,888       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2022-12-14 13:52:18,908       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+#+end_example
+[[file:./.ob-jupyter/7c3f9e561e30c73f8ca635e18f752432d87c65ea.svg]]
+:END:
 
 
 
@@ -1026,20 +1286,24 @@ where the baths are not coupled at the same time.
 : 1.0 0.0
 : 1.0 0.05
 : 1.0 0.1
-[[file:./.ob-jupyter/26dc34838476424c900f849dc4e14dbc7f2a841b.svg]]
-[[file:./.ob-jupyter/dd4e26fb4b28de1911ab3d1fe77f2e6d4245df6e.svg]]
+[[file:./.ob-jupyter/5aea9248c7b6eb7fe0739f84eb07fa52f241213a.svg]]
+[[file:./.ob-jupyter/e9e21d56a5cefcefe6b75a9ce38c36c8251f5823.svg]]
 :END:
 
 #+begin_src jupyter-python
+  %matplotlib inline
   powers = []
   efficiencies = []
   for model in models:
       #pu.plot_with_σ(model.t, model.total_power(), ax=a)
-      #print(model.power().value, model.efficiency().value)
-      powers.append(-float(model.power().value))
-      efficiencies.append(model.efficiency().value)
+      #print(model.power().value, model.efficiency().value, model.power().N)
+      try:
+          powers.append(-float(model.power(σ_factor=3).value))
+          efficiencies.append(model.efficiency(σ_factor=3).value)
+      except:
+          powers.append(0.)
+          efficiencies.append(0.)
 
-  #plt.matshow(np.array(powers).reshape((3,3)))
   f, a =ot.plot_3d_heatmap(np.array(powers), np.array(overlaps), np.array(shifts))
   a.set_xlabel("overlaps")
   a.set_ylabel("shifts")
@@ -1054,6 +1318,54 @@ where the baths are not coupled at the same time.
 #+RESULTS:
 :RESULTS:
 : Text(0.5, 0, 'Efficiency')
-[[file:./.ob-jupyter/8127fbd513a3f16846f7a4f17285ce70e9c1a899.svg]]
-[[file:./.ob-jupyter/1e5f39b4710ab00b6c68292db4c69b8d0a126bb6.svg]]
+[[file:./.ob-jupyter/4c12796df0291fc07e89d4b7125bc3b88ead8d42.svg]]
+[[file:./.ob-jupyter/6efd43c6c360cc807824077099dfa46d8f19dd78.svg]]
+:END:
+
+
+#+begin_src jupyter-python
+  f, a = plt.subplots()
+
+  for model in models[:]:
+      pu.plot_with_σ(model.t, model.total_energy_from_power().sum_baths(), ax=a, label=fr"$\delta={model.δ[0]}$, $\tau_I={model.timings_L[0][1] - model.timings_L[0][0]:.3}$")
+      pu.plot_with_σ(model.t, model.total_energy().sum_baths(), ax=a, label=fr"$\delta={model.δ[0]}$, $\tau_I={model.timings_L[0][1] - model.timings_L[0][0]:.3}$")
+      # pu.plot_with_σ(model.t, model.system_energy().sum_baths(), ax=a, label=fr"$\delta={model.δ[0]}$, $\tau_I={model.timings_L[0][1] - model.timings_L[0][0]:.3}$")
+
+      print(model.total_energy().consistency(model.total_energy_from_power()), model.steady_index(), model.power()[-1])
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+: 29.992501874531367 2 EnsembleValue([(4000, -0.0005131979774745943, 2.437443269788402e-05)])
+# [goto error]
+#+begin_example
+  [0;31m---------------------------------------------------------------------------[0m
+  [0;31mRuntimeError[0m                              Traceback (most recent call last)
+  Cell [0;32mIn[4], line 8[0m
+  [1;32m      5[0m pu[38;5;241m.[39mplot_with_σ(model[38;5;241m.[39mt, model[38;5;241m.[39mtotal_energy()[38;5;241m.[39msum_baths(), ax[38;5;241m=[39ma, label[38;5;241m=[39m[38;5;124mfr[39m[38;5;124m"[39m[38;5;124m$[39m[38;5;124m\[39m[38;5;124mdelta=[39m[38;5;132;01m{[39;00mmodel[38;5;241m.[39mδ[[38;5;241m0[39m][38;5;132;01m}[39;00m[38;5;124m$, $[39m[38;5;124m\[39m[38;5;124mtau_I=[39m[38;5;132;01m{[39;00mmodel[38;5;241m.[39mtimings_L[[38;5;241m0[39m][[38;5;241m1[39m] [38;5;241m-[39m model[38;5;241m.[39mtimings_L[[38;5;241m0[39m][[38;5;241m0[39m][38;5;132;01m:[39;00m[38;5;124m.3[39m[38;5;132;01m}[39;00m[38;5;124m$[39m[38;5;124m"[39m)
+  [1;32m      6[0m [38;5;66;03m# pu.plot_with_σ(model.t, model.system_energy().sum_baths(), ax=a, label=fr"$\delta={model.δ[0]}$, $\tau_I={model.timings_L[0][1] - model.timings_L[0][0]:.3}$")[39;00m
+  [0;32m----> 8[0m [38;5;28mprint[39m(model[38;5;241m.[39mtotal_energy()[38;5;241m.[39mconsistency(model[38;5;241m.[39mtotal_energy_from_power()), model[38;5;241m.[39msteady_index(), [43mmodel[49m[38;5;241;43m.[39;49m[43mpower[49m[43m([49m[43m)[49m[[38;5;241m-[39m[38;5;241m1[39m])
+
+  File [0;32m~/src/two_qubit_model/hiro_models/otto_cycle.py:477[0m, in [0;36mOttoEngine.power[0;34m(self, *args, **kwargs)[0m
+  [1;32m    474[0m steady_idx [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39msteady_index([38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs)
+  [1;32m    476[0m [38;5;28;01mif[39;00m steady_idx [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+  [0;32m--> 477[0m     [38;5;28;01mraise[39;00m [38;5;167;01mRuntimeError[39;00m([38;5;124m"[39m[38;5;124mNo steady state available.[39m[38;5;124m"[39m)
+  [1;32m    479[0m [38;5;28;01mreturn[39;00m [38;5;28mself[39m[38;5;241m.[39mtotal_power()[38;5;241m.[39mslice([38;5;28mslice[39m(indices[steady_idx], [38;5;28;01mNone[39;00m, [38;5;241m1[39m))[38;5;241m.[39mmean
+
+  [0;31mRuntimeError[0m: No steady state available.
+#+end_example
+[[file:./.ob-jupyter/67f43a5a1a06df0ba2927f3f3017926e9c01bce2.svg]]
+:END:
+
+#+begin_src jupyter-python
+  ot.full_report(models[2])
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/9093522f05fe4e8ea2cc6c68f76a8c2af16b821a.svg]]
+:RESULTS:
+: \(P=-0.000678\pm 0.000024\)
+: \(\eta=12.3\pm 0.8\)
+[[file:./.ob-jupyter/cdf1a1ee3b683073de27624223cc38e501b62c40.svg]]
+[[file:./.ob-jupyter/a5781362f995954863d0da9dba3590fb3bf0fc34.svg]]
 :END:

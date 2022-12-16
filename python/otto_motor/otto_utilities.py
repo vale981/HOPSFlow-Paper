@@ -162,9 +162,14 @@ def integrate_online(model, n, stream_folder=None, **kwargs):
     )
 
 
-def integrate_online_multi(models, *args, **kwargs):
-    for model in models:
-        integrate_online(model, *args, **kwargs)
+def integrate_online_multi(models, n, *args, increment=1000, **kwargs):
+    target = increment
+
+    while target < n:
+        for model in models:
+            integrate_online(model, min([n, target]), *args, **kwargs)
+
+        target += increment
 
 
 def plot_3d_heatmap(values, x_labels, y_labels):
