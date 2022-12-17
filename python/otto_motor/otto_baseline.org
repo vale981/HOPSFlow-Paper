@@ -605,7 +605,7 @@ coupling we change the switching speed of the interaction and the coupling stren
 #+begin_src jupyter-python
   from speed_coupling_scan import *
 
-  ot.integrate_online_multi(models, 10_000, increment=10, analyze_kwargs=dict(every=100))
+  ot.integrate_online_multi(models, 10_000, increment=1000, analyze_kwargs=dict(every=100))
 #+end_src
 
 #+RESULTS:
@@ -769,7 +769,7 @@ coupling we change the switching speed of the interaction and the coupling stren
 **** Import from taurus
 #+begin_src bash :results none
   umount taurus
-  sshfs s4498638@taurusexport.hrsk.tu-dresden.de:/beegfs/ws/0/s4498638-paper_otto/project/python/otto_motor/ taurus
+  sshfs -oIdentityFile=~/.ssh/id_ed25519_taurus  s8896854@taurusexport.hrsk.tu-dresden.de:/beegfs/ws/0/s8896854-paper_otto/project/python/otto_motor taurus
 #+end_src
 
 #+begin_src jupyter-python
@@ -1144,9 +1144,7 @@ where the baths are not coupled at the same time.
 #+begin_src jupyter-python
   from timing_scan import *
 
-  ot.integrate_online_multi(models, 1000, analyze_kwargs=dict(every=100))
-  ot.integrate_online_multi(models, 2000, analyze_kwargs=dict(every=100))
-  ot.integrate_online_multi(models, 4000, analyze_kwargs=dict(every=100))
+  ot.integrate_online_multi(models, 10_000, increment=2000, analyze_kwargs=dict(every=100))
 #+end_src
 
 #+RESULTS:
