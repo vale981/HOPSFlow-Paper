@@ -165,7 +165,7 @@ def integrate_online(model, n, stream_folder=None, **kwargs):
 def integrate_online_multi(models, n, *args, increment=1000, **kwargs):
     target = increment
 
-    while target < n:
+    while target < (n + target):
         for model in models:
             integrate_online(model, min([n, target]), *args, **kwargs)
 

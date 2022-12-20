@@ -13,8 +13,8 @@ import otto_utilities as ot
 import ray
 ray.shutdown()
 
-ray.init(address='auto')
-#ray.init()
+#ray.init(address='auto')
+ray.init()
 from hops.util.logging_setup import logging_setup
 import logging
 logging_setup(logging.INFO)
@@ -41,6 +41,8 @@ prototype = OttoEngine(
     truncation_scheme="simplex",
     driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
     thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
+    # driving_process_tolerances=[StocProcTolerances(1e-5, 1e-5)] * 2,
+    # thermal_process_tolerances=[StocProcTolerances(1e-5, 1e-5)] * 2,
     T=[1, 4],
     therm_methods=["tanhsinh", "tanhsinh"],
     Δ=1,
