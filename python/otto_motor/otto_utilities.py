@@ -166,18 +166,10 @@ def integrate_online_multi(models, n, *args, increment=1000, **kwargs):
     target = increment
 
     samples = []
-    for model in models:
-        try:
-            with aux.get_data(model, *args, **kwargs) as d:
-                samples.append(d.samples)
-
-        except:
-            samples.append(0)
 
     while target < (n + target):
         for model, s in zip(models, samples):
-            if s < target:
-                integrate_online(model, min([n, target]), *args, **kwargs)
+            integrate_online(model, min([n, target]), *args, **kwargs)
 
         target += increment
 
