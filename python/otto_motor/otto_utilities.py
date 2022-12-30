@@ -169,7 +169,7 @@ def integrate_online_multi(models, n, *args, increment=1000, **kwargs):
     for model in models:
         try:
             with aux.get_data(model) as d:
-                samples.append(d.samples)
+                samples.append(d.samples, *args, **kwargs)
 
         except:
             samples.append(0)
