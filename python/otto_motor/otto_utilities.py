@@ -172,24 +172,52 @@ def integrate_online_multi(models, n, *args, increment=1000, **kwargs):
         target += increment
 
 
-def plot_3d_heatmap(values, x_labels, y_labels):
+def plot_3d_heatmap(models, value_accessor, x_spec, y_spec):
     f, _ = plt.subplots()
+
+    ax1 = plt.gcf().add_subplot(111, projection="3d")
+
+    value_dict = {}
+    x_labels = set()
+    y_labels = set()
+
+    for model in models:
+        x_label = x_spec(model)
+        y_label = y_spec(model)
+        value = value_accessor(model)
+
+        if x_label not in value_dict:
+            value_dict[x_label] = {}
+
+        if y_label in value_dict[x_label]:
+            raise ValueError(
+                f"Dublicate value for model with x={x_label}, y={y_label}."
+            )
+
+        value_dict[x_label][y_label] = value_accessor(model)
+
+        x_labels.add(x_label)
+        y_labels.add(y_label)
+
+    x_labels = np.sort(list(x_labels))
+    y_labels = np.sort(list(y_labels))
+
+    _xx, _yy = np.meshgrid(x_labels, y_labels, indexing="ij")
+    x, y = _xx.ravel(), _yy.ravel()
+
+    values = np.fromiter((value_dict[_x][_y] for _x, _y in zip(x, y)), dtype=float)
+
+    dx = x_labels[1] - x_labels[0]
+    dy = y_labels[1] - y_labels[0]
+
+    x -= dx / 2
+    y -= dy / 2
 
     normalized_values = abs(values) - abs(values).min()
     normalized_values /= abs(normalized_values).max()
 
     cmap = plt.get_cmap("plasma")
     colors = [cmap(power) for power in normalized_values]
-
-    ax1 = plt.gcf().add_subplot(111, projection="3d")
-
-    _xx, _yy = np.meshgrid(x_labels, y_labels, indexing="ij")
-    x, y = _xx.ravel(), _yy.ravel()
-    dx = x_labels[1] - x_labels[0]
-    dy = y_labels[1] - y_labels[0]
-
-    x -= dx / 2
-    y -= dy / 2
 
     ax1.bar3d(x, y, np.zeros_like(values), dx, dy, values, color=colors)
     ax1.set_xticks(x_labels)
