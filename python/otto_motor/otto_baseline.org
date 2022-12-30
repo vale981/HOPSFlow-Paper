@@ -5394,6 +5394,36 @@ Let's see if it helps switching system and interaction at the same time.
       k_max=4,
       bcf_terms=[6] * 2,
       truncation_scheme="simplex",
+      driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
+      thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
+      T=[1, 4],
+      therm_methods=["tanhsinh", "tanhsinh"],
+      Δ=1,
+      num_cycles=4,
+      Θ=1.5 / 0.05,
+      dt=0.001,
+      timings_H=p_H,
+      timings_L=p_L,
+      streaming_mode=True,
+      shift_to_resonance=(False, False),
+      L_shift=(0.0, 0.0),
+  )
+  ot.plot_cycle(prototype)
+#+end_src
+
+
+An config prototype that we have many samples for is:
+#+begin_src python :tangle no
+  τ_mod, τ_I = 0.1, 0.1
+  (p_H, p_L) = timings(τ_mod, τ_I, .5)
+  prototype = OttoEngine(
+      δ=[0.4, 0.4],
+      ω_c=[2, 2],
+      ψ_0=qt.basis([2], [1]),
+      description=f"A model for scanning coupling strength and interactin switch times.",
+      k_max=4,
+      bcf_terms=[6] * 2,
+      truncation_scheme="simplex",
       driving_process_tolerances=[StocProcTolerances(1e-5, 1e-5)] * 2,
       thermal_process_tolerances=[StocProcTolerances(1e-5, 1e-5)] * 2,
       T=[1, 4],
@@ -5410,13 +5440,7 @@ Let's see if it helps switching system and interaction at the same time.
   )
   ot.plot_cycle(prototype)
 #+end_src
-
-#+RESULTS:
-:RESULTS:
-| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
-[[file:./.ob-jupyter/62e8c8e17864f59b422c319b70a24297cec13f64.svg]]
-:END:
-
+It was pretty nice but too hard-core.
 
 Ok we control the overlap and the timing while staying in the region
 where the baths are not coupled at the same time.
