@@ -13,3 +13,5 @@ taurus
 taurus_b
 results
 .data
+/python/otto_motor/.data_timing/
+/python/otto_motor/Scans/

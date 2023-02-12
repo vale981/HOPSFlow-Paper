@@ -1,0 +1,391 @@
+#+PROPERTY: header-args :session otto_bayes :kernel python :pandoc no :async yes :tangle no
+
+Motivated by the striking result [[id:e8e99290-bd53-4d68-89f4-f903d6cf230c][from over here]] we would like to find
+some approximation of the optimal cycle.
+
+Bayesian optimization allows us to optimize towards the result with as
+few cycles as possible.
+
+* Boilerplate
+#+name: boilerplate
+#+begin_src jupyter-python :results none
+  from bayes_opt import BayesianOptimization
+  import figsaver as fs
+  import plot_utils as pu
+  from hiro_models.one_qubit_model import StocProcTolerances
+  from hiro_models.otto_cycle import OttoEngine
+  import hiro_models.model_auxiliary as aux
+  import numpy as np
+  import qutip as qt
+  import utilities as ut
+  import stocproc
+  import matplotlib.pyplot as plt
+  import otto_utilities as ot
+
+  import ray
+  ray.shutdown()
+
+  #ray.init(address='auto')
+  ray.init()
+  from hops.util.logging_setup import logging_setup
+  import logging
+  logging_setup(logging.INFO)
+  plt.rcParams['figure.figsize'] = (12,4)
+
+  def timings(τ_c, τ_i, percent_overlap=0):
+        τ_cI = τ_c * (1-percent_overlap)
+
+        τ_thI = (1 - 2 * τ_cI) / 2
+        τ_th = (1 - 2 * τ_c) / 2
+        τ_i_on = (τ_thI - 2*τ_i)
+        timings_H = (0, τ_c, τ_c + τ_th, 2*τ_c + τ_th)
+
+        timings_L_hot = (τ_cI, τ_cI + τ_i, τ_cI + τ_i + τ_i_on, τ_cI + 2 * τ_i + τ_i_on)
+
+        timings_L_cold = tuple(time + timings_H[2] for time in timings_L_hot)
+
+        return timings_H, (timings_L_cold, timings_L_hot)
+#+end_src
+
+* First Attempt: Only shifting the coupling to the bath
+:PROPERTIES:
+:header-args: :tangle bayes.py :session simple_bayes :noweb yes :async yes
+:END:
+
+#+begin_src jupyter-python :results none
+  <<boilerplate>>
+#+end_src
+
+To keep the number of parameters down, we'll shift the bath coupling
+without changing the coupling length. Later, an asymmetric approach
+with more parameters may be attempted.
+
+#+begin_src jupyter-python
+  τ_mod, τ_I = 0.15, 0.15
+  (p_H, p_L) = timings(τ_mod, τ_I, 0)
+  prototype = OttoEngine(
+      δ=[0.4, 0.4],
+      ω_c=[2, 2],
+      ψ_0=qt.basis([2], [1]),
+      description=f"Classic Cycle",
+      k_max=3,
+      bcf_terms=[4] * 2,
+      truncation_scheme="simplex",
+      driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
+      thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
+      T=[0.5, 4],
+      therm_methods=["tanhsinh", "tanhsinh"],
+      Δ=1,
+      num_cycles=3,
+      Θ=1.5 / 0.05,
+      dt=0.01,
+      timings_H=p_H,
+      timings_L=p_L,
+      streaming_mode=True,
+      shift_to_resonance=(False, True),
+      L_shift=(0, 0),
+  )
+
+
+  def make_cycle(shift_c, shift_h):
+      crazy_model = prototype.copy()
+      (p_H, p_L) = timings(τ_mod, τ_I, 1)
+      p_L = [list(timings) for timings in p_L]
+      p_L[1][2] += τ_I
+      p_L[1][3] += τ_I
+      p_L[0][0] -= τ_I
+      p_L[0][1] -= τ_I
+      crazy_model.timings_H = p_H
+      crazy_model.timings_L = tuple(tuple(timing) for timing in p_L)
+      crazy_model.L_shift = (shift_c + τ_mod, shift_h)
+      crazy_model.description = "Full Overlap with Shift"
+
+      return crazy_model
+#+end_src
+
+#+RESULTS:
+
+
+This is the best known config so far.
+#+begin_src jupyter-python :tangle no
+  #ot.plot_cycle(make_cycle(τ_mod, τ_mod))
+  ot.plot_cycle(make_cycle(.4018, .303))
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
+[[file:./.ob-jupyter/fb246ee7bdc3bb9cd2ff2e98dc02af2122dc7688.svg]]
+:END:
+
+
+Now we define our objective function
+#+begin_src jupyter-python :results none
+  def objective(shift_c, shift_h, N=500):
+      print(shift_c, shift_h)
+      model = make_cycle(shift_c, shift_h)
+      ot.integrate_online(model, N)
+
+      return -1 * model.power(steady_idx=-2).value
+#+end_src
+
+
+... and run the optimizer.
+#+begin_src jupyter-python
+  # Bounded region of parameter space
+  from bayes_opt.logger import JSONLogger
+  from bayes_opt.event import Events
+  from bayes_opt.util import load_logs
+  pbounds = {"shift_c": (-0.1, 0.5), "shift_h": (-0.1, 0.5)}
+
+  optimizer = BayesianOptimization(
+      f=objective,
+      pbounds=pbounds,
+      random_state=1,
+  )
+  # load_logs(optimizer, logs=["./logs.json"]);
+
+  # logger = JSONLogger(path="./logs.json")
+  # optimizer.subscribe(Events.OPTIMIZATION_STEP, logger)
+  optimizer.probe(
+      params={"shift_c": 0.15, "shift_h": 0.15},
+      lazy=True,
+  )
+
+  optimizer.maximize(
+      init_points=4,
+      n_iter=100,
+  )
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+#+begin_example
+    [INFO    hops.core.integration     264609] Choosing the nonlinear integrator.
+    [INFO    root                      264609] Starting analysis process.
+    |   iter    |  target   |  shift_c  |  shift_h  |
+    -------------------------------------------------
+    [INFO    root                      264609] Started analysis process with pid 268966.
+    [INFO    hops.core.hierarchy_data  264609] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_49165931924fa512ce3e8357ea5e629d22c808f8070c3949c830b5948e16ecf2.fifo
+    [INFO    hops.core.integration     264609] Using 16 integrators.
+    [INFO    hops.core.integration     264609] Some 0 trajectories have to be integrated.
+    [INFO    hops.core.integration     264609] Using 165 hierarchy states.
+  0it [00:00, ?it/s]
+    [INFO    hops.core.integration     264609] Choosing the nonlinear integrator.
+    [INFO    root                      264609] Starting analysis process.
+    | [0m1        [0m | [0m-0.0     [0m | [0m0.1502   [0m | [0m0.3322   [0m |
+    [INFO    root                      264609] Started analysis process with pid 268971.
+    [INFO    hops.core.hierarchy_data  264609] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_c369b7aefe5503442c698bdb4de83a3f7b1c88ae9cdf1456153e9087c7d9fc2f.fifo
+    [INFO    hops.core.integration     264609] Using 16 integrators.
+    [INFO    hops.core.integration     264609] Some 0 trajectories have to be integrated.
+    [INFO    hops.core.integration     264609] Using 165 hierarchy states.
+  0it [00:00, ?it/s]
+    [INFO    hops.core.integration     264609] Choosing the nonlinear integrator.
+    [INFO    root                      264609] Starting analysis process.
+    | [0m2        [0m | [0m-0.01777 [0m | [0m-0.09993 [0m | [0m0.0814   [0m |
+    [INFO    root                      264609] Started analysis process with pid 268976.
+    [INFO    hops.core.hierarchy_data  264609] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_f6fa2d1ea82b839e46df4013b731e3476b80119a206ef196c9a10f9d625066e4.fifo
+    [INFO    hops.core.integration     264609] Using 16 integrators.
+    [INFO    hops.core.integration     264609] Some 0 trajectories have to be integrated.
+    [INFO    hops.core.integration     264609] Using 165 hierarchy states.
+  0it [00:00, ?it/s]
+    [INFO    hops.core.integration     264609] Choosing the nonlinear integrator.
+    [INFO    root                      264609] Starting analysis process.
+    | [0m3        [0m | [0m-0.001374[0m | [0m-0.01195 [0m | [0m-0.0446  [0m |
+    [INFO    root                      264609] Started analysis process with pid 268981.
+    [INFO    hops.core.hierarchy_data  264609] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_1779c2e0c81b26e68f18a2298525a84c531fd36c909e6fddc0e41f3b78a02ee1.fifo
+    [INFO    hops.core.integration     264609] Using 16 integrators.
+    [INFO    hops.core.integration     264609] Some 0 trajectories have to be integrated.
+    [INFO    hops.core.integration     264609] Using 165 hierarchy states.
+  0it [00:00, ?it/s]
+    [INFO    hops.core.integration     264609] Choosing the nonlinear integrator.
+    [INFO    root                      264609] Starting analysis process.
+    | [0m4        [0m | [0m-0.0     [0m | [0m0.01176  [0m | [0m0.1073   [0m |
+    [INFO    root                      264609] Started analysis process with pid 269016.
+    [INFO    hops.core.hierarchy_data  264609] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_4c924d501d086d896c1552881c628116ad03c2100d680cb6ef5cc81dd4b2a2a6.fifo
+    [INFO    hops.core.integration     264609] Using 16 integrators.
+    [INFO    hops.core.integration     264609] Some 0 trajectories have to be integrated.
+    [INFO    hops.core.integration     264609] Using 165 hierarchy states.
+  0it [00:00, ?it/s]
+    [INFO    hops.core.integration     264609] Choosing the nonlinear integrator.
+    [INFO    root                      264609] Starting analysis process.
+    | [0m5        [0m | [0m-0.02987 [0m | [0m-0.03473 [0m | [0m0.1213   [0m |
+    [INFO    root                      264609] Started analysis process with pid 269051.
+    [INFO    hops.core.hierarchy_data  264609] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_d8ae65a827650db8ac3da6b4bce3faef161be342650b8238d59244d1ec5f69bb.fifo
+    [INFO    hops.core.integration     264609] Using 16 integrators.
+    [INFO    hops.core.integration     264609] Some 0 trajectories have to be integrated.
+    [INFO    hops.core.integration     264609] Using 165 hierarchy states.
+  0it [00:00, ?it/s]
+    [INFO    hops.core.integration     264609] Choosing the nonlinear integrator.
+    [INFO    root                      264609] Starting analysis process.
+    | [95m6        [0m | [95m0.02888  [0m | [95m0.398    [0m | [95m0.2961   [0m |
+    [INFO    root                      264609] Started analysis process with pid 269086.
+    [INFO    hops.core.hierarchy_data  264609] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_97c6b5378d143228f25a568548ca12c00f145bef0320218d249394cdf75795d6.fifo
+    [INFO    hops.core.integration     264609] Using 16 integrators.
+    [INFO    hops.core.integration     264609] Some 0 trajectories have to be integrated.
+    [INFO    hops.core.integration     264609] Using 165 hierarchy states.
+  0it [00:00, ?it/s]
+    [INFO    hops.core.integration     264609] Choosing the nonlinear integrator.
+    [INFO    root                      264609] Starting analysis process.
+    | [0m7        [0m | [0m-0.004074[0m | [0m-0.01042 [0m | [0m0.2773   [0m |
+    [INFO    root                      264609] Started analysis process with pid 269121.
+    [INFO    hops.core.hierarchy_data  264609] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_a5de368bb5ac8323883a97b14f8dc14ef84d021a9134152bd2e73a3bd4760052.fifo
+    [INFO    hops.core.integration     264609] Using 16 integrators.
+    [INFO    hops.core.integration     264609] Some 0 trajectories have to be integrated.
+    [INFO    hops.core.integration     264609] Using 165 hierarchy states.
+  0it [00:00, ?it/s]
+    [INFO    hops.core.integration     264609] Choosing the nonlinear integrator.
+    [INFO    root                      264609] Starting analysis process.
+    | [0m8        [0m | [0m-0.04096 [0m | [0m-0.04836 [0m | [0m0.3552   [0m |
+    [INFO    root                      264609] Started analysis process with pid 269156.
+    [INFO    hops.core.hierarchy_data  264609] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_c981612944d44cef75b47e1c972bc3e1b979a39b180aeceea5746a3cc49138b9.fifo
+    [INFO    hops.core.integration     264609] Using 16 integrators.
+    [INFO    hops.core.integration     264609] Some 0 trajectories have to be integrated.
+    [INFO    hops.core.integration     264609] Using 165 hierarchy states.
+  0it [00:00, ?it/s]
+    [INFO    hops.core.integration     264609] Choosing the nonlinear integrator.
+    [INFO    root                      264609] Starting analysis process.
+    | [0m9        [0m | [0m7.841e-06[0m | [0m0.1374   [0m | [0m-0.003125[0m |
+    [INFO    root                      264609] Started analysis process with pid 269191.
+    [INFO    hops.core.hierarchy_data  264609] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/results_ad69b9cace9b50f1041832e082421a317348dcbb5bfda0a3e6b8efb7717c92e8.fifo
+    [INFO    hops.core.integration     264609] Using 16 integrators.
+    [INFO    hops.core.integration     264609] Some 610 trajectories have to be integrated.
+    [INFO    hops.core.integration     264609] Using 165 hierarchy states.
+    0% 0/610 [00:00<?, ?it/s][INFO    hops.core.signal_delay    264609] caught sig 'SIGINT'
+    [INFO    hops.core.signal_delay    264609] caught sig 'SIGINT'
+    [INFO    hops.core.signal_delay    264609] caught sig 'SIGINT'
+    0% 0/610 [00:10<?, ?it/s]
+    [INFO    hops.core.signal_delay    264609] caught 3 signal(s)
+    [INFO    hops.core.signal_delay    264609] emit signal 'SIGINT'
+    [INFO    hops.core.signal_delay    264609] caught sig 'SIGINT'
+    [INFO    hops.core.signal_delay    264609] emit signal 'SIGINT'
+    [INFO    hops.core.signal_delay    264609] caught sig 'SIGINT'
+    [INFO    hops.core.signal_delay    264609] emit signal 'SIGINT'
+    [INFO    hops.core.signal_delay    264609] caught sig 'SIGINT'
+    2023-02-02 09:05:23,690     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2023-02-02 09:05:23,691     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2023-02-02 09:05:23,695     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2023-02-02 09:05:23,696     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2023-02-02 09:05:23,697     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2023-02-02 09:05:23,705     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2023-02-02 09:05:23,729     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2023-02-02 09:05:23,741     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2023-02-02 09:05:23,742     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2023-02-02 09:05:23,742     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2023-02-02 09:05:23,743     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2023-02-02 09:05:23,743     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2023-02-02 09:05:23,743     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2023-02-02 09:05:23,744     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2023-02-02 09:05:23,744     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    2023-02-02 09:05:23,745     ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+    [INFO    hops.core.signal_delay    264609] caught 3 signal(s)
+    [INFO    hops.core.signal_delay    264609] emit signal 'SIGINT'
+#+end_example
+# [goto error]
+#+begin_example
+  [0;31m---------------------------------------------------------------------------[0m
+  [0;31mKeyboardInterrupt[0m                         Traceback (most recent call last)
+  Cell [0;32mIn[7], line 16[0m
+  [1;32m      7[0m optimizer [38;5;241m=[39m BayesianOptimization(
+  [1;32m      8[0m     f[38;5;241m=[39mobjective,
+  [1;32m      9[0m     pbounds[38;5;241m=[39mpbounds,
+  [1;32m     10[0m     random_state[38;5;241m=[39m[38;5;241m1[39m,
+  [1;32m     11[0m )
+  [1;32m     12[0m [38;5;66;03m# load_logs(optimizer, logs=["./logs.json"]);[39;00m
+  [1;32m     13[0m
+  [1;32m     14[0m [38;5;66;03m# logger = JSONLogger(path="./logs.json")[39;00m
+  [1;32m     15[0m [38;5;66;03m# optimizer.subscribe(Events.OPTIMIZATION_STEP, logger)[39;00m
+  [0;32m---> 16[0m [43moptimizer[49m[38;5;241;43m.[39;49m[43mmaximize[49m[43m([49m
+  [1;32m     17[0m [43m    [49m[43minit_points[49m[38;5;241;43m=[39;49m[38;5;241;43m4[39;49m[43m,[49m
+  [1;32m     18[0m [43m    [49m[43mn_iter[49m[38;5;241;43m=[39;49m[38;5;241;43m8[39;49m[43m,[49m
+  [1;32m     19[0m [43m)[49m
+
+  File [0;32m/nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/bayes_opt/bayesian_optimization.py:311[0m, in [0;36mBayesianOptimization.maximize[0;34m(self, init_points, n_iter, acquisition_function, acq, kappa, kappa_decay, kappa_decay_delay, xi, **gp_params)[0m
+  [1;32m    309[0m     x_probe [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39msuggest(util)
+  [1;32m    310[0m     iteration [38;5;241m+[39m[38;5;241m=[39m [38;5;241m1[39m
+  [0;32m--> 311[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mprobe[49m[43m([49m[43mx_probe[49m[43m,[49m[43m [49m[43mlazy[49m[38;5;241;43m=[39;49m[38;5;28;43;01mFalse[39;49;00m[43m)[49m
+  [1;32m    313[0m [38;5;28;01mif[39;00m [38;5;28mself[39m[38;5;241m.[39m_bounds_transformer [38;5;129;01mand[39;00m iteration [38;5;241m>[39m [38;5;241m0[39m:
+  [1;32m    314[0m     [38;5;66;03m# The bounds transformer should only modify the bounds after[39;00m
+  [1;32m    315[0m     [38;5;66;03m# the init_points points (only for the true iterations)[39;00m
+  [1;32m    316[0m     [38;5;28mself[39m[38;5;241m.[39mset_bounds(
+  [1;32m    317[0m         [38;5;28mself[39m[38;5;241m.[39m_bounds_transformer[38;5;241m.[39mtransform([38;5;28mself[39m[38;5;241m.[39m_space))
+
+  File [0;32m/nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/bayes_opt/bayesian_optimization.py:208[0m, in [0;36mBayesianOptimization.probe[0;34m(self, params, lazy)[0m
+  [1;32m    206[0m     [38;5;28mself[39m[38;5;241m.[39m_queue[38;5;241m.[39madd(params)
+  [1;32m    207[0m [38;5;28;01melse[39;00m:
+  [0;32m--> 208[0m     [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_space[49m[38;5;241;43m.[39;49m[43mprobe[49m[43m([49m[43mparams[49m[43m)[49m
+  [1;32m    209[0m     [38;5;28mself[39m[38;5;241m.[39mdispatch(Events[38;5;241m.[39mOPTIMIZATION_STEP)
+
+  File [0;32m/nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/bayes_opt/target_space.py:236[0m, in [0;36mTargetSpace.probe[0;34m(self, params)[0m
+  [1;32m    234[0m x [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39m_as_array(params)
+  [1;32m    235[0m params [38;5;241m=[39m [38;5;28mdict[39m([38;5;28mzip[39m([38;5;28mself[39m[38;5;241m.[39m_keys, x))
+  [0;32m--> 236[0m target [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mtarget_func[49m[43m([49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mparams[49m[43m)[49m
+  [1;32m    238[0m [38;5;28;01mif[39;00m [38;5;28mself[39m[38;5;241m.[39m_constraint [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+  [1;32m    239[0m     [38;5;28mself[39m[38;5;241m.[39mregister(x, target)
+
+  Cell [0;32mIn[4], line 3[0m, in [0;36mobjective[0;34m(shift_c, shift_h, N)[0m
+  [1;32m      1[0m [38;5;28;01mdef[39;00m [38;5;21mobjective[39m(shift_c, shift_h, N[38;5;241m=[39m[38;5;241m1000[39m):
+  [1;32m      2[0m     model [38;5;241m=[39m make_cycle(shift_c, shift_h)
+  [0;32m----> 3[0m     [43mot[49m[38;5;241;43m.[39;49m[43mintegrate_online[49m[43m([49m[43mmodel[49m[43m,[49m[43m [49m[43mN[49m[43m)[49m
+  [1;32m      5[0m     [38;5;28;01mreturn[39;00m [38;5;241m-[39m[38;5;241m1[39m [38;5;241m*[39m model[38;5;241m.[39mpower(steady_idx[38;5;241m=[39m[38;5;241m-[39m[38;5;241m1[39m)[38;5;241m.[39mvalue
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/otto_utilities.py:155[0m, in [0;36mintegrate_online[0;34m(model, n, stream_folder, **kwargs)[0m
+  [1;32m    154[0m [38;5;28;01mdef[39;00m [38;5;21mintegrate_online[39m(model, n, stream_folder[38;5;241m=[39m[38;5;28;01mNone[39;00m, [38;5;241m*[39m[38;5;241m*[39mkwargs):
+  [0;32m--> 155[0m     [43maux[49m[38;5;241;43m.[39;49m[43mintegrate[49m[43m([49m
+  [1;32m    156[0m [43m        [49m[43mmodel[49m[43m,[49m
+  [1;32m    157[0m [43m        [49m[43mn[49m[43m,[49m
+  [1;32m    158[0m [43m        [49m[43mstream_file[49m[38;5;241;43m=[39;49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43m"[39;49m[43m [49m[38;5;28;43;01mif[39;49;00m[43m [49m[43mstream_folder[49m[43m [49m[38;5;129;43;01mis[39;49;00m[43m [49m[38;5;28;43;01mNone[39;49;00m[43m [49m[38;5;28;43;01melse[39;49;00m[43m [49m[43mstream_folder[49m[43m)[49m
+  [1;32m    159[0m [43m        [49m[38;5;241;43m+[39;49m[43m [49m[38;5;124;43mf[39;49m[38;5;124;43m"[39;49m[38;5;124;43mresults_[39;49m[38;5;132;43;01m{[39;49;00m[43mmodel[49m[38;5;241;43m.[39;49m[43mhexhash[49m[38;5;132;43;01m}[39;49;00m[38;5;124;43m.fifo[39;49m[38;5;124;43m"[39;49m[43m,[49m
+  [1;32m    160[0m [43m        [49m[43manalyze[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
+  [1;32m    161[0m [43m        [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m,[49m
+  [1;32m    162[0m [43m    [49m[43m)[49m
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_auxiliary.py:201[0m, in [0;36mintegrate[0;34m(model, n, data_path, clear_pd, single_process, stream_file, analyze, results_path, analyze_kwargs)[0m
+  [1;32m    199[0m         supervisor[38;5;241m.[39mintegrate_single_process(clear_pd)
+  [1;32m    200[0m     [38;5;28;01melse[39;00m:
+  [0;32m--> 201[0m         supervisor[38;5;241m.[39mintegrate(clear_pd)
+  [1;32m    203[0m cleanup([38;5;241m0[39m)
+
+  File [0;32m~/src/hops/hops/core/signal_delay.py:87[0m, in [0;36msig_delay.__exit__[0;34m(self, exc_type, exc_val, exc_tb)[0m
+  [1;32m     84[0m [38;5;28;01mif[39;00m [38;5;28mlen[39m([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught) [38;5;241m>[39m [38;5;241m0[39m [38;5;129;01mand[39;00m [38;5;28mself[39m[38;5;241m.[39mhandler [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+  [1;32m     85[0m     [38;5;28mself[39m[38;5;241m.[39mhandler([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught)
+  [0;32m---> 87[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_restore[49m[43m([49m[43m)[49m
+
+  File [0;32m~/src/hops/hops/core/signal_delay.py:68[0m, in [0;36msig_delay._restore[0;34m(self)[0m
+  [1;32m     66[0m [38;5;28;01mfor[39;00m i, s [38;5;129;01min[39;00m [38;5;28menumerate[39m([38;5;28mself[39m[38;5;241m.[39msigs):
+  [1;32m     67[0m     signal[38;5;241m.[39msignal(s, [38;5;28mself[39m[38;5;241m.[39mold_handlers[i])
+  [0;32m---> 68[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msigh[49m[38;5;241;43m.[39;49m[43memit[49m[43m([49m[43m)[49m
+
+  File [0;32m~/src/hops/hops/core/signal_delay.py:42[0m, in [0;36mSigHandler.emit[0;34m(self)[0m
+  [1;32m     40[0m [38;5;28;01mfor[39;00m s [38;5;129;01min[39;00m [38;5;28mself[39m[38;5;241m.[39msigs_caught:
+  [1;32m     41[0m     log[38;5;241m.[39minfo([38;5;124m"[39m[38;5;124memit signal [39m[38;5;124m'[39m[38;5;132;01m{}[39;00m[38;5;124m'[39m[38;5;124m"[39m[38;5;241m.[39mformat(SIG_MAP[s]))
+  [0;32m---> 42[0m     [43mos[49m[38;5;241;43m.[39;49m[43mkill[49m[43m([49m[43mos[49m[38;5;241;43m.[39;49m[43mgetpid[49m[43m([49m[43m)[49m[43m,[49m[43m [49m[43ms[49m[43m)[49m
+
+  [0;31mKeyboardInterrupt[0m:
+#+end_example
+:END:
+
+#+begin_src jupyter-python
+  with aux.model_db(data_path=".data") as db:
+      model = db["05a638feb440fd913b41a5be74fbdd5a6cc358f2b556e61e4005b8539ca15115"]["model_config"]
+  c=make_cycle(0.401813980810373, 0.302982197157591)
+  # aux.import_results(
+  #     other_data_path = "taurus/.data",
+  #     results_path = "./results",
+  #     other_results_path = "taurus/results",
+  #     interactive = False,
+  #     models_to_import = [model],
+  #     force = False,
+  # )
+  #ot.plot_cycle(c)
+  #model.L_shift
+  t, total = ot.val_relative_to_steady(model, model.total_energy_from_power(), steady_idx=-2)
+  pu.plot_with_σ(t, total)
+  model.power(steady_idx=-2)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+: EnsembleValue([(10000, 3.3527328716046976e-05, 5.0274219343398344e-05)])
+[[file:./.ob-jupyter/bb13221d6e76ccdb1e7068e301948add99c2104a.svg]]
+:END:
