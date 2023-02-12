@@ -15,3 +15,5 @@ results
 .data
 /python/otto_motor/.data_timing/
 /python/otto_motor/Scans/
+/python/otto_motor/figures/
+ltximg
