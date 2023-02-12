@@ -107,7 +107,6 @@ All nice and good, but we need concrete plans.
 
 ***** TODO Cycle Length + Coupling Strength
 :LOGBOOK:
-CLOCK: [2022-12-12 Mon 15:39]
 CLOCK: [2022-12-12 Mon 14:45]--[2022-12-12 Mon 15:34] =>  0:49
 CLOCK: [2022-12-12 Mon 14:05]--[2022-12-12 Mon 14:40] =>  0:35
 CLOCK: [2022-12-12 Mon 13:29]--[2022-12-12 Mon 13:58] =>  0:29
@@ -172,69 +171,5 @@ CLOCK: [2022-11-24 Thu 11:51]--[2022-11-24 Thu 12:06] =>  0:15
 ** TODO sort out richards libraries
 
 * Nice to Haves
-** HOLD test online calc
-** HOLD test dynamic matrix
-
-*  Clock Report
-- the first days are pretty broken. emacs crashed etc...
-
-#+BEGIN: clocktable :scope file  :step day :tstart "<-1w>" :tend "<now>" :compact nil
-
-Daily report: [2022-11-21 Mon]
-| Headline     | Time   |
-|--------------+--------|
-| *Total time* | *0:00* |
-
-Daily report: [2022-11-22 Tue]
-| Headline     | Time   |
-|--------------+--------|
-| *Total time* | *0:00* |
-
-Daily report: [2022-11-23 Wed]
-| Headline       | Time   |      |
-|----------------+--------+------|
-| *Total time*   | *1:49* |      |
-|----------------+--------+------|
-| Tasks          | 1:49   |      |
-| \_  Merge HOPS |        | 1:49 |
-
-Daily report: [2022-11-24 Thu]
-| Headline                                 | Time   |      |
-|------------------------------------------+--------+------|
-| *Total time*                             | *2:01* |      |
-|------------------------------------------+--------+------|
-| Tasks                                    | 2:01   |      |
-| \_  Merge HOPS                           |        | 0:03 |
-| \_  Set up HO calcs with online analysis |        | 1:58 |
-
-Daily report: [2022-11-25 Fri]
-| Headline                                 | Time   |      |
-|------------------------------------------+--------+------|
-| *Total time*                             | *2:00* |      |
-|------------------------------------------+--------+------|
-| Tasks                                    | 2:00   |      |
-| \_  Set up HO calcs with online analysis |        | 2:00 |
-
-Daily report: [2022-11-26 Sat]
-| Headline                                 | Time   |      |
-|------------------------------------------+--------+------|
-| *Total time*                             | *1:52* |      |
-|------------------------------------------+--------+------|
-| Tasks                                    | 1:52   |      |
-| \_  Set up HO calcs with online analysis |        | 1:52 |
-
-Daily report: [2022-11-27 Sun]
-| Headline     | Time   |
-|--------------+--------|
-| *Total time* | *0:00* |
-
-Daily report: [2022-11-28 Mon]
-| Headline                                 |   Time |      |
-|------------------------------------------+--------+------|
-| *Total time*                             | *3:44* |      |
-|------------------------------------------+--------+------|
-| Outline                                  |   1:35 |      |
-| \_  Application                          |        | 1:35 |
-| Tasks                                    |   2:09 |      |
-| \_  Set up HO calcs with online analysis |        | 2:09 |
-#+END:
+** SOMEDAY test online calc
+** SOMEDAY test dynamic matrix

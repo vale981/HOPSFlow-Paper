@@ -165,20 +165,15 @@ def integrate_online(model, n, stream_folder=None, **kwargs):
 def integrate_online_multi(models, n, *args, increment=1000, **kwargs):
     target = increment
 
-    samples = []
-
     while target < (n + target):
-        for model, s in zip(models, samples):
+        for model in models:
             integrate_online(model, min([n, target]), *args, **kwargs)
 
         target += increment
 
 
-def plot_3d_heatmap(models, value_accessor, x_spec, y_spec):
-    f, _ = plt.subplots()
-
-    ax1 = plt.gcf().add_subplot(111, projection="3d")
-
+@pu.wrap_plot
+def plot_3d_heatmap(models, value_accessor, x_spec, y_spec, normalize=False, ax=None):
     value_dict = {}
     x_labels = set()
     y_labels = set()
@@ -221,8 +216,21 @@ def plot_3d_heatmap(models, value_accessor, x_spec, y_spec):
     cmap = plt.get_cmap("plasma")
     colors = [cmap(power) for power in normalized_values]
 
-    ax1.bar3d(x, y, np.zeros_like(values), dx, dy, values, color=colors)
-    ax1.set_xticks(x_labels)
-    ax1.set_yticks(y_labels)
+    ax.bar3d(
+        x,
+        y,
+        np.zeros_like(values),
+        dx,
+        dy,
+        values / abs(values).max() if normalize else values,
+        color=colors,
+    )
+    ax.set_xticks(x_labels)
+    ax.set_yticks(y_labels)
 
-    return f, ax1
+
+def val_relative_to_steady(model, val, steady_idx):
+    begin_idx = model.strobe[1][steady_idx]
+    return model.t[begin_idx:], (
+        val.slice(slice(begin_idx - 1, -1, 1)) - val.slice(begin_idx - 1)
+    )
