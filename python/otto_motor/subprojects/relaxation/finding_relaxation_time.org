@@ -1,0 +1,111 @@
+:PROPERTIES:
+:ID:       66cb884e-8724-488d-88da-21b929ffc2bb
+:END:
+#+PROPERTY: header-args :session otto_relax :kernel python :pandoc no :async yes :tangle tangle/otto_relax.py
+
+In here, we'll try to find out how long the cycle has to be, to ensure
+complete thermalization.
+
+* Boilerplate
+#+name: boilerplate
+#+begin_src jupyter-python :results none
+    import figsaver as fs
+    import plot_utils as pu
+    from hiro_models.one_qubit_model import StocProcTolerances
+    from hiro_models.otto_cycle import OttoEngine
+    import hiro_models.model_auxiliary as aux
+    import numpy as np
+    import qutip as qt
+    import utilities as ut
+    import stocproc
+    import matplotlib.pyplot as plt
+    import otto_utilities as ot
+
+    import ray
+    ray.shutdown()
+
+    #ray.init(address='auto')
+    ray.init()
+    from hops.util.logging_setup import logging_setup
+    import logging
+    logging_setup(logging.INFO)
+    plt.rcParams['figure.figsize'] = (12,4)
+#+end_src
+
+* Cycle
+This model reflects the currently "best-working" configuration. The
+only parameter we'll vary is the cycle time θ. We'll be interested in
+whether the system thermalizes.
+
+Therefore we need a way to keep the coupling switching speed constant.
+#+begin_src jupyter-python :results none
+  def timings(τ_c, τ_i):
+      τ_th = (1 - 2 * τ_c) / 2
+      τ_i_on = τ_th - 2 * τ_i
+      timings_H = (0, τ_c, τ_c + τ_th, 2 * τ_c + τ_th)
+      timings_L_hot = (τ_c, τ_c + τ_i, τ_c + τ_i + τ_i_on, τ_c + 2 * τ_i + τ_i_on)
+
+      timings_L_cold = tuple(time + timings_H[2] for time in timings_L_hot)
+
+      return timings_H, (timings_L_cold, timings_L_hot)
+#+end_src
+
+Now we define the prototype. The numeric accuracy is jacked down, as
+we don't need precision.
+#+begin_src jupyter-python
+  def make_cycle(θ):
+      (p_H, p_L) = timings(3 / θ, 3 / θ)
+
+      return OttoEngine(
+          δ=[0.4, 0.4],
+          ω_c=[2, 2],
+          ψ_0=qt.basis([2], [1]),
+          description=f"Classic Cycle",
+          k_max=3,
+          bcf_terms=[4] * 2,
+          truncation_scheme="simplex",
+          driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
+          thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
+          T=[0.5, 4],
+          therm_methods=["tanhsinh", "tanhsinh"],
+          Δ=1,
+          num_cycles=3,
+          Θ=θ,
+          dt=0.001,
+          timings_H=p_H,
+          timings_L=p_L,
+          streaming_mode=True,
+          shift_to_resonance=(False, False),
+          L_shift=(0, 0),
+      )
+#+end_src
+
+#+RESULTS:
+
+#+begin_src jupyter-python :tangle no
+  ot.plot_cycle(make_cycle(50))
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
+[[file:./.ob-jupyter/18806741c1252bcffe79195955c565429406d683.svg]]
+:END:
+
+* Cursory Scanning
+We can now test the model to find wether it allows enough time for
+complete thermalization. We'll start with a really long cycle.
+
+#+begin_src jupyter-python
+  ot.integrate_online(make_cycle(60), 1000)
+#+end_src
+
+#+RESULTS:
+: [INFO    hops.core.integration     67753] Choosing the nonlinear integrator.
+: [INFO    root                      67753] Starting analysis process.
+: [INFO    root                      67753] Started analysis process with pid 69649.
+: [INFO    hops.core.hierarchy_data  67753] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/relaxation/results_d2fc0c70ef3fa02e3f899c319307ee683ee264dddd838adc175f3209910580ea.fifo
+: [INFO    hops.core.integration     67753] Using 16 integrators.
+: [INFO    hops.core.integration     67753] Some 1000 trajectories have to be integrated.
+: [INFO    hops.core.integration     67753] Using 165 hierarchy states.
+:  32% 320/1000 [16:58<36:03,  3.18s/it]
