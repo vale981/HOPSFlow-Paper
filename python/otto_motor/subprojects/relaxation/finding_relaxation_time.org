@@ -51,10 +51,11 @@ Therefore we need a way to keep the coupling switching speed constant.
 #+end_src
 
 Now we define the prototype. The numeric accuracy is jacked down, as
-we don't need precision.
+we don't need precision. We only use two cycles because of the long
+cycle time.
 #+begin_src jupyter-python
   def make_cycle(θ):
-      (p_H, p_L) = timings(3 / θ, 3 / θ)
+      (p_H, p_L) = timings(3. / θ, 3. / θ)
 
       return OttoEngine(
           δ=[0.4, 0.4],
@@ -69,7 +70,7 @@ we don't need precision.
           T=[0.5, 4],
           therm_methods=["tanhsinh", "tanhsinh"],
           Δ=1,
-          num_cycles=3,
+          num_cycles=2,
           Θ=θ,
           dt=0.001,
           timings_H=p_H,
@@ -83,29 +84,78 @@ we don't need precision.
 #+RESULTS:
 
 #+begin_src jupyter-python :tangle no
-  ot.plot_cycle(make_cycle(50))
+  ot.plot_cycle(make_cycle(100))
 #+end_src
 
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
-[[file:./.ob-jupyter/18806741c1252bcffe79195955c565429406d683.svg]]
+[[file:./.ob-jupyter/1f628c0de83132def7283aefd2884d611b0ea5e5.svg]]
 :END:
 
 * Cursory Scanning
 We can now test the model to find wether it allows enough time for
 complete thermalization. We'll start with a really long cycle.
 
+We tried 100, now we try 60. 60 is a bit too short. So let's try 70
+
+#+begin_src jupyter-python :results none
+  long_cycle = make_cycle(70)
+#+end_src
+
 #+begin_src jupyter-python
-  ot.integrate_online(make_cycle(60), 1000)
+  ot.integrate_online(long_cycle, 10000)
+#+end_src
+
+
+Now we look at the system energy.
+#+begin_src jupyter-python
+  f, a, *_ = pu.plot_with_σ(long_cycle.t, long_cycle.system_energy())
+  a.set_xlim(0, long_cycle.Θ)
 #+end_src
 
 #+RESULTS:
-: [INFO    hops.core.integration     67753] Choosing the nonlinear integrator.
-: [INFO    root                      67753] Starting analysis process.
-: [INFO    root                      67753] Started analysis process with pid 69649.
-: [INFO    hops.core.hierarchy_data  67753] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/relaxation/results_d2fc0c70ef3fa02e3f899c319307ee683ee264dddd838adc175f3209910580ea.fifo
-: [INFO    hops.core.integration     67753] Using 16 integrators.
-: [INFO    hops.core.integration     67753] Some 1000 trajectories have to be integrated.
-: [INFO    hops.core.integration     67753] Using 165 hierarchy states.
-:  32% 320/1000 [16:58<36:03,  3.18s/it]
+:RESULTS:
+| 0.0 | 70.0 |
+[[file:./.ob-jupyter/429c4411f7c721afd6ef116f635b8e45cec17dcf.svg]]
+:END:
+
+#+begin_src jupyter-python
+  ot.plot_energy(long_cycle)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
+[[file:./.ob-jupyter/01a3e4d5c924de01d1bc25e3a858b00afbd06140.svg]]
+:END:
+
+
+We would like to know how far away from the thermal state the system is.
+#+begin_src jupyter-python :results none
+  def thermal_state(Ω, T):
+      ρ = np.array([[np.exp(-Ω/T), 0], [0, 1]])
+      ρ /= np.sum(np.diag(ρ))
+
+      return ρ
+#+end_src
+
+#+begin_src jupyter-python
+  import hops.util.utilities
+  from hopsflow.util import EnsembleValue
+  with aux.get_data(long_cycle) as data:
+      trace_dist_c = hops.util.utilities.trace_distance(data, relative_to=thermal_state(long_cycle.T[0], long_cycle.energy_gaps[0]))
+      trace_dist_h = hops.util.utilities.trace_distance(data, relative_to=thermal_state(long_cycle.T[1], long_cycle.energy_gaps[1]))
+
+  f, a = plt.subplots()
+  pu.plot_with_σ(long_cycle.t, EnsembleValue(trace_dist_c), ax=a)
+  pu.plot_with_σ(long_cycle.t, EnsembleValue(trace_dist_h), ax=a)
+  a.plot(long_cycle.t, long_cycle.H(long_cycle.t)[:, 0, 0] - 1)
+  #a.set_xlim(155)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <matplotlib.lines.Line2D | at | 0x7f76af34bf10> |
+[[file:./.ob-jupyter/c3ab5d34881edb6ba2e30ace5d0fae61870040f3.svg]]
+:END:

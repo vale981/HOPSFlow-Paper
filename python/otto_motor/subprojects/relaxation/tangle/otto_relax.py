@@ -31,7 +31,7 @@ def timings(τ_c, τ_i):
     return timings_H, (timings_L_cold, timings_L_hot)
 
 def make_cycle(θ):
-    (p_H, p_L) = timings(3 / θ, 3 / θ)
+    (p_H, p_L) = timings(3. / θ, 3. / θ)
 
     return OttoEngine(
         δ=[0.4, 0.4],
@@ -46,7 +46,7 @@ def make_cycle(θ):
         T=[0.5, 4],
         therm_methods=["tanhsinh", "tanhsinh"],
         Δ=1,
-        num_cycles=3,
+        num_cycles=2,
         Θ=θ,
         dt=0.001,
         timings_H=p_H,
@@ -56,4 +56,29 @@ def make_cycle(θ):
         L_shift=(0, 0),
     )
 
-ot.integrate_online(make_cycle(60), 1000)
+long_cycle = make_cycle(70)
+
+ot.integrate_online(long_cycle, 10000)
+
+f, a, *_ = pu.plot_with_σ(long_cycle.t, long_cycle.system_energy())
+a.set_xlim(0, long_cycle.Θ)
+
+ot.plot_energy(long_cycle)
+
+def thermal_state(Ω, T):
+    ρ = np.array([[np.exp(-Ω/T), 0], [0, 1]])
+    ρ /= np.sum(np.diag(ρ))
+
+    return ρ
+
+import hops.util.utilities
+from hopsflow.util import EnsembleValue
+with aux.get_data(long_cycle) as data:
+    trace_dist_c = hops.util.utilities.trace_distance(data, relative_to=thermal_state(long_cycle.T[0], long_cycle.energy_gaps[0]))
+    trace_dist_h = hops.util.utilities.trace_distance(data, relative_to=thermal_state(long_cycle.T[1], long_cycle.energy_gaps[1]))
+
+f, a = plt.subplots()
+pu.plot_with_σ(long_cycle.t, EnsembleValue(trace_dist_c), ax=a)
+pu.plot_with_σ(long_cycle.t, EnsembleValue(trace_dist_h), ax=a)
+a.plot(long_cycle.t, long_cycle.H(long_cycle.t)[:, 0, 0] - 1)
+#a.set_xlim(155)
