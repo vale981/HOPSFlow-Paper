@@ -52,17 +52,19 @@ Therefore we need a way to keep the coupling switching speed constant.
 
 Now we define the prototype. The numeric accuracy is jacked down, as
 we don't need precision. We only use two cycles because of the long
-cycle time.
+cycle time. With δ=.4 θ=70 seemed ok. So let's try with .6 and 50
+ok. 1 and 40 is ok too. Let's try 1 and 45. Seems OK, but let's ease
+off on the coupling strength and try .8.
 #+begin_src jupyter-python
   def make_cycle(θ):
       (p_H, p_L) = timings(3. / θ, 3. / θ)
 
       return OttoEngine(
-          δ=[0.4, 0.4],
+          δ=[.8, .8],
           ω_c=[2, 2],
           ψ_0=qt.basis([2], [1]),
           description=f"Classic Cycle",
-          k_max=3,
+          k_max=4,
           bcf_terms=[4] * 2,
           truncation_scheme="simplex",
           driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
@@ -90,7 +92,7 @@ cycle time.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
-[[file:./.ob-jupyter/1f628c0de83132def7283aefd2884d611b0ea5e5.svg]]
+[[file:./.ob-jupyter/66c053835ab6ad9d3eea9b9378a63f1eaa903251.svg]]
 :END:
 
 * Cursory Scanning
@@ -100,12 +102,14 @@ complete thermalization. We'll start with a really long cycle.
 We tried 100, now we try 60. 60 is a bit too short. So let's try 70
 
 #+begin_src jupyter-python :results none
-  long_cycle = make_cycle(70)
+  long_cycle = make_cycle(45)
 #+end_src
 
 #+begin_src jupyter-python
-  ot.integrate_online(long_cycle, 10000)
+  #ot.integrate_online(long_cycle, 50000)
 #+end_src
+
+#+RESULTS:
 
 
 Now we look at the system energy.
@@ -116,9 +120,13 @@ Now we look at the system energy.
 
 #+RESULTS:
 :RESULTS:
-| 0.0 | 70.0 |
-[[file:./.ob-jupyter/429c4411f7c721afd6ef116f635b8e45cec17dcf.svg]]
+| 0.0 | 45.0 |
+[[file:./.ob-jupyter/ea9690aaba87c1e450a1456aa49cd8c6f649b103.svg]]
 :END:
+
+
+
+[[file:./.ob-jupyter/2c1a4d916249a5998d36181e93f93a3a46712b94.svg]]
 
 #+begin_src jupyter-python
   ot.plot_energy(long_cycle)
@@ -127,7 +135,17 @@ Now we look at the system energy.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
-[[file:./.ob-jupyter/01a3e4d5c924de01d1bc25e3a858b00afbd06140.svg]]
+[[file:./.ob-jupyter/7fa0ef03b52d099133087281c56b939c001c3563.svg]]
+:END:
+
+#+begin_src jupyter-python
+pu.plot_with_σ(long_cycle.t, long_cycle.bath_energy_flow().sum_baths())
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | > | ((<matplotlib.lines.Line2D at 0x7fb4f3b63bb0>) <matplotlib.collections.PolyCollection at 0x7fb4f3b73d00>) |
+[[file:./.ob-jupyter/6b4e457a1dd6b1339a8fe78be12d02718f63d2d4.svg]]
 :END:
 
 
@@ -148,14 +166,26 @@ We would like to know how far away from the thermal state the system is.
       trace_dist_h = hops.util.utilities.trace_distance(data, relative_to=thermal_state(long_cycle.T[1], long_cycle.energy_gaps[1]))
 
   f, a = plt.subplots()
-  pu.plot_with_σ(long_cycle.t, EnsembleValue(trace_dist_c), ax=a)
-  pu.plot_with_σ(long_cycle.t, EnsembleValue(trace_dist_h), ax=a)
-  a.plot(long_cycle.t, long_cycle.H(long_cycle.t)[:, 0, 0] - 1)
+  pu.plot_with_σ(long_cycle.t, EnsembleValue(trace_dist_c), ax=a, label=r"$||\rho(\tau)-\rho_c||$")
+  pu.plot_with_σ(long_cycle.t, EnsembleValue(trace_dist_h), ax=a, label=r"$||\rho(\tau)-\rho_h||$")
+  a.plot(long_cycle.t, (long_cycle.H(long_cycle.t)[:, 0, 0] - 1)/2, label="H Modulation")
+  a.set_xlabel(r"$\tau$")
   #a.set_xlim(155)
+  a.legend()
+  fs.export_fig("thermalization")
 #+end_src
 
 #+RESULTS:
 :RESULTS:
-| <matplotlib.lines.Line2D | at | 0x7f76af34bf10> |
-[[file:./.ob-jupyter/c3ab5d34881edb6ba2e30ace5d0fae61870040f3.svg]]
+: /nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/cbook/__init__.py:1369: ComplexWarning: Casting complex values to real discards the imaginary part
+:   return np.asarray(x, float)
+: /nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5340: ComplexWarning: Casting complex values to real discards the imaginary part
+:   pts[0] = start
+: /nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5341: ComplexWarning: Casting complex values to real discards the imaginary part
+:   pts[N + 1] = end
+: /nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5344: ComplexWarning: Casting complex values to real discards the imaginary part
+:   pts[1:N+1, 1] = dep1slice
+: /nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5346: ComplexWarning: Casting complex values to real discards the imaginary part
+:   pts[N+2:, 1] = dep2slice[::-1]
+[[file:./.ob-jupyter/ed0b6c9c04abab45ec849730cf1d7ed025ece4e8.svg]]
 :END:

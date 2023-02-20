@@ -34,11 +34,11 @@ def make_cycle(θ):
     (p_H, p_L) = timings(3. / θ, 3. / θ)
 
     return OttoEngine(
-        δ=[0.4, 0.4],
+        δ=[.8, .8],
         ω_c=[2, 2],
         ψ_0=qt.basis([2], [1]),
         description=f"Classic Cycle",
-        k_max=3,
+        k_max=4,
         bcf_terms=[4] * 2,
         truncation_scheme="simplex",
         driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
@@ -56,14 +56,16 @@ def make_cycle(θ):
         L_shift=(0, 0),
     )
 
-long_cycle = make_cycle(70)
+long_cycle = make_cycle(45)
 
-ot.integrate_online(long_cycle, 10000)
+#ot.integrate_online(long_cycle, 50000)
 
 f, a, *_ = pu.plot_with_σ(long_cycle.t, long_cycle.system_energy())
 a.set_xlim(0, long_cycle.Θ)
 
 ot.plot_energy(long_cycle)
+
+pu.plot_with_σ(long_cycle.t, long_cycle.bath_energy_flow().sum_baths())
 
 def thermal_state(Ω, T):
     ρ = np.array([[np.exp(-Ω/T), 0], [0, 1]])
@@ -78,7 +80,10 @@ with aux.get_data(long_cycle) as data:
     trace_dist_h = hops.util.utilities.trace_distance(data, relative_to=thermal_state(long_cycle.T[1], long_cycle.energy_gaps[1]))
 
 f, a = plt.subplots()
-pu.plot_with_σ(long_cycle.t, EnsembleValue(trace_dist_c), ax=a)
-pu.plot_with_σ(long_cycle.t, EnsembleValue(trace_dist_h), ax=a)
-a.plot(long_cycle.t, long_cycle.H(long_cycle.t)[:, 0, 0] - 1)
+pu.plot_with_σ(long_cycle.t, EnsembleValue(trace_dist_c), ax=a, label=r"$||\rho(\tau)-\rho_c||$")
+pu.plot_with_σ(long_cycle.t, EnsembleValue(trace_dist_h), ax=a, label=r"$||\rho(\tau)-\rho_h||$")
+a.plot(long_cycle.t, (long_cycle.H(long_cycle.t)[:, 0, 0] - 1)/2, label="H Modulation")
+a.set_xlabel(r"$\tau$")
 #a.set_xlim(155)
+a.legend()
+fs.export_fig("thermalization")
