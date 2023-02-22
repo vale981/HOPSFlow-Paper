@@ -58,7 +58,7 @@ def make_cycle(θ):
 
 long_cycle = make_cycle(45)
 
-#ot.integrate_online(long_cycle, 50000)
+ot.integrate_online(long_cycle, 100_000)
 
 f, a, *_ = pu.plot_with_σ(long_cycle.t, long_cycle.system_energy())
 a.set_xlim(0, long_cycle.Θ)

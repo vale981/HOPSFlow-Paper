@@ -92,7 +92,7 @@ off on the coupling strength and try .8.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
-[[file:./.ob-jupyter/66c053835ab6ad9d3eea9b9378a63f1eaa903251.svg]]
+[[file:./.ob-jupyter/bc64139692039e0724c1c5205ca006bda609e48d.svg]]
 :END:
 
 * Cursory Scanning
@@ -106,10 +106,32 @@ We tried 100, now we try 60. 60 is a bit too short. So let's try 70
 #+end_src
 
 #+begin_src jupyter-python
-  #ot.integrate_online(long_cycle, 50000)
+  ot.integrate_online(long_cycle, 100_000)
 #+end_src
 
 #+RESULTS:
+
+We can also import from taurus.
+#+begin_src jupyter-python :tangle no
+  from hiro_models.model_auxiliary import import_results
+
+  import_results(
+      other_data_path="./taurus/.data",
+      other_results_path="./taurus/results",
+      interactive=False,
+      models_to_import=[long_cycle],
+      force=True,
+  )
+#+end_src
+
+#+RESULTS:
+: [WARNING root                      2646] Importing taurus/.data/6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835/_a/6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835_a49974041a57e75a40e0d0f67b7dc584_1.h5 to .data/6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835/_a/6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835_a49974041a57e75a40e0d0f67b7dc584_1.h5.
+: [WARNING root                      2646] The model description is 'Classic Cycle'.
+: [WARNING root                      2646] Importing taurus/results/flow_6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835.npz to results/flow_6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835.npz.
+: [WARNING root                      2646] Importing taurus/results/interaction_6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835.npz to results/interaction_6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835.npz.
+: [WARNING root                      2646] Importing taurus/results/interaction_power_6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835.npz to results/interaction_power_6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835.npz.
+: [WARNING root                      2646] Importing taurus/results/system_6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835.npz to results/system_6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835.npz.
+: [WARNING root                      2646] Importing taurus/results/system_power_6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835.npz to results/system_power_6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835.npz.
 
 
 Now we look at the system energy.
@@ -121,7 +143,7 @@ Now we look at the system energy.
 #+RESULTS:
 :RESULTS:
 | 0.0 | 45.0 |
-[[file:./.ob-jupyter/ea9690aaba87c1e450a1456aa49cd8c6f649b103.svg]]
+[[file:./.ob-jupyter/740ae06d4b9e0622992eb58ea6e2032c6a9abc77.svg]]
 :END:
 
 
@@ -135,7 +157,7 @@ Now we look at the system energy.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
-[[file:./.ob-jupyter/7fa0ef03b52d099133087281c56b939c001c3563.svg]]
+[[file:./.ob-jupyter/4c62db48ee716426994891b38227d31c661ffeb6.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -144,8 +166,8 @@ pu.plot_with_σ(long_cycle.t, long_cycle.bath_energy_flow().sum_baths())
 
 #+RESULTS:
 :RESULTS:
-| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | > | ((<matplotlib.lines.Line2D at 0x7fb4f3b63bb0>) <matplotlib.collections.PolyCollection at 0x7fb4f3b73d00>) |
-[[file:./.ob-jupyter/6b4e457a1dd6b1339a8fe78be12d02718f63d2d4.svg]]
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | > | ((<matplotlib.lines.Line2D at 0x7f12745157f0>) <matplotlib.collections.PolyCollection at 0x7f1274515a30>) |
+[[file:./.ob-jupyter/750294fece2b2cd47eb832e9ffd4432903dea826.svg]]
 :END:
 
 
@@ -176,16 +198,4 @@ We would like to know how far away from the thermal state the system is.
 #+end_src
 
 #+RESULTS:
-:RESULTS:
-: /nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/cbook/__init__.py:1369: ComplexWarning: Casting complex values to real discards the imaginary part
-:   return np.asarray(x, float)
-: /nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5340: ComplexWarning: Casting complex values to real discards the imaginary part
-:   pts[0] = start
-: /nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5341: ComplexWarning: Casting complex values to real discards the imaginary part
-:   pts[N + 1] = end
-: /nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5344: ComplexWarning: Casting complex values to real discards the imaginary part
-:   pts[1:N+1, 1] = dep1slice
-: /nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5346: ComplexWarning: Casting complex values to real discards the imaginary part
-:   pts[N+2:, 1] = dep2slice[::-1]
-[[file:./.ob-jupyter/ed0b6c9c04abab45ec849730cf1d7ed025ece4e8.svg]]
-:END:
+[[file:./.ob-jupyter/b15f75cb70ec06e6792891e01fc2a8bf1967f298.svg]]

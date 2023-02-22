@@ -30,7 +30,14 @@ def plot_cycle(model: OttoEngine, ax=None):
 
 
 @pu.wrap_plot
-def plot_cycles(models: list[OttoEngine], ax=None, H_for_all=False, L_for_all=True):
+def plot_cycles(
+    models: list[OttoEngine],
+    ax=None,
+    H_for_all=False,
+    L_for_all=True,
+    bath=None,
+    legend=False,
+):
     assert ax is not None
 
     model = models[0]
@@ -41,16 +48,13 @@ def plot_cycles(models: list[OttoEngine], ax=None, H_for_all=False, L_for_all=Tr
         label=f"$H_1$",
     )
 
-    ax.plot(
-        model.t,
-        model.coupling_operators[0].operator_norm(model.t) * 2,
-        label=r"$L_{c,1}$",
-    )
-    ax.plot(
-        model.t,
-        model.coupling_operators[1].operator_norm(model.t) * 2,
-        label=r"$L_{h,1}$",
-    )
+    for index, name in enumerate(["c", "h"]):
+        if bath is None or bath == index:
+            ax.plot(
+                model.t,
+                model.coupling_operators[index].operator_norm(model.t) * 2,
+                label=rf"$L_{{{name},1}}$",
+            )
 
     ax.set_xlim((0, model.Θ))
     ax.set_xlabel(r"$\tau$")
@@ -66,18 +70,15 @@ def plot_cycles(models: list[OttoEngine], ax=None, H_for_all=False, L_for_all=Tr
             )
 
         if L_for_all:
-            ax.plot(
-                model.t,
-                model.coupling_operators[0].operator_norm(model.t) * 2,
-                label=rf"$L_{{c,{i+2}}}$",
-            )
-            ax.plot(
-                model.t,
-                model.coupling_operators[1].operator_norm(model.t) * 2,
-                label=rf"$L_{{h,{i+2}}}$",
-            )
+            for index, name in enumerate(["c", "h"]):
+                if bath is None or bath == index:
+                    ax.plot(
+                        model.t,
+                        model.coupling_operators[index].operator_norm(model.t) * 2,
+                        label=rf"$L_{{{name},{i+2}}}$",
+                    )
 
-    ax.legend()
+    legend and ax.legend()
 
 
 @pu.wrap_plot
@@ -234,3 +235,14 @@ def val_relative_to_steady(model, val, steady_idx):
     return model.t[begin_idx:], (
         val.slice(slice(begin_idx - 1, -1, 1)) - val.slice(begin_idx - 1)
     )
+
+
+def timings(τ_c, τ_i):
+    τ_th = (1 - 2 * τ_c) / 2
+    τ_i_on = τ_th - 2 * τ_i
+    timings_H = (0, τ_c, τ_c + τ_th, 2 * τ_c + τ_th)
+    timings_L_hot = (τ_c, τ_c + τ_i, τ_c + τ_i + τ_i_on, τ_c + 2 * τ_i + τ_i_on)
+
+    timings_L_cold = tuple(time + timings_H[2] for time in timings_L_hot)
+
+    return timings_H, (timings_L_cold, timings_L_hot)
