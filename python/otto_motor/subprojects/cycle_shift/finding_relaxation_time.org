@@ -1,0 +1,206 @@
+:PROPERTIES:
+:ID:       66cb884e-8724-488d-88da-21b929ffc2bb
+:END:
+#+PROPERTY: header-args :session otto_relax :kernel python :pandoc no :async yes :tangle tangle/otto_relax.py
+
+In here, we'll try to find out how long the cycle has to be, to ensure
+complete thermalization.
+
+* Boilerplate
+#+name: boilerplate
+#+begin_src jupyter-python :results none
+    import figsaver as fs
+    import plot_utils as pu
+    from hiro_models.one_qubit_model import StocProcTolerances
+    from hiro_models.otto_cycle import OttoEngine
+    import hiro_models.model_auxiliary as aux
+    import numpy as np
+    import qutip as qt
+    import utilities as ut
+    import stocproc
+    import matplotlib.pyplot as plt
+    import otto_utilities as ot
+
+    import ray
+    ray.shutdown()
+
+    #ray.init(address='auto')
+    ray.init()
+    from hops.util.logging_setup import logging_setup
+    import logging
+    logging_setup(logging.INFO)
+    plt.rcParams['figure.figsize'] = (12,4)
+#+end_src
+
+* Cycle
+This model reflects the currently "best-working" configuration. The
+only parameter we'll vary is the cycle time θ. We'll be interested in
+whether the system thermalizes.
+
+Therefore we need a way to keep the coupling switching speed constant.
+#+begin_src jupyter-python :results none
+  def timings(τ_c, τ_i):
+      τ_th = (1 - 2 * τ_c) / 2
+      τ_i_on = τ_th - 2 * τ_i
+      timings_H = (0, τ_c, τ_c + τ_th, 2 * τ_c + τ_th)
+      timings_L_hot = (τ_c, τ_c + τ_i, τ_c + τ_i + τ_i_on, τ_c + 2 * τ_i + τ_i_on)
+
+      timings_L_cold = tuple(time + timings_H[2] for time in timings_L_hot)
+
+      return timings_H, (timings_L_cold, timings_L_hot)
+#+end_src
+
+Now we define the prototype. The numeric accuracy is jacked down, as
+we don't need precision. We only use two cycles because of the long
+cycle time. With δ=.4 θ=70 seemed ok. So let's try with .6 and 50
+ok. 1 and 40 is ok too. Let's try 1 and 45. Seems OK, but let's ease
+off on the coupling strength and try .8.
+#+begin_src jupyter-python
+  def make_cycle(θ):
+      (p_H, p_L) = timings(3. / θ, 3. / θ)
+
+      return OttoEngine(
+          δ=[.8, .8],
+          ω_c=[2, 2],
+          ψ_0=qt.basis([2], [1]),
+          description=f"Classic Cycle",
+          k_max=4,
+          bcf_terms=[4] * 2,
+          truncation_scheme="simplex",
+          driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
+          thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
+          T=[0.5, 4],
+          therm_methods=["tanhsinh", "tanhsinh"],
+          Δ=1,
+          num_cycles=2,
+          Θ=θ,
+          dt=0.001,
+          timings_H=p_H,
+          timings_L=p_L,
+          streaming_mode=True,
+          shift_to_resonance=(False, False),
+          L_shift=(0, 0),
+      )
+#+end_src
+
+#+RESULTS:
+
+#+begin_src jupyter-python :tangle no
+  ot.plot_cycle(make_cycle(100))
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
+[[file:./.ob-jupyter/e0c333c986674c4d0bcb9fafbd5cd47a6fa77210.svg]]
+:END:
+
+* Cursory Scanning
+We can now test the model to find wether it allows enough time for
+complete thermalization. We'll start with a really long cycle.
+
+We tried 100, now we try 60. 60 is a bit too short. So let's try 70
+
+#+begin_src jupyter-python :results none
+  long_cycle = make_cycle(45)
+#+end_src
+
+#+begin_src jupyter-python
+  ot.integrate_online(long_cycle, 100_000)
+#+end_src
+
+#+RESULTS:
+
+We can also import from taurus.
+#+begin_src jupyter-python :tangle no
+  from hiro_models.model_auxiliary import import_results
+
+  import_results(
+      other_data_path="./taurus/.data",
+      other_results_path="./taurus/results",
+      interactive=False,
+      models_to_import=[long_cycle],
+      force=True,
+  )
+#+end_src
+
+#+RESULTS:
+
+
+Now we look at the system energy.
+#+begin_src jupyter-python
+  f, a, *_ = pu.plot_with_σ(long_cycle.t, long_cycle.system_energy())
+  a.set_xlim(0, long_cycle.Θ)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| 0.0 | 45.0 |
+[[file:./.ob-jupyter/3690e1e23aa7103ad49ab3612aa2b0baaa1e5dad.svg]]
+:END:
+
+
+
+[[file:./.ob-jupyter/2c1a4d916249a5998d36181e93f93a3a46712b94.svg]]
+
+#+begin_src jupyter-python
+  ot.plot_energy(long_cycle)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
+[[file:./.ob-jupyter/7fa0ef03b52d099133087281c56b939c001c3563.svg]]
+:END:
+
+#+begin_src jupyter-python
+pu.plot_with_σ(long_cycle.t, long_cycle.bath_energy_flow().sum_baths())
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | > | ((<matplotlib.lines.Line2D at 0x7fb4f3b63bb0>) <matplotlib.collections.PolyCollection at 0x7fb4f3b73d00>) |
+[[file:./.ob-jupyter/6b4e457a1dd6b1339a8fe78be12d02718f63d2d4.svg]]
+:END:
+
+
+We would like to know how far away from the thermal state the system is.
+#+begin_src jupyter-python :results none
+  def thermal_state(Ω, T):
+      ρ = np.array([[np.exp(-Ω/T), 0], [0, 1]])
+      ρ /= np.sum(np.diag(ρ))
+
+      return ρ
+#+end_src
+
+#+begin_src jupyter-python
+  import hops.util.utilities
+  from hopsflow.util import EnsembleValue
+  with aux.get_data(long_cycle) as data:
+      trace_dist_c = hops.util.utilities.trace_distance(data, relative_to=thermal_state(long_cycle.T[0], long_cycle.energy_gaps[0]))
+      trace_dist_h = hops.util.utilities.trace_distance(data, relative_to=thermal_state(long_cycle.T[1], long_cycle.energy_gaps[1]))
+
+  f, a = plt.subplots()
+  pu.plot_with_σ(long_cycle.t, EnsembleValue(trace_dist_c), ax=a, label=r"$||\rho(\tau)-\rho_c||$")
+  pu.plot_with_σ(long_cycle.t, EnsembleValue(trace_dist_h), ax=a, label=r"$||\rho(\tau)-\rho_h||$")
+  a.plot(long_cycle.t, (long_cycle.H(long_cycle.t)[:, 0, 0] - 1)/2, label="H Modulation")
+  a.set_xlabel(r"$\tau$")
+  #a.set_xlim(155)
+  a.legend()
+  fs.export_fig("thermalization")
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+: /nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/cbook/__init__.py:1369: ComplexWarning: Casting complex values to real discards the imaginary part
+:   return np.asarray(x, float)
+: /nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5340: ComplexWarning: Casting complex values to real discards the imaginary part
+:   pts[0] = start
+: /nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5341: ComplexWarning: Casting complex values to real discards the imaginary part
+:   pts[N + 1] = end
+: /nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5344: ComplexWarning: Casting complex values to real discards the imaginary part
+:   pts[1:N+1, 1] = dep1slice
+: /nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5346: ComplexWarning: Casting complex values to real discards the imaginary part
+:   pts[N+2:, 1] = dep2slice[::-1]
+[[file:./.ob-jupyter/ed0b6c9c04abab45ec849730cf1d7ed025ece4e8.svg]]
+:END:
