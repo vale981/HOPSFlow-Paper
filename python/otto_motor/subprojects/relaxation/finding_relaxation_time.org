@@ -54,18 +54,19 @@ Now we define the prototype. The numeric accuracy is jacked down, as
 we don't need precision. We only use two cycles because of the long
 cycle time. With δ=.4 θ=70 seemed ok. So let's try with .6 and 50
 ok. 1 and 40 is ok too. Let's try 1 and 45. Seems OK, but let's ease
-off on the coupling strength and try .8.
+off on the coupling strength and try .8. That doesn't seem to be long
+enough. Lets try 55. .7 has better convergence, so let's try that.
 #+begin_src jupyter-python
   def make_cycle(θ):
       (p_H, p_L) = timings(3. / θ, 3. / θ)
 
       return OttoEngine(
-          δ=[.8, .8],
-          ω_c=[2, 2],
+          δ=[.7, .7],
+          ω_c=[1, 1],
           ψ_0=qt.basis([2], [1]),
           description=f"Classic Cycle",
           k_max=4,
-          bcf_terms=[4] * 2,
+          bcf_terms=[5] * 2,
           truncation_scheme="simplex",
           driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
           thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
@@ -92,24 +93,22 @@ off on the coupling strength and try .8.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
-[[file:./.ob-jupyter/bc64139692039e0724c1c5205ca006bda609e48d.svg]]
+[[file:./.ob-jupyter/0d5dde43feebb06c4c6aab0b1ca4b04ec0a5df50.svg]]
 :END:
 
 * Cursory Scanning
 We can now test the model to find wether it allows enough time for
 complete thermalization. We'll start with a really long cycle.
 
-We tried 100, now we try 60. 60 is a bit too short. So let's try 70
-
 #+begin_src jupyter-python :results none
-  long_cycle = make_cycle(45)
+  long_cycle = make_cycle(60)
 #+end_src
 
 #+begin_src jupyter-python
-  ot.integrate_online(long_cycle, 100_000)
+  ot.integrate_online(long_cycle, 100000)
 #+end_src
 
-#+RESULTS:
+
 
 We can also import from taurus.
 #+begin_src jupyter-python :tangle no
@@ -125,13 +124,15 @@ We can also import from taurus.
 #+end_src
 
 #+RESULTS:
-: [WARNING root                      2646] Importing taurus/.data/6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835/_a/6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835_a49974041a57e75a40e0d0f67b7dc584_1.h5 to .data/6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835/_a/6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835_a49974041a57e75a40e0d0f67b7dc584_1.h5.
-: [WARNING root                      2646] The model description is 'Classic Cycle'.
-: [WARNING root                      2646] Importing taurus/results/flow_6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835.npz to results/flow_6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835.npz.
-: [WARNING root                      2646] Importing taurus/results/interaction_6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835.npz to results/interaction_6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835.npz.
-: [WARNING root                      2646] Importing taurus/results/interaction_power_6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835.npz to results/interaction_power_6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835.npz.
-: [WARNING root                      2646] Importing taurus/results/system_6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835.npz to results/system_6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835.npz.
-: [WARNING root                      2646] Importing taurus/results/system_power_6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835.npz to results/system_power_6f48451dfa523ee33abc5f0916e13cf64fa08509f84f4583a394b23fe3673835.npz.
+: [INFO    root                      62054] Skipping cb958c7faea73706443c8601e965ef4e3c3dbd120dc415df21e77d8c98b80abd.
+: [WARNING root                      62054] Importing taurus/.data/fe0aece8736438482a61340ae25a9b715d7c29d9347391915858eae7f449ee0a/_7/fe0aece8736438482a61340ae25a9b715d7c29d9347391915858eae7f449ee0a_78e537f7d2c8ad853e73ab4421b7e329_1.h5 to .data/fe0aece8736438482a61340ae25a9b715d7c29d9347391915858eae7f449ee0a/_7/fe0aece8736438482a61340ae25a9b715d7c29d9347391915858eae7f449ee0a_78e537f7d2c8ad853e73ab4421b7e329_1.h5.
+: [WARNING root                      62054] The model description is 'Classic Cycle'.
+: [WARNING root                      62054] Importing taurus/results/flow_fe0aece8736438482a61340ae25a9b715d7c29d9347391915858eae7f449ee0a.npz to results/flow_fe0aece8736438482a61340ae25a9b715d7c29d9347391915858eae7f449ee0a.npz.
+: [WARNING root                      62054] Importing taurus/results/interaction_fe0aece8736438482a61340ae25a9b715d7c29d9347391915858eae7f449ee0a.npz to results/interaction_fe0aece8736438482a61340ae25a9b715d7c29d9347391915858eae7f449ee0a.npz.
+: [WARNING root                      62054] Importing taurus/results/interaction_power_fe0aece8736438482a61340ae25a9b715d7c29d9347391915858eae7f449ee0a.npz to results/interaction_power_fe0aece8736438482a61340ae25a9b715d7c29d9347391915858eae7f449ee0a.npz.
+: [WARNING root                      62054] Importing taurus/results/system_fe0aece8736438482a61340ae25a9b715d7c29d9347391915858eae7f449ee0a.npz to results/system_fe0aece8736438482a61340ae25a9b715d7c29d9347391915858eae7f449ee0a.npz.
+: [WARNING root                      62054] Importing taurus/results/system_power_fe0aece8736438482a61340ae25a9b715d7c29d9347391915858eae7f449ee0a.npz to results/system_power_fe0aece8736438482a61340ae25a9b715d7c29d9347391915858eae7f449ee0a.npz.
+: [INFO    root                      62054] Skipping 4f0fc3dd9c5abe8846ace8fe3d4aae731be36651bb8a350f565e151067be0e1f.
 
 
 Now we look at the system energy.
@@ -142,8 +143,8 @@ Now we look at the system energy.
 
 #+RESULTS:
 :RESULTS:
-| 0.0 | 45.0 |
-[[file:./.ob-jupyter/740ae06d4b9e0622992eb58ea6e2032c6a9abc77.svg]]
+| 0.0 | 60.0 |
+[[file:./.ob-jupyter/9f8ca17eab08d676db9cd259eeb9ed8fe54f3d67.svg]]
 :END:
 
 
@@ -157,7 +158,14 @@ Now we look at the system energy.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
-[[file:./.ob-jupyter/4c62db48ee716426994891b38227d31c661ffeb6.svg]]
+[[file:./.ob-jupyter/138bb84143b493e0f610f9d70637f84cd0d4f983.svg]]
+:END:
+
+
+
+:RESULTS:
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
+[[file:./.ob-jupyter/0851d3c869677732ed637c027ad33ddd72dbfd8d.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -166,8 +174,8 @@ pu.plot_with_σ(long_cycle.t, long_cycle.bath_energy_flow().sum_baths())
 
 #+RESULTS:
 :RESULTS:
-| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | > | ((<matplotlib.lines.Line2D at 0x7f12745157f0>) <matplotlib.collections.PolyCollection at 0x7f1274515a30>) |
-[[file:./.ob-jupyter/750294fece2b2cd47eb832e9ffd4432903dea826.svg]]
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | > | ((<matplotlib.lines.Line2D at 0x7f65f7866d90>) <matplotlib.collections.PolyCollection at 0x7f65f7866fd0>) |
+[[file:./.ob-jupyter/02a9a80a789e97d47b1fd22de184c68b98aaac86.svg]]
 :END:
 
 
@@ -198,4 +206,83 @@ We would like to know how far away from the thermal state the system is.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/b15f75cb70ec06e6792891e01fc2a8bf1967f298.svg]]
+:RESULTS:
+: /nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/cbook/__init__.py:1369: ComplexWarning: Casting complex values to real discards the imaginary part
+:   return np.asarray(x, float)
+: /nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5340: ComplexWarning: Casting complex values to real discards the imaginary part
+:   pts[0] = start
+: /nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5341: ComplexWarning: Casting complex values to real discards the imaginary part
+:   pts[N + 1] = end
+: /nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5344: ComplexWarning: Casting complex values to real discards the imaginary part
+:   pts[1:N+1, 1] = dep1slice
+: /nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5346: ComplexWarning: Casting complex values to real discards the imaginary part
+:   pts[N+2:, 1] = dep2slice[::-1]
+[[file:./.ob-jupyter/f1bb2075b628d54d98bfc4cb9fa2847c1bbd3ec8.svg]]
+:END:
+
+* Convergence
+Let's see what hierarchy depth is really required.
+#+begin_src jupyter-python :tangle no
+  plt.cla()
+  long_cycle = make_cycle(55)
+
+  ref = None
+  ks = (sorted([5,6,7]))[::-1]
+  for k_max in ks:
+      cyc = long_cycle.copy()
+      cyc.num_cycles = 1
+      cyc.ω_c = [.5, .5]
+      cyc.k_max = k_max
+      cyc.streaming_mode = False
+      cyc.δ = [.7,.7]
+      ot.integrate_online(cyc, 16*2)
+
+      with aux.get_data(cyc) as data:
+          acc = data.stoc_traj[:]
+          if k_max == max(ks):
+              ref = acc
+          else:
+              plt.plot(cyc.t, np.linalg.norm((np.abs(ref-acc)).sum(axis=0),axis=1) / np.linalg.norm((np.abs(ref)).sum(axis=0),axis=1) * 100, label=k_max)
+
+
+  plt.legend()
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+#+begin_example
+    [INFO    hops.core.integration     78407] Choosing the nonlinear integrator.
+    [INFO    root                      78407] Starting analysis process.
+    [INFO    root                      78407] Started analysis process with pid 79308.
+    [INFO    hops.core.hierarchy_data  78407] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/relaxation/results_cf28536b03d6a994d7d9761ccb3171527d6b2888be6ec8db22e2504b479d93f8.fifo
+    [INFO    hops.core.integration     78407] Using 16 integrators.
+    [INFO    hops.core.integration     78407] Some 0 trajectories have to be integrated.
+    [INFO    hops.core.integration     78407] Using 19448 hierarchy states.
+    0it [00:00, ?it/s]
+    [INFO    hops.core.integration     78407] Choosing the nonlinear integrator.
+    [INFO    root                      78407] Starting analysis process.
+    [INFO    root                      78407] Started analysis process with pid 79318.
+    [INFO    hops.core.hierarchy_data  78407] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/relaxation/results_7ce1482692af554bfd6e3fa80425b8aad003eb240166c0d1e0595ebc60feaf04.fifo
+    [INFO    hops.core.integration     78407] Using 16 integrators.
+    [INFO    hops.core.integration     78407] Some 0 trajectories have to be integrated.
+    [INFO    hops.core.integration     78407] Using 8008 hierarchy states.
+  0it [00:00, ?it/s]
+    [INFO    hops.core.integration     78407] Choosing the nonlinear integrator.
+    [INFO    root                      78407] Starting analysis process.
+    [INFO    root                      78407] Started analysis process with pid 79323.
+    [INFO    hops.core.hierarchy_data  78407] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/relaxation/results_9f7e27b79a81cf1c8cb244929fff927fc21dd5733dd0adbc968a20df514ce80b.fifo
+    [INFO    hops.core.integration     78407] Using 16 integrators.
+    [INFO    hops.core.integration     78407] Some 0 trajectories have to be integrated.
+    [INFO    hops.core.integration     78407] Using 3003 hierarchy states.
+  0it [00:00, ?it/s]
+#+end_example
+: <matplotlib.legend.Legend at 0x7fa4ffac1e80>
+[[file:./.ob-jupyter/a542ea3a8afbb13908bdca016421c70e1dae2b45.svg]]
+:END:
+
+
+- For ω_c=2:
+ - For δ=.8 i found great variations from k=5 to k=6. This is BAD. For
+   .4 it is ok. For .7 too at least for 16 trajectories. For .7 k=4
+   seems OK.
+- same for ω_c=1,.5

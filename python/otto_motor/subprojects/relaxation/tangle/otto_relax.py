@@ -34,12 +34,12 @@ def make_cycle(θ):
     (p_H, p_L) = timings(3. / θ, 3. / θ)
 
     return OttoEngine(
-        δ=[.8, .8],
-        ω_c=[2, 2],
+        δ=[.7, .7],
+        ω_c=[1, 1],
         ψ_0=qt.basis([2], [1]),
         description=f"Classic Cycle",
         k_max=4,
-        bcf_terms=[4] * 2,
+        bcf_terms=[5] * 2,
         truncation_scheme="simplex",
         driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
         thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
@@ -56,9 +56,9 @@ def make_cycle(θ):
         L_shift=(0, 0),
     )
 
-long_cycle = make_cycle(45)
+long_cycle = make_cycle(60)
 
-ot.integrate_online(long_cycle, 100_000)
+ot.integrate_online(long_cycle, 100000)
 
 f, a, *_ = pu.plot_with_σ(long_cycle.t, long_cycle.system_energy())
 a.set_xlim(0, long_cycle.Θ)
