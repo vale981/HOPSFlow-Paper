@@ -41,14 +41,13 @@ strength to demonstrate strong coupling effects and to limit the cycle time.
   switch_time = 3. / T
   def make_model(shift_c, shift_h):
       (p_H, p_L) = ot.timings(switch_time, switch_time)
-
       return OttoEngine(
-          δ=[.8, .8],
-          ω_c=[2, 2],
+          δ=[.7, .7],
+          ω_c=[1, 1],
           ψ_0=qt.basis([2], [1]),
           description=f"Classic Cycle",
-          k_max=5,
-          bcf_terms=[6] * 2,
+          k_max=4,
+          bcf_terms=[5] * 2,
           truncation_scheme="simplex",
           driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
           thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
@@ -56,7 +55,7 @@ strength to demonstrate strong coupling effects and to limit the cycle time.
           therm_methods=["tanhsinh", "tanhsinh"],
           Δ=1,
           num_cycles=3,
-          Θ=T,
+          Θ=60,
           dt=0.001,
           timings_H=p_H,
           timings_L=p_L,
@@ -96,10 +95,94 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
-[[file:./.ob-jupyter/06bdf2762c4a0b4e357590d4a83b697c240f2985.svg]]
+[[file:./.ob-jupyter/19f62f210b59f479bd493c49dedc0e2ba1ec8c00.svg]]
 :END:
 
 * Integrate
 #+begin_src jupyter-python
   ot.integrate_online_multi(models, 100_000, increment=10_000, analyze_kwargs=dict(every=10_000))
 #+end_src
+
+#+RESULTS:
+:RESULTS:
+#+begin_example
+  [INFO    hops.core.integration     65100] Choosing the nonlinear integrator.
+  [INFO    root                      65100] Starting analysis process.
+  [INFO    root                      65100] Started analysis process with pid 66265.
+  [INFO    hops.core.hierarchy_data  65100] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/results_f9bc66cc2b4cb7ba3371882ad9ee50d48460546af0eca71f7c01b081415f5d14.fifo
+  [INFO    hops.core.integration     65100] Using 16 integrators.
+  [INFO    hops.core.integration     65100] Some 10000 trajectories have to be integrated.
+  [INFO    hops.core.integration     65100] Using 1001 hierarchy states.
+    1% 61/10000 [01:36<4:21:15,  1.58s/it][INFO    hops.core.signal_delay    65100] caught sig 'SIGINT'
+    1% 64/10000 [01:48<4:39:54,  1.69s/it]
+  2023-02-25 12:46:53,879       WARNING worker.py:1404 -- A worker died or was killed while executing a task by an unexpected system error. To troubleshoot the problem, check the logs for the dead worker. RayTask ID: 99d25236ee4cd74b12aa2eea44f4fd9e79a9439801000000 Worker ID: 6954a0683bf80bbcf18b6f6300bde11b52e9018e100cf3b6cbc519a9 Node ID: afe7814ecf0191651ed8a09d4c5df11440975f8facd16c7e843c2bd7 Worker IP address: 192.168.100.170 Worker port: 38229 Worker PID: 66005
+  2023-02-25 12:46:54,342       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-02-25 12:46:54,343       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-02-25 12:46:54,344       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-02-25 12:46:54,344       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-02-25 12:46:54,345       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-02-25 12:46:54,346       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-02-25 12:46:54,347       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  [INFO    hops.core.signal_delay    65100] caught 1 signal(s)
+  2023-02-25 12:46:54,347       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  [INFO    hops.core.signal_delay    65100] emit signal 'SIGINT'
+  2023-02-25 12:46:54,348       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  [INFO    hops.core.signal_delay    65100] caught sig 'SIGINT'
+  2023-02-25 12:46:54,349       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-02-25 12:46:54,350       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-02-25 12:46:54,350       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-02-25 12:46:54,351       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-02-25 12:46:54,352       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-02-25 12:46:54,353       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-02-25 12:46:54,354       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  [INFO    hops.core.signal_delay    65100] caught 1 signal(s)
+  [INFO    hops.core.signal_delay    65100] emit signal 'SIGINT'
+#+end_example
+# [goto error]
+#+begin_example
+  [0;31m---------------------------------------------------------------------------[0m
+  [0;31mKeyboardInterrupt[0m                         Traceback (most recent call last)
+  Cell [0;32mIn[11], line 1[0m
+  [0;32m----> 1[0m [43mot[49m[38;5;241;43m.[39;49m[43mintegrate_online_multi[49m[43m([49m[43mmodels[49m[43m,[49m[43m [49m[38;5;241;43m100_000[39;49m[43m,[49m[43m [49m[43mincrement[49m[38;5;241;43m=[39;49m[38;5;241;43m10_000[39;49m[43m,[49m[43m [49m[43manalyze_kwargs[49m[38;5;241;43m=[39;49m[38;5;28;43mdict[39;49m[43m([49m[43mevery[49m[38;5;241;43m=[39;49m[38;5;241;43m10_000[39;49m[43m)[49m[43m)[49m
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/otto_utilities.py:171[0m, in [0;36mintegrate_online_multi[0;34m(models, n, increment, *args, **kwargs)[0m
+  [1;32m    169[0m [38;5;28;01mwhile[39;00m target [38;5;241m<[39m (n [38;5;241m+[39m target):
+  [1;32m    170[0m     [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models:
+  [0;32m--> 171[0m         [43mintegrate_online[49m[43m([49m[43mmodel[49m[43m,[49m[43m [49m[38;5;28;43mmin[39;49m[43m([49m[43m[[49m[43mn[49m[43m,[49m[43m [49m[43mtarget[49m[43m][49m[43m)[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
+  [1;32m    173[0m     target [38;5;241m+[39m[38;5;241m=[39m increment
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/otto_utilities.py:156[0m, in [0;36mintegrate_online[0;34m(model, n, stream_folder, **kwargs)[0m
+  [1;32m    155[0m [38;5;28;01mdef[39;00m [38;5;21mintegrate_online[39m(model, n, stream_folder[38;5;241m=[39m[38;5;28;01mNone[39;00m, [38;5;241m*[39m[38;5;241m*[39mkwargs):
+  [0;32m--> 156[0m     [43maux[49m[38;5;241;43m.[39;49m[43mintegrate[49m[43m([49m
+  [1;32m    157[0m [43m        [49m[43mmodel[49m[43m,[49m
+  [1;32m    158[0m [43m        [49m[43mn[49m[43m,[49m
+  [1;32m    159[0m [43m        [49m[43mstream_file[49m[38;5;241;43m=[39;49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43m"[39;49m[43m [49m[38;5;28;43;01mif[39;49;00m[43m [49m[43mstream_folder[49m[43m [49m[38;5;129;43;01mis[39;49;00m[43m [49m[38;5;28;43;01mNone[39;49;00m[43m [49m[38;5;28;43;01melse[39;49;00m[43m [49m[43mstream_folder[49m[43m)[49m
+  [1;32m    160[0m [43m        [49m[38;5;241;43m+[39;49m[43m [49m[38;5;124;43mf[39;49m[38;5;124;43m"[39;49m[38;5;124;43mresults_[39;49m[38;5;132;43;01m{[39;49;00m[43mmodel[49m[38;5;241;43m.[39;49m[43mhexhash[49m[38;5;132;43;01m}[39;49;00m[38;5;124;43m.fifo[39;49m[38;5;124;43m"[39;49m[43m,[49m
+  [1;32m    161[0m [43m        [49m[43manalyze[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
+  [1;32m    162[0m [43m        [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m,[49m
+  [1;32m    163[0m [43m    [49m[43m)[49m
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_auxiliary.py:201[0m, in [0;36mintegrate[0;34m(model, n, data_path, clear_pd, single_process, stream_file, analyze, results_path, analyze_kwargs)[0m
+  [1;32m    199[0m         supervisor[38;5;241m.[39mintegrate_single_process(clear_pd)
+  [1;32m    200[0m     [38;5;28;01melse[39;00m:
+  [0;32m--> 201[0m         supervisor[38;5;241m.[39mintegrate(clear_pd)
+  [1;32m    203[0m cleanup([38;5;241m0[39m)
+
+  File [0;32m~/src/hops/hops/core/signal_delay.py:87[0m, in [0;36msig_delay.__exit__[0;34m(self, exc_type, exc_val, exc_tb)[0m
+  [1;32m     84[0m [38;5;28;01mif[39;00m [38;5;28mlen[39m([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught) [38;5;241m>[39m [38;5;241m0[39m [38;5;129;01mand[39;00m [38;5;28mself[39m[38;5;241m.[39mhandler [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+  [1;32m     85[0m     [38;5;28mself[39m[38;5;241m.[39mhandler([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught)
+  [0;32m---> 87[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_restore[49m[43m([49m[43m)[49m
+
+  File [0;32m~/src/hops/hops/core/signal_delay.py:68[0m, in [0;36msig_delay._restore[0;34m(self)[0m
+  [1;32m     66[0m [38;5;28;01mfor[39;00m i, s [38;5;129;01min[39;00m [38;5;28menumerate[39m([38;5;28mself[39m[38;5;241m.[39msigs):
+  [1;32m     67[0m     signal[38;5;241m.[39msignal(s, [38;5;28mself[39m[38;5;241m.[39mold_handlers[i])
+  [0;32m---> 68[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msigh[49m[38;5;241;43m.[39;49m[43memit[49m[43m([49m[43m)[49m
+
+  File [0;32m~/src/hops/hops/core/signal_delay.py:42[0m, in [0;36mSigHandler.emit[0;34m(self)[0m
+  [1;32m     40[0m [38;5;28;01mfor[39;00m s [38;5;129;01min[39;00m [38;5;28mself[39m[38;5;241m.[39msigs_caught:
+  [1;32m     41[0m     log[38;5;241m.[39minfo([38;5;124m"[39m[38;5;124memit signal [39m[38;5;124m'[39m[38;5;132;01m{}[39;00m[38;5;124m'[39m[38;5;124m"[39m[38;5;241m.[39mformat(SIG_MAP[s]))
+  [0;32m---> 42[0m     [43mos[49m[38;5;241;43m.[39;49m[43mkill[49m[43m([49m[43mos[49m[38;5;241;43m.[39;49m[43mgetpid[49m[43m([49m[43m)[49m[43m,[49m[43m [49m[43ms[49m[43m)[49m
+
+  [0;31mKeyboardInterrupt[0m:
+#+end_example
+:END:
