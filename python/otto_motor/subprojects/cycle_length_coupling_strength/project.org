@@ -1,4 +1,4 @@
-#+PROPERTY: header-args :session otto_cycle_length :kernel python :pandoc no :async yes :tangle tangle/cycle_length.py
+#+PROPERTY: header-args :session otto_cycle_length :kernel python :pandoc no :async yes :tangle tangle/coupling_strength.py
 
 Here we scan the cycle length and coupling strength.
 
@@ -36,47 +36,49 @@ But we vary the cycle speed while keeping a fixed proportion
 coupling-change/cycle time.
 #+begin_src jupyter-python :results none
   def make_model(Θ, δ):
-      (p_H, p_L) = ot.timings(.1, .1)
-
+      (p_H, p_L) = ot.timings(.06, .06)
       return OttoEngine(
-          δ=[δ, δ],
-          ω_c=[2, 2],
-          ψ_0=qt.basis([2], [1]),
-          description=f"Classic Cycle",
-          k_max=5,
-          bcf_terms=[6] * 2,
-          truncation_scheme="simplex",
-          driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
-          thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
-          T=[0.5, 4],
-          therm_methods=["tanhsinh", "tanhsinh"],
-          Δ=1,
-          num_cycles=3,
-          Θ=Θ,
-          dt=0.001,
-          timings_H=p_H,
-          timings_L=p_L,
-          streaming_mode=True,
-          shift_to_resonance=(False, False),
-          L_shift=(0, 0),
-      )
+            δ=[δ, δ],
+            ω_c=[1, 1],
+            ψ_0=qt.basis([2], [1]),
+            description=f"Classic Cycle",
+            k_max=4,
+            bcf_terms=[5] * 2,
+            truncation_scheme="simplex",
+            driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
+            thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
+            T=[0.5, 4],
+            therm_methods=["tanhsinh", "tanhsinh"],
+            Δ=1,
+            num_cycles=3,
+            Θ=Θ,
+            dt=0.001,
+            timings_H=p_H,
+            timings_L=p_L,
+            streaming_mode=True,
+            shift_to_resonance=(False, False),
+            L_shift=(0, 0),
+        )
+
 #+end_src
 
 
 #+begin_src jupyter-python
-  δs = [round(δ, 3) for δ in np.linspace(.4, .9, 5)]
-  Θs = [round(Θ, 3) for Θ in np.linspace(30, .60, 5)]
+  δs = [round(δ, 3) for δ in np.linspace(.3, .7, 5)]
+  Θs = [round(Θ, 3) for Θ in np.linspace(20, 80, 5)]
   δs, Θs
 #+end_src
 
 #+RESULTS:
-|  0.4 | 0.525 | 0.65 | 0.775 | 0.9 |
-| 30.0 | 22.65 | 15.3 |  7.95 | 0.6 |
+|  0.3 |  0.4 |  0.5 |  0.6 |  0.7 |
+| 20.0 | 35.0 | 50.0 | 65.0 | 80.0 |
 
 #+begin_src jupyter-python
   import itertools
   models = [make_model(Θ, δ) for Θ, δ, in itertools.product(Θs, δs)]
 #+end_src
+
+#+RESULTS:
 
 
 * Integrate

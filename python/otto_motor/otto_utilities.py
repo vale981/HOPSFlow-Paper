@@ -7,6 +7,30 @@ import hiro_models.model_auxiliary as aux
 from typing import Iterable
 
 
+def plot_power_eff_convergence(models, steady_idx=1):
+    f, (a_power, a_efficiency) = plt.subplots(ncols=2)
+
+    a_efficiency.set_yscale("log")
+    for model in models:
+        Ns = model.power(steady_idx=steady_idx).Ns
+        a_power.plot(Ns, model.power(steady_idx=steady_idx).values)
+        a_efficiency.plot(Ns, np.abs(model.efficiency(steady_idx=steady_idx).values))
+
+    return f, (a_power, a_efficiency)
+
+
+@pu.wrap_plot
+def plot_powers_and_efficiencies(x, models, steady_idx=1, ax=None):
+    powers = [-model.power(steady_idx=steady_idx).value for model in models]
+    efficiencies = [
+        max(0, 100 * model.efficiency(steady_idx=steady_idx).value) for model in models
+    ]
+
+    a2 = ax.twinx()
+    ax.plot(x, powers, linestyle="none", marker=".")
+    a2.plot(x, efficiencies, linestyle="none", marker="*")
+
+
 @pu.wrap_plot
 def plot_cycle(model: OttoEngine, ax=None):
     assert ax is not None
@@ -34,6 +58,7 @@ def plot_cycles(
     models: list[OttoEngine],
     ax=None,
     H_for_all=False,
+    H=True,
     L_for_all=True,
     bath=None,
     legend=False,
@@ -42,11 +67,13 @@ def plot_cycles(
 
     model = models[0]
 
-    ax.plot(
-        model.t,
-        (model.H.operator_norm(model.t)) / model.H.operator_norm(model.τ_compressed),
-        label=f"$H_1$",
-    )
+    if H:
+        ax.plot(
+            model.t,
+            (model.H.operator_norm(model.t))
+            / model.H.operator_norm(model.τ_compressed),
+            label=f"$H_1$",
+        )
 
     for index, name in enumerate(["c", "h"]):
         if bath is None or bath == index:
@@ -61,7 +88,7 @@ def plot_cycles(
     ax.set_ylabel(r"Operator Norm")
 
     for i, model in enumerate(models[1:]):
-        if H_for_all:
+        if H and H_for_all:
             ax.plot(
                 model.t,
                 (model.H.operator_norm(model.t))
