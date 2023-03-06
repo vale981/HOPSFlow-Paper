@@ -52,4 +52,4 @@ def make_model(Θ, δ):
 import itertools
 models = [make_model(Θ, δ) for Θ, δ, in itertools.product(Θs, δs)]
 
-ot.integrate_online_multi(models, 100_000, increment=10_000, analyze_kwargs=dict(every=10_000))
+ot.integrate_online_multi(models, 50_000, increment=10_000, analyze_kwargs=dict(every=10_000))
