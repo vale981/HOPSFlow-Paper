@@ -20,15 +20,35 @@ def plot_power_eff_convergence(models, steady_idx=1):
 
 
 @pu.wrap_plot
-def plot_powers_and_efficiencies(x, models, steady_idx=1, ax=None):
+def plot_powers_and_efficiencies(x, models, steady_idx=1, ax=None, xlabel=""):
     powers = [-model.power(steady_idx=steady_idx).value for model in models]
-    efficiencies = [
-        max(0, 100 * model.efficiency(steady_idx=steady_idx).value) for model in models
-    ]
+    powers_σ = [model.power(steady_idx=steady_idx).σ for model in models]
+    efficiencies = np.array(
+        [100 * model.efficiency(steady_idx=steady_idx).value for model in models]
+    )
 
+    efficiencies_σ = np.array(
+        [100 * model.efficiency(steady_idx=steady_idx).σ for model in models]
+    )
+
+    mask = efficiencies > 0
     a2 = ax.twinx()
-    ax.plot(x, powers, linestyle="none", marker=".")
-    a2.plot(x, efficiencies, linestyle="none", marker="*")
+    ax.errorbar(x, powers, yerr=powers_σ, linestyle="none", marker=".", label="$P$")
+    ax.legend()
+
+    lines = a2.errorbar(
+        np.asarray(x)[mask],
+        efficiencies[mask],
+        yerr=efficiencies_σ[mask],
+        linestyle="none",
+        marker="*",
+        color="C1",
+        label=r"$\eta$",
+    )
+    a2.legend(loc="lower right")
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(r"$\bar{P}$", color="C0")
+    a2.set_ylabel(r"$\eta$", color="C1")
 
 
 @pu.wrap_plot
