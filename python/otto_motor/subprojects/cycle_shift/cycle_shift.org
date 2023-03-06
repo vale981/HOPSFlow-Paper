@@ -38,8 +38,9 @@ strength to demonstrate strong coupling effects and to limit the cycle time.
 
 #+begin_src jupyter-python
   T = 50
-  switch_time = 3. / T
-  def make_model(shift_c, shift_h):
+  def make_model(shift_c, shift_h, switch_t=3.):
+      switch_time = switch_t / T
+
       (p_H, p_L) = ot.timings(switch_time, switch_time)
       return OttoEngine(
           δ=[.7, .7],
@@ -72,14 +73,14 @@ We start with one dimension and may add another later / dimension.
 We shift so that we just overlap with coupling/decoupling and one above.
 #+begin_src jupyter-python
   N = 3
-  N_over = 1
-  step = switch_time / (N-N_over)
+  N_over = 2
+  step = 3. / (T*(N-N_over))
   shifts = [round(shift * step, 3) for shift in range(-N, N+1)]
   shifts
 #+end_src
 
 #+RESULTS:
-| -0.09 | -0.06 | -0.03 | 0.0 | 0.03 | 0.06 | 0.09 |
+| -0.18 | -0.12 | -0.06 | 0.0 | 0.06 | 0.12 | 0.18 |
 
 #+begin_src jupyter-python
   import itertools
@@ -95,94 +96,254 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
-[[file:./.ob-jupyter/19f62f210b59f479bd493c49dedc0e2ba1ec8c00.svg]]
+[[file:./.ob-jupyter/c73172c3276a9720f26dd513bff58352bcf807ed.svg]]
 :END:
 
-* Integrate
+** Integrate
+#+begin_src jupyter-python :tangle no
+  ot.integrate_online_multi(models, 50_000, increment=10_000, analyze_kwargs=dict(every=10_000))
+#+end_src
+
+** Analysis
 #+begin_src jupyter-python
-  ot.integrate_online_multi(models, 100_000, increment=10_000, analyze_kwargs=dict(every=10_000))
+  for model in models:
+    print(model.power(steady_idx=1).value / models[3].power(steady_idx=1).value, model.efficiency(steady_idx=1).value * 100)
+#+end_src
+
+#+RESULTS:
+: -2.7704455654085876 -252.19916727767804
+: -2.034015641972767 -166.75487518853186
+: 0.571544457513159 19.650010500179352
+: 1.0 30.20953730879978
+: 1.1652434363371367 32.393489928809124
+: 1.6245889921167371 33.021523773544054
+: 1.6841939173993579 31.91460252999856
+
+#+begin_src jupyter-python
+  ot.plot_power_eff_convergence(models)
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/2ff8db3bb8190dab3fb0d849e3e08e61069da5a3.svg]]
+
+We see that we get a pretty good picture after about 30k-40k samples.
+
+#+begin_src jupyter-python
+  ot.plot_powers_and_efficiencies(shifts, models)
 #+end_src
 
 #+RESULTS:
 :RESULTS:
+| <matplotlib.lines.Line2D | at | 0x7f557e50b340> |
+[[file:./.ob-jupyter/9a3bec09d003106d1215f0be556ece64f7802787.svg]]
+:END:
+
+* Explore Coupling Length Dimension for The best performing state
+The best shift:
+#+begin_src jupyter-python
+  best_shift = shifts[-2]
+  best_shift_model = make_model(best_shift, best_shift)
+#+end_src
+
+#+RESULTS:
+
+#+begin_src jupyter-python
+  def overlap(shift_model, N, step, switch_t=3.):
+      switch_time = switch_t / T
+      (p_H, p_L) = ot.timings(switch_time, switch_time)
+      next_model = shift_model.copy()
+
+      #next_model.timings_H=p_H
+      next_model.timings_L=p_L
+
+      (a, b, c, d) = next_model.timings_L[0]
+      (e, f, g, h) = next_model.timings_L[1]
+      next_step = step * N
+      (s1, s2) = next_model.L_shift
+      next_model.L_shift = (s1 + next_step, s2 - next_step)
+      next_model.timings_L = (
+          (a - 2 * next_step, b - 2 * next_step, c, d),
+          (e, f, g + 2 * next_step, h + 2 * next_step),
+      )
+      return next_model
+
+
+  def overlap_cold(shift_model, N, step):
+      next_model = shift_model.copy()
+      (a, b, c, d) = next_model.timings_L[0]
+      (e, f, g, h) = next_model.timings_L[1]
+      next_step = step * N
+      (s1, s2) = next_model.L_shift
+      next_model.L_shift = (s1 + next_step, s2 - next_step)
+      next_model.timings_L = (
+          (a - 2 * next_step, b - 2 * next_step, c - next_step, d - next_step),
+          (e + next_step, f + next_step, g + 2 * next_step, h + 2 * next_step),
+      )
+      return next_model
+
+
+  Ns = list(range(1, 4))
+  overlap_models = [overlap(best_shift_model, N, step) for N in Ns]
+  overlap_models = [overlap_cold(best_shift_model, N, step) for N in Ns]
+  new_step_size = 6
+  mini_step = (new_step_size / (N-N_over) / T)
+  overlap_models = [overlap(best_shift_model, N, mini_step, new_step_size) for N in Ns]
+#+end_src
+
+#+RESULTS:
+
+#+begin_src jupyter-python :tangle no
+  ot.plot_cycles([overlap_models[0]], legend=True)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
+[[file:./.ob-jupyter/da2f676618a9cc61b975c93dd31f9eedb118d916.svg]]
+:END:
+
+** Integrate
+#+begin_src jupyter-python
+  ot.integrate_online_multi(overlap_models, 50_000, increment=10_000, analyze_kwargs=dict(every=10_000))
+#+end_src
+
+#+RESULTS:
 #+begin_example
-  [INFO    hops.core.integration     65100] Choosing the nonlinear integrator.
-  [INFO    root                      65100] Starting analysis process.
-  [INFO    root                      65100] Started analysis process with pid 66265.
-  [INFO    hops.core.hierarchy_data  65100] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/results_f9bc66cc2b4cb7ba3371882ad9ee50d48460546af0eca71f7c01b081415f5d14.fifo
-  [INFO    hops.core.integration     65100] Using 16 integrators.
-  [INFO    hops.core.integration     65100] Some 10000 trajectories have to be integrated.
-  [INFO    hops.core.integration     65100] Using 1001 hierarchy states.
-    1% 61/10000 [01:36<4:21:15,  1.58s/it][INFO    hops.core.signal_delay    65100] caught sig 'SIGINT'
-    1% 64/10000 [01:48<4:39:54,  1.69s/it]
-  2023-02-25 12:46:53,879       WARNING worker.py:1404 -- A worker died or was killed while executing a task by an unexpected system error. To troubleshoot the problem, check the logs for the dead worker. RayTask ID: 99d25236ee4cd74b12aa2eea44f4fd9e79a9439801000000 Worker ID: 6954a0683bf80bbcf18b6f6300bde11b52e9018e100cf3b6cbc519a9 Node ID: afe7814ecf0191651ed8a09d4c5df11440975f8facd16c7e843c2bd7 Worker IP address: 192.168.100.170 Worker port: 38229 Worker PID: 66005
-  2023-02-25 12:46:54,342       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2023-02-25 12:46:54,343       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2023-02-25 12:46:54,344       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2023-02-25 12:46:54,344       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2023-02-25 12:46:54,345       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2023-02-25 12:46:54,346       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2023-02-25 12:46:54,347       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  [INFO    hops.core.signal_delay    65100] caught 1 signal(s)
-  2023-02-25 12:46:54,347       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  [INFO    hops.core.signal_delay    65100] emit signal 'SIGINT'
-  2023-02-25 12:46:54,348       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  [INFO    hops.core.signal_delay    65100] caught sig 'SIGINT'
-  2023-02-25 12:46:54,349       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2023-02-25 12:46:54,350       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2023-02-25 12:46:54,350       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2023-02-25 12:46:54,351       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2023-02-25 12:46:54,352       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2023-02-25 12:46:54,353       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  2023-02-25 12:46:54,354       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  [INFO    hops.core.signal_delay    65100] caught 1 signal(s)
-  [INFO    hops.core.signal_delay    65100] emit signal 'SIGINT'
+  [INFO    hops.core.integration     3664] Choosing the nonlinear integrator.
+  [INFO    root                      3664] Starting analysis process.
+  [INFO    root                      3664] Started analysis process with pid 7756.
+  [INFO    hops.core.hierarchy_data  3664] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/results_cfad63977aad412a4d035ea4122d748504bc638b4df70749bf6a9f0a0ecbcf4b.fifo
+  [INFO    hops.core.integration     3664] Using 16 integrators.
+  [INFO    hops.core.integration     3664] Some 1 trajectories have to be integrated.
+  [INFO    hops.core.integration     3664] Using 1001 hierarchy states.
+  100% 1/1 [00:13<00:00, 13.21s/it]
+  [INFO    hops.core.integration     3664] Choosing the nonlinear integrator.
+  [INFO    root                      3664] Starting analysis process.
+  [INFO    root                      3664] Started analysis process with pid 7978.
+  [INFO    hops.core.hierarchy_data  3664] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/results_fcf52e28de29cab5e6962849767ead5e754ba33e96dabf2d95d5fbc0b0c2488d.fifo
+  [INFO    hops.core.integration     3664] Using 16 integrators.
+  [INFO    hops.core.integration     3664] Some 1 trajectories have to be integrated.
+  [INFO    hops.core.integration     3664] Using 1001 hierarchy states.
+100% 1/1 [00:14<00:00, 14.27s/it]
+  [INFO    hops.core.integration     3664] Choosing the nonlinear integrator.
+  [INFO    root                      3664] Starting analysis process.
+  [INFO    root                      3664] Started analysis process with pid 7988.
+  [INFO    hops.core.hierarchy_data  3664] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/results_f59d5e1c4b003307fdb6496ba3a22a283b5e68974725996eb14aac2901ac04da.fifo
+  [INFO    hops.core.integration     3664] Using 16 integrators.
+  [INFO    hops.core.integration     3664] Some 1 trajectories have to be integrated.
+  [INFO    hops.core.integration     3664] Using 1001 hierarchy states.
+100% 1/1 [00:15<00:00, 15.74s/it]
 #+end_example
+
+** Analysis
+#+begin_src jupyter-julia
+  all_overlap_models = [best_shift_model, *overlap_models]
+#+end_src
+
+#+RESULTS:
+
+#+begin_src jupyter-python
+  ot.plot_power_eff_convergence(all_overlap_models, 1)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
 # [goto error]
 #+begin_example
   [0;31m---------------------------------------------------------------------------[0m
-  [0;31mKeyboardInterrupt[0m                         Traceback (most recent call last)
-  Cell [0;32mIn[11], line 1[0m
-  [0;32m----> 1[0m [43mot[49m[38;5;241;43m.[39;49m[43mintegrate_online_multi[49m[43m([49m[43mmodels[49m[43m,[49m[43m [49m[38;5;241;43m100_000[39;49m[43m,[49m[43m [49m[43mincrement[49m[38;5;241;43m=[39;49m[38;5;241;43m10_000[39;49m[43m,[49m[43m [49m[43manalyze_kwargs[49m[38;5;241;43m=[39;49m[38;5;28;43mdict[39;49m[43m([49m[43mevery[49m[38;5;241;43m=[39;49m[38;5;241;43m10_000[39;49m[43m)[49m[43m)[49m
+  [0;31mRuntimeError[0m                              Traceback (most recent call last)
+  Cell [0;32mIn[14], line 1[0m
+  [0;32m----> 1[0m [43mot[49m[38;5;241;43m.[39;49m[43mplot_power_eff_convergence[49m[43m([49m[43mall_overlap_models[49m[43m,[49m[43m [49m[38;5;241;43m1[39;49m[43m)[49m
 
-  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/otto_utilities.py:171[0m, in [0;36mintegrate_online_multi[0;34m(models, n, increment, *args, **kwargs)[0m
-  [1;32m    169[0m [38;5;28;01mwhile[39;00m target [38;5;241m<[39m (n [38;5;241m+[39m target):
-  [1;32m    170[0m     [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models:
-  [0;32m--> 171[0m         [43mintegrate_online[49m[43m([49m[43mmodel[49m[43m,[49m[43m [49m[38;5;28;43mmin[39;49m[43m([49m[43m[[49m[43mn[49m[43m,[49m[43m [49m[43mtarget[49m[43m][49m[43m)[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
-  [1;32m    173[0m     target [38;5;241m+[39m[38;5;241m=[39m increment
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/otto_utilities.py:15[0m, in [0;36mplot_power_eff_convergence[0;34m(models, steady_idx)[0m
+  [1;32m     13[0m a_efficiency[38;5;241m.[39mset_yscale([38;5;124m"[39m[38;5;124mlog[39m[38;5;124m"[39m)
+  [1;32m     14[0m [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models:
+  [0;32m---> 15[0m     Ns [38;5;241m=[39m [43mmodel[49m[38;5;241;43m.[39;49m[43mpower[49m[43m([49m[43msteady_idx[49m[38;5;241;43m=[39;49m[43msteady_idx[49m[43m)[49m[38;5;241m.[39mNs
+  [1;32m     16[0m     a_power[38;5;241m.[39mplot(Ns, model[38;5;241m.[39mpower(steady_idx[38;5;241m=[39msteady_idx)[38;5;241m.[39mvalues)
+  [1;32m     17[0m     a_efficiency[38;5;241m.[39mplot(Ns, np[38;5;241m.[39mabs(model[38;5;241m.[39mefficiency(steady_idx[38;5;241m=[39msteady_idx)[38;5;241m.[39mvalues))
 
-  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/otto_utilities.py:156[0m, in [0;36mintegrate_online[0;34m(model, n, stream_folder, **kwargs)[0m
-  [1;32m    155[0m [38;5;28;01mdef[39;00m [38;5;21mintegrate_online[39m(model, n, stream_folder[38;5;241m=[39m[38;5;28;01mNone[39;00m, [38;5;241m*[39m[38;5;241m*[39mkwargs):
-  [0;32m--> 156[0m     [43maux[49m[38;5;241;43m.[39;49m[43mintegrate[49m[43m([49m
-  [1;32m    157[0m [43m        [49m[43mmodel[49m[43m,[49m
-  [1;32m    158[0m [43m        [49m[43mn[49m[43m,[49m
-  [1;32m    159[0m [43m        [49m[43mstream_file[49m[38;5;241;43m=[39;49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43m"[39;49m[43m [49m[38;5;28;43;01mif[39;49;00m[43m [49m[43mstream_folder[49m[43m [49m[38;5;129;43;01mis[39;49;00m[43m [49m[38;5;28;43;01mNone[39;49;00m[43m [49m[38;5;28;43;01melse[39;49;00m[43m [49m[43mstream_folder[49m[43m)[49m
-  [1;32m    160[0m [43m        [49m[38;5;241;43m+[39;49m[43m [49m[38;5;124;43mf[39;49m[38;5;124;43m"[39;49m[38;5;124;43mresults_[39;49m[38;5;132;43;01m{[39;49;00m[43mmodel[49m[38;5;241;43m.[39;49m[43mhexhash[49m[38;5;132;43;01m}[39;49;00m[38;5;124;43m.fifo[39;49m[38;5;124;43m"[39;49m[43m,[49m
-  [1;32m    161[0m [43m        [49m[43manalyze[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
-  [1;32m    162[0m [43m        [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m,[49m
-  [1;32m    163[0m [43m    [49m[43m)[49m
+  File [0;32m<@beartype(hiro_models.otto_cycle.OttoEngine.power) at 0x7ff6254db790>:31[0m, in [0;36mpower[0;34m(__beartype_func, __beartype_conf, __beartype_get_violation, *args, **kwargs)[0m
 
-  File [0;32m~/src/two_qubit_model/hiro_models/model_auxiliary.py:201[0m, in [0;36mintegrate[0;34m(model, n, data_path, clear_pd, single_process, stream_file, analyze, results_path, analyze_kwargs)[0m
-  [1;32m    199[0m         supervisor[38;5;241m.[39mintegrate_single_process(clear_pd)
-  [1;32m    200[0m     [38;5;28;01melse[39;00m:
-  [0;32m--> 201[0m         supervisor[38;5;241m.[39mintegrate(clear_pd)
-  [1;32m    203[0m cleanup([38;5;241m0[39m)
+  File [0;32m~/src/two_qubit_model/hiro_models/otto_cycle.py:482[0m, in [0;36mOttoEngine.power[0;34m(self, steady_idx, *args, **kwargs)[0m
+  [1;32m    475[0m [38;5;124;03m"""[39;00m
+  [1;32m    476[0m [38;5;124;03mCalculate the mean steady state power.  For the arguments see[39;00m
+  [1;32m    477[0m [38;5;124;03m:any:`steady_energy_change`.[39;00m
+  [1;32m    478[0m [38;5;124;03m"""[39;00m
+  [1;32m    480[0m _, indices [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mstrobe
+  [0;32m--> 482[0m [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mtotal_power[49m[43m([49m[43m)[49m[38;5;241m.[39mslice([38;5;28mslice[39m(indices[steady_idx], [38;5;28;01mNone[39;00m, [38;5;241m1[39m))[38;5;241m.[39mmean
 
-  File [0;32m~/src/hops/hops/core/signal_delay.py:87[0m, in [0;36msig_delay.__exit__[0;34m(self, exc_type, exc_val, exc_tb)[0m
-  [1;32m     84[0m [38;5;28;01mif[39;00m [38;5;28mlen[39m([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught) [38;5;241m>[39m [38;5;241m0[39m [38;5;129;01mand[39;00m [38;5;28mself[39m[38;5;241m.[39mhandler [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
-  [1;32m     85[0m     [38;5;28mself[39m[38;5;241m.[39mhandler([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught)
-  [0;32m---> 87[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_restore[49m[43m([49m[43m)[49m
+  File [0;32m~/src/two_qubit_model/hiro_models/model_base.py:649[0m, in [0;36mModel.total_power[0;34m(self, data, **kwargs)[0m
+  [1;32m    638[0m [38;5;28;01mdef[39;00m [38;5;21mtotal_power[39m([38;5;28mself[39m, data: Optional[HIData] [38;5;241m=[39m [38;5;28;01mNone[39;00m, [38;5;241m*[39m[38;5;241m*[39mkwargs) [38;5;241m-[39m[38;5;241m>[39m EnsembleValue:
+  [1;32m    639[0m     [38;5;124;03m"""Calculates the total power from the trajectories in[39;00m
+  [1;32m    640[0m [38;5;124;03m    ``data`` or, if not supplied, tries to load[39;00m
+  [1;32m    641[0m [38;5;124;03m    the online results from ``results_path``.[39;00m
+  [0;32m   (...)[0m
+  [1;32m    646[0m [38;5;124;03m    :returns: The total power.[39;00m
+  [1;32m    647[0m [38;5;124;03m    """[39;00m
+  [0;32m--> 649[0m     power [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43minteraction_power[49m[43m([49m[43mdata[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m[38;5;241m.[39msum_baths()
+  [1;32m    650[0m     system_power [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39msystem_power(data, [38;5;241m*[39m[38;5;241m*[39mkwargs)
+  [1;32m    652[0m     [38;5;28;01mif[39;00m system_power [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
 
-  File [0;32m~/src/hops/hops/core/signal_delay.py:68[0m, in [0;36msig_delay._restore[0;34m(self)[0m
-  [1;32m     66[0m [38;5;28;01mfor[39;00m i, s [38;5;129;01min[39;00m [38;5;28menumerate[39m([38;5;28mself[39m[38;5;241m.[39msigs):
-  [1;32m     67[0m     signal[38;5;241m.[39msignal(s, [38;5;28mself[39m[38;5;241m.[39mold_handlers[i])
-  [0;32m---> 68[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msigh[49m[38;5;241;43m.[39;49m[43memit[49m[43m([49m[43m)[49m
+  File [0;32m~/src/two_qubit_model/hiro_models/model_base.py:560[0m, in [0;36mModel.interaction_power[0;34m(self, data, results_path, **kwargs)[0m
+  [1;32m    550[0m [38;5;124;03m"""Calculates interaction power from the hierarchy data[39;00m
+  [1;32m    551[0m [38;5;124;03m``data`` or, if not supplied, tries to load the online results from ``results_path``.[39;00m
+  [1;32m    552[0m
+  [0;32m   (...)[0m
+  [1;32m    556[0m [38;5;124;03m:returns: See :any:`hopsflow.util.interaction_energy_ensemble`.[39;00m
+  [1;32m    557[0m [38;5;124;03m"""[39;00m
+  [1;32m    559[0m [38;5;28;01mif[39;00m data [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+  [0;32m--> 560[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mtry_get_online_data[49m[43m([49m
+  [1;32m    561[0m [43m        [49m[43mresults_path[49m[43m,[49m[43m [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43monline_interaction_power_name[49m
+  [1;32m    562[0m [43m    [49m[43m)[49m
+  [1;32m    564[0m N, kwargs [38;5;241m=[39m _get_N_kwargs(kwargs, data)
+  [1;32m    566[0m [38;5;28;01mreturn[39;00m hopsflow[38;5;241m.[39mhopsflow[38;5;241m.[39minteraction_energy_ensemble(
+  [1;32m    567[0m     data[38;5;241m.[39mvalid_sample_iterator(data[38;5;241m.[39mstoc_traj),  [38;5;66;03m# type: ignore[39;00m
+  [1;32m    568[0m     data[38;5;241m.[39mvalid_sample_iterator(data[38;5;241m.[39maux_states),  [38;5;66;03m# type: ignore[39;00m
+  [0;32m   (...)[0m
+  [1;32m    574[0m     [38;5;241m*[39m[38;5;241m*[39mkwargs,
+  [1;32m    575[0m )
 
-  File [0;32m~/src/hops/hops/core/signal_delay.py:42[0m, in [0;36mSigHandler.emit[0;34m(self)[0m
-  [1;32m     40[0m [38;5;28;01mfor[39;00m s [38;5;129;01min[39;00m [38;5;28mself[39m[38;5;241m.[39msigs_caught:
-  [1;32m     41[0m     log[38;5;241m.[39minfo([38;5;124m"[39m[38;5;124memit signal [39m[38;5;124m'[39m[38;5;132;01m{}[39;00m[38;5;124m'[39m[38;5;124m"[39m[38;5;241m.[39mformat(SIG_MAP[s]))
-  [0;32m---> 42[0m     [43mos[49m[38;5;241;43m.[39;49m[43mkill[49m[43m([49m[43mos[49m[38;5;241;43m.[39;49m[43mgetpid[49m[43m([49m[43m)[49m[43m,[49m[43m [49m[43ms[49m[43m)[49m
+  File [0;32m~/src/two_qubit_model/hiro_models/model_base.py:298[0m, in [0;36mModel.try_get_online_data[0;34m(self, path, results_path)[0m
+  [1;32m    296[0m file_path [38;5;241m=[39m os[38;5;241m.[39mpath[38;5;241m.[39mjoin(path, results_path)
+  [1;32m    297[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m os[38;5;241m.[39mpath[38;5;241m.[39mexists(file_path):
+  [0;32m--> 298[0m     [38;5;28;01mraise[39;00m [38;5;167;01mRuntimeError[39;00m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mNo data found under [39m[38;5;124m'[39m[38;5;132;01m{[39;00mfile_path[38;5;132;01m}[39;00m[38;5;124m'[39m[38;5;124m.[39m[38;5;124m"[39m)
+  [1;32m    300[0m [38;5;28;01mreturn[39;00m hopsflow[38;5;241m.[39mutil[38;5;241m.[39mget_online_values_from_cache(file_path)
 
-  [0;31mKeyboardInterrupt[0m:
+  [0;31mRuntimeError[0m: No data found under 'results/interaction_power_cfad63977aad412a4d035ea4122d748504bc638b4df70749bf6a9f0a0ecbcf4b.npz'.
 #+end_example
+[[file:./.ob-jupyter/b558c35b08a532e347de25d93e5aa133d5b6e6ff.svg]]
 :END:
+
+
+#+begin_src jupyter-julia
+  [model.efficiency(steady_idx=2).value / best_shift_model.efficiency(steady_idx=2).value for model in all_overlap_models]
+#+end_src
+
+#+RESULTS:
+| 1.0 | 1.0214351243995223 | 0.5705103160098187 | 0.3967276370979822 |
+
+#+begin_src jupyter-python
+  ot.plot_powers_and_efficiencies(Ns, overlap_models)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 1200x400 | with | 2 | Axes> | <AxesSubplot: | > |
+[[file:./.ob-jupyter/11463950153d8f27d2734c7ae3d213b127aaf350.svg]]
+:END:
+
+#+begin_src jupyter-python
+  f, a = plt.subplots()
+  a.axhline(0)
+  for model in all_overlap_models:
+      pu.plot_with_σ(model.t, model.interaction_power().sum_baths().integrate(model.t), ax=a)
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/c14627fd66e3c1c812fa240ebc2f765344f3290e.svg]]
+
+** Findings
+- coupling overlap doesn't help much
+- with these parameters the earlier obeservation does not recur
+- more scan needed
+- maybe slower coupling/decoupling will help
