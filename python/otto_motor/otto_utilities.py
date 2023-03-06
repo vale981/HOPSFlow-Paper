@@ -190,12 +190,24 @@ def integrate_online(model, n, stream_folder=None, **kwargs):
     )
 
 
+def get_sample_count(model):
+    try:
+        with aux.get_data(model) as d:
+            return d.samples
+
+    except:
+        return 0
+
+
 def integrate_online_multi(models, n, *args, increment=1000, **kwargs):
     target = increment
 
-    while target < (n + target):
+    while target <= n:
+        current_target = min([n, target])
         for model in models:
-            integrate_online(model, min([n, target]), *args, **kwargs)
+            count = get_sample_count(model)
+            if count < current_target:
+                integrate_online(model, current_target, *args, **kwargs)
 
         target += increment
 
