@@ -34,43 +34,75 @@ We take the same baseline as in [[id:c06111fd-d719-433d-a316-c163f6e1d384][cycle
 
 But we vary the cycle speed while keeping a fixed proportion
 coupling-change/cycle time.
-#+begin_src jupyter-python :results none
-  def make_model(ω_c, T_c):
-      (p_H, p_L) = ot.timings(.1, .1)
+#+begin_src jupyter-python
+  def make_shift_model(shift_c, shift_h, switch_t=3):
+      switch_time = switch_t / 50
 
+      (p_H, p_L) = ot.timings(switch_time, switch_time)
       return OttoEngine(
-          δ=[.8, .8],
-          ω_c=[ω_c, ω_c],
+          δ=[.7, .7],
+          ω_c=[1, 1],
           ψ_0=qt.basis([2], [1]),
           description=f"Classic Cycle",
           k_max=5,
-          bcf_terms=[6] * 2,
+          bcf_terms=[5] * 2,
           truncation_scheme="simplex",
           driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
           thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
-          T=[T_c, 4],
+          T=[0.5, 4],
           therm_methods=["tanhsinh", "tanhsinh"],
           Δ=1,
           num_cycles=3,
-          Θ=50,
+          Θ=60,
           dt=0.001,
           timings_H=p_H,
           timings_L=p_L,
           streaming_mode=True,
           shift_to_resonance=(False, False),
-          L_shift=(0, 0),
+          L_shift=(shift_c, shift_h),
       )
+
+  def overlap(shift_model, N, step, switch_t=6):
+      switch_time = switch_t / 50
+      next_model = shift_model.copy()
+      (p_H, p_L) = ot.timings(switch_time, switch_time)
+
+      #next_model.timings_H=p_H
+      next_model.timings_L=p_L
+
+      (a, b, c, d) = next_model.timings_L[0]
+      (e, f, g, h) = next_model.timings_L[1]
+      next_step = step * N
+      (s1, s2) = next_model.L_shift
+      next_model.L_shift = (s1 + next_step, s2 - next_step)
+      next_model.timings_L = (
+          (a - 2 * next_step, b - 2 * next_step, c, d),
+          (e, f, g + 2 * next_step, h + 2 * next_step),
+      )
+      return next_model
+
+  def make_model(ω_c, T_c):
+      best_shift_model = make_shift_model(.12, .12)
+      new_step_size = 6
+      mini_step = .12
+
+
+      overlapped_model = overlap(best_shift_model, 1, mini_step, new_step_size)
+      overlapped_model.T[0] = T_c
+      overlapped_model.ω_c = [ω_c, ω_c]
 #+end_src
+
+#+RESULTS:
 
 
 #+begin_src jupyter-python
-  ωs = [round(ω, 3) for ω in np.linspace(.5, 3, 5)]
+  ωs = [round(ω, 3) for ω in np.linspace(.5, 1.5, 5)]
   Ts = [round(T, 3) for T in np.linspace(.4, 1.5, 5)]
   ωs, Ts
 #+end_src
 
 #+RESULTS:
-| 0.5 | 1.125 | 1.75 | 2.375 | 3.0 |
+| 0.5 |  0.75 |  1.0 |  1.25 | 1.5 |
 | 0.4 | 0.675 | 0.95 | 1.225 | 1.5 |
 
 #+begin_src jupyter-python
@@ -83,7 +115,7 @@ coupling-change/cycle time.
 
 * Integrate
 #+begin_src jupyter-python
-  ot.integrate_online_multi(models, 100_000, increment=10_000, analyze_kwargs=dict(every=10_000))
+  ot.integrate_online_multi(models, 30_000, increment=10_000, analyze_kwargs=dict(every=10_000))
 #+end_src
 
 
