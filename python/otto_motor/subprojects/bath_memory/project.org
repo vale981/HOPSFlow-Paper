@@ -90,6 +90,7 @@ coupling-change/cycle time.
       overlapped_model = overlap(best_shift_model, 1, mini_step, new_step_size)
       overlapped_model.T[0] = T_c
       overlapped_model.ω_c = [ω_c, ω_c]
+      return overlapped_model
 #+end_src
 
 #+RESULTS:
@@ -97,13 +98,13 @@ coupling-change/cycle time.
 
 #+begin_src jupyter-python
   ωs = [round(ω, 3) for ω in np.linspace(.5, 1.5, 5)]
-  Ts = [round(T, 3) for T in np.linspace(.4, 1.5, 5)]
+  Ts = [round(T, 3) for T in np.linspace(.4, .6, 5)]
   ωs, Ts
 #+end_src
 
 #+RESULTS:
-| 0.5 |  0.75 |  1.0 |  1.25 | 1.5 |
-| 0.4 | 0.675 | 0.95 | 1.225 | 1.5 |
+| 0.5 | 0.75 | 1.0 | 1.25 | 1.5 |
+| 0.4 | 0.45 | 0.5 | 0.55 | 0.6 |
 
 #+begin_src jupyter-python
   import itertools
@@ -118,6 +119,115 @@ coupling-change/cycle time.
   ot.integrate_online_multi(models, 30_000, increment=10_000, analyze_kwargs=dict(every=10_000))
 #+end_src
 
+* Analysis
+#+begin_src jupyter-python
+  models[1].T
+#+end_src
+
+#+RESULTS:
+| 0.45 | 4 |
+
+#+begin_src jupyter-python
+  fig, ax = plt.subplots()
+  for model in models[:22]:
+      pu.plot_with_σ(models[0].t, model.interaction_power().sum_baths().integrate(model.t), ax=ax)
+      print(model.power(steady_idx=2).value, model.T[0], model.ω_c[0])
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+#+begin_example
+  -0.006103613981596153 0.4 0.5
+  -0.005630555882709985 0.45 0.5
+  -0.005144885602052376 0.5 0.5
+  -0.0046201846177245775 0.55 0.5
+  -0.00408269304017506 0.6 0.5
+  -0.006243071030355197 0.4 0.75
+  -0.005881045504667838 0.45 0.75
+  -0.005470909779338724 0.5 0.75
+  -0.005117387974176542 0.55 0.75
+  -0.004696311980802888 0.6 0.75
+  -0.00601900784323882 0.4 1.0
+  -0.005654872704166493 0.45 1.0
+  -0.0052827257239205635 0.5 1.0
+  -0.004926474313736401 0.55 1.0
+  -0.004574246770646178 0.6 1.0
+  -0.0057755138468875734 0.4 1.25
+  -0.005376503179789067 0.45 1.25
+  -0.005165798810267893 0.5 1.25
+  -0.0047606322193036515 0.55 1.25
+  -0.004448271880105396 0.6 1.25
+  -0.005663678614433835 0.4 1.5
+  -0.005324157902231117 0.45 1.5
+#+end_example
+[[file:./.ob-jupyter/4407783964e0d7ec2fca96f0d4f1735b062fa050.svg]]
+:END:
+
+#+begin_src jupyter-python
+  fig, ax = plt.subplots()
+  for model in models[:22]:
+    pu.plot_with_σ(models[0].t, model.system_energy(), ax=ax)
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/75bda542ed72dab701a317f6de35b7b5041bfc6e.svg]]
+
+
+#+begin_src jupyter-python
+  pu.plot_with_σ(models[0].t, models[0].interaction_power().sum_baths().integrate(models[0].t))
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | > | ((<matplotlib.lines.Line2D at 0x7fe105f9ab50>) <matplotlib.collections.PolyCollection at 0x7fe105f8ebb0>) |
+[[file:./.ob-jupyter/4885b6623040daa45b75d948fb036da085c522c9.svg]]
+:END:
+
+
+#+begin_src jupyter-python
+  ot.plot_power_eff_convergence(models[:10], 2)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 1200x400 | with | 2 | Axes> | (<AxesSubplot: > <AxesSubplot: >) |
+[[file:./.ob-jupyter/b2897a872a4a83f4a5da6c8f0967604b16059f1c.svg]]
+:END:
+
+
+
+#+begin_src jupyter-python
+  f = plt.figure()
+  a_power = f.add_subplot(121, projection="3d")
+  a_efficiency = f.add_subplot(122, projection="3d")
+  for ax in [a_power, a_efficiency]:
+      ax.set_box_aspect(aspect=None, zoom=0.85)
+      ax.set_xlabel(r"$T_c$")
+      ax.set_ylabel(r"$\omega_c$")
+
+  ot.plot_3d_heatmap(
+      models[:20],
+      lambda model: np.clip(-model.power(steady_idx=2).value, 0, np.inf),
+      lambda model: model.T[0],
+      lambda model: model.ω_c[0],
+      ax=a_power,
+  )
+  a_power.set_zlabel(r"$P$")
+
+
+  ot.plot_3d_heatmap(
+      models[:20],
+      lambda model: np.clip(np.nan_to_num(model.efficiency(steady_idx=2).value * 100), 0, np.inf),
+      lambda model: model.T[0],
+      lambda model: model.ω_c[0],
+      ax=a_efficiency,
+  )
+  a_efficiency.set_zlabel(r"$\eta$")
+  fs.export_fig("bath_memory_power_efficiency")
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/d8b6315ecbf978174a0ba1b6b6d929ac0ed6c082.svg]]
 
 * Things to Look At
 - power and efficiency

@@ -619,7 +619,13 @@ def plot_energy_overview(
     interaction_energy = model.interaction_energy(data, **ensemble_args)
     # flow = model.bath_energy_flow(data, **ensemble_args)
 
-    plot_with_σ(model.t, system_energy, ax=ax, label="System", **kwargs)
+    plot_with_σ(
+        model.t,
+        system_energy,
+        ax=ax,
+        label=r"$\langle{H_\mathrm{sys}}\rangle$",
+        **kwargs,
+    )
 
     num_baths = interaction_energy.num_baths
     for bath in range(num_baths):
@@ -628,7 +634,12 @@ def plot_energy_overview(
         #     model.t, flow, bath=bath, ax=ax, label=f"Flow {bath+1}", **kwargs
         # )
         plot_with_σ(
-            model.t, bath_energy, bath=bath, ax=ax, label=f"Bath {label}", **kwargs
+            model.t,
+            bath_energy,
+            bath=bath,
+            ax=ax,
+            label=fr"$\Delta \langle H_{{\mathrm{{B}}}}\rangle$ ({label})",
+            **kwargs,
         )
 
         plot_with_σ(
@@ -636,7 +647,7 @@ def plot_energy_overview(
             interaction_energy,
             ax=ax,
             bath=bath,
-            label=f"Interaction {label}",
+            label=rf"$\langle H_I\rangle$ ({label})",
             **kwargs,
         )
 
@@ -645,7 +656,7 @@ def plot_energy_overview(
         model.t,
         total,
         ax=ax,
-        label="Total",
+        label=r"$\Delta \langle H\rangle$",
         linestyle="--",
         **kwargs,
     )

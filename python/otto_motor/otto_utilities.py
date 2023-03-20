@@ -16,6 +16,10 @@ def plot_power_eff_convergence(models, steady_idx=1):
         a_power.plot(Ns, model.power(steady_idx=steady_idx).values)
         a_efficiency.plot(Ns, np.abs(model.efficiency(steady_idx=steady_idx).values))
 
+    a_power.set_xlabel("$N$")
+    a_power.set_ylabel("$P$")
+    a_efficiency.set_xlabel("$N$")
+    a_efficiency.set_ylabel("$\eta$")
     return f, (a_power, a_efficiency)
 
 
@@ -23,6 +27,43 @@ def plot_power_eff_convergence(models, steady_idx=1):
 def plot_powers_and_efficiencies(x, models, steady_idx=1, ax=None, xlabel=""):
     powers = [-model.power(steady_idx=steady_idx).value for model in models]
     powers_σ = [model.power(steady_idx=steady_idx).σ for model in models]
+
+    system_powers = [
+        val_relative_to_steady(
+            model,
+            -1 * model.system_power().integrate(model.t) * 1 / model.Θ,
+            steady_idx=steady_idx,
+        )[1].value[-1]
+        for model in models
+    ]
+
+    system_powers_σ = [
+        val_relative_to_steady(
+            model,
+            -1 * model.system_power().integrate(model.t) * 1 / model.Θ,
+            steady_idx=steady_idx,
+        )[1].σ[-1]
+        for model in models
+    ]
+
+    interaction_powers = [
+        val_relative_to_steady(
+            model,
+            -1 * model.interaction_power().sum_baths().integrate(model.t) * 1 / model.Θ,
+            steady_idx=steady_idx,
+        )[1].value[-1]
+        for model in models
+    ]
+
+    interaction_powers_σ = [
+        val_relative_to_steady(
+            model,
+            -1 * model.interaction_power().sum_baths().integrate(model.t) * 1 / model.Θ,
+            steady_idx=steady_idx,
+        )[1].σ[-1]
+        for model in models
+    ]
+
     efficiencies = np.array(
         [100 * model.efficiency(steady_idx=steady_idx).value for model in models]
     )
@@ -33,22 +74,36 @@ def plot_powers_and_efficiencies(x, models, steady_idx=1, ax=None, xlabel=""):
 
     mask = efficiencies > 0
     a2 = ax.twinx()
-    ax.errorbar(x, powers, yerr=powers_σ, linestyle="none", marker=".", label="$P$")
+    ax.errorbar(x, powers, yerr=powers_σ, marker=".", label=r"$\bar{P}$")
+    ax.errorbar(
+        x,
+        system_powers,
+        yerr=system_powers_σ,
+        marker=".",
+        label=r"$\bar{P}_{\mathrm{sys}}$",
+    )
+
+    ax.errorbar(
+        x,
+        interaction_powers,
+        yerr=interaction_powers_σ,
+        marker=".",
+        label=r"$\bar{P}_{\mathrm{int}}$",
+    )
     ax.legend()
 
     lines = a2.errorbar(
         np.asarray(x)[mask],
         efficiencies[mask],
         yerr=efficiencies_σ[mask],
-        linestyle="none",
         marker="*",
-        color="C1",
+        color="C4",
         label=r"$\eta$",
     )
-    a2.legend(loc="lower right")
+    a2.legend(loc="upper left")
     ax.set_xlabel(xlabel)
-    ax.set_ylabel(r"$\bar{P}$", color="C0")
-    a2.set_ylabel(r"$\eta$", color="C1")
+    ax.set_ylabel(r"$-\bar{P}$", color="C0")
+    a2.set_ylabel(r"$\eta$", color="C4")
 
 
 @pu.wrap_plot
@@ -64,7 +119,7 @@ def plot_cycle(model: OttoEngine, ax=None):
     ax.plot(
         model.t,
         (model.H.operator_norm(model.t)) / model.H.operator_norm(model.τ_compressed),
-        label="H",
+        label="$H_{\mathrm{sys}}$",
     )
 
     ax.set_xlim((0, model.Θ))
@@ -190,7 +245,7 @@ def plot_energy(model):
         model,
         strobe_frequency=model.Ω,
         hybrid=True,
-        bath_names=["Cold", "Hot"],
+        bath_names=["cold", "hot"],
         online=True,
     )
 
@@ -305,3 +360,39 @@ def timings(τ_c, τ_i):
     timings_L_cold = tuple(time + timings_H[2] for time in timings_L_hot)
 
     return timings_H, (timings_L_cold, timings_L_hot)
+
+
+def model_description(model):
+    return model.description
+
+
+def plot_steady_energy_changes(models, steady_idx=2, label_fn=model_description):
+    fig, ax = plt.subplots()
+
+    for model in models:
+        t, inter = val_relative_to_steady(
+            model, model.interaction_power().sum_baths().integrate(model.t), steady_idx
+        )
+        t, sys = val_relative_to_steady(
+            model, model.system_power().sum_baths().integrate(model.t), steady_idx
+        )
+
+        pu.plot_with_σ(
+            t,
+            inter,
+            ax=ax,
+            label=fr"$W_\mathrm{{int}}$ {label_fn(model)}",
+            linestyle="--",
+        )
+        pu.plot_with_σ(
+            t,
+            sys,
+            ax=ax,
+            label=fr"$W_\mathrm{{sys}}$ {label_fn(model)}",
+        )
+
+    ax.set_xlabel(r"$\tau$")
+    ax.set_ylabel(r"$W$")
+    ax.legend()
+
+    return fig, ax

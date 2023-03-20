@@ -75,12 +75,56 @@ def make_model(ω_c, T_c):
     overlapped_model = overlap(best_shift_model, 1, mini_step, new_step_size)
     overlapped_model.T[0] = T_c
     overlapped_model.ω_c = [ω_c, ω_c]
+    return overlapped_model
 
 ωs = [round(ω, 3) for ω in np.linspace(.5, 1.5, 5)]
-Ts = [round(T, 3) for T in np.linspace(.4, 1.5, 5)]
+Ts = [round(T, 3) for T in np.linspace(.4, .6, 5)]
 ωs, Ts
 
 import itertools
 models = [make_model(ω, T) for ω, T, in itertools.product(ωs, Ts)]
 
 ot.integrate_online_multi(models, 30_000, increment=10_000, analyze_kwargs=dict(every=10_000))
+
+models[1].T
+
+fig, ax = plt.subplots()
+for model in models[:22]:
+    pu.plot_with_σ(models[0].t, model.interaction_power().sum_baths().integrate(model.t), ax=ax)
+    print(model.power(steady_idx=2).value, model.T[0], model.ω_c[0])
+
+fig, ax = plt.subplots()
+for model in models[:22]:
+  pu.plot_with_σ(models[0].t, model.system_energy(), ax=ax)
+
+pu.plot_with_σ(models[0].t, models[0].interaction_power().sum_baths().integrate(models[0].t))
+
+ot.plot_power_eff_convergence(models[:10], 2)
+
+f = plt.figure()
+a_power = f.add_subplot(121, projection="3d")
+a_efficiency = f.add_subplot(122, projection="3d")
+for ax in [a_power, a_efficiency]:
+    ax.set_box_aspect(aspect=None, zoom=0.85)
+    ax.set_xlabel(r"$T_c$")
+    ax.set_ylabel(r"$\omega_c$")
+
+ot.plot_3d_heatmap(
+    models[:20],
+    lambda model: np.clip(-model.power(steady_idx=2).value, 0, np.inf),
+    lambda model: model.T[0],
+    lambda model: model.ω_c[0],
+    ax=a_power,
+)
+a_power.set_zlabel(r"$P$")
+
+
+ot.plot_3d_heatmap(
+    models[:20],
+    lambda model: np.clip(np.nan_to_num(model.efficiency(steady_idx=2).value * 100), 0, np.inf),
+    lambda model: model.T[0],
+    lambda model: model.ω_c[0],
+    ax=a_efficiency,
+)
+a_efficiency.set_zlabel(r"$\eta$")
+fs.export_fig("bath_memory_power_efficiency")

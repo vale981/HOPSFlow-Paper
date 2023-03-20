@@ -31,7 +31,6 @@ Here we scan the cycle length and coupling strength.
 * Cycles
 We take the same baseline as in [[id:c06111fd-d719-433d-a316-c163f6e1d384][cycle_shift.org]].
 
-
 But we vary the cycle speed while keeping a fixed proportion
 coupling-change/cycle time.
 #+begin_src jupyter-python :results none
@@ -59,19 +58,18 @@ coupling-change/cycle time.
             shift_to_resonance=(False, False),
             L_shift=(0, 0),
         )
-
 #+end_src
 
 
 #+begin_src jupyter-python
   δs = [round(δ, 3) for δ in np.linspace(.3, .7, 5)]
-  Θs = [round(Θ, 3) for Θ in np.linspace(20, 80, 5)]
+  Θs = [round(Θ, 3) for Θ in np.linspace(20, 80, 5)][1:]
   δs, Θs
 #+end_src
 
 #+RESULTS:
-|  0.3 |  0.4 |  0.5 |  0.6 |  0.7 |
-| 20.0 | 35.0 | 50.0 | 65.0 | 80.0 |
+|  0.3 |  0.4 |  0.5 |  0.6 | 0.7 |
+| 35.0 | 50.0 | 65.0 | 80.0 |     |
 
 #+begin_src jupyter-python
   import itertools
@@ -86,6 +84,193 @@ coupling-change/cycle time.
   ot.integrate_online_multi(models, 50_000, increment=10_000, analyze_kwargs=dict(every=10_000))
 #+end_src
 
+* Analysis
+#+begin_src jupyter-python
+  ot.plot_energy(models[0])
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
+[[file:./.ob-jupyter/b0f3288ce8343ba75084d463ed455b611deed467.svg]]
+:END:
+
+
+#+begin_src jupyter-python
+  #[model.efficiency(steady_idx=2).value * 100 for model in models][10]
+  models[10].strobe, models[1].strobe
+#+end_src
+
+#+RESULTS:
+| array | ((0 65 130 195)) | array | ((0 1000 2001 3001)) |
+| array | ((0 35 70 105))  | array | ((0 1000 2001 3001)) |
+
+#+begin_src jupyter-python
+  models[10].system_energy().N
+#+end_src
+
+#+RESULTS:
+: 50000
+
+#+begin_src jupyter-python
+  ot.plot_power_eff_convergence(models, 2)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 1200x400 | with | 2 | Axes> | (<AxesSubplot: xlabel= $N$ ylabel= $P$ > <AxesSubplot: xlabel= $N$ ylabel= $\eta$ >) |
+[[file:./.ob-jupyter/50b32e2631a366baf485f8ebd9198bf3c292722b.svg]]
+:END:
+
+
+#+begin_src jupyter-python
+  f_power = plt.figure()
+  a_power = f_power.add_subplot(1, 1, 1, projection="3d")
+  f_work = plt.figure()
+  a_work = f_work.add_subplot(1, 1, 1, projection="3d")
+  f_efficiency = plt.figure()
+  a_efficiency = f_efficiency.add_subplot(1, 1, 1, projection="3d")
+  f_mean_inter_power = plt.figure()
+  a_mean_inter_power = f_mean_inter_power.add_subplot(1, 1, 1, projection="3d")
+  f_mean_system_power = plt.figure()
+  a_mean_system_power = f_mean_system_power.add_subplot(1, 1, 1, projection="3d")
+
+  for ax in [a_power, a_efficiency, a_work, a_mean_inter_power, a_mean_system_power]:
+      ax.set_box_aspect(aspect=None, zoom=0.7)
+      ax.set_xlabel(r"$\delta$")
+      ax.set_ylabel(r"$\Theta$")
+      ax.xaxis.labelpad = 10
+      ax.view_init(elev=30.0, azim=-29, roll=0)
+
+
+  ot.plot_3d_heatmap(
+      models,
+      lambda model: np.clip(
+          np.nan_to_num(model.efficiency(steady_idx=2).value * 100), 0, np.inf
+      ),
+      lambda model: model.δ[0],
+      lambda model: model.Θ,
+      ax=a_efficiency,
+  )
+  a_efficiency.set_zlabel(r"$\eta$")
+
+  ot.plot_3d_heatmap(
+      models,
+      lambda model: np.clip(-model.power(steady_idx=2).value * 1000, 0, np.inf),
+      lambda model: model.δ[0],
+      lambda model: model.Θ,
+      ax=a_power,
+  )
+  a_power.set_zlabel(r"$-\bar{P}/10^{-3}$")
+  a_power.zaxis.labelpad = 8
+
+  ot.plot_3d_heatmap(
+      models,
+      lambda model: np.clip(
+          ot.val_relative_to_steady(model, model.interaction_power().sum_baths(), 2)[
+              1
+          ].mean.value
+          ,* 1000,
+          0,
+          np.inf,
+      ),
+      lambda model: model.δ[0],
+      lambda model: model.Θ,
+      ax=a_mean_inter_power,
+  )
+  a_mean_inter_power.set_zlabel(r"$\bar{P}_\mathrm{int}/10^{-3}$")
+  a_mean_inter_power.zaxis.labelpad = 8
+  a_mean_inter_power.view_init(elev=30.0, azim=110, roll=0)
+
+  ot.plot_3d_heatmap(
+      models,
+      lambda model: np.clip(
+          -ot.val_relative_to_steady(model, model.system_power().sum_baths(), 2)[
+              1
+          ].mean.value
+          ,* 1000,
+          0,
+          np.inf,
+      ),
+      lambda model: model.δ[0],
+      lambda model: model.Θ,
+      ax=a_mean_system_power,
+  )
+  a_mean_system_power.set_zlabel(r"$-\bar{P}_\mathrm{sys}/10^{-3}$")
+  a_mean_system_power.zaxis.labelpad = 8
+
+  ot.plot_3d_heatmap(
+      models,
+      lambda model: np.clip(-model.power(steady_idx=2).value * model.Θ, 0, np.inf),
+      lambda model: model.δ[0],
+      lambda model: model.Θ,
+      ax=a_work,
+  )
+  a_work.set_zlabel(r"$-W$")
+  a_work.zaxis.labelpad = 8
+
+
+  plt.tight_layout()
+
+  fs.export_fig("coupling_speed_scan_power", x_scaling=1, y_scaling=1, fig=f_power)
+  fs.export_fig("coupling_speed_scan_work", x_scaling=1, y_scaling=1, fig=f_work)
+  fs.export_fig(
+      "coupling_speed_scan_efficiency", x_scaling=1, y_scaling=1, fig=f_efficiency
+  )
+  fs.export_fig(
+      "coupling_speed_scan_interpower", x_scaling=1, y_scaling=1, fig=f_mean_inter_power
+  )
+  fs.export_fig(
+      "coupling_speed_scan_syspower", x_scaling=1, y_scaling=1, fig=f_mean_system_power
+  )
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+[[file:./.ob-jupyter/ef4a07b0162d23f1da6e77e196c23d465162b550.svg]]
+[[file:./.ob-jupyter/113b9d47ba8bc770252150985e03e7d15d148cc7.svg]]
+[[file:./.ob-jupyter/909c20db81bf86cb98684485db0020405a2e4d85.svg]]
+[[file:./.ob-jupyter/7420c45985ae8e19771cfbcb4eb18d1d3f1a07e2.svg]]
+[[file:./.ob-jupyter/1025ee4cb8a3c256304d10f53c3327ada5757df1.svg]]
+:END:
+
+#+begin_src jupyter-python
+  f = plt.figure()
+  a_power = f.add_subplot(121, projection="3d")
+  a_efficiency = f.add_subplot(122, projection="3d")
+  for ax in [a_power, a_efficiency]:
+      ax.set_box_aspect(aspect=None, zoom=0.85)
+      ax.set_xlabel(r"$\delta$")
+      ax.set_ylabel(r"$\Theta$")
+
+  ot.plot_3d_heatmap(
+      models,
+      lambda model: np.divide(np.abs(model.power(steady_idx=2).σ), np.abs(model.power(steady_idx=2).value)),
+      lambda model: model.δ[0],
+      lambda model: model.Θ,
+      ax=a_power,
+  )
+  a_power.set_zlabel(r"$\sigma_P/|P|$")
+
+
+  ot.plot_3d_heatmap(
+      models,
+      lambda model: np.divide(np.clip(np.nan_to_num(model.efficiency(steady_idx=2).σ * 100), 0, np.inf), np.abs(model.efficiency(steady_idx=2).value * 100)),
+      lambda model: model.δ[0],
+      lambda model: model.Θ,
+      ax=a_efficiency,
+  )
+  a_efficiency.set_zlabel(r"$\sigma_\eta/|\eta|$")
+  fs.export_fig("coupling_speed_scan_power_efficiency")
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/590bb3c089cc619f0e0152c8fe7afce1f5f8add8.svg]]
+
+
+#+begin_src jupyter-python
+
+#+end_src
 
 * Things to Look At
 - power and efficiency

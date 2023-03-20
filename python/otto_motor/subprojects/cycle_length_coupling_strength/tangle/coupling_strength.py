@@ -46,10 +46,149 @@ def make_model(Θ, δ):
       )
 
 δs = [round(δ, 3) for δ in np.linspace(.3, .7, 5)]
-Θs = [round(Θ, 3) for Θ in np.linspace(20, 80, 5)]
+Θs = [round(Θ, 3) for Θ in np.linspace(20, 80, 5)][1:]
 δs, Θs
 
 import itertools
 models = [make_model(Θ, δ) for Θ, δ, in itertools.product(Θs, δs)]
 
 ot.integrate_online_multi(models, 50_000, increment=10_000, analyze_kwargs=dict(every=10_000))
+
+ot.plot_energy(models[0])
+
+#[model.efficiency(steady_idx=2).value * 100 for model in models][10]
+models[10].strobe, models[1].strobe
+
+models[10].system_energy().N
+
+ot.plot_power_eff_convergence(models, 2)
+
+f_power = plt.figure()
+a_power = f_power.add_subplot(1, 1, 1, projection="3d")
+f_work = plt.figure()
+a_work = f_work.add_subplot(1, 1, 1, projection="3d")
+f_efficiency = plt.figure()
+a_efficiency = f_efficiency.add_subplot(1, 1, 1, projection="3d")
+f_mean_inter_power = plt.figure()
+a_mean_inter_power = f_mean_inter_power.add_subplot(1, 1, 1, projection="3d")
+f_mean_system_power = plt.figure()
+a_mean_system_power = f_mean_system_power.add_subplot(1, 1, 1, projection="3d")
+
+for ax in [a_power, a_efficiency, a_work, a_mean_inter_power, a_mean_system_power]:
+    ax.set_box_aspect(aspect=None, zoom=0.7)
+    ax.set_xlabel(r"$\delta$")
+    ax.set_ylabel(r"$\Theta$")
+    ax.xaxis.labelpad = 10
+    ax.view_init(elev=30.0, azim=-29, roll=0)
+
+
+ot.plot_3d_heatmap(
+    models,
+    lambda model: np.clip(
+        np.nan_to_num(model.efficiency(steady_idx=2).value * 100), 0, np.inf
+    ),
+    lambda model: model.δ[0],
+    lambda model: model.Θ,
+    ax=a_efficiency,
+)
+a_efficiency.set_zlabel(r"$\eta$")
+
+ot.plot_3d_heatmap(
+    models,
+    lambda model: np.clip(-model.power(steady_idx=2).value * 1000, 0, np.inf),
+    lambda model: model.δ[0],
+    lambda model: model.Θ,
+    ax=a_power,
+)
+a_power.set_zlabel(r"$-\bar{P}/10^{-3}$")
+a_power.zaxis.labelpad = 8
+
+ot.plot_3d_heatmap(
+    models,
+    lambda model: np.clip(
+        ot.val_relative_to_steady(model, model.interaction_power().sum_baths(), 2)[
+            1
+        ].mean.value
+        * 1000,
+        0,
+        np.inf,
+    ),
+    lambda model: model.δ[0],
+    lambda model: model.Θ,
+    ax=a_mean_inter_power,
+)
+a_mean_inter_power.set_zlabel(r"$\bar{P}_\mathrm{int}/10^{-3}$")
+a_mean_inter_power.zaxis.labelpad = 8
+a_mean_inter_power.view_init(elev=30.0, azim=110, roll=0)
+
+ot.plot_3d_heatmap(
+    models,
+    lambda model: np.clip(
+        -ot.val_relative_to_steady(model, model.system_power().sum_baths(), 2)[
+            1
+        ].mean.value
+        * 1000,
+        0,
+        np.inf,
+    ),
+    lambda model: model.δ[0],
+    lambda model: model.Θ,
+    ax=a_mean_system_power,
+)
+a_mean_system_power.set_zlabel(r"$-\bar{P}_\mathrm{sys}/10^{-3}$")
+a_mean_system_power.zaxis.labelpad = 8
+
+ot.plot_3d_heatmap(
+    models,
+    lambda model: np.clip(-model.power(steady_idx=2).value * model.Θ, 0, np.inf),
+    lambda model: model.δ[0],
+    lambda model: model.Θ,
+    ax=a_work,
+)
+a_work.set_zlabel(r"$-W$")
+a_work.zaxis.labelpad = 8
+
+
+plt.tight_layout()
+
+fs.export_fig("coupling_speed_scan_power", x_scaling=1, y_scaling=1, fig=f_power)
+fs.export_fig("coupling_speed_scan_work", x_scaling=1, y_scaling=1, fig=f_work)
+fs.export_fig(
+    "coupling_speed_scan_efficiency", x_scaling=1, y_scaling=1, fig=f_efficiency
+)
+fs.export_fig(
+    "coupling_speed_scan_interpower", x_scaling=1, y_scaling=1, fig=f_mean_inter_power
+)
+fs.export_fig(
+    "coupling_speed_scan_syspower", x_scaling=1, y_scaling=1, fig=f_mean_system_power
+)
+
+f = plt.figure()
+a_power = f.add_subplot(121, projection="3d")
+a_efficiency = f.add_subplot(122, projection="3d")
+for ax in [a_power, a_efficiency]:
+    ax.set_box_aspect(aspect=None, zoom=0.85)
+    ax.set_xlabel(r"$\delta$")
+    ax.set_ylabel(r"$\Theta$")
+
+ot.plot_3d_heatmap(
+    models,
+    lambda model: np.divide(np.abs(model.power(steady_idx=2).σ), np.abs(model.power(steady_idx=2).value)),
+    lambda model: model.δ[0],
+    lambda model: model.Θ,
+    ax=a_power,
+)
+a_power.set_zlabel(r"$\sigma_P/|P|$")
+
+
+ot.plot_3d_heatmap(
+    models,
+    lambda model: np.divide(np.clip(np.nan_to_num(model.efficiency(steady_idx=2).σ * 100), 0, np.inf), np.abs(model.efficiency(steady_idx=2).value * 100)),
+    lambda model: model.δ[0],
+    lambda model: model.Θ,
+    ax=a_efficiency,
+)
+a_efficiency.set_zlabel(r"$\sigma_\eta/|\eta|$")
+fs.export_fig("coupling_speed_scan_power_efficiency")
+
+
