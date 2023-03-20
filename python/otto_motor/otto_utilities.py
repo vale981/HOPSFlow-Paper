@@ -366,12 +366,20 @@ def model_description(model):
     return model.description
 
 
-def plot_steady_energy_changes(models, steady_idx=2, label_fn=model_description):
+def plot_steady_energy_changes(
+    models, steady_idx=2, label_fn=model_description, bath=None
+):
     fig, ax = plt.subplots()
 
     for model in models:
         t, inter = val_relative_to_steady(
-            model, model.interaction_power().sum_baths().integrate(model.t), steady_idx
+            model,
+            (
+                model.interaction_power().sum_baths()
+                if bath is None
+                else model.interaction_power().for_bath(bath)
+            ).integrate(model.t),
+            steady_idx,
         )
         t, sys = val_relative_to_steady(
             model, model.system_power().sum_baths().integrate(model.t), steady_idx
@@ -391,6 +399,43 @@ def plot_steady_energy_changes(models, steady_idx=2, label_fn=model_description)
             label=fr"$W_\mathrm{{sys}}$ {label_fn(model)}",
         )
 
+    ax.set_xlabel(r"$\tau$")
+    ax.set_ylabel(r"$W$")
+    ax.legend()
+
+    return fig, ax
+
+
+def plot_steady_work_baths(models, steady_idx=2, label_fn=model_description):
+    fig, ax = plt.subplots()
+
+    for model in models:
+        t, inter_c = val_relative_to_steady(
+            model,
+            (model.interaction_power().for_bath(0)).integrate(model.t),
+            steady_idx,
+        )
+
+        t, inter_h = val_relative_to_steady(
+            model,
+            (model.interaction_power().for_bath(1)).integrate(model.t),
+            steady_idx,
+        )
+
+        pu.plot_with_σ(
+            t,
+            inter_c,
+            ax=ax,
+            label=fr"$W_\mathrm{{int, c}}$ {label_fn(model)}",
+        )
+
+        pu.plot_with_σ(
+            t,
+            inter_h,
+            ax=ax,
+            label=fr"$W_\mathrm{{int, h}}$ {label_fn(model)}",
+            linestyle="--",
+        )
     ax.set_xlabel(r"$\tau$")
     ax.set_ylabel(r"$W$")
     ax.legend()
