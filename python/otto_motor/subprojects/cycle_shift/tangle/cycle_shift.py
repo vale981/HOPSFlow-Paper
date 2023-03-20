@@ -172,6 +172,39 @@ ot.plot_energy(baseline)
 f, a = ot.plot_energy(best_shift_model)
 a.plot(best_shift_model.t, best_shift_model.H(best_shift_model.t)[:, 0,0])
 
+f, a = plt.subplots()
+a.axhline(best_shift_model.system_energy().value[np.argmin(abs(best_shift_model.t - model.Θ * 2))], color="gray", linestyle="--")
+r = pu.plot_with_σ(
+    best_shift_model.t, best_shift_model.interaction_energy().for_bath(0), ax=a,
+    label=r"$\langle H_\mathrm{inter}\rangle$"
+)
+pu.plot_with_σ(
+    best_shift_model.t, best_shift_model.system_energy(), ax=a, label=r"$\langle H_\mathrm{sys}\rangle$"
+)
+# a.plot(best_shift_model.t, best_shift_model.H(best_shift_model.t)[:, 0,0])
+a.plot(overlap_models = [overlap(best_shift_model, N, mini_step, new_step_size) for N in Ns]
+    best_shift_model.t,
+    best_shift_model.coupling_operators[0].operator_norm(best_shift_model.t) / 5,
+    label="cold bath modulation",
+)
+
+# a.plot(
+#     best_shift_model.t,
+#     best_shift_model.coupling_operators[1].operator_norm(best_shift_model.t) / 5,
+#     label="hot bath modulation",
+# )
+a.plot(
+    best_shift_model.t, best_shift_model.system.operator_norm(best_shift_model.t) / 5,
+    label="system modulation"
+)
+# a.plot(best_shift_model.t, best_shift_model.coupling_operators[1].operator_norm(best_shift_model.t) / 5)
+a.set_xlim((model.Θ * 2, model.Θ * 2 + 7))
+
+a.set_ylim((-.21, .45))
+a.set_xlabel(r"$\tau$")
+a.legend(loc="upper right", fontsize="x-small")
+fs.export_fig("cold_bath_decoupling", y_scaling=.6)
+
 def overlap(shift_model, N, step, switch_t=3.):
     switch_time = switch_t / T
     (p_H, p_L) = ot.timings(switch_time, switch_time)
@@ -216,11 +249,16 @@ mini_step = (new_step_size / (N-N_over) / T)
 print(mini_step)
 overlap_models = [overlap(best_shift_model, N, mini_step, new_step_size) for N in Ns]
 
-ot.integrate_online_multi(overlap_models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))
-
 all_overlap_models = [best_shift_model, *overlap_models]
 
-ot.plot_power_eff_convergence(all_overlap_models, 1)
+ot.integrate_online_multi(overlap_models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))
+
+ot.plot_power_eff_convergence(all_overlap_models, 2)
+
+f, a= ot.plot_energy(all_overlap_models[-1])
+a.plot(model.t, model.coupling_operators[0].operator_norm(model.t))
+a.plot(model.t, model.coupling_operators[1].operator_norm(model.t))
+a.plot(model.t, model.system.operator_norm(model.t))
 
 [model.power(steady_idx=2).value / best_shift_model.power(steady_idx=2).value for model in all_overlap_models]
 
@@ -242,4 +280,38 @@ fs.export_fig("cycle_shift_shift_vs_overlap_power", x_scaling=2, y_scaling=.6)
 
 fig, ax =ot.plot_steady_energy_changes(all_overlap_models, 2, label_fn=(lambda m: ["without overlap", "with overlap"][all_overlap_models.index(m)]))
 ax.legend(loc="lower left")
+
 fs.export_fig("overlap_energy_change", y_scaling=.9)
+
+fig, ax =ot.plot_steady_work_baths(all_overlap_models, 2, label_fn=(lambda m: ["without overlap", "with overlap"][all_overlap_models.index(m)]))
+ax.legend(loc="lower left")
+
+fs.export_fig("overlap_energy_change_hot_cold", y_scaling=.9)
+
+r = pu.plot_with_σ(all_overlap_models[-1].t, all_overlap_models[-1].interaction_energy().for_bath(0))
+# a.plot(all_overlap_models[-1].t, all_overlap_models[-1].H(all_overlap_models[-1].t)[:, 0,0])
+r[1].plot(all_overlap_models[-1].t, all_overlap_models[-1].coupling_operators[0].operator_norm(all_overlap_models[-1].t) / 5)
+r[1].plot(all_overlap_models[-1].t, all_overlap_models[-1].coupling_operators[1].operator_norm(all_overlap_models[-1].t) / 5)
+r[1].set_xlim((model.Θ*2, model.Θ*2+15))
+
+long_models = [make_model(shift, shift, switch_t=6.) for shift in shifts]
+
+from itertools import cycle
+lines = ["--","-.",":", "-"]
+linecycler = cycle(lines)
+
+fig, ax = plt.subplots()
+t = np.linspace(0, long_models[0].Θ, 1000)
+l, = ax.plot(t, long_models[0].H.operator_norm(t)/2-.5, linewidth=3, color="lightgrey")
+legend_1 = ax.legend([l], [r"$(||H||-1)/2$"], loc="center left", title="Reference")
+from cycler import cycler
+for model in long_models:
+    ax.plot(t, model.coupling_operators[1].operator_norm(t), label=fr"${model.L_shift[0] * 100:.0f}\%$", linestyle=(next(linecycler)))
+ax.legend(title=r"Shift of $L_h$", fontsize="x-small", ncols=2)
+ax.set_xlabel(r"$\tau$")
+ax.set_ylabel(r"Operator Norm")
+ax.add_artist(legend_1)
+ax.set_xlim((0, long_models[0].Θ))
+fs.export_fig("cycle_shift_long_shifts", x_scaling=2, y_scaling=.5)
+
+ot.integrate_online_multi(long_models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))

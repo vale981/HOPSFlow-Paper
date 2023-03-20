@@ -131,7 +131,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/4226efaa7a6b886109e29699a6951d3699341ed1.svg]]
+[[file:./.ob-jupyter/c6e8892f607399c43817103a33883910c9028d67.svg]]
 
 ** Integrate
 #+begin_src jupyter-python
@@ -338,8 +338,46 @@ The best shift:
 :END:
 
 
-* Explore Coupling Length Dimension for The best performing state
+#+begin_src jupyter-python
+  f, a = plt.subplots()
+  a.axhline(best_shift_model.system_energy().value[np.argmin(abs(best_shift_model.t - model.Θ * 2))], color="gray", linestyle="--")
+  r = pu.plot_with_σ(
+      best_shift_model.t, best_shift_model.interaction_energy().for_bath(0), ax=a,
+      label=r"$\langle H_\mathrm{inter}\rangle$"
+  )
+  pu.plot_with_σ(
+      best_shift_model.t, best_shift_model.system_energy(), ax=a, label=r"$\langle H_\mathrm{sys}\rangle$"
+  )
+  # a.plot(best_shift_model.t, best_shift_model.H(best_shift_model.t)[:, 0,0])
+  a.plot(overlap_models = [overlap(best_shift_model, N, mini_step, new_step_size) for N in Ns]
+      best_shift_model.t,
+      best_shift_model.coupling_operators[0].operator_norm(best_shift_model.t) / 5,
+      label="cold bath modulation",
+  )
 
+  # a.plot(
+  #     best_shift_model.t,
+  #     best_shift_model.coupling_operators[1].operator_norm(best_shift_model.t) / 5,
+  #     label="hot bath modulation",
+  # )
+  a.plot(
+      best_shift_model.t, best_shift_model.system.operator_norm(best_shift_model.t) / 5,
+      label="system modulation"
+  )
+  # a.plot(best_shift_model.t, best_shift_model.coupling_operators[1].operator_norm(best_shift_model.t) / 5)
+  a.set_xlim((model.Θ * 2, model.Θ * 2 + 7))
+
+  a.set_ylim((-.21, .45))
+  a.set_xlabel(r"$\tau$")
+  a.legend(loc="upper right", fontsize="x-small")
+  fs.export_fig("cold_bath_decoupling", y_scaling=.6)
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/b1883cf8528e1cf12e372f86461c4b1c38192792.svg]]
+
+
+* Explore Coupling Length Dimension for The best performing state
 #+begin_src jupyter-python
   def overlap(shift_model, N, step, switch_t=3.):
       switch_time = switch_t / T
@@ -395,23 +433,21 @@ The best shift:
 
 #+RESULTS:
 :RESULTS:
-| <Figure | size | 340x320 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
-[[file:./.ob-jupyter/7d77b3e58bdb5be893df2f0d975cb4b8e02b26bb.svg]]
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
+[[file:./.ob-jupyter/3a4fbfc08b5aa92173864a5bf5baa909281076e2.svg]]
 :END:
 
 ** Integrate
+#+begin_src jupyter-julia
+  all_overlap_models = [best_shift_model, *overlap_models]
+#+end_src
+
+
 #+begin_src jupyter-python
   ot.integrate_online_multi(overlap_models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))
 #+end_src
 
 ** Analysis
-#+begin_src jupyter-julia
-  all_overlap_models = [best_shift_model, *overlap_models]
-#+end_src
-
-#+RESULTS:
-
-
 #+begin_src jupyter-python :tangle no
   fig, ax = plt.subplots()
   t = np.linspace(0, all_overlap_models[0].Θ, 1000)
@@ -428,17 +464,30 @@ The best shift:
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/bbf8005938576920d6986503dae701cd5a34e1ec.svg]]
+[[file:./.ob-jupyter/87df1592c89180bd0acbf7aa75af7506769e85ed.svg]]
 
 
 #+begin_src jupyter-python
-  ot.plot_power_eff_convergence(all_overlap_models, 1)
+  ot.plot_power_eff_convergence(all_overlap_models, 2)
 #+end_src
 
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 340x320 | with | 2 | Axes> | (<AxesSubplot: xlabel= $N$ ylabel= $P$ > <AxesSubplot: xlabel= $N$ ylabel= $\eta$ >) |
-[[file:./.ob-jupyter/efc485006cc45e781d3a7cfc3e5ab6eee8b61533.svg]]
+[[file:./.ob-jupyter/e01f809855125e962fb4f56975fb4833b122dd1a.svg]]
+:END:
+
+#+begin_src jupyter-python
+  f, a= ot.plot_energy(all_overlap_models[-1])
+  a.plot(model.t, model.coupling_operators[0].operator_norm(model.t))
+  a.plot(model.t, model.coupling_operators[1].operator_norm(model.t))
+  a.plot(model.t, model.system.operator_norm(model.t))
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <matplotlib.lines.Line2D | at | 0x7ff2b6947400> |
+[[file:./.ob-jupyter/6f6fb7a34b89a008d51117d01b0dba6e6341fd8c.svg]]
 :END:
 
 
@@ -463,7 +512,6 @@ The best shift:
 #+RESULTS:
 | 80000 | 80000 |
 
-  ot.integrate_online_multi(models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))
 
 #+begin_src jupyter-python
   ot.plot_powers_and_efficiencies([0] + Ns, all_overlap_models)
@@ -471,8 +519,8 @@ The best shift:
 
 #+RESULTS:
 :RESULTS:
-| <Figure | size | 340x320 | with | 2 | Axes> | <AxesSubplot: | ylabel= | $\bar{P}$ | > |
-[[file:./.ob-jupyter/89f0b131e835c18836bc159d3fe0d1d7d2c3af88.svg]]
+| <Figure | size | 340x320 | with | 2 | Axes> | <AxesSubplot: | ylabel= | $-\bar{P}$ | > |
+[[file:./.ob-jupyter/0b9adf725182e7385744287f98375c8b39c3471b.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -488,19 +536,76 @@ The best shift:
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/3f15ee1c117b3617130a22ea3fad96fdf9e5f2d6.svg]]
+[[file:./.ob-jupyter/a4e92f194bddc790d251d8118f1bf7592fb58bb7.svg]]
 
 We see that the power boost is solely due to the interaction
 modulation.
 
 #+begin_src jupyter-python
-  fig, ax =ot.plot_steady_energy_changes(all_overlap_models, 2, label_fn=(lambda m: ["without overlap", "with overlap"][all_overlap_models.index(m)]))
-  ax.legend(loc="lower left")
-  fs.export_fig("overlap_energy_change", y_scaling=.9)
+    fig, ax =ot.plot_steady_energy_changes(all_overlap_models, 2, label_fn=(lambda m: ["without overlap", "with overlap"][all_overlap_models.index(m)]))
+    ax.legend(loc="lower left")
+
+    fs.export_fig("overlap_energy_change", y_scaling=.9)
+
+    fig, ax =ot.plot_steady_work_baths(all_overlap_models, 2, label_fn=(lambda m: ["without overlap", "with overlap"][all_overlap_models.index(m)]))
+    ax.legend(loc="lower left")
+
+    fs.export_fig("overlap_energy_change_hot_cold", y_scaling=.9)
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/b645f68e675d0c0d2b78077055beb4a1ef53ca93.svg]]
+:RESULTS:
+[[file:./.ob-jupyter/d3d583097cb68d5e14c035db2a96b21a09bbabbe.svg]]
+[[file:./.ob-jupyter/42e003371bf36501fb9b747b5e9e1f9960b60fd3.svg]]
+:END:
+
+
+#+begin_src jupyter-python
+  r = pu.plot_with_σ(all_overlap_models[-1].t, all_overlap_models[-1].interaction_energy().for_bath(0))
+  # a.plot(all_overlap_models[-1].t, all_overlap_models[-1].H(all_overlap_models[-1].t)[:, 0,0])
+  r[1].plot(all_overlap_models[-1].t, all_overlap_models[-1].coupling_operators[0].operator_norm(all_overlap_models[-1].t) / 5)
+  r[1].plot(all_overlap_models[-1].t, all_overlap_models[-1].coupling_operators[1].operator_norm(all_overlap_models[-1].t) / 5)
+  r[1].set_xlim((model.Θ*2, model.Θ*2+15))
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| 120.0 | 135.0 |
+[[file:./.ob-jupyter/05702081169b9057efd24c51303402f7e774030e.svg]]
+:END:
+
+** Slower switching
+#+begin_src jupyter-python :results none
+    long_models = [make_model(shift, shift, switch_t=6.) for shift in shifts]
+#+end_src
+
+#+begin_src jupyter-python
+  from itertools import cycle
+  lines = ["--","-.",":", "-"]
+  linecycler = cycle(lines)
+
+  fig, ax = plt.subplots()
+  t = np.linspace(0, long_models[0].Θ, 1000)
+  l, = ax.plot(t, long_models[0].H.operator_norm(t)/2-.5, linewidth=3, color="lightgrey")
+  legend_1 = ax.legend([l], [r"$(||H||-1)/2$"], loc="center left", title="Reference")
+  from cycler import cycler
+  for model in long_models:
+      ax.plot(t, model.coupling_operators[1].operator_norm(t), label=fr"${model.L_shift[0] * 100:.0f}\%$", linestyle=(next(linecycler)))
+  ax.legend(title=r"Shift of $L_h$", fontsize="x-small", ncols=2)
+  ax.set_xlabel(r"$\tau$")
+  ax.set_ylabel(r"Operator Norm")
+  ax.add_artist(legend_1)
+  ax.set_xlim((0, long_models[0].Θ))
+  fs.export_fig("cycle_shift_long_shifts", x_scaling=2, y_scaling=.5)
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/554cf83ca54ff1b718d8ff017baaad5d0eb09669.svg]]
+
+
+#+begin_src jupyter-python
+  ot.integrate_online_multi(long_models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))
+#+end_src
 
 ** Findings
 - coupling overlap doesn't help much
