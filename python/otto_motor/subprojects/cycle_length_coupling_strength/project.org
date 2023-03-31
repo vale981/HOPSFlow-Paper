@@ -92,7 +92,7 @@ coupling-change/cycle time.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
-[[file:./.ob-jupyter/b0f3288ce8343ba75084d463ed455b611deed467.svg]]
+[[file:./.ob-jupyter/cacaf4e204b2eb137193c823aac5320bef96d6d2.svg]]
 :END:
 
 
@@ -110,7 +110,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-: 50000
+: 80000
 
 #+begin_src jupyter-python
   ot.plot_power_eff_convergence(models, 2)
@@ -119,7 +119,7 @@ coupling-change/cycle time.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 2 | Axes> | (<AxesSubplot: xlabel= $N$ ylabel= $P$ > <AxesSubplot: xlabel= $N$ ylabel= $\eta$ >) |
-[[file:./.ob-jupyter/50b32e2631a366baf485f8ebd9198bf3c292722b.svg]]
+[[file:./.ob-jupyter/b83fcdfb93a1d0a389b5cd9da2636a6608fa8984.svg]]
 :END:
 
 
@@ -227,11 +227,11 @@ coupling-change/cycle time.
 
 #+RESULTS:
 :RESULTS:
-[[file:./.ob-jupyter/ef4a07b0162d23f1da6e77e196c23d465162b550.svg]]
-[[file:./.ob-jupyter/113b9d47ba8bc770252150985e03e7d15d148cc7.svg]]
-[[file:./.ob-jupyter/909c20db81bf86cb98684485db0020405a2e4d85.svg]]
-[[file:./.ob-jupyter/7420c45985ae8e19771cfbcb4eb18d1d3f1a07e2.svg]]
-[[file:./.ob-jupyter/1025ee4cb8a3c256304d10f53c3327ada5757df1.svg]]
+[[file:./.ob-jupyter/10080cd4278192bb5fd9a92642009746143d2011.svg]]
+[[file:./.ob-jupyter/4ad03a0c764f4474f25cdd509150b837f9676fab.svg]]
+[[file:./.ob-jupyter/5ea800eb854edb199fd4354f1a87b4e7fa59382e.svg]]
+[[file:./.ob-jupyter/7190cec239d4453fee7754ca6dcb4944b48870de.svg]]
+[[file:./.ob-jupyter/4d9095a116a896eb266d624a81335d31bba97a96.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -261,11 +261,11 @@ coupling-change/cycle time.
       ax=a_efficiency,
   )
   a_efficiency.set_zlabel(r"$\sigma_\eta/|\eta|$")
-  fs.export_fig("coupling_speed_scan_power_efficiency")
+  fs.export_fig("coupling_speed_scan_power_efficiency_uncertainty")
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/590bb3c089cc619f0e0152c8fe7afce1f5f8add8.svg]]
+[[file:./.ob-jupyter/1b3959a046911e0ebcbce3e6d6f5df7f5867ffbb.svg]]
 
 
 #+begin_src jupyter-python

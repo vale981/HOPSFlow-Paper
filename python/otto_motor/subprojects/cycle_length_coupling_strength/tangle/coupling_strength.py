@@ -189,6 +189,6 @@ ot.plot_3d_heatmap(
     ax=a_efficiency,
 )
 a_efficiency.set_zlabel(r"$\sigma_\eta/|\eta|$")
-fs.export_fig("coupling_speed_scan_power_efficiency")
+fs.export_fig("coupling_speed_scan_power_efficiency_uncertainty")
 
 
