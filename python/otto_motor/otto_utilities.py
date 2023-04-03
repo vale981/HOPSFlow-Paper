@@ -347,10 +347,12 @@ def plot_3d_heatmap(models, value_accessor, x_spec, y_spec, normalize=False, ax=
     ax.set_yticks(y_labels)
 
 
-def val_relative_to_steady(model, val, steady_idx):
-    begin_idx = model.strobe[1][steady_idx]
-    return model.t[begin_idx:], (
-        val.slice(slice(begin_idx - 1, -1, 1)) - val.slice(begin_idx - 1)
+def val_relative_to_steady(model, val, steady_idx, shift=0):
+    shift_idx = int(1 / model.dt * shift)
+    begin_idx = model.strobe[1][steady_idx] - shift_idx
+    end_idx = (-shift_idx if shift != 0 else -1)
+    return model.t[begin_idx:end_idx+1], (
+        val.slice(slice(begin_idx - 1, end_idx, 1)) - val.slice(begin_idx - 1)
     )
 
 
