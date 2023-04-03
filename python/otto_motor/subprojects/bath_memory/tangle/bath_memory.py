@@ -10,7 +10,6 @@ import stocproc
 import matplotlib.pyplot as plt
 import otto_utilities as ot
 
-import shift_cycle as sc
 import ray
 ray.shutdown()
 
