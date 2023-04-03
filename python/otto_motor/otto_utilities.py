@@ -5,7 +5,7 @@ import numpy as np
 import figsaver as fs
 import hiro_models.model_auxiliary as aux
 from typing import Iterable
-
+import qutip as qt
 
 def plot_power_eff_convergence(models, steady_idx=1):
     f, (a_power, a_efficiency) = plt.subplots(ncols=2)
@@ -444,3 +444,20 @@ def plot_steady_work_baths(models, steady_idx=2, label_fn=model_description):
     ax.legend()
 
     return fig, ax
+
+@pu.wrap_plot
+def plot_bloch_components(model, ax=None):
+    with aux.get_data(model) as data:
+      ρ = data.rho_t_accum.mean[:]
+      σ_ρ = data.rho_t_accum.ensemble_std[:]
+
+      xs = np.einsum("tij,ji->t", ρ, qt.sigmax().full()).real
+      ys = np.einsum("tij,ji->t", ρ, qt.sigmay().full()).real
+      zs = np.einsum("tij,ji->t", ρ, qt.sigmaz().full()).real
+
+
+      ax.plot(model.t, zs, label=r"$\langle \sigma_z\rangle$")
+      ax.plot(model.t, xs, label=r"$\langle \sigma_x\rangle$")
+      ax.plot(model.t, ys, label=r"$\langle \sigma_y\rangle$")
+      ax.legend()
+      ax.set_xlabel(r"$\tau$")

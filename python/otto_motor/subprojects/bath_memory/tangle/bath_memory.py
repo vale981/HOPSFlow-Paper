@@ -104,10 +104,13 @@ ot.plot_power_eff_convergence(models[:10], 2)
 f = plt.figure()
 a_power = f.add_subplot(121, projection="3d")
 a_efficiency = f.add_subplot(122, projection="3d")
+
 for ax in [a_power, a_efficiency]:
-    ax.set_box_aspect(aspect=None, zoom=0.85)
+    ax.set_box_aspect(aspect=None, zoom=0.7)
     ax.set_xlabel(r"$T_c$")
     ax.set_ylabel(r"$\omega_c$")
+    ax.xaxis.labelpad = 10
+    ax.view_init(elev=30.0, azim=-29, roll=0)
 
 ot.plot_3d_heatmap(
     models[:20],
@@ -127,4 +130,7 @@ ot.plot_3d_heatmap(
     ax=a_efficiency,
 )
 a_efficiency.set_zlabel(r"$\eta$")
-fs.export_fig("bath_memory_power_efficiency")
+fs.export_fig("bath_memory_power_efficiency", x_scaling=2, y_scaling=1)
+
+for model in models:
+    ot.plot_bloch_components(model)
