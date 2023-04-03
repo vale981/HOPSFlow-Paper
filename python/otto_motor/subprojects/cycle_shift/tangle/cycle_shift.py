@@ -74,6 +74,33 @@ for model in models[3:4]:
         aa.set_ylim((0.1,.4))
         fs.export_fig("prototype_thermalization", y_scaling=.7, x_scaling=2)
 
+b = qt.Bloch()
+with aux.get_data(model) as data:
+    ρ = data.rho_t_accum.mean[:]
+    σ_ρ = data.rho_t_accum.ensemble_std[:]
+    # plt.plot(model.t[100:], abs(ρ[100:, 0, 1]) / abs(ρ[100:, 0, 0]))
+    # plt.yscale("log")
+    # plt.xlabel(r"$\tau$")
+    # plt.ylabel(r"$|\rho_{01}| / \rho_{00}$")
+    # fs.export_fig("coherences")
+    xs = np.einsum("tij,ji->t", ρ, qt.sigmax().full())
+    ys = np.einsum("tij,ji->t", ρ, qt.sigmay().full())
+    zs = np.einsum("tij,ji->t", ρ, qt.sigmaz().full())
+
+b.add_points([xs, ys, zs])
+b.view = [20, 20]
+b.point_size = [0.01]
+b.sphere_alpha = 0.01
+b.render()
+b
+
+plt.plot(model.t, zs, label=r"$\langle \sigma_z\rangle$")
+plt.plot(model.t, xs, label=r"$\langle \sigma_x\rangle$")
+plt.plot(model.t, ys, label=r"$\langle \sigma_y\rangle$")
+plt.legend()
+plt.xlabel(r"$\tau$")
+fs.export_fig("state_evolution", y_scaling=.7)
+
 ot.plot_steady_energy_changes([baseline], 2, label_fn=lambda _: "")
 fs.export_fig("prototype_energy_change", y_scaling=.7)
 
