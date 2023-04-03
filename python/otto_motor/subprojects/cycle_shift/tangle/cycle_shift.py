@@ -21,10 +21,11 @@ logging_setup(logging.INFO)
 plt.rcParams['figure.figsize'] = (12,4)
 
 T = 50
-def make_model(shift_c, shift_h, switch_t=3.):
+def make_model(shift_c, shift_h, switch_t=3., switch_t_sys=None, only_cold=False):
     switch_time = switch_t / T
+    switch_time_sys = (switch_t_sys if switch_t_sys else switch_t) / T
     print(switch_time * 60)
-    (p_H, p_L) = ot.timings(switch_time, switch_time)
+    (p_H, p_L) = ot.timings(switch_time_sys, switch_time)
     return OttoEngine(
         δ=[.7, .7],
         ω_c=[1, 1],
@@ -45,7 +46,7 @@ def make_model(shift_c, shift_h, switch_t=3.):
         timings_L=p_L,
         streaming_mode=True,
         shift_to_resonance=(False, False),
-        L_shift=(shift_c, shift_h),
+        L_shift=(shift_c, 0 if only_cold else shift_h),
     )
 
 N = 3
@@ -294,6 +295,7 @@ r[1].plot(all_overlap_models[-1].t, all_overlap_models[-1].coupling_operators[0]
 r[1].plot(all_overlap_models[-1].t, all_overlap_models[-1].coupling_operators[1].operator_norm(all_overlap_models[-1].t) / 5)
 r[1].set_xlim((model.Θ*2, model.Θ*2+15))
 
+long_models = [make_model(shift, shift, switch_t=6., switch_t_sys=3) for shift in shifts]
 long_models = [make_model(shift, shift, switch_t=6.) for shift in shifts]
 
 from itertools import cycle
@@ -305,8 +307,9 @@ t = np.linspace(0, long_models[0].Θ, 1000)
 l, = ax.plot(t, long_models[0].H.operator_norm(t)/2-.5, linewidth=3, color="lightgrey")
 legend_1 = ax.legend([l], [r"$(||H||-1)/2$"], loc="center left", title="Reference")
 from cycler import cycler
-for model in long_models:
+for model in [best_shift_model, long_models[5]]:
     ax.plot(t, model.coupling_operators[1].operator_norm(t), label=fr"${model.L_shift[0] * 100:.0f}\%$", linestyle=(next(linecycler)))
+    #ax.plot(t, model.coupling_operators[0].operator_norm(t), label=fr"${model.L_shift[0] * 100:.0f}\%$", linestyle=(next(linecycler)))
 ax.legend(title=r"Shift of $L_h$", fontsize="x-small", ncols=2)
 ax.set_xlabel(r"$\tau$")
 ax.set_ylabel(r"Operator Norm")
@@ -315,3 +318,101 @@ ax.set_xlim((0, long_models[0].Θ))
 fs.export_fig("cycle_shift_long_shifts", x_scaling=2, y_scaling=.5)
 
 ot.integrate_online_multi(long_models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))
+
+long_baseline = long_models[np.argmin(abs(np.array(shifts) - 0))]
+long_baseline = best_shift_model
+for shift, model in zip(shifts, long_models):
+    print(
+        shift, best_shift,
+        model.power(steady_idx=2).N,
+        model.power(steady_idx=2).value / long_baseline.power(steady_idx=2).value,
+        (model.efficiency(steady_idx=2).value - long_baseline.efficiency(steady_idx=2).value) * 100,
+        (model.efficiency(steady_idx=2).value, long_baseline.efficiency(steady_idx=2).value),
+    )
+
+fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2)
+_, ax1_right = ot.plot_powers_and_efficiencies(np.array(shifts) * 100, models, xlabel="Cycle Shift", ax=ax1)[2]
+_, ax2_right = ot.plot_powers_and_efficiencies(np.array(shifts) * 100, long_models, xlabel="Cycle Shift", ax=ax2)[2]
+
+ax1_right.sharey(ax2_right)
+ax1.sharey(ax2)
+
+ax1.set_title("Fast Coupling")
+ax2.set_title("Slow Coupling")
+fs.export_fig("cycle_shift_power_efficiency_with_slower", y_scaling=.7, x_scaling=2)
+
+fig, ax =ot.plot_steady_energy_changes([long_models[3+2], models[3+2]], 2, label_fn=lambda m: ("long" if m.hexhash == long_models[3+2].hexhash else "short"))
+ax.legend(loc="lower left")
+
+#fs.export_fig("shift_energy_change", y_scaling=.7)
+
+powers_long = [-model.power(steady_idx=2).value for model in long_models]
+powers_short = [-model.power(steady_idx=2).value for model in models]
+power_overlap = -overlap_models[0].power(steady_idx=2).value
+plt.plot(shifts, powers_short)
+plt.plot(shifts, powers_long)
+plt.axhline(power_overlap)
+
+efficiencys_long = [model.efficiency(steady_idx=2).value for model in long_models]
+efficiencys_short = [model.efficiency(steady_idx=2).value for model in models]
+efficiency_overlap = overlap_models[0].efficiency(steady_idx=2).value
+plt.plot(shifts, efficiencys_short)
+plt.plot(shifts, efficiencys_long)
+plt.axhline(efficiency_overlap)
+
+best_long_model = long_models[5]
+
+flow_long = -1*best_long_model.bath_energy_flow().for_bath(0)
+power_long = best_long_model.interaction_power().for_bath(0)
+
+flow_short = -1*best_shift_model.bath_energy_flow().for_bath(0)
+power_short = best_shift_model.interaction_power().for_bath(0)
+
+plt.plot(best_shift_model.t, flow_short.value, label="fast coupling")
+plt.plot(best_shift_model.t, flow_long.value, label="slow coupling")
+plt.plot(best_shift_model.t, power_short.value, linestyle="--", color="C0")
+plt.plot(best_shift_model.t, power_long.value, linestyle="--",  color="C1")
+plt.xlim((2*best_long_model.Θ-5, 2*best_long_model.Θ+10))
+plt.ylim((-.015,.06))
+plt.legend()
+plt.xlabel(r"$\tau$")
+fs.export_fig("cold_bath_flow", y_scaling=.7)
+
+t, rel_short_cold = ot.val_relative_to_steady(
+    best_shift_model,
+    best_shift_model.bath_energy().for_bath(0),
+    2,
+)
+
+t, rel_short_hot = ot.val_relative_to_steady(
+    best_shift_model,
+    best_shift_model.bath_energy().for_bath(1),
+    2,
+)
+
+t, rel_long_cold = ot.val_relative_to_steady(
+    best_long_model,
+    best_long_model.bath_energy().for_bath(0),
+    2,
+)
+t, rel_long_hot = ot.val_relative_to_steady(
+    best_long_model,
+    best_long_model.bath_energy().for_bath(1),
+    2,
+)
+
+plt.plot(t, -(rel_long_cold/rel_long_hot).value, label="slow coupling")
+plt.plot(t, -(rel_short_cold/rel_short_hot).value, label="fast coupling")
+plt.ylim((-.1,.75))
+plt.xlim((136, 180))
+plt.legend()
+plt.xlabel(r"$\tau$")
+plt.ylabel(r"$-\Delta \langle{H_{\mathrm{B},c}}\rangle/\Delta \langle{H_{\mathrm{B},h}}\rangle$")
+fs.export_fig("hot_vs_cold_bath", y_scaling=.7)
+
+plt.plot(best_shift_model.t, (best_shift_model.bath_energy().for_bath(0) / best_shift_model.bath_energy().for_bath(1)).value)
+plt.ylim((-1, 1))
+
+cold_models = [make_model(shift, shift, switch_t=6., only_cold=True) for shift in shifts]
+
+
