@@ -9,7 +9,7 @@ import utilities as ut
 import stocproc
 import matplotlib.pyplot as plt
 import otto_utilities as ot
-
+import shift_cycle as sc
 import ray
 ray.shutdown()
 
@@ -20,44 +20,11 @@ import logging
 logging_setup(logging.INFO)
 plt.rcParams['figure.figsize'] = (12,4)
 
-T = 50
-def make_model(shift_c, shift_h, switch_t=3., switch_t_sys=None, only_cold=False):
-    switch_time = switch_t / T
-    switch_time_sys = (switch_t_sys if switch_t_sys else switch_t) / T
-    print(switch_time * 60)
-    (p_H, p_L) = ot.timings(switch_time_sys, switch_time)
-    return OttoEngine(
-        δ=[.7, .7],
-        ω_c=[1, 1],
-        ψ_0=qt.basis([2], [1]),
-        description=f"Classic Cycle",
-        k_max=4,
-        bcf_terms=[5] * 2,
-        truncation_scheme="simplex",
-        driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
-        thermal_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
-        T=[0.5, 4],
-        therm_methods=["tanhsinh", "tanhsinh"],
-        Δ=1,
-        num_cycles=3,
-        Θ=60,
-        dt=0.001,
-        timings_H=p_H,
-        timings_L=p_L,
-        streaming_mode=True,
-        shift_to_resonance=(False, False),
-        L_shift=(shift_c, 0 if only_cold else shift_h),
-    )
-
-N = 3
-N_over = 2
-extra_r = 2
-step = 3. / (T*(N-N_over))
-shifts = [round(shift * step, 3) for shift in range(-N, N+1+extra_r)]
+shifts = sc.make_shifts()
 shifts
 
 import itertools
-models = [make_model(shift, shift) for shift in shifts]
+models = [sc.make_model(shift, shift) for shift in shifts]
 baseline = models[3]
 
 ot.plot_cycle(baseline)
@@ -412,7 +379,5 @@ fs.export_fig("hot_vs_cold_bath", y_scaling=.7)
 
 plt.plot(best_shift_model.t, (best_shift_model.bath_energy().for_bath(0) / best_shift_model.bath_energy().for_bath(1)).value)
 plt.ylim((-1, 1))
-
-cold_models = [make_model(shift, shift, switch_t=6., only_cold=True) for shift in shifts]
 
 
