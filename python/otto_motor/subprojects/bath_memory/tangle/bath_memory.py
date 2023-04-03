@@ -67,7 +67,7 @@ def overlap(shift_model, N, step, switch_t=6):
     return next_model
 
 def make_model(ω_c, T_c):
-    model =  make_shift_model(switch_t = 6)
+    model =  make_shift_model(0,0, switch_t = 6)
 
 
     model.T[0] = T_c
