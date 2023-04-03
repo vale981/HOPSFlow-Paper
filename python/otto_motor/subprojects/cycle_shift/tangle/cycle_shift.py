@@ -267,8 +267,8 @@ r[1].plot(all_overlap_models[-1].t, all_overlap_models[-1].coupling_operators[0]
 r[1].plot(all_overlap_models[-1].t, all_overlap_models[-1].coupling_operators[1].operator_norm(all_overlap_models[-1].t) / 5)
 r[1].set_xlim((model.Θ*2, model.Θ*2+15))
 
-long_models = [make_model(shift, shift, switch_t=6., switch_t_sys=3) for shift in shifts]
-long_models = [make_model(shift, shift, switch_t=6.) for shift in shifts]
+long_models = [sc.make_model(shift, shift, switch_t=6., switch_t_sys=3) for shift in shifts]
+long_models = [sc.make_model(shift, shift, switch_t=6.) for shift in shifts]
 
 from itertools import cycle
 lines = ["--","-.",":", "-"]
@@ -354,29 +354,39 @@ t, rel_short_cold = ot.val_relative_to_steady(
     best_shift_model,
     best_shift_model.bath_energy().for_bath(0),
     2,
+    1-best_shift_model.L_shift[0]
 )
 
 t, rel_short_hot = ot.val_relative_to_steady(
     best_shift_model,
     best_shift_model.bath_energy().for_bath(1),
     2,
+    1-best_shift_model.L_shift[0]
 )
 
 t, rel_long_cold = ot.val_relative_to_steady(
     best_long_model,
     best_long_model.bath_energy().for_bath(0),
     2,
+    (1-best_long_model.L_shift[0])
 )
 t, rel_long_hot = ot.val_relative_to_steady(
     best_long_model,
     best_long_model.bath_energy().for_bath(1),
     2,
+    (1-best_long_model.L_shift[0])
 )
+# plt.plot(t, -(rel_long_cold).value, label="slow coupling")
+# plt.plot(t, -(rel_long_hot).value, label="slow coupling")
+# plt.plot(t, best_long_model.coupling_operators[1].operator_norm(t), label="slow coupling")
 
 plt.plot(t, -(rel_long_cold/rel_long_hot).value, label="slow coupling")
 plt.plot(t, -(rel_short_cold/rel_short_hot).value, label="fast coupling")
+plt.plot(t, best_long_model.coupling_operators[0].operator_norm(t), color="C0", linestyle="dashed")
+plt.plot(t, best_shift_model.coupling_operators[0].operator_norm(t), color="C1", linestyle="dashed")
+
 plt.ylim((-.1,.75))
-plt.xlim((136, 180))
+plt.xlim((100, 128))
 plt.legend()
 plt.xlabel(r"$\tau$")
 plt.ylabel(r"$-\Delta \langle{H_{\mathrm{B},c}}\rangle/\Delta \langle{H_{\mathrm{B},h}}\rangle$")
