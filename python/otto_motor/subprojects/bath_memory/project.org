@@ -5,27 +5,28 @@ Here we scan bath memory and maybe temperature gradient later.
 * Boilerplate
 #+name: boilerplate
 #+begin_src jupyter-python :results none
-    import figsaver as fs
-    import plot_utils as pu
-    from hiro_models.one_qubit_model import StocProcTolerances
-    from hiro_models.otto_cycle import OttoEngine
-    import hiro_models.model_auxiliary as aux
-    import numpy as np
-    import qutip as qt
-    import utilities as ut
-    import stocproc
-    import matplotlib.pyplot as plt
-    import otto_utilities as ot
+  import figsaver as fs
+  import plot_utils as pu
+  from hiro_models.one_qubit_model import StocProcTolerances
+  from hiro_models.otto_cycle import OttoEngine
+  import hiro_models.model_auxiliary as aux
+  import numpy as np
+  import qutip as qt
+  import utilities as ut
+  import stocproc
+  import matplotlib.pyplot as plt
+  import otto_utilities as ot
 
-    import ray
-    ray.shutdown()
+  import shift_cycle as sc
+  import ray
+  ray.shutdown()
 
-    #ray.init(address='auto')
-    ray.init()
-    from hops.util.logging_setup import logging_setup
-    import logging
-    logging_setup(logging.INFO)
-    plt.rcParams['figure.figsize'] = (12,4)
+  #ray.init(address='auto')
+  ray.init()
+  from hops.util.logging_setup import logging_setup
+  import logging
+  logging_setup(logging.INFO)
+  plt.rcParams['figure.figsize'] = (12,4)
 #+end_src
 
 * Cycles
@@ -82,15 +83,12 @@ coupling-change/cycle time.
       return next_model
 
   def make_model(ω_c, T_c):
-      best_shift_model = make_shift_model(.12, .12)
-      new_step_size = 6
-      mini_step = .12
+      model =  make_shift_model(switch_t = 6)
 
 
-      overlapped_model = overlap(best_shift_model, 1, mini_step, new_step_size)
-      overlapped_model.T[0] = T_c
-      overlapped_model.ω_c = [ω_c, ω_c]
-      return overlapped_model
+      model.T[0] = T_c
+      model.ω_c = [ω_c, ω_c]
+      return model
 #+end_src
 
 #+RESULTS:

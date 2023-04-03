@@ -10,6 +10,7 @@ import stocproc
 import matplotlib.pyplot as plt
 import otto_utilities as ot
 
+import shift_cycle as sc
 import ray
 ray.shutdown()
 
@@ -67,15 +68,12 @@ def overlap(shift_model, N, step, switch_t=6):
     return next_model
 
 def make_model(ω_c, T_c):
-    best_shift_model = make_shift_model(.12, .12)
-    new_step_size = 6
-    mini_step = .12
+    model =  make_shift_model(switch_t = 6)
 
 
-    overlapped_model = overlap(best_shift_model, 1, mini_step, new_step_size)
-    overlapped_model.T[0] = T_c
-    overlapped_model.ω_c = [ω_c, ω_c]
-    return overlapped_model
+    model.T[0] = T_c
+    model.ω_c = [ω_c, ω_c]
+    return model
 
 ωs = [round(ω, 3) for ω in np.linspace(.5, 1.5, 5)]
 Ts = [round(T, 3) for T in np.linspace(.4, .6, 5)]
