@@ -28,6 +28,7 @@ def plot_powers_and_efficiencies(x, models, steady_idx=1, ax=None, xlabel=""):
     powers = [-model.power(steady_idx=steady_idx).value for model in models]
     powers_σ = [model.power(steady_idx=steady_idx).σ for model in models]
 
+    ax.axhline(0, color="lightgray")
     system_powers = [
         val_relative_to_steady(
             model,
@@ -104,6 +105,8 @@ def plot_powers_and_efficiencies(x, models, steady_idx=1, ax=None, xlabel=""):
     ax.set_xlabel(xlabel)
     ax.set_ylabel(r"$-\bar{P}$", color="C0")
     a2.set_ylabel(r"$\eta$", color="C4")
+
+    return ax, a2
 
 
 @pu.wrap_plot
