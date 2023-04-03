@@ -38,10 +38,11 @@ strength to demonstrate strong coupling effects and to limit the cycle time.
 
 #+begin_src jupyter-python
   T = 50
-  def make_model(shift_c, shift_h, switch_t=3.):
+  def make_model(shift_c, shift_h, switch_t=3., switch_t_sys=None, only_cold=False):
       switch_time = switch_t / T
+      switch_time_sys = (switch_t_sys if switch_t_sys else switch_t) / T
       print(switch_time * 60)
-      (p_H, p_L) = ot.timings(switch_time, switch_time)
+      (p_H, p_L) = ot.timings(switch_time_sys, switch_time)
       return OttoEngine(
           δ=[.7, .7],
           ω_c=[1, 1],
@@ -62,7 +63,7 @@ strength to demonstrate strong coupling effects and to limit the cycle time.
           timings_L=p_L,
           streaming_mode=True,
           shift_to_resonance=(False, False),
-          L_shift=(shift_c, shift_h),
+          L_shift=(shift_c, 0 if only_cold else shift_h),
       )
 #+end_src
 
@@ -107,7 +108,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/495fa3fcd9d75d95d5dccfe1617d558cd02fe296.svg]]
+[[file:./.ob-jupyter/ef0a7a7b6f1172696db92c18eb5a95ccec0faeef.svg]]
 
 #+begin_src jupyter-python :tangle no
   #ot.plot_cycles(models, bath=0, legend=True)
@@ -131,14 +132,14 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/c6e8892f607399c43817103a33883910c9028d67.svg]]
+[[file:./.ob-jupyter/4549701b0956747aa203cfb74b1af946ce1cb906.svg]]
 
 ** Integrate
 #+begin_src jupyter-python
   ot.integrate_online_multi(models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))
 #+end_src
 
-** CANCELED Analysis
+** Analysis
 #+begin_src jupyter-python
   for model in models:
     print(model.power(steady_idx=1).value / baseline.power(steady_idx=1).value, model.efficiency(steady_idx=1).value)
@@ -152,6 +153,8 @@ We shift so that we just overlap with coupling/decoupling and one above.
 : 1.1652434363371367 0.3239348992880912
 : 1.6254413169874071 0.3309674632505577
 : 1.6802797038561466 0.3190991034856301
+: 1.6058539780552505 0.2979616403269744
+: 1.413212538480568 0.26307105710019735
 
 #+begin_src jupyter-python
   ot.plot_energy(baseline)
@@ -319,7 +322,7 @@ The best shift:
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/0a8b5b9bc6d21595b2d1e19fdf2386afe451c3c5.svg]]
+[[file:./.ob-jupyter/4b4b05228ed55bd1e0338c9e09642c9c0266d86a.svg]]
 
 
 #+begin_src jupyter-python
@@ -433,8 +436,8 @@ The best shift:
 
 #+RESULTS:
 :RESULTS:
-| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
-[[file:./.ob-jupyter/3a4fbfc08b5aa92173864a5bf5baa909281076e2.svg]]
+| <Figure | size | 340x320 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
+[[file:./.ob-jupyter/1448dddffc867d28693765ef9638d816846cbb48.svg]]
 :END:
 
 ** Integrate
@@ -576,9 +579,34 @@ modulation.
 
 ** Slower switching
 #+begin_src jupyter-python :results none
-    long_models = [make_model(shift, shift, switch_t=6.) for shift in shifts]
+  long_models = [make_model(shift, shift, switch_t=6., switch_t_sys=3) for shift in shifts]
+  long_models = [make_model(shift, shift, switch_t=6.) for shift in shifts]
 #+end_src
 
+#+begin_src jupyter-python :tangle no
+  fig, ax = plt.subplots()
+  t = np.linspace(0, models[0].Θ, 1000)
+  ax.plot(t, models[3].coupling_operators[0].operator_norm(t), color="C1", linewidth=1, label="Fast Switching")
+  ax.plot(t, models[3].coupling_operators[1].operator_norm(t), color="C1", linestyle="--", linewidth=1)
+  ax.plot(t, long_models[3].coupling_operators[0].operator_norm(t), color="C2", linewidth=1, label="Slow Switching")
+  ax.plot(t, long_models[3].coupling_operators[1].operator_norm(t), color="C2", linestyle="--", linewidth=1)
+
+  ax.set_xlabel(r"$\tau$")
+  ax.set_ylabel(r"$||L_{h/c}||$")
+  ax.legend()
+  #fs.export_fig("cycle_shift_shift_vs_overlap", y_scaling=.6)
+  #ot.plot_cycles(all_overlap_models[0:2], legend=True)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+: <matplotlib.legend.Legend at 0x7f46e18e5100>
+[[file:./.ob-jupyter/3c216c84d8423a59488771c9027bbc7f123f3d27.svg]]
+:END:
+
+
+
+*** Analysis
 #+begin_src jupyter-python
   from itertools import cycle
   lines = ["--","-.",":", "-"]
@@ -589,8 +617,9 @@ modulation.
   l, = ax.plot(t, long_models[0].H.operator_norm(t)/2-.5, linewidth=3, color="lightgrey")
   legend_1 = ax.legend([l], [r"$(||H||-1)/2$"], loc="center left", title="Reference")
   from cycler import cycler
-  for model in long_models:
+  for model in [best_shift_model, long_models[5]]:
       ax.plot(t, model.coupling_operators[1].operator_norm(t), label=fr"${model.L_shift[0] * 100:.0f}\%$", linestyle=(next(linecycler)))
+      #ax.plot(t, model.coupling_operators[0].operator_norm(t), label=fr"${model.L_shift[0] * 100:.0f}\%$", linestyle=(next(linecycler)))
   ax.legend(title=r"Shift of $L_h$", fontsize="x-small", ncols=2)
   ax.set_xlabel(r"$\tau$")
   ax.set_ylabel(r"Operator Norm")
@@ -600,11 +629,228 @@ modulation.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/554cf83ca54ff1b718d8ff017baaad5d0eb09669.svg]]
+[[file:./.ob-jupyter/763d92f7015c3de8d2f422936132342fc8fae839.svg]]
 
 
 #+begin_src jupyter-python
   ot.integrate_online_multi(long_models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))
+#+end_src
+
+#+begin_src jupyter-python
+  long_baseline = long_models[np.argmin(abs(np.array(shifts) - 0))]
+  long_baseline = best_shift_model
+  for shift, model in zip(shifts, long_models):
+      print(
+          shift, best_shift,
+          model.power(steady_idx=2).N,
+          model.power(steady_idx=2).value / long_baseline.power(steady_idx=2).value,
+          (model.efficiency(steady_idx=2).value - long_baseline.efficiency(steady_idx=2).value) * 100,
+          (model.efficiency(steady_idx=2).value, long_baseline.efficiency(steady_idx=2).value),
+      )
+#+end_src
+
+#+RESULTS:
+: -0.18 0.12 80000 -0.7432352797196996 -98.3933277583729 (-0.6547883379568094, 0.32914493962691976)
+: -0.12 0.12 80000 0.5515764970059213 -4.588837155210551 (0.28325656807481425, 0.32914493962691976)
+: -0.06 0.12 80000 0.9849641934327689 10.389858999462525 (0.433043529621545, 0.32914493962691976)
+: 0.0 0.12 80000 0.9864290608793423 10.386118256193916 (0.4330061221888589, 0.32914493962691976)
+: 0.06 0.12 80000 0.9777553355809067 10.616195121156663 (0.4353068908384864, 0.32914493962691976)
+: 0.12 0.12 80000 1.1185864670592693 10.712677023075978 (0.43627170985767955, 0.32914493962691976)
+: 0.18 0.12 80000 1.280064611377701 7.403981413620636 (0.4031847537631261, 0.32914493962691976)
+: 0.24 0.12 80000 1.1867997141496045 2.747192020803302 (0.3566168598349528, 0.32914493962691976)
+: 0.3 0.12 80000 0.7281813558728701 -10.479096524510464 (0.22435397438181512, 0.32914493962691976)
+
+
+#+begin_src jupyter-python
+  fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2)
+  _, ax1_right = ot.plot_powers_and_efficiencies(np.array(shifts) * 100, models, xlabel="Cycle Shift", ax=ax1)[2]
+  _, ax2_right = ot.plot_powers_and_efficiencies(np.array(shifts) * 100, long_models, xlabel="Cycle Shift", ax=ax2)[2]
+
+  ax1_right.sharey(ax2_right)
+  ax1.sharey(ax2)
+
+  ax1.set_title("Fast Coupling")
+  ax2.set_title("Slow Coupling")
+  fs.export_fig("cycle_shift_power_efficiency_with_slower", y_scaling=.7, x_scaling=2)
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/136aed41f1e97c8727d923361a130a92097a60ce.svg]]
+
+Aho! The trick is just to slow down the coupling switching.
+
+#+begin_src jupyter-python
+  fig, ax =ot.plot_steady_energy_changes([long_models[3+2], models[3+2]], 2, label_fn=lambda m: ("long" if m.hexhash == long_models[3+2].hexhash else "short"))
+  ax.legend(loc="lower left")
+
+  #fs.export_fig("shift_energy_change", y_scaling=.7)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+: <matplotlib.legend.Legend at 0x7f46809d1670>
+[[file:./.ob-jupyter/79b743c561edc35e3a3916de2ce83b18cba6c55d.svg]]
+:END:
+
+#+begin_src jupyter-python
+  powers_long = [-model.power(steady_idx=2).value for model in long_models]
+  powers_short = [-model.power(steady_idx=2).value for model in models]
+  power_overlap = -overlap_models[0].power(steady_idx=2).value
+  plt.plot(shifts, powers_short)
+  plt.plot(shifts, powers_long)
+  plt.axhline(power_overlap)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+# [goto error]
+: [0;31m---------------------------------------------------------------------------[0m
+: [0;31mNameError[0m                                 Traceback (most recent call last)
+: Cell [0;32mIn[17], line 3[0m
+: [1;32m      1[0m powers_long [38;5;241m=[39m [[38;5;241m-[39mmodel[38;5;241m.[39mpower(steady_idx[38;5;241m=[39m[38;5;241m2[39m)[38;5;241m.[39mvalue [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m long_models]
+: [1;32m      2[0m powers_short [38;5;241m=[39m [[38;5;241m-[39mmodel[38;5;241m.[39mpower(steady_idx[38;5;241m=[39m[38;5;241m2[39m)[38;5;241m.[39mvalue [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models]
+: [0;32m----> 3[0m power_overlap [38;5;241m=[39m [38;5;241m-[39m[43moverlap_models[49m[[38;5;241m0[39m][38;5;241m.[39mpower(steady_idx[38;5;241m=[39m[38;5;241m2[39m)[38;5;241m.[39mvalue
+: [1;32m      4[0m plt[38;5;241m.[39mplot(shifts, powers_short)
+: [1;32m      5[0m plt[38;5;241m.[39mplot(shifts, powers_long)
+:
+: [0;31mNameError[0m: name 'overlap_models' is not defined
+:END:
+
+The overlap model still has slightly, but negligible power advantage.
+
+
+#+begin_src jupyter-python
+  efficiencys_long = [model.efficiency(steady_idx=2).value for model in long_models]
+  efficiencys_short = [model.efficiency(steady_idx=2).value for model in models]
+  efficiency_overlap = overlap_models[0].efficiency(steady_idx=2).value
+  plt.plot(shifts, efficiencys_short)
+  plt.plot(shifts, efficiencys_long)
+  plt.axhline(efficiency_overlap)
+
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+: <matplotlib.lines.Line2D at 0x7fb7bf86df10>
+[[file:./.ob-jupyter/e3ad584293286425efa5f50a7c2037f568438277.svg]]
+:END:
+
+Ok, we find that there's nothing special about the overlap model.
+
+Now let's try to find out why the efficiency improved.
+
+#+begin_src jupyter-python
+  best_long_model = long_models[5]
+
+  flow_long = -1*best_long_model.bath_energy_flow().for_bath(0)
+  power_long = best_long_model.interaction_power().for_bath(0)
+
+  flow_short = -1*best_shift_model.bath_energy_flow().for_bath(0)
+  power_short = best_shift_model.interaction_power().for_bath(0)
+
+  plt.plot(best_shift_model.t, flow_short.value, label="fast coupling")
+  plt.plot(best_shift_model.t, flow_long.value, label="slow coupling")
+  plt.plot(best_shift_model.t, power_short.value, linestyle="--", color="C0")
+  plt.plot(best_shift_model.t, power_long.value, linestyle="--",  color="C1")
+  plt.xlim((2*best_long_model.Θ-5, 2*best_long_model.Θ+10))
+  plt.ylim((-.015,.06))
+  plt.legend()
+  plt.xlabel(r"$\tau$")
+  fs.export_fig("cold_bath_flow", y_scaling=.7)
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/63426f2018527ec9bea7d27ffd8e98754a249fd0.svg]]
+Way less energy is dumped into the cold bath.
+
+#+begin_src jupyter-python
+  t, rel_short_cold = ot.val_relative_to_steady(
+      best_shift_model,
+      best_shift_model.bath_energy().for_bath(0),
+      2,
+  )
+
+  t, rel_short_hot = ot.val_relative_to_steady(
+      best_shift_model,
+      best_shift_model.bath_energy().for_bath(1),
+      2,
+  )
+
+  t, rel_long_cold = ot.val_relative_to_steady(
+      best_long_model,
+      best_long_model.bath_energy().for_bath(0),
+      2,
+  )
+  t, rel_long_hot = ot.val_relative_to_steady(
+      best_long_model,
+      best_long_model.bath_energy().for_bath(1),
+      2,
+  )
+
+  plt.plot(t, -(rel_long_cold/rel_long_hot).value, label="slow coupling")
+  plt.plot(t, -(rel_short_cold/rel_short_hot).value, label="fast coupling")
+  plt.ylim((-.1,.75))
+  plt.xlim((136, 180))
+  plt.legend()
+  plt.xlabel(r"$\tau$")
+  plt.ylabel(r"$-\Delta \langle{H_{\mathrm{B},c}}\rangle/\Delta \langle{H_{\mathrm{B},h}}\rangle$")
+  fs.export_fig("hot_vs_cold_bath", y_scaling=.7)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+: /home/hiro/src/hopsflow/hopsflow/util.py:332: RuntimeWarning: divide by zero encountered in divide
+:   left_i[1] / right_i[1],
+: /home/hiro/src/hopsflow/hopsflow/util.py:332: RuntimeWarning: invalid value encountered in divide
+:   left_i[1] / right_i[1],
+: /home/hiro/src/hopsflow/hopsflow/util.py:334: RuntimeWarning: divide by zero encountered in divide
+:   (left_i[2] / right_i[1]) ** 2
+: /home/hiro/src/hopsflow/hopsflow/util.py:335: RuntimeWarning: divide by zero encountered in divide
+:   + (left_i[1] / (right_i[1]) ** 2 * right_i[2]) ** 2
+: /home/hiro/src/hopsflow/hopsflow/util.py:335: RuntimeWarning: invalid value encountered in divide
+:   + (left_i[1] / (right_i[1]) ** 2 * right_i[2]) ** 2
+[[file:./.ob-jupyter/1c19542fe040907f32f9a34d43c8587c4509302b.svg]]
+:END:
+
+#+begin_src jupyter-python
+  plt.plot(best_shift_model.t, (best_shift_model.bath_energy().for_bath(0) / best_shift_model.bath_energy().for_bath(1)).value)
+  plt.ylim((-1, 1))
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+: /home/hiro/src/hopsflow/hopsflow/util.py:334: RuntimeWarning: invalid value encountered in divide
+:   (left_i[2] / right_i[1]) ** 2
+| -1.0 | 1.0 |
+[[file:./.ob-jupyter/2481b239f61a4fc84617ca79cb91d7ee2c7eae6d.svg]]
+:END:
+
+
+** Slower switching + Only Cold Bath Coupling Shifted
+#+begin_src jupyter-python :results none
+  cold_models = [make_model(shift, shift, switch_t=6., only_cold=True) for shift in shifts]
+#+end_src
+
+#+begin_src jupyter-python :tangle no
+  fig, ax = plt.subplots()
+  t = np.linspace(0, models[0].Θ, 1000)
+  ax.plot(t, long_models[-3].coupling_operators[0].operator_norm(t), color="C1", linewidth=1, label="both shifted")
+  ax.plot(t, long_models[-3].coupling_operators[1].operator_norm(t), color="C1", linestyle="--", linewidth=1)
+  ax.plot(t, cold_models[-3].coupling_operators[0].operator_norm(t), color="C2", linewidth=1, linestyle="dotted", label="only cold shifted")
+  ax.plot(t, cold_models[-3].coupling_operators[1].operator_norm(t), color="C2", linestyle="--", linewidth=1)
+  ax.plot(t, (cold_models[-3].system.operator_norm(t)-1)/2, color="lightgrey", linestyle="--", linewidth=1)
+
+  ax.set_xlabel(r"$\tau$")
+  ax.set_ylabel(r"$||L_{h/c}||$")
+  ax.legend()
+  fs.export_fig("cycle_shift_cold_shift", y_scaling=.6)
+  #ot.plot_cycles(all_overlap_models[0:2], legend=True)
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/f286d603c5a17031597cb4ef8ca67720b2602fc6.svg]]
+#+begin_src jupyter-python
+
 #+end_src
 
 ** Findings
