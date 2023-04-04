@@ -395,4 +395,30 @@ fs.export_fig("hot_vs_cold_bath", y_scaling=.7)
 plt.plot(best_shift_model.t, (best_shift_model.bath_energy().for_bath(0) / best_shift_model.bath_energy().for_bath(1)).value)
 plt.ylim((-1, 1))
 
+from itertools import cycle
+lines = ["--","-.",":", "-"]
+linecycler = cycle(lines)
+fig, ax = plt.subplots()
+t = np.linspace(0, models[0].Θ, 1000)
+#l, = ax.plot(t, models[0].H.operator_norm(t)/2-.5, linewidth=3, color="lightgrey")
+l, = ax.plot(t, cold_models[3].coupling_operators[1].operator_norm(t), linewidth=3, color="lightgrey")
+legend_1 = ax.legend([l], [r"$(||H||-1)/2$"], loc="center left", title="Reference")
+from cycler import cycler
+for model in cold_models:
+    ax.plot(t, model.coupling_operators[0].operator_norm(t), label=fr"${model.L_shift[0] * 100:.0f}\%$", linestyle=(next(linecycler)))
+ax.legend(title=r"Shift of $L_h$", fontsize="x-small", ncols=2)
+ax.set_xlabel(r"$\tau$")
+ax.set_ylabel(r"Operator Norm")
+ax.add_artist(legend_1)
+ax.set_xlim((0, models[0].Θ))
 
+fig, (ax2, ax1) = plt.subplots(nrows=1, ncols=2)
+_, ax1_right = ot.plot_powers_and_efficiencies(np.array(shifts) * 100, cold_models, xlabel="Cycle Shift", ax=ax1)[2]
+_, ax2_right = ot.plot_powers_and_efficiencies(np.array(shifts) * 100, long_models, xlabel="Cycle Shift", ax=ax2)[2]
+
+ax1_right.sharey(ax2_right)
+ax1.sharey(ax2)
+
+ax1.set_title("Cold Shifted")
+ax2.set_title("Both Shifted")
+fs.export_fig("cycle_shift_power_efficiency_longer_vs_only_cold", y_scaling=.7, x_scaling=2)

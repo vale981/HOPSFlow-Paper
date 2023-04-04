@@ -813,12 +813,14 @@ Way less energy is dumped into the cold bath.
 ** Slower switching + Only Cold Bath Coupling Shifted
 *** Model def and intergration
 :PROPERTIES:
-:header-args: :tangle tangle/only_cold.py :noweb yes :async yes
+:header-args: :tangle tangle/only_cold.py :noweb yes :async yes :session otto_cycle_shift
 :END:
 
 #+begin_src jupyter-python
   <<boilerplate>>
 #+end_src
+
+#+RESULTS:
 
 #+begin_src jupyter-python :results none
   shifts = sc.make_shifts()
@@ -847,10 +849,49 @@ Way less energy is dumped into the cold bath.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/f286d603c5a17031597cb4ef8ca67720b2602fc6.svg]]
-#+begin_src jupyter-python
 
+[[file:./.ob-jupyter/e3413d8306c7996bd7476d0047a621c7c973187e.svg]]
+
+#+begin_src jupyter-python
+  from itertools import cycle
+  lines = ["--","-.",":", "-"]
+  linecycler = cycle(lines)
+  fig, ax = plt.subplots()
+  t = np.linspace(0, models[0].Θ, 1000)
+  #l, = ax.plot(t, models[0].H.operator_norm(t)/2-.5, linewidth=3, color="lightgrey")
+  l, = ax.plot(t, cold_models[3].coupling_operators[1].operator_norm(t), linewidth=3, color="lightgrey")
+  legend_1 = ax.legend([l], [r"$(||H||-1)/2$"], loc="center left", title="Reference")
+  from cycler import cycler
+  for model in cold_models:
+      ax.plot(t, model.coupling_operators[0].operator_norm(t), label=fr"${model.L_shift[0] * 100:.0f}\%$", linestyle=(next(linecycler)))
+  ax.legend(title=r"Shift of $L_h$", fontsize="x-small", ncols=2)
+  ax.set_xlabel(r"$\tau$")
+  ax.set_ylabel(r"Operator Norm")
+  ax.add_artist(legend_1)
+  ax.set_xlim((0, models[0].Θ))
 #+end_src
+
+#+RESULTS:
+:RESULTS:
+| 0.0 | 60.0 |
+[[file:./.ob-jupyter/88280474909756e93a10041db2d0af4db2e54edd.svg]]
+:END:
+
+#+begin_src jupyter-python
+  fig, (ax2, ax1) = plt.subplots(nrows=1, ncols=2)
+  _, ax1_right = ot.plot_powers_and_efficiencies(np.array(shifts) * 100, cold_models, xlabel="Cycle Shift", ax=ax1)[2]
+  _, ax2_right = ot.plot_powers_and_efficiencies(np.array(shifts) * 100, long_models, xlabel="Cycle Shift", ax=ax2)[2]
+
+  ax1_right.sharey(ax2_right)
+  ax1.sharey(ax2)
+
+  ax1.set_title("Cold Shifted")
+  ax2.set_title("Both Shifted")
+  fs.export_fig("cycle_shift_power_efficiency_longer_vs_only_cold", y_scaling=.7, x_scaling=2)
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/a419bc15659f714ac138884080b263c1a41f49c8.svg]]
 
 ** Findings
 - coupling overlap doesn't help much
