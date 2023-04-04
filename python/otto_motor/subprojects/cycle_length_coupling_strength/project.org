@@ -92,7 +92,7 @@ coupling-change/cycle time.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
-[[file:./.ob-jupyter/cacaf4e204b2eb137193c823aac5320bef96d6d2.svg]]
+[[file:./.ob-jupyter/45a0259c0d9bbbf985af1123e6595bb5711ec874.svg]]
 :END:
 
 
@@ -161,7 +161,7 @@ coupling-change/cycle time.
       lambda model: model.Θ,
       ax=a_power,
   )
-  a_power.set_zlabel(r"$-\bar{P}/10^{-3}$")
+  a_power.set_zlabel(r"$\bar{P}/10^{-3}$")
   a_power.zaxis.labelpad = 8
 
   ot.plot_3d_heatmap(
@@ -178,7 +178,7 @@ coupling-change/cycle time.
       lambda model: model.Θ,
       ax=a_mean_inter_power,
   )
-  a_mean_inter_power.set_zlabel(r"$\bar{P}_\mathrm{int}/10^{-3}$")
+  a_mean_inter_power.set_zlabel(r"$-\bar{P}_\mathrm{int}/10^{-3}$")
   a_mean_inter_power.zaxis.labelpad = 8
   a_mean_inter_power.view_init(elev=30.0, azim=110, roll=0)
 
@@ -196,7 +196,7 @@ coupling-change/cycle time.
       lambda model: model.Θ,
       ax=a_mean_system_power,
   )
-  a_mean_system_power.set_zlabel(r"$-\bar{P}_\mathrm{sys}/10^{-3}$")
+  a_mean_system_power.set_zlabel(r"$\bar{P}_\mathrm{sys}/10^{-3}$")
   a_mean_system_power.zaxis.labelpad = 8
 
   ot.plot_3d_heatmap(
@@ -227,11 +227,11 @@ coupling-change/cycle time.
 
 #+RESULTS:
 :RESULTS:
-[[file:./.ob-jupyter/10080cd4278192bb5fd9a92642009746143d2011.svg]]
-[[file:./.ob-jupyter/4ad03a0c764f4474f25cdd509150b837f9676fab.svg]]
-[[file:./.ob-jupyter/5ea800eb854edb199fd4354f1a87b4e7fa59382e.svg]]
-[[file:./.ob-jupyter/7190cec239d4453fee7754ca6dcb4944b48870de.svg]]
-[[file:./.ob-jupyter/4d9095a116a896eb266d624a81335d31bba97a96.svg]]
+[[file:./.ob-jupyter/ee03f1655e72e9136c7065f01d0b7ba04b650017.svg]]
+[[file:./.ob-jupyter/f1a1d3e17092ad84d554061c23b8309c424d0de1.svg]]
+[[file:./.ob-jupyter/06a89fcc4c201fe7e9c39443a887282b76e54249.svg]]
+[[file:./.ob-jupyter/b03717337099eef176d08e0082ceeb6305a8acae.svg]]
+[[file:./.ob-jupyter/2c31e3832d8aaecafdf50e0f29694c30c77591c3.svg]]
 :END:
 
 #+begin_src jupyter-python

@@ -100,7 +100,7 @@ ot.plot_3d_heatmap(
     lambda model: model.Θ,
     ax=a_power,
 )
-a_power.set_zlabel(r"$-\bar{P}/10^{-3}$")
+a_power.set_zlabel(r"$\bar{P}/10^{-3}$")
 a_power.zaxis.labelpad = 8
 
 ot.plot_3d_heatmap(
@@ -117,7 +117,7 @@ ot.plot_3d_heatmap(
     lambda model: model.Θ,
     ax=a_mean_inter_power,
 )
-a_mean_inter_power.set_zlabel(r"$\bar{P}_\mathrm{int}/10^{-3}$")
+a_mean_inter_power.set_zlabel(r"$-\bar{P}_\mathrm{int}/10^{-3}$")
 a_mean_inter_power.zaxis.labelpad = 8
 a_mean_inter_power.view_init(elev=30.0, azim=110, roll=0)
 
@@ -135,7 +135,7 @@ ot.plot_3d_heatmap(
     lambda model: model.Θ,
     ax=a_mean_system_power,
 )
-a_mean_system_power.set_zlabel(r"$-\bar{P}_\mathrm{sys}/10^{-3}$")
+a_mean_system_power.set_zlabel(r"$\bar{P}_\mathrm{sys}/10^{-3}$")
 a_mean_system_power.zaxis.labelpad = 8
 
 ot.plot_3d_heatmap(

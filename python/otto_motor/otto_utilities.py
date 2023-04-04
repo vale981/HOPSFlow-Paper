@@ -105,7 +105,7 @@ def plot_powers_and_efficiencies(x, models, steady_idx=1, ax=None, xlabel=""):
     )
     a2.legend(loc="upper left")
     ax.set_xlabel(xlabel)
-    ax.set_ylabel(r"$-\bar{P}$", color="C0")
+    ax.set_ylabel(r"$\bar{P}$", color="C0")
     a2.set_ylabel(r"$\eta$", color="C4")
 
     return ax, a2
@@ -491,14 +491,14 @@ def plot_steady_energy_changes(
 
         pu.plot_with_σ(
             t,
-            inter,
+            -1 * inter,
             ax=ax,
             label=fr"$W_\mathrm{{int}}$ {label_fn(model)}",
             linestyle="--",
         )
         pu.plot_with_σ(
             t,
-            sys,
+            -1 * sys,
             ax=ax,
             label=fr"$W_\mathrm{{sys}}$ {label_fn(model)}",
         )

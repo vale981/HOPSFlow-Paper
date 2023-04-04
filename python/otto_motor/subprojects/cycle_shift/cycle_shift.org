@@ -227,7 +227,7 @@ We see that we get a pretty good picture after about 30k-40k samples.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/67346bf5a74bfe1c7b184f48ea381df4e50cd11b.svg]]
+[[file:./.ob-jupyter/1a8e5254f51c55db8e6f874b670fd647e75d48e5.svg]]
 
 #+begin_src jupyter-python
   fig, ax =ot.plot_steady_energy_changes([baseline, models[3+2]], 2, label_fn=lambda m: ("baseline" if m.hexhash == baseline.hexhash else "shifted"))
@@ -544,8 +544,15 @@ modulation.
 
 #+RESULTS:
 :RESULTS:
-[[file:./.ob-jupyter/d3d583097cb68d5e14c035db2a96b21a09bbabbe.svg]]
-[[file:./.ob-jupyter/42e003371bf36501fb9b747b5e9e1f9960b60fd3.svg]]
+# [goto error]
+: [0;31m---------------------------------------------------------------------------[0m
+: [0;31mNameError[0m                                 Traceback (most recent call last)
+: Cell [0;32mIn[206], line 1[0m
+: [0;32m----> 1[0m fig, ax [38;5;241m=[39mot[38;5;241m.[39mplot_steady_energy_changes([43mall_overlap_models[49m, [38;5;241m2[39m, label_fn[38;5;241m=[39m([38;5;28;01mlambda[39;00m m: [[38;5;124m"[39m[38;5;124mwithout overlap[39m[38;5;124m"[39m, [38;5;124m"[39m[38;5;124mwith overlap[39m[38;5;124m"[39m][all_overlap_models[38;5;241m.[39mindex(m)]))
+: [1;32m      2[0m ax[38;5;241m.[39mlegend(loc[38;5;241m=[39m[38;5;124m"[39m[38;5;124mlower left[39m[38;5;124m"[39m)
+: [1;32m      4[0m fs[38;5;241m.[39mexport_fig([38;5;124m"[39m[38;5;124moverlap_energy_change[39m[38;5;124m"[39m, y_scaling[38;5;241m=[39m[38;5;241m.9[39m)
+:
+: [0;31mNameError[0m: name 'all_overlap_models' is not defined
 :END:
 
 
