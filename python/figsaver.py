@@ -32,7 +32,7 @@ def export_fig(name, fig=None, x_scaling=1, y_scaling=0.4, tikz=True, **kwargs):
     # fig.savefig(fig_path / f"{name}.pdf")
     # fig.savefig(fig_path / f"{name}.svg")
     # fig.savefig(fig_path / f"{name}.pgf")
-    fig.savefig(fig_path / f"{name}.pdf")
+    fig.savefig(fig_path / f"{name}.pdf", bbox_inches="tight")
 
     if tikz and tikzplotlib:
         tikzplotlib.clean_figure()

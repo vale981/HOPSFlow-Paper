@@ -6,6 +6,8 @@ import figsaver as fs
 import hiro_models.model_auxiliary as aux
 from typing import Iterable
 import qutip as qt
+import itertools
+
 
 def plot_power_eff_convergence(models, steady_idx=1):
     f, (a_power, a_efficiency) = plt.subplots(ncols=2)
@@ -107,6 +109,103 @@ def plot_powers_and_efficiencies(x, models, steady_idx=1, ax=None, xlabel=""):
     a2.set_ylabel(r"$\eta$", color="C4")
 
     return ax, a2
+
+
+def plot_multi_powers_and_efficiencies(
+    x, multi_models, titles, steady_idx=1, xlabel=""
+):
+    fig, axs = plt.subplots(nrows=2, ncols=2)
+    (efficiency, power, system_power, interaction_power) = axs.flatten()
+
+    markers = itertools.cycle((".", "+", "*", ",", "o"))
+    for models, title, marker in zip(multi_models, titles, [".", "^", "*"]):
+        powers = [-model.power(steady_idx=steady_idx).value for model in models]
+        powers_σ = [model.power(steady_idx=steady_idx).σ for model in models]
+
+        system_powers = [
+            val_relative_to_steady(
+                model,
+                -1 * model.system_power().integrate(model.t) * 1 / model.Θ,
+                steady_idx=steady_idx,
+            )[1].value[-1]
+            for model in models
+        ]
+
+        system_powers_σ = [
+            val_relative_to_steady(
+                model,
+                -1 * model.system_power().integrate(model.t) * 1 / model.Θ,
+                steady_idx=steady_idx,
+            )[1].σ[-1]
+            for model in models
+        ]
+
+        interaction_powers = [
+            val_relative_to_steady(
+                model,
+                -1
+                * model.interaction_power().sum_baths().integrate(model.t)
+                * 1
+                / model.Θ,
+                steady_idx=steady_idx,
+            )[1].value[-1]
+            for model in models
+        ]
+
+        interaction_powers_σ = [
+            val_relative_to_steady(
+                model,
+                -1
+                * model.interaction_power().sum_baths().integrate(model.t)
+                * 1
+                / model.Θ,
+                steady_idx=steady_idx,
+            )[1].σ[-1]
+            for model in models
+        ]
+
+        efficiencies = np.array(
+            [100 * model.efficiency(steady_idx=steady_idx).value for model in models]
+        )
+
+        efficiencies_σ = np.array(
+            [100 * model.efficiency(steady_idx=steady_idx).σ for model in models]
+        )
+
+        mask = efficiencies > 0
+
+        power.plot(x, powers, marker=marker)
+        system_power.plot(
+            x,
+            system_powers,
+            marker=marker,
+        )
+
+        interaction_power.plot(
+            x,
+            interaction_powers,
+            marker=marker,
+        )
+
+        efficiency.plot(
+            np.asarray(x)[mask],
+            efficiencies[mask],
+            marker=marker,
+            label=title,
+        )
+
+        efficiency.set_title(r"$\eta$")
+        power.set_title(r"$\bar{P}$")
+        system_power.set_title(
+            r"$\bar{P}_{\mathrm{sys}}$",
+        )
+        interaction_power.set_title(
+            r"$\bar{P}_{\mathrm{int}}$",
+        )
+
+    fig.supxlabel(xlabel)
+    fig.legend(loc="lower center", bbox_to_anchor=(0.5, -0.1), ncol=3)
+    return fig, axs
 
 
 @pu.wrap_plot
@@ -350,8 +449,8 @@ def plot_3d_heatmap(models, value_accessor, x_spec, y_spec, normalize=False, ax=
 def val_relative_to_steady(model, val, steady_idx, shift=0):
     shift_idx = int(1 / model.dt * shift)
     begin_idx = model.strobe[1][steady_idx] - shift_idx
-    end_idx = (-shift_idx if shift != 0 else -1)
-    return model.t[begin_idx:end_idx+1], (
+    end_idx = -shift_idx if shift != 0 else -1
+    return model.t[begin_idx : end_idx + 1], (
         val.slice(slice(begin_idx - 1, end_idx, 1)) - val.slice(begin_idx - 1)
     )
 
@@ -447,19 +546,19 @@ def plot_steady_work_baths(models, steady_idx=2, label_fn=model_description):
 
     return fig, ax
 
+
 @pu.wrap_plot
 def plot_bloch_components(model, ax=None):
     with aux.get_data(model) as data:
-      ρ = data.rho_t_accum.mean[:]
-      σ_ρ = data.rho_t_accum.ensemble_std[:]
+        ρ = data.rho_t_accum.mean[:]
+        σ_ρ = data.rho_t_accum.ensemble_std[:]
 
-      xs = np.einsum("tij,ji->t", ρ, qt.sigmax().full()).real
-      ys = np.einsum("tij,ji->t", ρ, qt.sigmay().full()).real
-      zs = np.einsum("tij,ji->t", ρ, qt.sigmaz().full()).real
+        xs = np.einsum("tij,ji->t", ρ, qt.sigmax().full()).real
+        ys = np.einsum("tij,ji->t", ρ, qt.sigmay().full()).real
+        zs = np.einsum("tij,ji->t", ρ, qt.sigmaz().full()).real
 
-
-      ax.plot(model.t, zs, label=r"$\langle \sigma_z\rangle$")
-      ax.plot(model.t, xs, label=r"$\langle \sigma_x\rangle$")
-      ax.plot(model.t, ys, label=r"$\langle \sigma_y\rangle$")
-      ax.legend()
-      ax.set_xlabel(r"$\tau$")
+        ax.plot(model.t, zs, label=r"$\langle \sigma_z\rangle$")
+        ax.plot(model.t, xs, label=r"$\langle \sigma_x\rangle$")
+        ax.plot(model.t, ys, label=r"$\langle \sigma_y\rangle$")
+        ax.legend()
+        ax.set_xlabel(r"$\tau$")

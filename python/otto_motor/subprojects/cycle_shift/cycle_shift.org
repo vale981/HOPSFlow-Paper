@@ -95,7 +95,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/0840c8ea96bddd108d0cd6c6f4c179fe5e3b5d8e.svg]]
+[[file:./.ob-jupyter/6cd27ecb12469a3db7f97ac433bf1a09e1fa43b3.svg]]
 
 ** Integrate
 #+begin_src jupyter-python
@@ -812,22 +812,19 @@ Way less energy is dumped into the cold bath.
 
 ** Slower switching + Only Cold Bath Coupling Shifted
 *** Model def and intergration
-:PROPERTIES:
-:header-args: :tangle tangle/only_cold.py :noweb yes :async yes :session otto_cycle_shift
-:END:
 
-#+begin_src jupyter-python
+#+begin_src jupyter-python :tangle tangle/only_cold.py
   <<boilerplate>>
 #+end_src
 
 #+RESULTS:
 
-#+begin_src jupyter-python :results none
+#+begin_src jupyter-python :results none :tangle tangle/only_cold.py
   shifts = sc.make_shifts()
   cold_models = [sc.make_model(shift, shift, switch_t=6., only_cold=True) for shift in shifts]
 #+end_src
 
-#+begin_src jupyter-python
+#+begin_src jupyter-python :tangle tangle/only_cold.py
   ot.integrate_online_multi(cold_models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))
 #+end_src
 
@@ -878,12 +875,16 @@ Way less energy is dumped into the cold bath.
 :END:
 
 #+begin_src jupyter-python
-  fig, (ax2, ax1) = plt.subplots(nrows=1, ncols=2)
+  fig, (ax2, ax1, ax3) = plt.subplots(nrows=1, ncols=3)
   _, ax1_right = ot.plot_powers_and_efficiencies(np.array(shifts) * 100, cold_models, xlabel="Cycle Shift", ax=ax1)[2]
   _, ax2_right = ot.plot_powers_and_efficiencies(np.array(shifts) * 100, long_models, xlabel="Cycle Shift", ax=ax2)[2]
+  _, ax3_right = ot.plot_powers_and_efficiencies(np.array(shifts) * 100, models, xlabel="Cycle Shift", ax=ax3)[2]
 
   ax1_right.sharey(ax2_right)
   ax1.sharey(ax2)
+
+  ax3_right.sharey(ax1_right)
+  ax3.sharey(ax1)
 
   ax1.set_title("Cold Shifted")
   ax2.set_title("Both Shifted")
@@ -891,7 +892,15 @@ Way less energy is dumped into the cold bath.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/a419bc15659f714ac138884080b263c1a41f49c8.svg]]
+[[file:./.ob-jupyter/2dba4cb317ec601eaa32575401efb8dcb75a69ea.svg]]
+
+#+begin_src jupyter-python
+  ot.plot_multi_powers_and_efficiencies(shifts, [models, long_models, cold_models], ["shifted", "shifted + slower modulation", "slower + only cold shifted"], xlabel=r"Shift $\delta$")
+  fs.export_fig("shift_comparison", y_scaling=1, x_scaling=2)
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/b1465aa4fa0c0e24f8fa2129d1f2405598f3542f.svg]]
 
 ** Findings
 - coupling overlap doesn't help much

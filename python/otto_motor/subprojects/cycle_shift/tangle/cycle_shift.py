@@ -412,13 +412,20 @@ ax.set_ylabel(r"Operator Norm")
 ax.add_artist(legend_1)
 ax.set_xlim((0, models[0].Θ))
 
-fig, (ax2, ax1) = plt.subplots(nrows=1, ncols=2)
+fig, (ax2, ax1, ax3) = plt.subplots(nrows=1, ncols=3)
 _, ax1_right = ot.plot_powers_and_efficiencies(np.array(shifts) * 100, cold_models, xlabel="Cycle Shift", ax=ax1)[2]
 _, ax2_right = ot.plot_powers_and_efficiencies(np.array(shifts) * 100, long_models, xlabel="Cycle Shift", ax=ax2)[2]
+_, ax3_right = ot.plot_powers_and_efficiencies(np.array(shifts) * 100, models, xlabel="Cycle Shift", ax=ax3)[2]
 
 ax1_right.sharey(ax2_right)
 ax1.sharey(ax2)
 
+ax3_right.sharey(ax1_right)
+ax3.sharey(ax1)
+
 ax1.set_title("Cold Shifted")
 ax2.set_title("Both Shifted")
 fs.export_fig("cycle_shift_power_efficiency_longer_vs_only_cold", y_scaling=.7, x_scaling=2)
+
+ot.plot_multi_powers_and_efficiencies(shifts, [models, long_models, cold_models], ["shifted", "shifted + slower modulation", "slower + only cold shifted"], xlabel=r"Shift $\delta$")
+fs.export_fig("shift_comparison", y_scaling=1, x_scaling=2)
