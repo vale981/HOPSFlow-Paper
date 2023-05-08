@@ -1132,3 +1132,15 @@ ot.plot_bloch_components(off_ax_models[1])
 | <Figure | size | 340x320 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | > |
 [[file:./.ob-jupyter/e322b02f00b192353074490f3ccb65cb06b4f3cb.svg]]
 :END:
+
+
+#+begin_src jupyter-python
+  for model in off_ax_models:
+      ot.plot_energy(model)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+[[file:./.ob-jupyter/0bda9729fd4c2dc1e8bb0d7c5b410ee176f4d66a.svg]]
+[[file:./.ob-jupyter/4e0a91915083d35989203937146b00aaf46055d7.svg]]
+:END:

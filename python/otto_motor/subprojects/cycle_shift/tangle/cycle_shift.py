@@ -146,7 +146,7 @@ pu.plot_with_σ(
     best_shift_model.t, best_shift_model.system_energy(), ax=a, label=r"$\langle H_\mathrm{sys}\rangle$"
 )
 # a.plot(best_shift_model.t, best_shift_model.H(best_shift_model.t)[:, 0,0])
-a.plot(overlap_models = [overlap(best_shift_model, N, mini_step, new_step_size) for N in Ns]
+a.plot(
     best_shift_model.t,
     best_shift_model.coupling_operators[0].operator_norm(best_shift_model.t) / 5,
     label="cold bath modulation",
@@ -415,3 +415,8 @@ fs.export_fig("cycle_shift_power_efficiency_longer_vs_only_cold", y_scaling=.7, 
 
 ot.plot_multi_powers_and_efficiencies(shifts, [models, long_models, cold_models], ["shifted", "shifted + slower modulation", "slower + only cold shifted"], xlabel=r"Shift $\delta$")
 fs.export_fig("shift_comparison", y_scaling=1, x_scaling=2)
+
+ot.plot_bloch_components(off_ax_models[1])
+
+for model in off_ax_models:
+    ot.plot_energy(model)
