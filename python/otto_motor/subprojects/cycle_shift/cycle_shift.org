@@ -59,15 +59,19 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-: 3.5999999999999996
-: 3.5999999999999996
-: 3.5999999999999996
-: 3.5999999999999996
-: 3.5999999999999996
-: 3.5999999999999996
-: 3.5999999999999996
-: 3.5999999999999996
-: 3.5999999999999996
+#+begin_example
+  3.5999999999999996
+  3.5999999999999996
+  3.5999999999999996
+  3.5999999999999996
+  3.5999999999999996
+  3.5999999999999996
+  3.5999999999999996
+  3.5999999999999996
+  3.5999999999999996
+  3.5999999999999996
+  3.5999999999999996
+#+end_example
 
 
 #+begin_src jupyter-python
@@ -76,7 +80,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/51c63ee880765538669e9a46fe9e115f18c656ed.svg]]
+[[file:./.ob-jupyter/52bc73698a80a2938e44a3276eaeff5aded093cd.svg]]
 
 #+begin_src jupyter-python :tangle no
   #ot.plot_cycles(models, bath=0, legend=True)
@@ -100,7 +104,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/6cd27ecb12469a3db7f97ac433bf1a09e1fa43b3.svg]]
+[[file:./.ob-jupyter/6c8cd0ac2518b43e36bd407ca0bb146a9f53dac7.svg]]
 
 ** Integrate
 #+begin_src jupyter-python :tangle tangle/original.py
@@ -114,15 +118,19 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-: -2.7704455654085876 -2.5219916727767804
-: -2.034015641972767 -1.6675487518853185
-: 0.571544457513159 0.19650010500179352
-: 1.0 0.30209537308799783
-: 1.1652434363371367 0.3239348992880912
-: 1.6254413169874071 0.3309674632505577
-: 1.6802797038561466 0.3190991034856301
-: 1.6058539780552505 0.2979616403269744
-: 1.413212538480568 0.26307105710019735
+#+begin_example
+  -2.7704455654085876 -2.5219916727767804
+  -2.034015641972767 -1.6675487518853185
+  0.571544457513159 0.19650010500179352
+  1.0 0.30209537308799783
+  1.1652434363371367 0.3239348992880912
+  1.6254413169874071 0.3309674632505577
+  1.6802797038561466 0.3190991034856301
+  1.6058539780552505 0.2979616403269744
+  1.413212538480568 0.26307105710019735
+  0.7332591894799324 0.1434372231954891
+  -1.2500012707944386 -0.29523872560546577
+#+end_example
 
 #+begin_src jupyter-python
   ot.plot_energy(baseline)
@@ -136,7 +144,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+RESULTS:
 :RESULTS:
 : \(N=80000\)
-[[file:./.ob-jupyter/137c3cc0e9a682fb4dcccd9987cff094cd3a977f.svg]]
+[[file:./.ob-jupyter/e2b969d205731dd29b53305e80b355ae4889c30e.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -180,18 +188,18 @@ We shift so that we just overlap with coupling/decoupling and one above.
    [0.         0.88079708]]
   [[0.37754067 0.        ]
    [0.         0.62245933]]
-  /nix/store/h9ywp3qh1x47y82bwgaqrd1fxmp1bdy3-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/cbook/__init__.py:1369: ComplexWarning: Casting complex values to real discards the imaginary part
+  /nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/cbook/__init__.py:1369: ComplexWarning: Casting complex values to real discards the imaginary part
     return np.asarray(x, float)
-  /nix/store/h9ywp3qh1x47y82bwgaqrd1fxmp1bdy3-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5340: ComplexWarning: Casting complex values to real discards the imaginary part
+  /nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5340: ComplexWarning: Casting complex values to real discards the imaginary part
     pts[0] = start
-  /nix/store/h9ywp3qh1x47y82bwgaqrd1fxmp1bdy3-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5341: ComplexWarning: Casting complex values to real discards the imaginary part
+  /nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5341: ComplexWarning: Casting complex values to real discards the imaginary part
     pts[N + 1] = end
-  /nix/store/h9ywp3qh1x47y82bwgaqrd1fxmp1bdy3-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5344: ComplexWarning: Casting complex values to real discards the imaginary part
+  /nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5344: ComplexWarning: Casting complex values to real discards the imaginary part
     pts[1:N+1, 1] = dep1slice
-  /nix/store/h9ywp3qh1x47y82bwgaqrd1fxmp1bdy3-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5346: ComplexWarning: Casting complex values to real discards the imaginary part
+  /nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5346: ComplexWarning: Casting complex values to real discards the imaginary part
     pts[N+2:, 1] = dep2slice[::-1]
 #+end_example
-[[file:./.ob-jupyter/d8fd69f598a04d24c7d912a451860cf1e02368eb.svg]]
+[[file:./.ob-jupyter/3d124679d4cff79aae0a1bf5692b621b44a0f42e.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -200,11 +208,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-:RESULTS:
-: /nix/store/h9ywp3qh1x47y82bwgaqrd1fxmp1bdy3-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/cbook/__init__.py:1369: ComplexWarning: Casting complex values to real discards the imaginary part
-:   return np.asarray(x, float)
-[[file:./.ob-jupyter/56833576044806101c278c3e8f158ea44b572782.svg]]
-:END:
+[[file:./.ob-jupyter/a5242d24b39715ee5bcb360df0a90c77c4bb1543.svg]]
 
 
 #+begin_src jupyter-python
@@ -213,7 +217,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/7054daf93cfddaccb915ec77b89a8f04d90bbf2d.svg]]
+[[file:./.ob-jupyter/06c7c543aed0ba78b8c60d1470fac3c45257b0a0.svg]]
 
 
 #+begin_src jupyter-python
@@ -222,7 +226,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/0523dcc91c94deb7cdf13ae934a9ad5f734e6a55.svg]]
+[[file:./.ob-jupyter/e6355de3552afc866b8a6975e947e63c49eb98aa.svg]]
 
 We see that we get a pretty good picture after about 30k-40k samples.
 
@@ -232,7 +236,7 @@ We see that we get a pretty good picture after about 30k-40k samples.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/1a8e5254f51c55db8e6f874b670fd647e75d48e5.svg]]
+[[file:./.ob-jupyter/cf82f19b2c4ff14bc6f5d917f11635413520104b.svg]]
 
 #+begin_src jupyter-python
   fig, ax =ot.plot_steady_energy_changes([baseline, models[3+2]], 2, label_fn=lambda m: ("baseline" if m.hexhash == baseline.hexhash else "shifted"))
@@ -241,7 +245,7 @@ We see that we get a pretty good picture after about 30k-40k samples.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/e302b3e61cd22e6792e1303d0bbbbd74c198a3e4.svg]]
+[[file:./.ob-jupyter/e34d50492a2123454f5e25719f659297abd0312c.svg]]
 
 
 The best shift:
@@ -255,12 +259,13 @@ The best shift:
 
 #+begin_src jupyter-python
   ot.plot_bloch_components(best_shift_model)
+  best_shift_model.hexhash
 #+end_src
 
 #+RESULTS:
 :RESULTS:
-| <Figure | size | 340x320 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | > |
-[[file:./.ob-jupyter/33bc9d5f8233c3c45ff92a23684fffad4c4e3c12.svg]]
+: 7cac0199140ff8f9fb2e0073b950e079e582466b8a6aea99f286d5d81b62cad8
+[[file:./.ob-jupyter/22aa17d84ba2b04352a0b41f3ba47186d627eee3.svg]]
 :END:
 
 
@@ -313,7 +318,7 @@ The best shift:
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/4b4b05228ed55bd1e0338c9e09642c9c0266d86a.svg]]
+[[file:./.ob-jupyter/283229f01c2d6af59b056ca1868078f495a74d88.svg]]
 
 
 #+begin_src jupyter-python
@@ -324,11 +329,9 @@ The best shift:
 
 #+RESULTS:
 :RESULTS:
-: /nix/store/vkzza81mzwyk5br1c6cm67g48xycvmvl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/cbook/__init__.py:1369: ComplexWarning: Casting complex values to real discards the imaginary part
-:   return np.asarray(x, float)
-| <matplotlib.lines.Line2D | at | 0x7f842620cdc0> |
-[[file:./.ob-jupyter/a27e17c2ba730ffef64c68d3a9867998a245d84d.svg]]
-[[file:./.ob-jupyter/b6947395240dc2927df2b278655765fafc7ec605.svg]]
+| <matplotlib.lines.Line2D | at | 0x7f4a840bc610> |
+[[file:./.ob-jupyter/c6b35967283d62702005036fc8395b84ec7d4ac5.svg]]
+[[file:./.ob-jupyter/f991f7db369fa58325b9f350e10fe4f228da2b74.svg]]
 :END:
 
 
@@ -343,7 +346,7 @@ The best shift:
       best_shift_model.t, best_shift_model.system_energy(), ax=a, label=r"$\langle H_\mathrm{sys}\rangle$"
   )
   # a.plot(best_shift_model.t, best_shift_model.H(best_shift_model.t)[:, 0,0])
-  a.plot(overlap_models = [overlap(best_shift_model, N, mini_step, new_step_size) for N in Ns]
+  a.plot(
       best_shift_model.t,
       best_shift_model.coupling_operators[0].operator_norm(best_shift_model.t) / 5,
       label="cold bath modulation",
@@ -368,7 +371,7 @@ The best shift:
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/b1883cf8528e1cf12e372f86461c4b1c38192792.svg]]
+[[file:./.ob-jupyter/df69367503ff0fcad97f493a8a05170b8e46e954.svg]]
 
 
 * Explore Coupling Length Dimension for The best performing state

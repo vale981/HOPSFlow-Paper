@@ -449,7 +449,8 @@ def plot_3d_heatmap(models, value_accessor, x_spec, y_spec, normalize=False, ax=
 def val_relative_to_steady(model, val, steady_idx, shift=0):
     shift_idx = int(1 / model.dt * shift)
     begin_idx = model.strobe[1][steady_idx] - shift_idx
-    end_idx = -shift_idx if shift != 0 else -1
+    end_idx = -shift_idx if shift != 0 else -2
+
     return model.t[begin_idx : end_idx + 1], (
         val.slice(slice(begin_idx - 1, end_idx, 1)) - val.slice(begin_idx - 1)
     )
@@ -557,10 +558,9 @@ def plot_bloch_components(model, ax=None):
         ys = np.einsum("tij,ji->t", ρ, qt.sigmax().full()).real
         zs = np.einsum("tij,ji->t", ρ, qt.sigmaz().full()).real
 
-        # ax.plot(model.t, zs, label=r"$\langle \sigma_z\rangle$")
+        ax.plot(model.t, zs, label=r"$\langle \sigma_z\rangle$")
 
         ax.plot(model.t, xs, label=r"$\langle \sigma_x\rangle$")
-        ax.plot(model.t, -xs, label=r"$\langle \sigma_x\rangle$")
         ax.plot(model.t, ys, label=r"$\langle \sigma_y\rangle$")
         ax.legend()
         ax.set_xlabel(r"$\tau$")
