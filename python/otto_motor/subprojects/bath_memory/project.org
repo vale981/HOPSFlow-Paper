@@ -116,44 +116,31 @@ coupling-change/cycle time.
 
 #+RESULTS:
 :RESULTS:
-# [goto error]
 #+begin_example
-  [0;31m---------------------------------------------------------------------------[0m
-  [0;31mRuntimeError[0m                              Traceback (most recent call last)
-  Cell [0;32mIn[19], line 3[0m
-  [1;32m      1[0m fig, ax [38;5;241m=[39m plt[38;5;241m.[39msubplots()
-  [1;32m      2[0m [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models[:[38;5;241m22[39m]:
-  [0;32m----> 3[0m     pu[38;5;241m.[39mplot_with_σ(models[[38;5;241m0[39m][38;5;241m.[39mt, [43mmodel[49m[38;5;241;43m.[39;49m[43minteraction_power[49m[43m([49m[43m)[49m[38;5;241m.[39msum_baths()[38;5;241m.[39mintegrate(model[38;5;241m.[39mt), ax[38;5;241m=[39max)
-  [1;32m      4[0m     [38;5;28mprint[39m(model[38;5;241m.[39mpower(steady_idx[38;5;241m=[39m[38;5;241m2[39m)[38;5;241m.[39mvalue, model[38;5;241m.[39mT[[38;5;241m0[39m], model[38;5;241m.[39mω_c[[38;5;241m0[39m])
-
-  File [0;32m~/src/two_qubit_model/hiro_models/model_base.py:560[0m, in [0;36mModel.interaction_power[0;34m(self, data, results_path, **kwargs)[0m
-  [1;32m    550[0m [38;5;124;03m"""Calculates interaction power from the hierarchy data[39;00m
-  [1;32m    551[0m [38;5;124;03m``data`` or, if not supplied, tries to load the online results from ``results_path``.[39;00m
-  [1;32m    552[0m
-  [0;32m   (...)[0m
-  [1;32m    556[0m [38;5;124;03m:returns: See :any:`hopsflow.util.interaction_energy_ensemble`.[39;00m
-  [1;32m    557[0m [38;5;124;03m"""[39;00m
-  [1;32m    559[0m [38;5;28;01mif[39;00m data [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
-  [0;32m--> 560[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mtry_get_online_data[49m[43m([49m
-  [1;32m    561[0m [43m        [49m[43mresults_path[49m[43m,[49m[43m [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43monline_interaction_power_name[49m
-  [1;32m    562[0m [43m    [49m[43m)[49m
-  [1;32m    564[0m N, kwargs [38;5;241m=[39m _get_N_kwargs(kwargs, data)
-  [1;32m    566[0m [38;5;28;01mreturn[39;00m hopsflow[38;5;241m.[39mhopsflow[38;5;241m.[39minteraction_energy_ensemble(
-  [1;32m    567[0m     data[38;5;241m.[39mvalid_sample_iterator(data[38;5;241m.[39mstoc_traj),  [38;5;66;03m# type: ignore[39;00m
-  [1;32m    568[0m     data[38;5;241m.[39mvalid_sample_iterator(data[38;5;241m.[39maux_states),  [38;5;66;03m# type: ignore[39;00m
-  [0;32m   (...)[0m
-  [1;32m    574[0m     [38;5;241m*[39m[38;5;241m*[39mkwargs,
-  [1;32m    575[0m )
-
-  File [0;32m~/src/two_qubit_model/hiro_models/model_base.py:298[0m, in [0;36mModel.try_get_online_data[0;34m(self, path, results_path)[0m
-  [1;32m    296[0m file_path [38;5;241m=[39m os[38;5;241m.[39mpath[38;5;241m.[39mjoin(path, results_path)
-  [1;32m    297[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m os[38;5;241m.[39mpath[38;5;241m.[39mexists(file_path):
-  [0;32m--> 298[0m     [38;5;28;01mraise[39;00m [38;5;167;01mRuntimeError[39;00m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mNo data found under [39m[38;5;124m'[39m[38;5;132;01m{[39;00mfile_path[38;5;132;01m}[39;00m[38;5;124m'[39m[38;5;124m.[39m[38;5;124m"[39m)
-  [1;32m    300[0m [38;5;28;01mreturn[39;00m hopsflow[38;5;241m.[39mutil[38;5;241m.[39mget_online_values_from_cache(file_path)
-
-  [0;31mRuntimeError[0m: No data found under 'results/interaction_power_922443c7c9913a4ba2ddbfd8792ec54f664d39dabe87377a2ab559a7fb96e0c4.npz'.
+  -0.006066419789176171 0.4 0.5
+  -0.005586445662789428 0.45 0.5
+  -0.005038545160476334 0.5 0.5
+  -0.004551607899071748 0.55 0.5
+  -0.004084369471683145 0.6 0.5
+  -0.006276938479392601 0.4 0.75
+  -0.005883213741945448 0.45 0.75
+  -0.0054760722009299465 0.5 0.75
+  -0.00509961243651586 0.55 0.75
+  -0.004713792601165993 0.6 0.75
+  -0.006003694926219254 0.4 1.0
+  -0.005630008851490323 0.45 1.0
+  -0.005247723184476385 0.5 1.0
+  -0.004922650999264568 0.55 1.0
+  -0.004561986692017902 0.6 1.0
+  -0.005792018673164359 0.4 1.25
+  -0.005411940557486204 0.45 1.25
+  -0.005122848900745669 0.5 1.25
+  -0.004739985218211038 0.55 1.25
+  -0.004424832509632545 0.6 1.25
+  -0.005671859616295697 0.4 1.5
+  -0.005321236317782547 0.45 1.5
 #+end_example
-[[file:./.ob-jupyter/ab84f357c909d82e98cfd1f6037a2cadeea34ed0.svg]]
+[[file:./.ob-jupyter/917c1ebe76592c18cce8b87737189b95b83c50db.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -163,7 +150,6 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/e528fb8f19cb154f99249ae08b8526951dd33e15.svg]]
 
 
 #+begin_src jupyter-python
@@ -172,8 +158,8 @@ coupling-change/cycle time.
 
 #+RESULTS:
 :RESULTS:
-| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | > | ((<matplotlib.lines.Line2D at 0x7fe105f9ab50>) <matplotlib.collections.PolyCollection at 0x7fe105f8ebb0>) |
-[[file:./.ob-jupyter/4885b6623040daa45b75d948fb036da085c522c9.svg]]
+| <Figure | size | 340x320 | with | 1 | Axes> | <AxesSubplot: | > | ((<matplotlib.lines.Line2D at 0x7efe37c44190>) <matplotlib.collections.PolyCollection at 0x7efe37c44400>) |
+[[file:./.ob-jupyter/ab54ecc61173b390e1ce63542f07af12649117dd.svg]]
 :END:
 
 
@@ -184,7 +170,7 @@ coupling-change/cycle time.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 340x320 | with | 2 | Axes> | (<AxesSubplot: xlabel= $N$ ylabel= $P$ > <AxesSubplot: xlabel= $N$ ylabel= $\eta$ >) |
-[[file:./.ob-jupyter/7afe5e1a2790bc7742a36b7e0ea2e9f183cbfe10.svg]]
+[[file:./.ob-jupyter/d61ecf7ba68b6c20786353099fd031aa665f86aa.svg]]
 :END:
 
 
@@ -223,7 +209,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/07f1f1a19b9b33e5c9af58f399dcc478a044e932.svg]]
+[[file:./.ob-jupyter/59482d74634fe63bcb6cc489dfb1b792da1c169a.svg]]
 
 #+begin_src jupyter-python
   for model in models:
@@ -234,31 +220,31 @@ coupling-change/cycle time.
 :RESULTS:
 : /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/bath_memory/plot_utils.py:38: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
 :   fig, ax = setup_function()
-[[file:./.ob-jupyter/290caad0bc7481e77b62e154e819a3052988a353.svg]]
-[[file:./.ob-jupyter/e8b252cae59fda98a794a1ec1be821de8386bfa5.svg]]
-[[file:./.ob-jupyter/7578e57c2ced88ece15aa2eb8b6b4fee31a86fa5.svg]]
-[[file:./.ob-jupyter/ae083462a06f34430245f74bf8b2d505505b11eb.svg]]
-[[file:./.ob-jupyter/40176c0b61de5fafbd76bae36933c18b792c162f.svg]]
-[[file:./.ob-jupyter/a729c746c7584030b59c745f8a0da489ca2df9ac.svg]]
-[[file:./.ob-jupyter/c5d3a792975c43c9ee13cbd35cd77d8d30d64545.svg]]
-[[file:./.ob-jupyter/62cce9a31e649c315c5344a5b7ab145247956616.svg]]
-[[file:./.ob-jupyter/384fce2c3614d7a3c678cdd6ce167cb7f79d9c4d.svg]]
-[[file:./.ob-jupyter/38c2e2473864fc5c8f731ba6f48566030cf4a3a5.svg]]
-[[file:./.ob-jupyter/d8a3afcfc35f9d9d9a40075c3fdeec8a8957cc93.svg]]
-[[file:./.ob-jupyter/f14802ccf46f078c21dc8a1e26635af0f4ab39bf.svg]]
-[[file:./.ob-jupyter/755d3c5d71fe3b8ec39131d3198952df31a17a7b.svg]]
-[[file:./.ob-jupyter/7254949bf847513aba74771a2809597ae6b88033.svg]]
-[[file:./.ob-jupyter/4590cfbf00cd6448b0b65ec24727b68ae2e21136.svg]]
-[[file:./.ob-jupyter/cbfee4685e5aaecf1c4b798c4e4c233f644ec650.svg]]
-[[file:./.ob-jupyter/b30c5747264f8a6194ed77ccfcdd50adeb76b51d.svg]]
-[[file:./.ob-jupyter/d202e0b54a0770448a65999b95397ea5a6a44d18.svg]]
-[[file:./.ob-jupyter/4b3603a3c8bbb86268330b623f48109473ec2fe9.svg]]
-[[file:./.ob-jupyter/73a0bb3e1f65d2c16dce19d1cf1fd6bb0cbfd0f5.svg]]
-[[file:./.ob-jupyter/3b040333e231c06777ba0e0f29b70b03a0eefd2f.svg]]
-[[file:./.ob-jupyter/8079dc4f28185d6ec5de3f2d2e4b422e628a9131.svg]]
-[[file:./.ob-jupyter/204937f1fb806f49218e6170aea443a25b2db635.svg]]
-[[file:./.ob-jupyter/a3844b8ba0b86f0be89f72f5ccd2324ef7ea5a49.svg]]
-[[file:./.ob-jupyter/8914fa0ef315a35e5864206fd7102bd509bd59e6.svg]]
+[[file:./.ob-jupyter/ca6f8c77e0d1c2c4c0588a27f1d5a73f06959b28.svg]]
+[[file:./.ob-jupyter/9f04f59f958f8cd05e7fcfae012822448e28a0fa.svg]]
+[[file:./.ob-jupyter/7e64dd5c305b62d7e61c8d54061ba0d5c0bd9c71.svg]]
+[[file:./.ob-jupyter/a1049ebdd7cfc3033bda8fa6d8db69c76b10c5d4.svg]]
+[[file:./.ob-jupyter/6f7c25ffff1125b68ed93c42984b3fbdbc623e4f.svg]]
+[[file:./.ob-jupyter/bd8ed043725eac4e7087ce04a8f79cb6dd550bea.svg]]
+[[file:./.ob-jupyter/b9f416d4b1330798fc77fc4e38c6ec544c84a2ad.svg]]
+[[file:./.ob-jupyter/b7f019626c425b7fd2e28f1d70953cd433a26848.svg]]
+[[file:./.ob-jupyter/fdde454c6d1a1e31736ab2f26b35c64424e217f3.svg]]
+[[file:./.ob-jupyter/e0af7e1701860e27f7e3fe45f05b8c7c7bf21925.svg]]
+[[file:./.ob-jupyter/af151eefe6085deb9679052c683cd68c4d511ade.svg]]
+[[file:./.ob-jupyter/28b0b7edde79a9c047b455633716a30c742dcd8f.svg]]
+[[file:./.ob-jupyter/471db72082118a478b1ca5e58ac27511fdb93ad5.svg]]
+[[file:./.ob-jupyter/66c1ff99f83e6c30af2feb9341d02522d77dde69.svg]]
+[[file:./.ob-jupyter/623e14113817b5d8f1074943abccdb7caa0c0bb0.svg]]
+[[file:./.ob-jupyter/675689df6d994ce4b35bb864a382f9d7d285b248.svg]]
+[[file:./.ob-jupyter/1ac491c0d095e16d95afe9602af94955acde385f.svg]]
+[[file:./.ob-jupyter/41bcaaaa18868654a7a90a5f911a994028d3d3e8.svg]]
+[[file:./.ob-jupyter/0bc90e1a20c538d634aa21afed202d1c2648222a.svg]]
+[[file:./.ob-jupyter/b4790ef001a8c49fdf9a178196428c3ccdb95d25.svg]]
+[[file:./.ob-jupyter/70822f7bcdb6cffa813ca2c828a59e6b3307d4ef.svg]]
+[[file:./.ob-jupyter/7bcf53ab551180350c7516d1cd29b3c0608229b7.svg]]
+[[file:./.ob-jupyter/6375902d049d7c66e42fc1ef593ce9a109b5992c.svg]]
+[[file:./.ob-jupyter/9911ddfe7318ac880f7254510fc9dd449cf1a11d.svg]]
+[[file:./.ob-jupyter/2b14a9fdd7d143dbeeba0b108a2df8c49e853c01.svg]]
 :END:
 
 * Things to Look At

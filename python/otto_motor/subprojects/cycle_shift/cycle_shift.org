@@ -261,13 +261,12 @@ The best shift:
 
 #+begin_src jupyter-python
   ot.plot_bloch_components(best_shift_model)
-  best_shift_model.hexhash
 #+end_src
 
 #+RESULTS:
 :RESULTS:
-: 7cac0199140ff8f9fb2e0073b950e079e582466b8a6aea99f286d5d81b62cad8
-[[file:./.ob-jupyter/c578a4380fca2032a39326c64b497ca15a876dc2.svg]]
+| <Figure | size | 340x320 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | > |
+[[file:./.ob-jupyter/39c87ed71bd7a32a2e9f1e4a360a9c8ae4827e5e.svg]]
 :END:
 
 
@@ -1089,3 +1088,47 @@ Way less energy is dumped into the cold bath.
 - with these parameters the earlier obeservation does not recur
 - more scan needed
 - maybe slower coupling/decoupling will help
+
+* Off-Axis Hamiltonian
+#+begin_src jupyter-python :tangle tangle/off_axis.py :results none
+  <<boilerplate>>
+#+end_src
+
+#+begin_src jupyter-python :tangle tangle/off_axis.py
+  proto = sc.make_model(0, 0)
+  off_ax_models = []
+  for weight in [.3, .6]:
+      off_ax = proto.copy()
+      off_ax.H_0  = 1 / 2 * (qt.sigmaz().full() + np.eye(2) + weight * qt.sigmax().full())
+      off_ax.H_1  = off_ax.H_0.copy()
+
+      off_ax_models.append(off_ax)
+#+end_src
+
+#+RESULTS:
+: 3.5999999999999996
+
+#+begin_src jupyter-python :tangle tangle/off_axis.py
+  ot.integrate_online_multi(off_ax_models, 10, increment=10, analyze_kwargs=dict(every=10_000))
+#+end_src
+
+#+RESULTS:
+: [INFO    hops.core.integration     4057165] Choosing the nonlinear integrator.
+: [INFO    root                      4057165] Starting analysis process.
+: [INFO    root                      4057165] Started analysis process with pid 146332.
+: [INFO    hops.core.hierarchy_data  4057165] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/results_f41081a896f5826d5ec9ec455f52afb2020d140c4d25bd2986b63fb73863ee2d.fifo
+: [INFO    hops.core.integration     4057165] Using 16 integrators.
+: [INFO    hops.core.integration     4057165] Some 10 trajectories have to be integrated.
+: [INFO    hops.core.integration     4057165] Using 1001 hierarchy states.
+: 100% 10/10 [00:45<00:00,  4.58s/it]
+:
+
+#+begin_src jupyter-julia
+ot.plot_bloch_components(off_ax_models[1])
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 340x320 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | > |
+[[file:./.ob-jupyter/e322b02f00b192353074490f3ccb65cb06b4f3cb.svg]]
+:END:
