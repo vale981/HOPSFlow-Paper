@@ -35,16 +35,18 @@ We take the same baseline as in [[id:c06111fd-d719-433d-a316-c163f6e1d384][cycle
 But we vary the cycle speed while keeping a fixed proportion
 coupling-change/cycle time.
 #+begin_src jupyter-python
-  def make_shift_model(shift_c, shift_h, switch_t=3):
-      switch_time = switch_t / 50
+  T = 50
+  def make_model_orig(shift_c, shift_h, switch_t=6.0, switch_t_sys=None, only_cold=False):
+      switch_time = switch_t / T
+      switch_time_sys = (switch_t_sys if switch_t_sys else switch_t) / T
 
-      (p_H, p_L) = ot.timings(switch_time, switch_time)
+      (p_H, p_L) = ot.timings(switch_time_sys, switch_time)
       return OttoEngine(
-          δ=[.7, .7],
+          δ=[0.7, 0.7],
           ω_c=[1, 1],
           ψ_0=qt.basis([2], [1]),
           description=f"Classic Cycle",
-          k_max=5,
+          k_max=4,
           bcf_terms=[5] * 2,
           truncation_scheme="simplex",
           driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
@@ -59,30 +61,11 @@ coupling-change/cycle time.
           timings_L=p_L,
           streaming_mode=True,
           shift_to_resonance=(False, False),
-          L_shift=(shift_c, shift_h),
+          L_shift=(shift_c, 0 if only_cold else shift_h),
       )
-
-  def overlap(shift_model, N, step, switch_t=6):
-      switch_time = switch_t / 50
-      next_model = shift_model.copy()
-      (p_H, p_L) = ot.timings(switch_time, switch_time)
-
-      #next_model.timings_H=p_H
-      next_model.timings_L=p_L
-
-      (a, b, c, d) = next_model.timings_L[0]
-      (e, f, g, h) = next_model.timings_L[1]
-      next_step = step * N
-      (s1, s2) = next_model.L_shift
-      next_model.L_shift = (s1 + next_step, s2 - next_step)
-      next_model.timings_L = (
-          (a - 2 * next_step, b - 2 * next_step, c, d),
-          (e, f, g + 2 * next_step, h + 2 * next_step),
-      )
-      return next_model
 
   def make_model(ω_c, T_c):
-      model =  make_shift_model(0,0, switch_t = 6)
+      model =  make_model_orig(0, 0, switch_t = 6)
 
 
       model.T[0] = T_c
@@ -133,33 +116,44 @@ coupling-change/cycle time.
 
 #+RESULTS:
 :RESULTS:
+# [goto error]
 #+begin_example
-  -0.006065467070030933 0.4 0.5
-  -0.005591602311099003 0.45 0.5
-  -0.005066588783212114 0.5 0.5
-  -0.0046201846177245775 0.55 0.5
-  -0.00408269304017506 0.6 0.5
-  -0.006277295645870186 0.4 0.75
-  -0.005888697577101804 0.45 0.75
-  -0.005484333955351765 0.5 0.75
-  -0.005117002574808731 0.55 0.75
-  [WARNING root                      224434] Adding values with unequal snapshot count discards the snapshots.
-  -0.004696002795276426 0.6 0.75
-  -0.006000498375072689 0.4 1.0
-  -0.005633957523771339 0.45 1.0
-  -0.00525600486961774 0.5 1.0
-  -0.004911341531730341 0.55 1.0
-  -0.004569773623536163 0.6 1.0
-  -0.005729676547086812 0.4 1.25
-  -0.00534616431006602 0.45 1.25
-  -0.0051525733640570715 0.5 1.25
-  [WARNING root                      224434] Adding values with unequal snapshot count discards the snapshots.
-  -0.004753746829381626 0.55 1.25
-  -0.004446193855257419 0.6 1.25
-  -0.00565830944810612 0.4 1.5
-  -0.005324957406115274 0.45 1.5
+  [0;31m---------------------------------------------------------------------------[0m
+  [0;31mRuntimeError[0m                              Traceback (most recent call last)
+  Cell [0;32mIn[19], line 3[0m
+  [1;32m      1[0m fig, ax [38;5;241m=[39m plt[38;5;241m.[39msubplots()
+  [1;32m      2[0m [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models[:[38;5;241m22[39m]:
+  [0;32m----> 3[0m     pu[38;5;241m.[39mplot_with_σ(models[[38;5;241m0[39m][38;5;241m.[39mt, [43mmodel[49m[38;5;241;43m.[39;49m[43minteraction_power[49m[43m([49m[43m)[49m[38;5;241m.[39msum_baths()[38;5;241m.[39mintegrate(model[38;5;241m.[39mt), ax[38;5;241m=[39max)
+  [1;32m      4[0m     [38;5;28mprint[39m(model[38;5;241m.[39mpower(steady_idx[38;5;241m=[39m[38;5;241m2[39m)[38;5;241m.[39mvalue, model[38;5;241m.[39mT[[38;5;241m0[39m], model[38;5;241m.[39mω_c[[38;5;241m0[39m])
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_base.py:560[0m, in [0;36mModel.interaction_power[0;34m(self, data, results_path, **kwargs)[0m
+  [1;32m    550[0m [38;5;124;03m"""Calculates interaction power from the hierarchy data[39;00m
+  [1;32m    551[0m [38;5;124;03m``data`` or, if not supplied, tries to load the online results from ``results_path``.[39;00m
+  [1;32m    552[0m
+  [0;32m   (...)[0m
+  [1;32m    556[0m [38;5;124;03m:returns: See :any:`hopsflow.util.interaction_energy_ensemble`.[39;00m
+  [1;32m    557[0m [38;5;124;03m"""[39;00m
+  [1;32m    559[0m [38;5;28;01mif[39;00m data [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+  [0;32m--> 560[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mtry_get_online_data[49m[43m([49m
+  [1;32m    561[0m [43m        [49m[43mresults_path[49m[43m,[49m[43m [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43monline_interaction_power_name[49m
+  [1;32m    562[0m [43m    [49m[43m)[49m
+  [1;32m    564[0m N, kwargs [38;5;241m=[39m _get_N_kwargs(kwargs, data)
+  [1;32m    566[0m [38;5;28;01mreturn[39;00m hopsflow[38;5;241m.[39mhopsflow[38;5;241m.[39minteraction_energy_ensemble(
+  [1;32m    567[0m     data[38;5;241m.[39mvalid_sample_iterator(data[38;5;241m.[39mstoc_traj),  [38;5;66;03m# type: ignore[39;00m
+  [1;32m    568[0m     data[38;5;241m.[39mvalid_sample_iterator(data[38;5;241m.[39maux_states),  [38;5;66;03m# type: ignore[39;00m
+  [0;32m   (...)[0m
+  [1;32m    574[0m     [38;5;241m*[39m[38;5;241m*[39mkwargs,
+  [1;32m    575[0m )
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_base.py:298[0m, in [0;36mModel.try_get_online_data[0;34m(self, path, results_path)[0m
+  [1;32m    296[0m file_path [38;5;241m=[39m os[38;5;241m.[39mpath[38;5;241m.[39mjoin(path, results_path)
+  [1;32m    297[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m os[38;5;241m.[39mpath[38;5;241m.[39mexists(file_path):
+  [0;32m--> 298[0m     [38;5;28;01mraise[39;00m [38;5;167;01mRuntimeError[39;00m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mNo data found under [39m[38;5;124m'[39m[38;5;132;01m{[39;00mfile_path[38;5;132;01m}[39;00m[38;5;124m'[39m[38;5;124m.[39m[38;5;124m"[39m)
+  [1;32m    300[0m [38;5;28;01mreturn[39;00m hopsflow[38;5;241m.[39mutil[38;5;241m.[39mget_online_values_from_cache(file_path)
+
+  [0;31mRuntimeError[0m: No data found under 'results/interaction_power_922443c7c9913a4ba2ddbfd8792ec54f664d39dabe87377a2ab559a7fb96e0c4.npz'.
 #+end_example
-[[file:./.ob-jupyter/4dedad5fb97c7875383b7ce3db9307f295f3cd18.svg]]
+[[file:./.ob-jupyter/ab84f357c909d82e98cfd1f6037a2cadeea34ed0.svg]]
 :END:
 
 #+begin_src jupyter-python
