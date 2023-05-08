@@ -1109,7 +1109,7 @@ Way less energy is dumped into the cold bath.
 : 3.5999999999999996
 
 #+begin_src jupyter-python :tangle tangle/off_axis.py
-  ot.integrate_online_multi(off_ax_models, 10, increment=10, analyze_kwargs=dict(every=10_000))
+  ot.integrate_online_multi(off_ax_models, 10_000, increment=10_000, analyze_kwargs=dict(every=10_000))
 #+end_src
 
 #+RESULTS:
