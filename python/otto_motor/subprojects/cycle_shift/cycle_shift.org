@@ -144,7 +144,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+RESULTS:
 :RESULTS:
 : \(N=80000\)
-[[file:./.ob-jupyter/e2b969d205731dd29b53305e80b355ae4889c30e.svg]]
+[[file:./.ob-jupyter/8dc6d71eabb095e2a21fc5d4050d2e77f8a4d407.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -183,23 +183,11 @@ We shift so that we just overlap with coupling/decoupling and one above.
 
 #+RESULTS:
 :RESULTS:
-#+begin_example
-  [[0.11920292 0.        ]
-   [0.         0.88079708]]
-  [[0.37754067 0.        ]
-   [0.         0.62245933]]
-  /nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/cbook/__init__.py:1369: ComplexWarning: Casting complex values to real discards the imaginary part
-    return np.asarray(x, float)
-  /nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5340: ComplexWarning: Casting complex values to real discards the imaginary part
-    pts[0] = start
-  /nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5341: ComplexWarning: Casting complex values to real discards the imaginary part
-    pts[N + 1] = end
-  /nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5344: ComplexWarning: Casting complex values to real discards the imaginary part
-    pts[1:N+1, 1] = dep1slice
-  /nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5346: ComplexWarning: Casting complex values to real discards the imaginary part
-    pts[N+2:, 1] = dep2slice[::-1]
-#+end_example
-[[file:./.ob-jupyter/3d124679d4cff79aae0a1bf5692b621b44a0f42e.svg]]
+: [[0.11920292 0.        ]
+:  [0.         0.88079708]]
+: [[0.37754067 0.        ]
+:  [0.         0.62245933]]
+[[file:./.ob-jupyter/d10a82faed83ac74fbdb0a80362cb43f7e44dbac.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -208,7 +196,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/a5242d24b39715ee5bcb360df0a90c77c4bb1543.svg]]
+[[file:./.ob-jupyter/2055a903d73105290085026649070f77a60ddd40.svg]]
 
 
 #+begin_src jupyter-python
@@ -217,7 +205,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/06c7c543aed0ba78b8c60d1470fac3c45257b0a0.svg]]
+[[file:./.ob-jupyter/6904e11bd3ec5b85e0c2e0d8d60c91a3940b3b84.svg]]
 
 
 #+begin_src jupyter-python
@@ -226,7 +214,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/e6355de3552afc866b8a6975e947e63c49eb98aa.svg]]
+[[file:./.ob-jupyter/6576fcf3377ebb38995ea45a6571775d4365b7ef.svg]]
 
 We see that we get a pretty good picture after about 30k-40k samples.
 
@@ -236,7 +224,7 @@ We see that we get a pretty good picture after about 30k-40k samples.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/cf82f19b2c4ff14bc6f5d917f11635413520104b.svg]]
+[[file:./.ob-jupyter/8e414af41379a102f5e066cb063acdd3a410a6a2.svg]]
 
 #+begin_src jupyter-python
   fig, ax =ot.plot_steady_energy_changes([baseline, models[3+2]], 2, label_fn=lambda m: ("baseline" if m.hexhash == baseline.hexhash else "shifted"))
@@ -245,7 +233,7 @@ We see that we get a pretty good picture after about 30k-40k samples.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/e34d50492a2123454f5e25719f659297abd0312c.svg]]
+[[file:./.ob-jupyter/e82e58b9e588d336d71900346ebb97ac1ed8fcba.svg]]
 
 
 The best shift:
@@ -265,7 +253,7 @@ The best shift:
 #+RESULTS:
 :RESULTS:
 : 7cac0199140ff8f9fb2e0073b950e079e582466b8a6aea99f286d5d81b62cad8
-[[file:./.ob-jupyter/22aa17d84ba2b04352a0b41f3ba47186d627eee3.svg]]
+[[file:./.ob-jupyter/b0331e0557f3d5aa3f24e97405ad88d097838be6.svg]]
 :END:
 
 
@@ -318,7 +306,7 @@ The best shift:
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/283229f01c2d6af59b056ca1868078f495a74d88.svg]]
+[[file:./.ob-jupyter/461e4a99905b6a95ee1aa9339dbbe19f90fef570.svg]]
 
 
 #+begin_src jupyter-python
@@ -329,9 +317,9 @@ The best shift:
 
 #+RESULTS:
 :RESULTS:
-| <matplotlib.lines.Line2D | at | 0x7f4a840bc610> |
-[[file:./.ob-jupyter/c6b35967283d62702005036fc8395b84ec7d4ac5.svg]]
-[[file:./.ob-jupyter/f991f7db369fa58325b9f350e10fe4f228da2b74.svg]]
+| <matplotlib.lines.Line2D | at | 0x7f4a54e115b0> |
+[[file:./.ob-jupyter/1dfc8faed914b3db9255e2f8148e6dd71674ebe3.svg]]
+[[file:./.ob-jupyter/c7199307117d774aea29cabdc27a35366881d724.svg]]
 :END:
 
 
@@ -371,7 +359,7 @@ The best shift:
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/df69367503ff0fcad97f493a8a05170b8e46e954.svg]]
+[[file:./.ob-jupyter/6b305bc0d459a215b7c7df707b2fa4704d07a4b3.svg]]
 
 
 * Explore Coupling Length Dimension for The best performing state
