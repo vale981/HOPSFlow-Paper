@@ -19,8 +19,9 @@ from hops.util.logging_setup import logging_setup
 import logging
 logging_setup(logging.INFO)
 plt.rcParams['figure.figsize'] = (12,4)
+shifts = sc.make_shifts(extra_r=4)
 
-shifts = sc.make_shifts()
-cold_models = [sc.make_model(shift, shift, switch_t=6., only_cold=True) for shift in shifts]
+long_models = [sc.make_model(shift, shift, switch_t=6., switch_t_sys=3) for shift in shifts]
+long_models = [sc.make_model(shift, shift, switch_t=6.) for shift in shifts]
 
-ot.integrate_online_multi(cold_models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))
+ot.integrate_online_multi(long_models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))

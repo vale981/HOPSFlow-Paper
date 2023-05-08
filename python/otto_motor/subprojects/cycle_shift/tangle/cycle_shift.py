@@ -20,17 +20,8 @@ import logging
 logging_setup(logging.INFO)
 plt.rcParams['figure.figsize'] = (12,4)
 
-shifts = sc.make_shifts()
-shifts
-
-import itertools
-models = [sc.make_model(shift, shift) for shift in shifts]
-baseline = models[3]
-
 ot.plot_cycle(baseline)
 fs.export_fig("cycle_prototype", y_scaling=.7)
-
-ot.integrate_online_multi(models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))
 
 for model in models:
   print(model.power(steady_idx=1).value / baseline.power(steady_idx=1).value, model.efficiency(steady_idx=1).value)
@@ -267,9 +258,6 @@ r[1].plot(all_overlap_models[-1].t, all_overlap_models[-1].coupling_operators[0]
 r[1].plot(all_overlap_models[-1].t, all_overlap_models[-1].coupling_operators[1].operator_norm(all_overlap_models[-1].t) / 5)
 r[1].set_xlim((model.Θ*2, model.Θ*2+15))
 
-long_models = [sc.make_model(shift, shift, switch_t=6., switch_t_sys=3) for shift in shifts]
-long_models = [sc.make_model(shift, shift, switch_t=6.) for shift in shifts]
-
 from itertools import cycle
 lines = ["--","-.",":", "-"]
 linecycler = cycle(lines)
@@ -288,8 +276,6 @@ ax.set_ylabel(r"Operator Norm")
 ax.add_artist(legend_1)
 ax.set_xlim((0, long_models[0].Θ))
 fs.export_fig("cycle_shift_long_shifts", x_scaling=2, y_scaling=.5)
-
-ot.integrate_online_multi(long_models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))
 
 long_baseline = long_models[np.argmin(abs(np.array(shifts) - 0))]
 long_baseline = best_shift_model

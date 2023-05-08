@@ -1,7 +1,7 @@
 :PROPERTIES:
 :ID:       c06111fd-d719-433d-a316-c163f6e1d384
 :END:
-#+PROPERTY: header-args :session otto_cycle_shift :kernel python :pandoc no :async yes :tangle tangle/cycle_shift.py
+#+PROPERTY: header-args :session otto_cycle_shift :kernel python :pandoc no :async yes :tangle tangle/cycle_shift.py :noweb yes
 
 Having found a prototypical cycle, we now try to shift the timings to
 find if there is an improvement.
@@ -36,18 +36,23 @@ find if there is an improvement.
 As we found in [[id:66cb884e-8724-488d-88da-21b929ffc2bb][finding_relaxation_time.org]], we use a larger coupling
 strength to demonstrate strong coupling effects and to limit the cycle time.
 
+#+begin_src jupyter-python :tangle tangle/original.py :results none
+  <<boilerplate>>
+#+end_src
+
 Now we need to lay down a grid size.
 We start with one dimension and may add another later / dimension.
 We shift so that we just overlap with coupling/decoupling and one above.
-#+begin_src jupyter-python
-  shifts = sc.make_shifts()
+#+begin_src jupyter-python :tangle tangle/original.py
+  shifts = sc.make_shifts(extra_r=4)
   shifts
 #+end_src
 
 #+RESULTS:
-: array([-0.18, -0.12, -0.06,  0.  ,  0.06,  0.12,  0.18,  0.24,  0.3 ])
+: array([-0.18, -0.12, -0.06,  0.  ,  0.06,  0.12,  0.18,  0.24,  0.3 ,
+:         0.36,  0.42])
 
-#+begin_src jupyter-python
+#+begin_src jupyter-python :tangle tangle/original.py
   import itertools
   models = [sc.make_model(shift, shift) for shift in shifts]
   baseline = models[3]
@@ -98,7 +103,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 [[file:./.ob-jupyter/6cd27ecb12469a3db7f97ac433bf1a09e1fa43b3.svg]]
 
 ** Integrate
-#+begin_src jupyter-python
+#+begin_src jupyter-python :tangle tangle/original.py
   ot.integrate_online_multi(models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))
 #+end_src
 
@@ -571,7 +576,10 @@ modulation.
 :END:
 
 ** Slower switching
-#+begin_src jupyter-python :results none
+#+begin_src jupyter-python :results none :tangle tangle/long.py
+  <<boilerplate>>
+  shifts = sc.make_shifts(extra_r=4)
+
   long_models = [sc.make_model(shift, shift, switch_t=6., switch_t_sys=3) for shift in shifts]
   long_models = [sc.make_model(shift, shift, switch_t=6.) for shift in shifts]
 #+end_src
@@ -593,8 +601,8 @@ modulation.
 
 #+RESULTS:
 :RESULTS:
-: <matplotlib.legend.Legend at 0x7fe2654fb1c0>
-[[file:./.ob-jupyter/d165f24daac1914cd7de530b323bdfa4f4277227.svg]]
+: <matplotlib.legend.Legend at 0x7fe0ffae76d0>
+[[file:./.ob-jupyter/471bcf75fc64732c2fc4f25ea50b3d129f263072.svg]]
 :END:
 
 
@@ -622,10 +630,17 @@ modulation.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/763d92f7015c3de8d2f422936132342fc8fae839.svg]]
+:RESULTS:
+[[file:./.ob-jupyter/07448a73c1975e4ddc88d7c7dbfcbfc57255a4ad.svg]]
+: [2m[36m(pid=gcs_server)[0m [2023-04-04 14:39:14,000 E 868116 868116] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
+: [2m[36m(pid=gcs_server)[0m [2023-04-04 14:39:14,000 E 868116 868116] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
+: [2m[36m(pid=gcs_server)[0m [2023-04-04 14:39:14,000 E 868116 868116] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
+: [2m[36m(pid=gcs_server)[0m [2023-04-04 14:39:14,000 E 868116 868116] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
+: [2m[36m(pid=gcs_server)[0m [2023-04-04 14:39:14,000 E 868116 868116] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
+:END:
 
 
-#+begin_src jupyter-python
+#+begin_src jupyter-python :tangle tangle/long.py
   ot.integrate_online_multi(long_models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))
 #+end_src
 

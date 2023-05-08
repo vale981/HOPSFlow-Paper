@@ -265,7 +265,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/1b3959a046911e0ebcbce3e6d6f5df7f5867ffbb.svg]]
+\[[file:./.ob-jupyter/1b3959a046911e0ebcbce3e6d6f5df7f5867ffbb.svg]]
 
 
 #+begin_src jupyter-python
