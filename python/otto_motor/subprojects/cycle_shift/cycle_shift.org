@@ -80,7 +80,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/52bc73698a80a2938e44a3276eaeff5aded093cd.svg]]
+[[file:./.ob-jupyter/af1722dd51faebbec05b3013eba2c2e2864dd0f4.svg]]
 
 #+begin_src jupyter-python :tangle no
   #ot.plot_cycles(models, bath=0, legend=True)
@@ -104,12 +104,15 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/6c8cd0ac2518b43e36bd407ca0bb146a9f53dac7.svg]]
+[[file:./.ob-jupyter/73ad99c8f33025ef14048abda5eeefe8c0dd7b15.svg]]
 
 ** Integrate
 #+begin_src jupyter-python :tangle tangle/original.py
   ot.integrate_online_multi(models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))
 #+end_src
+
+#+RESULTS:
+: 88731cee-8bf8-411e-b9db-0b0138807646
 
 ** Analysis
 #+begin_src jupyter-python
@@ -144,7 +147,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+RESULTS:
 :RESULTS:
 : \(N=80000\)
-[[file:./.ob-jupyter/8dc6d71eabb095e2a21fc5d4050d2e77f8a4d407.svg]]
+[[file:./.ob-jupyter/7c4c619d2f9e55840f6181197c2c4e96a71c324a.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -183,11 +186,23 @@ We shift so that we just overlap with coupling/decoupling and one above.
 
 #+RESULTS:
 :RESULTS:
-: [[0.11920292 0.        ]
-:  [0.         0.88079708]]
-: [[0.37754067 0.        ]
-:  [0.         0.62245933]]
-[[file:./.ob-jupyter/d10a82faed83ac74fbdb0a80362cb43f7e44dbac.svg]]
+#+begin_example
+  [[0.11920292 0.        ]
+   [0.         0.88079708]]
+  [[0.37754067 0.        ]
+   [0.         0.62245933]]
+  /nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/cbook/__init__.py:1369: ComplexWarning: Casting complex values to real discards the imaginary part
+    return np.asarray(x, float)
+  /nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5340: ComplexWarning: Casting complex values to real discards the imaginary part
+    pts[0] = start
+  /nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5341: ComplexWarning: Casting complex values to real discards the imaginary part
+    pts[N + 1] = end
+  /nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5344: ComplexWarning: Casting complex values to real discards the imaginary part
+    pts[1:N+1, 1] = dep1slice
+  /nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5346: ComplexWarning: Casting complex values to real discards the imaginary part
+    pts[N+2:, 1] = dep2slice[::-1]
+#+end_example
+[[file:./.ob-jupyter/81d7229d7ed52abe3f521c318cdeeeb4c52e5a87.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -196,7 +211,6 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/2055a903d73105290085026649070f77a60ddd40.svg]]
 
 
 #+begin_src jupyter-python
@@ -205,7 +219,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/6904e11bd3ec5b85e0c2e0d8d60c91a3940b3b84.svg]]
+[[file:./.ob-jupyter/962ffa455699bc4ceabd74a04f849593a57a8e96.svg]]
 
 
 #+begin_src jupyter-python
@@ -214,7 +228,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/6576fcf3377ebb38995ea45a6571775d4365b7ef.svg]]
+[[file:./.ob-jupyter/8471d776db4404270d3df20b7173e59f783b92ba.svg]]
 
 We see that we get a pretty good picture after about 30k-40k samples.
 
@@ -224,7 +238,7 @@ We see that we get a pretty good picture after about 30k-40k samples.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/8e414af41379a102f5e066cb063acdd3a410a6a2.svg]]
+[[file:./.ob-jupyter/c4573aef927c867b1f7b60cb1176771fdaa66f5d.svg]]
 
 #+begin_src jupyter-python
   fig, ax =ot.plot_steady_energy_changes([baseline, models[3+2]], 2, label_fn=lambda m: ("baseline" if m.hexhash == baseline.hexhash else "shifted"))
@@ -233,7 +247,7 @@ We see that we get a pretty good picture after about 30k-40k samples.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/e82e58b9e588d336d71900346ebb97ac1ed8fcba.svg]]
+[[file:./.ob-jupyter/e8e0f0c962520ab4b163a0756b2a22e2ebd7435f.svg]]
 
 
 The best shift:
@@ -253,7 +267,7 @@ The best shift:
 #+RESULTS:
 :RESULTS:
 : 7cac0199140ff8f9fb2e0073b950e079e582466b8a6aea99f286d5d81b62cad8
-[[file:./.ob-jupyter/b0331e0557f3d5aa3f24e97405ad88d097838be6.svg]]
+[[file:./.ob-jupyter/c578a4380fca2032a39326c64b497ca15a876dc2.svg]]
 :END:
 
 
@@ -306,7 +320,7 @@ The best shift:
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/461e4a99905b6a95ee1aa9339dbbe19f90fef570.svg]]
+[[file:./.ob-jupyter/0aaae8f600192b07ca01041789f5cbeaf0d48ee2.svg]]
 
 
 #+begin_src jupyter-python
@@ -317,9 +331,9 @@ The best shift:
 
 #+RESULTS:
 :RESULTS:
-| <matplotlib.lines.Line2D | at | 0x7f4a54e115b0> |
-[[file:./.ob-jupyter/1dfc8faed914b3db9255e2f8148e6dd71674ebe3.svg]]
-[[file:./.ob-jupyter/c7199307117d774aea29cabdc27a35366881d724.svg]]
+| <matplotlib.lines.Line2D | at | 0x7fe9b1d26c40> |
+[[file:./.ob-jupyter/a2139b7a51fb5e3f03188d349b787fb2e3030961.svg]]
+[[file:./.ob-jupyter/737556be87761f7451bcfd437fd96170f7637ec9.svg]]
 :END:
 
 
@@ -359,7 +373,7 @@ The best shift:
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/6b305bc0d459a215b7c7df707b2fa4704d07a4b3.svg]]
+[[file:./.ob-jupyter/af9b31c1231b61d27855a73c8e6dc2f2db604233.svg]]
 
 
 * Explore Coupling Length Dimension for The best performing state
@@ -410,7 +424,28 @@ The best shift:
 #+end_src
 
 #+RESULTS:
-: 0.12
+:RESULTS:
+# [goto error]
+#+begin_example
+  [0;31m---------------------------------------------------------------------------[0m
+  [0;31mNameError[0m                                 Traceback (most recent call last)
+  Cell [0;32mIn[91], line 38[0m
+  [1;32m     34[0m     [38;5;28;01mreturn[39;00m next_model
+  [1;32m     37[0m Ns [38;5;241m=[39m [38;5;28mlist[39m([38;5;28mrange[39m([38;5;241m1[39m, [38;5;241m4[39m))[:[38;5;241m1[39m]
+  [0;32m---> 38[0m overlap_models [38;5;241m=[39m [overlap(best_shift_model, N, step) [38;5;28;01mfor[39;00m N [38;5;129;01min[39;00m Ns]
+  [1;32m     39[0m overlap_models [38;5;241m=[39m [overlap_cold(best_shift_model, N, step) [38;5;28;01mfor[39;00m N [38;5;129;01min[39;00m Ns]
+  [1;32m     40[0m new_step_size [38;5;241m=[39m [38;5;241m6[39m
+
+  Cell [0;32mIn[91], line 38[0m, in [0;36m<listcomp>[0;34m(.0)[0m
+  [1;32m     34[0m     [38;5;28;01mreturn[39;00m next_model
+  [1;32m     37[0m Ns [38;5;241m=[39m [38;5;28mlist[39m([38;5;28mrange[39m([38;5;241m1[39m, [38;5;241m4[39m))[:[38;5;241m1[39m]
+  [0;32m---> 38[0m overlap_models [38;5;241m=[39m [overlap(best_shift_model, N, [43mstep[49m) [38;5;28;01mfor[39;00m N [38;5;129;01min[39;00m Ns]
+  [1;32m     39[0m overlap_models [38;5;241m=[39m [overlap_cold(best_shift_model, N, step) [38;5;28;01mfor[39;00m N [38;5;129;01min[39;00m Ns]
+  [1;32m     40[0m new_step_size [38;5;241m=[39m [38;5;241m6[39m
+
+  [0;31mNameError[0m: name 'step' is not defined
+#+end_example
+:END:
 
 #+begin_src jupyter-python :tangle no
   ot.plot_cycles([overlap_models[0]], legend=True)
@@ -418,8 +453,13 @@ The best shift:
 
 #+RESULTS:
 :RESULTS:
-| <Figure | size | 340x320 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Operator Norm | > |
-[[file:./.ob-jupyter/1448dddffc867d28693765ef9638d816846cbb48.svg]]
+# [goto error]
+: [0;31m---------------------------------------------------------------------------[0m
+: [0;31mNameError[0m                                 Traceback (most recent call last)
+: Cell [0;32mIn[90], line 1[0m
+: [0;32m----> 1[0m ot[38;5;241m.[39mplot_cycles([[43moverlap_models[49m[[38;5;241m0[39m]], legend[38;5;241m=[39m[38;5;28;01mTrue[39;00m)
+:
+: [0;31mNameError[0m: name 'overlap_models' is not defined
 :END:
 
 ** Integrate
@@ -592,8 +632,8 @@ modulation.
 
 #+RESULTS:
 :RESULTS:
-: <matplotlib.legend.Legend at 0x7fe0ffae76d0>
-[[file:./.ob-jupyter/471bcf75fc64732c2fc4f25ea50b3d129f263072.svg]]
+: <matplotlib.legend.Legend at 0x7fe9b15f0340>
+[[file:./.ob-jupyter/cb7df72fdbae443014029e58c57c8cd040d2cdad.svg]]
 :END:
 
 
@@ -621,14 +661,7 @@ modulation.
 #+end_src
 
 #+RESULTS:
-:RESULTS:
-[[file:./.ob-jupyter/07448a73c1975e4ddc88d7c7dbfcbfc57255a4ad.svg]]
-: [2m[36m(pid=gcs_server)[0m [2023-04-04 14:39:14,000 E 868116 868116] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
-: [2m[36m(pid=gcs_server)[0m [2023-04-04 14:39:14,000 E 868116 868116] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
-: [2m[36m(pid=gcs_server)[0m [2023-04-04 14:39:14,000 E 868116 868116] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
-: [2m[36m(pid=gcs_server)[0m [2023-04-04 14:39:14,000 E 868116 868116] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
-: [2m[36m(pid=gcs_server)[0m [2023-04-04 14:39:14,000 E 868116 868116] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
-:END:
+[[file:./.ob-jupyter/ad6aa52c6730f14c9f10f32edb03ae96b8f6a006.svg]]
 
 
 #+begin_src jupyter-python :tangle tangle/long.py
@@ -649,15 +682,19 @@ modulation.
 #+end_src
 
 #+RESULTS:
-: -0.18 0.12 80000 -0.7432352797196996 -98.3933277583729 (-0.6547883379568094, 0.32914493962691976)
-: -0.12 0.12 80000 0.5515764970059213 -4.588837155210551 (0.28325656807481425, 0.32914493962691976)
-: -0.06 0.12 80000 0.9849641934327689 10.389858999462525 (0.433043529621545, 0.32914493962691976)
-: 0.0 0.12 80000 0.9864290608793423 10.386118256193916 (0.4330061221888589, 0.32914493962691976)
-: 0.06 0.12 80000 0.9777553355809067 10.616195121156663 (0.4353068908384864, 0.32914493962691976)
-: 0.12 0.12 80000 1.1185864670592693 10.712677023075978 (0.43627170985767955, 0.32914493962691976)
-: 0.18 0.12 80000 1.280064611377701 7.403981413620636 (0.4031847537631261, 0.32914493962691976)
-: 0.24 0.12 80000 1.1867997141496045 2.747192020803302 (0.3566168598349528, 0.32914493962691976)
-: 0.3 0.12 80000 0.7281813558728701 -10.479096524510464 (0.22435397438181512, 0.32914493962691976)
+#+begin_example
+  -0.18 0.12 80000 -0.7432352797196996 -98.3933277583729 (-0.6547883379568094, 0.32914493962691976)
+  -0.12 0.12 80000 0.5515764970059213 -4.588837155210551 (0.28325656807481425, 0.32914493962691976)
+  -0.06 0.12 80000 0.9849641934327689 10.389858999462525 (0.433043529621545, 0.32914493962691976)
+  0.0 0.12 80000 0.9864290608793423 10.386118256193916 (0.4330061221888589, 0.32914493962691976)
+  0.06 0.12 80000 0.9777553355809067 10.616195121156663 (0.4353068908384864, 0.32914493962691976)
+  0.12 0.12 80000 1.1185864670592693 10.712677023075978 (0.43627170985767955, 0.32914493962691976)
+  0.18 0.12 80000 1.280064611377701 7.403981413620636 (0.4031847537631261, 0.32914493962691976)
+  0.24 0.12 80000 1.1867997141496045 2.747192020803302 (0.3566168598349528, 0.32914493962691976)
+  0.3 0.12 80000 0.7281813558728701 -10.479096524510464 (0.22435397438181512, 0.32914493962691976)
+  0.36 0.12 80000 -0.45197344202291523 -49.898300662353925 (-0.16983806699661946, 0.32914493962691976)
+  0.42 0.12 80000 -1.4644608753444812 -108.49803909971185 (-0.7558354513701987, 0.32914493962691976)
+#+end_example
 
 
 #+begin_src jupyter-python
@@ -674,7 +711,7 @@ modulation.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/136aed41f1e97c8727d923361a130a92097a60ce.svg]]
+[[file:./.ob-jupyter/3c84f70ced5643089d048ba60451f50a3409c231.svg]]
 
 Aho! The trick is just to slow down the coupling switching.
 
@@ -687,8 +724,8 @@ Aho! The trick is just to slow down the coupling switching.
 
 #+RESULTS:
 :RESULTS:
-: <matplotlib.legend.Legend at 0x7f46809d1670>
-[[file:./.ob-jupyter/79b743c561edc35e3a3916de2ce83b18cba6c55d.svg]]
+: <matplotlib.legend.Legend at 0x7fe9b08ff2e0>
+[[file:./.ob-jupyter/4fb778a2d542fde60accec2963706290dff4418b.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -705,7 +742,7 @@ Aho! The trick is just to slow down the coupling switching.
 # [goto error]
 : [0;31m---------------------------------------------------------------------------[0m
 : [0;31mNameError[0m                                 Traceback (most recent call last)
-: Cell [0;32mIn[56], line 3[0m
+: Cell [0;32mIn[27], line 3[0m
 : [1;32m      1[0m powers_long [38;5;241m=[39m [[38;5;241m-[39mmodel[38;5;241m.[39mpower(steady_idx[38;5;241m=[39m[38;5;241m2[39m)[38;5;241m.[39mvalue [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m long_models]
 : [1;32m      2[0m powers_short [38;5;241m=[39m [[38;5;241m-[39mmodel[38;5;241m.[39mpower(steady_idx[38;5;241m=[39m[38;5;241m2[39m)[38;5;241m.[39mvalue [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models]
 : [0;32m----> 3[0m power_overlap [38;5;241m=[39m [38;5;241m-[39m[43moverlap_models[49m[[38;5;241m0[39m][38;5;241m.[39mpower(steady_idx[38;5;241m=[39m[38;5;241m2[39m)[38;5;241m.[39mvalue
@@ -730,8 +767,17 @@ The overlap model still has slightly, but negligible power advantage.
 
 #+RESULTS:
 :RESULTS:
-: <matplotlib.lines.Line2D at 0x7fb7bf86df10>
-[[file:./.ob-jupyter/e3ad584293286425efa5f50a7c2037f568438277.svg]]
+# [goto error]
+: [0;31m---------------------------------------------------------------------------[0m
+: [0;31mNameError[0m                                 Traceback (most recent call last)
+: Cell [0;32mIn[28], line 3[0m
+: [1;32m      1[0m efficiencys_long [38;5;241m=[39m [model[38;5;241m.[39mefficiency(steady_idx[38;5;241m=[39m[38;5;241m2[39m)[38;5;241m.[39mvalue [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m long_models]
+: [1;32m      2[0m efficiencys_short [38;5;241m=[39m [model[38;5;241m.[39mefficiency(steady_idx[38;5;241m=[39m[38;5;241m2[39m)[38;5;241m.[39mvalue [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models]
+: [0;32m----> 3[0m efficiency_overlap [38;5;241m=[39m [43moverlap_models[49m[[38;5;241m0[39m][38;5;241m.[39mefficiency(steady_idx[38;5;241m=[39m[38;5;241m2[39m)[38;5;241m.[39mvalue
+: [1;32m      4[0m plt[38;5;241m.[39mplot(shifts, efficiencys_short)
+: [1;32m      5[0m plt[38;5;241m.[39mplot(shifts, efficiencys_long)
+:
+: [0;31mNameError[0m: name 'overlap_models' is not defined
 :END:
 
 Ok, we find that there's nothing special about the overlap model.
@@ -759,7 +805,7 @@ Now let's try to find out why the efficiency improved.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/ae6cb31c3edef8ef606a639a364d4a25e0442688.svg]]
+[[file:./.ob-jupyter/1446c6e53dac7fbcb1089dcf980e7299b7d75301.svg]]
 Way less energy is dumped into the cold bath.
 
 #+begin_src jupyter-python
@@ -807,7 +853,19 @@ Way less energy is dumped into the cold bath.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/68ae36ac29f3001fc1745d612ccfcba544ef5707.svg]]
+:RESULTS:
+: /home/hiro/src/hopsflow/hopsflow/util.py:332: RuntimeWarning: divide by zero encountered in divide
+:   left_i[1] / right_i[1],
+: /home/hiro/src/hopsflow/hopsflow/util.py:332: RuntimeWarning: invalid value encountered in divide
+:   left_i[1] / right_i[1],
+: /home/hiro/src/hopsflow/hopsflow/util.py:334: RuntimeWarning: divide by zero encountered in divide
+:   (left_i[2] / right_i[1]) ** 2
+: /home/hiro/src/hopsflow/hopsflow/util.py:335: RuntimeWarning: divide by zero encountered in divide
+:   + (left_i[1] / (right_i[1]) ** 2 * right_i[2]) ** 2
+: /home/hiro/src/hopsflow/hopsflow/util.py:335: RuntimeWarning: invalid value encountered in divide
+:   + (left_i[1] / (right_i[1]) ** 2 * right_i[2]) ** 2
+[[file:./.ob-jupyter/3d588233ddaeb47b80e2d98855937e09ec32bd3f.svg]]
+:END:
 
 #+begin_src jupyter-python
   plt.plot(best_shift_model.t, (best_shift_model.bath_energy().for_bath(0) / best_shift_model.bath_energy().for_bath(1)).value)
@@ -819,7 +877,7 @@ Way less energy is dumped into the cold bath.
 : /home/hiro/src/hopsflow/hopsflow/util.py:334: RuntimeWarning: invalid value encountered in divide
 :   (left_i[2] / right_i[1]) ** 2
 | -1.0 | 1.0 |
-[[file:./.ob-jupyter/2481b239f61a4fc84617ca79cb91d7ee2c7eae6d.svg]]
+[[file:./.ob-jupyter/e370756ca7053f6e2cd87fb4928a509100b6900d.svg]]
 :END:
 
 
@@ -833,7 +891,7 @@ Way less energy is dumped into the cold bath.
 #+RESULTS:
 
 #+begin_src jupyter-python :results none :tangle tangle/only_cold.py
-  shifts = sc.make_shifts()
+  shifts = sc.make_shifts(extra_r=4)
   cold_models = [sc.make_model(shift, shift, switch_t=6., only_cold=True) for shift in shifts]
 #+end_src
 
@@ -859,6 +917,7 @@ Way less energy is dumped into the cold bath.
 #+end_src
 
 #+RESULTS:
+[[file:./.ob-jupyter/de3eb2a9f0973f77f95d912248d6f10ee0635854.svg]]
 
 [[file:./.ob-jupyter/e3413d8306c7996bd7476d0047a621c7c973187e.svg]]
 
@@ -884,7 +943,7 @@ Way less energy is dumped into the cold bath.
 #+RESULTS:
 :RESULTS:
 | 0.0 | 60.0 |
-[[file:./.ob-jupyter/88280474909756e93a10041db2d0af4db2e54edd.svg]]
+[[file:./.ob-jupyter/71e4dbcb0c094107e336437a1247ef0a1e316bcb.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -905,7 +964,61 @@ Way less energy is dumped into the cold bath.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/2dba4cb317ec601eaa32575401efb8dcb75a69ea.svg]]
+:RESULTS:
+# [goto error]
+#+begin_example
+  [0;31m---------------------------------------------------------------------------[0m
+  [0;31mValueError[0m                                Traceback (most recent call last)
+  Cell [0;32mIn[36], line 3[0m
+  [1;32m      1[0m fig, (ax2, ax1, ax3) [38;5;241m=[39m plt[38;5;241m.[39msubplots(nrows[38;5;241m=[39m[38;5;241m1[39m, ncols[38;5;241m=[39m[38;5;241m3[39m)
+  [1;32m      2[0m _, ax1_right [38;5;241m=[39m ot[38;5;241m.[39mplot_powers_and_efficiencies(np[38;5;241m.[39marray(shifts) [38;5;241m*[39m [38;5;241m100[39m, cold_models, xlabel[38;5;241m=[39m[38;5;124m"[39m[38;5;124mCycle Shift[39m[38;5;124m"[39m, ax[38;5;241m=[39max1)[[38;5;241m2[39m]
+  [0;32m----> 3[0m _, ax2_right [38;5;241m=[39m [43mot[49m[38;5;241;43m.[39;49m[43mplot_powers_and_efficiencies[49m[43m([49m[43mnp[49m[38;5;241;43m.[39;49m[43marray[49m[43m([49m[43mshifts[49m[43m)[49m[43m [49m[38;5;241;43m*[39;49m[43m [49m[38;5;241;43m100[39;49m[43m,[49m[43m [49m[43mlong_models[49m[43m,[49m[43m [49m[43mxlabel[49m[38;5;241;43m=[39;49m[38;5;124;43m"[39;49m[38;5;124;43mCycle Shift[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43max[49m[38;5;241;43m=[39;49m[43max2[49m[43m)[49m[[38;5;241m2[39m]
+  [1;32m      4[0m _, ax3_right [38;5;241m=[39m ot[38;5;241m.[39mplot_powers_and_efficiencies(np[38;5;241m.[39marray(shifts) [38;5;241m*[39m [38;5;241m100[39m, models, xlabel[38;5;241m=[39m[38;5;124m"[39m[38;5;124mCycle Shift[39m[38;5;124m"[39m, ax[38;5;241m=[39max3)[[38;5;241m2[39m]
+  [1;32m      6[0m ax1_right[38;5;241m.[39msharey(ax2_right)
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/plot_utils.py:40[0m, in [0;36mwrap_plot.<locals>.wrapped[0;34m(ax, setup_function, *args, **kwargs)[0m
+  [1;32m     37[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m ax:
+  [1;32m     38[0m     fig, ax [38;5;241m=[39m setup_function()
+  [0;32m---> 40[0m ret_val [38;5;241m=[39m [43mf[49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[43max[49m[38;5;241;43m=[39;49m[43max[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
+  [1;32m     41[0m [38;5;28;01mreturn[39;00m (fig, ax, ret_val) [38;5;28;01mif[39;00m ret_val [38;5;28;01melse[39;00m (fig, ax)
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/otto_utilities.py:80[0m, in [0;36mplot_powers_and_efficiencies[0;34m(x, models, steady_idx, ax, xlabel)[0m
+  [1;32m     78[0m mask [38;5;241m=[39m efficiencies [38;5;241m>[39m [38;5;241m0[39m
+  [1;32m     79[0m a2 [38;5;241m=[39m ax[38;5;241m.[39mtwinx()
+  [0;32m---> 80[0m [43max[49m[38;5;241;43m.[39;49m[43merrorbar[49m[43m([49m[43mx[49m[43m,[49m[43m [49m[43mpowers[49m[43m,[49m[43m [49m[43myerr[49m[38;5;241;43m=[39;49m[43mpowers_σ[49m[43m,[49m[43m [49m[43mmarker[49m[38;5;241;43m=[39;49m[38;5;124;43m"[39;49m[38;5;124;43m.[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mlabel[49m[38;5;241;43m=[39;49m[38;5;124;43mr[39;49m[38;5;124;43m"[39;49m[38;5;124;43m$[39;49m[38;5;124;43m\[39;49m[38;5;124;43mbar[39;49m[38;5;132;43;01m{P}[39;49;00m[38;5;124;43m$[39;49m[38;5;124;43m"[39;49m[43m)[49m
+  [1;32m     81[0m ax[38;5;241m.[39merrorbar(
+  [1;32m     82[0m     x,
+  [1;32m     83[0m     system_powers,
+  [0;32m   (...)[0m
+  [1;32m     86[0m     label[38;5;241m=[39m[38;5;124mr[39m[38;5;124m"[39m[38;5;124m$[39m[38;5;124m\[39m[38;5;124mbar[39m[38;5;132;01m{P}[39;00m[38;5;124m_[39m[38;5;124m{[39m[38;5;124m\[39m[38;5;124mmathrm[39m[38;5;132;01m{sys}[39;00m[38;5;124m}$[39m[38;5;124m"[39m,
+  [1;32m     87[0m )
+  [1;32m     89[0m ax[38;5;241m.[39merrorbar(
+  [1;32m     90[0m     x,
+  [1;32m     91[0m     interaction_powers,
+  [0;32m   (...)[0m
+  [1;32m     94[0m     label[38;5;241m=[39m[38;5;124mr[39m[38;5;124m"[39m[38;5;124m$[39m[38;5;124m\[39m[38;5;124mbar[39m[38;5;132;01m{P}[39;00m[38;5;124m_[39m[38;5;124m{[39m[38;5;124m\[39m[38;5;124mmathrm[39m[38;5;132;01m{int}[39;00m[38;5;124m}$[39m[38;5;124m"[39m,
+  [1;32m     95[0m )
+
+  File [0;32m/nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/__init__.py:1423[0m, in [0;36m_preprocess_data.<locals>.inner[0;34m(ax, data, *args, **kwargs)[0m
+  [1;32m   1420[0m [38;5;129m@functools[39m[38;5;241m.[39mwraps(func)
+  [1;32m   1421[0m [38;5;28;01mdef[39;00m [38;5;21minner[39m(ax, [38;5;241m*[39margs, data[38;5;241m=[39m[38;5;28;01mNone[39;00m, [38;5;241m*[39m[38;5;241m*[39mkwargs):
+  [1;32m   1422[0m     [38;5;28;01mif[39;00m data [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+  [0;32m-> 1423[0m         [38;5;28;01mreturn[39;00m [43mfunc[49m[43m([49m[43max[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;28;43mmap[39;49m[43m([49m[43msanitize_sequence[49m[43m,[49m[43m [49m[43margs[49m[43m)[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
+  [1;32m   1425[0m     bound [38;5;241m=[39m new_sig[38;5;241m.[39mbind(ax, [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs)
+  [1;32m   1426[0m     auto_label [38;5;241m=[39m (bound[38;5;241m.[39marguments[38;5;241m.[39mget(label_namer)
+  [1;32m   1427[0m                   [38;5;129;01mor[39;00m bound[38;5;241m.[39mkwargs[38;5;241m.[39mget(label_namer))
+
+  File [0;32m/nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:3491[0m, in [0;36mAxes.errorbar[0;34m(self, x, y, yerr, xerr, fmt, ecolor, elinewidth, capsize, barsabove, lolims, uplims, xlolims, xuplims, errorevery, capthick, **kwargs)[0m
+  [1;32m   3489[0m x, y [38;5;241m=[39m np[38;5;241m.[39matleast_1d(x, y)  [38;5;66;03m# Make sure all the args are iterable.[39;00m
+  [1;32m   3490[0m [38;5;28;01mif[39;00m [38;5;28mlen[39m(x) [38;5;241m!=[39m [38;5;28mlen[39m(y):
+  [0;32m-> 3491[0m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([38;5;124m"[39m[38;5;124m'[39m[38;5;124mx[39m[38;5;124m'[39m[38;5;124m and [39m[38;5;124m'[39m[38;5;124my[39m[38;5;124m'[39m[38;5;124m must have the same size[39m[38;5;124m"[39m)
+  [1;32m   3493[0m everymask [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39m_errorevery_to_mask(x, errorevery)
+  [1;32m   3495[0m label [38;5;241m=[39m kwargs[38;5;241m.[39mpop([38;5;124m"[39m[38;5;124mlabel[39m[38;5;124m"[39m, [38;5;28;01mNone[39;00m)
+
+  [0;31mValueError[0m: 'x' and 'y' must have the same size
+#+end_example
+[[file:./.ob-jupyter/0808a4e641f3bfd149695bb00c73368d6b872d03.svg]]
+:END:
 
 #+begin_src jupyter-python
   ot.plot_multi_powers_and_efficiencies(shifts, [models, long_models, cold_models], ["shifted", "shifted + slower modulation", "slower + only cold shifted"], xlabel=r"Shift $\delta$")
@@ -913,7 +1026,63 @@ Way less energy is dumped into the cold bath.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/b1465aa4fa0c0e24f8fa2129d1f2405598f3542f.svg]]
+:RESULTS:
+# [goto error]
+#+begin_example
+  [0;31m---------------------------------------------------------------------------[0m
+  [0;31mValueError[0m                                Traceback (most recent call last)
+  Cell [0;32mIn[37], line 1[0m
+  [0;32m----> 1[0m [43mot[49m[38;5;241;43m.[39;49m[43mplot_multi_powers_and_efficiencies[49m[43m([49m[43mshifts[49m[43m,[49m[43m [49m[43m[[49m[43mmodels[49m[43m,[49m[43m [49m[43mlong_models[49m[43m,[49m[43m [49m[43mcold_models[49m[43m][49m[43m,[49m[43m [49m[43m[[49m[38;5;124;43m"[39;49m[38;5;124;43mshifted[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[38;5;124;43m"[39;49m[38;5;124;43mshifted + slower modulation[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[38;5;124;43m"[39;49m[38;5;124;43mslower + only cold shifted[39;49m[38;5;124;43m"[39;49m[43m][49m[43m,[49m[43m [49m[43mxlabel[49m[38;5;241;43m=[39;49m[38;5;124;43mr[39;49m[38;5;124;43m"[39;49m[38;5;124;43mShift $[39;49m[38;5;124;43m\[39;49m[38;5;124;43mdelta$[39;49m[38;5;124;43m"[39;49m[43m)[49m
+  [1;32m      2[0m fs[38;5;241m.[39mexport_fig([38;5;124m"[39m[38;5;124mshift_comparison[39m[38;5;124m"[39m, y_scaling[38;5;241m=[39m[38;5;241m1[39m, x_scaling[38;5;241m=[39m[38;5;241m2[39m)
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/otto_utilities.py:177[0m, in [0;36mplot_multi_powers_and_efficiencies[0;34m(x, multi_models, titles, steady_idx, xlabel)[0m
+  [1;32m    171[0m efficiencies_σ [38;5;241m=[39m np[38;5;241m.[39marray(
+  [1;32m    172[0m     [[38;5;241m100[39m [38;5;241m*[39m model[38;5;241m.[39mefficiency(steady_idx[38;5;241m=[39msteady_idx)[38;5;241m.[39mσ [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models]
+  [1;32m    173[0m )
+  [1;32m    175[0m mask [38;5;241m=[39m efficiencies [38;5;241m>[39m [38;5;241m0[39m
+  [0;32m--> 177[0m [43mpower[49m[38;5;241;43m.[39;49m[43mplot[49m[43m([49m[43mx[49m[43m,[49m[43m [49m[43mpowers[49m[43m,[49m[43m [49m[43mmarker[49m[38;5;241;43m=[39;49m[43mmarker[49m[43m)[49m
+  [1;32m    178[0m system_power[38;5;241m.[39mplot(
+  [1;32m    179[0m     x,
+  [1;32m    180[0m     system_powers,
+  [1;32m    181[0m     marker[38;5;241m=[39mmarker,
+  [1;32m    182[0m )
+  [1;32m    184[0m interaction_power[38;5;241m.[39mplot(
+  [1;32m    185[0m     x,
+  [1;32m    186[0m     interaction_powers,
+  [1;32m    187[0m     marker[38;5;241m=[39mmarker,
+  [1;32m    188[0m )
+
+  File [0;32m/nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:1662[0m, in [0;36mAxes.plot[0;34m(self, scalex, scaley, data, *args, **kwargs)[0m
+  [1;32m   1419[0m [38;5;124;03m"""[39;00m
+  [1;32m   1420[0m [38;5;124;03mPlot y versus x as lines and/or markers.[39;00m
+  [1;32m   1421[0m
+  [0;32m   (...)[0m
+  [1;32m   1659[0m [38;5;124;03m(``'green'``) or hex strings (``'#008000'``).[39;00m
+  [1;32m   1660[0m [38;5;124;03m"""[39;00m
+  [1;32m   1661[0m kwargs [38;5;241m=[39m cbook[38;5;241m.[39mnormalize_kwargs(kwargs, mlines[38;5;241m.[39mLine2D)
+  [0;32m-> 1662[0m lines [38;5;241m=[39m [[38;5;241m*[39m[38;5;28mself[39m[38;5;241m.[39m_get_lines([38;5;241m*[39margs, data[38;5;241m=[39mdata, [38;5;241m*[39m[38;5;241m*[39mkwargs)]
+  [1;32m   1663[0m [38;5;28;01mfor[39;00m line [38;5;129;01min[39;00m lines:
+  [1;32m   1664[0m     [38;5;28mself[39m[38;5;241m.[39madd_line(line)
+
+  File [0;32m/nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_base.py:311[0m, in [0;36m_process_plot_var_args.__call__[0;34m(self, data, *args, **kwargs)[0m
+  [1;32m    309[0m     this [38;5;241m+[39m[38;5;241m=[39m args[[38;5;241m0[39m],
+  [1;32m    310[0m     args [38;5;241m=[39m args[[38;5;241m1[39m:]
+  [0;32m--> 311[0m [38;5;28;01myield from[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_plot_args[49m[43m([49m
+  [1;32m    312[0m [43m    [49m[43mthis[49m[43m,[49m[43m [49m[43mkwargs[49m[43m,[49m[43m [49m[43mambiguous_fmt_datakey[49m[38;5;241;43m=[39;49m[43mambiguous_fmt_datakey[49m[43m)[49m
+
+  File [0;32m/nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_base.py:504[0m, in [0;36m_process_plot_var_args._plot_args[0;34m(self, tup, kwargs, return_kwargs, ambiguous_fmt_datakey)[0m
+  [1;32m    501[0m     [38;5;28mself[39m[38;5;241m.[39maxes[38;5;241m.[39myaxis[38;5;241m.[39mupdate_units(y)
+  [1;32m    503[0m [38;5;28;01mif[39;00m x[38;5;241m.[39mshape[[38;5;241m0[39m] [38;5;241m!=[39m y[38;5;241m.[39mshape[[38;5;241m0[39m]:
+  [0;32m--> 504[0m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mx and y must have same first dimension, but [39m[38;5;124m"[39m
+  [1;32m    505[0m                      [38;5;124mf[39m[38;5;124m"[39m[38;5;124mhave shapes [39m[38;5;132;01m{[39;00mx[38;5;241m.[39mshape[38;5;132;01m}[39;00m[38;5;124m and [39m[38;5;132;01m{[39;00my[38;5;241m.[39mshape[38;5;132;01m}[39;00m[38;5;124m"[39m)
+  [1;32m    506[0m [38;5;28;01mif[39;00m x[38;5;241m.[39mndim [38;5;241m>[39m [38;5;241m2[39m [38;5;129;01mor[39;00m y[38;5;241m.[39mndim [38;5;241m>[39m [38;5;241m2[39m:
+  [1;32m    507[0m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mx and y can be no greater than 2D, but have [39m[38;5;124m"[39m
+  [1;32m    508[0m                      [38;5;124mf[39m[38;5;124m"[39m[38;5;124mshapes [39m[38;5;132;01m{[39;00mx[38;5;241m.[39mshape[38;5;132;01m}[39;00m[38;5;124m and [39m[38;5;132;01m{[39;00my[38;5;241m.[39mshape[38;5;132;01m}[39;00m[38;5;124m"[39m)
+
+  [0;31mValueError[0m: x and y must have same first dimension, but have shapes (9,) and (11,)
+#+end_example
+[[file:./.ob-jupyter/2b127d9efe76f2d5af7288fd1c86ed71265d6c8a.svg]]
+:END:
 
 ** Findings
 - coupling overlap doesn't help much
