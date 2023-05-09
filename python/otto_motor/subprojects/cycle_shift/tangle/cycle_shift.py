@@ -416,7 +416,7 @@ fs.export_fig("cycle_shift_power_efficiency_longer_vs_only_cold", y_scaling=.7, 
 ot.plot_multi_powers_and_efficiencies(shifts, [models, long_models, cold_models], ["shifted", "shifted + slower modulation", "slower + only cold shifted"], xlabel=r"Shift $\delta$")
 fs.export_fig("shift_comparison", y_scaling=1, x_scaling=2)
 
-ot.plot_bloch_components(off_ax_models[1])
+ot.plot_bloch_components(off_ax_models[0])
 
 for model in off_ax_models:
-    ot.plot_energy(model)
+    print(model.power(steady_idx=1).value / baseline.power(steady_idx=1).value, model.efficiency(steady_idx=1).value / baseline.efficiency(steady_idx=1).value)

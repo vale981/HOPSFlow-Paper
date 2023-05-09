@@ -20,7 +20,7 @@ import logging
 logging_setup(logging.INFO)
 plt.rcParams['figure.figsize'] = (12,4)
 
-proto = sc.make_model(0, 0)
+proto = sc.make_model(0, 0, switch_t=6)
 off_ax_models = []
 for weight in [.3, .6]:
     off_ax = proto.copy()

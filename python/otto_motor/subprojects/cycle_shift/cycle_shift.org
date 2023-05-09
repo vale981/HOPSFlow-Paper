@@ -1095,7 +1095,7 @@ Way less energy is dumped into the cold bath.
 #+end_src
 
 #+begin_src jupyter-python :tangle tangle/off_axis.py
-  proto = sc.make_model(0, 0)
+  proto = sc.make_model(0, 0, switch_t=6)
   off_ax_models = []
   for weight in [.3, .6]:
       off_ax = proto.copy()
@@ -1106,7 +1106,7 @@ Way less energy is dumped into the cold bath.
 #+end_src
 
 #+RESULTS:
-: 3.5999999999999996
+: 7.199999999999999
 
 #+begin_src jupyter-python :tangle tangle/off_axis.py
   ot.integrate_online_multi(off_ax_models, 10_000, increment=10_000, analyze_kwargs=dict(every=10_000))
@@ -1124,23 +1124,23 @@ Way less energy is dumped into the cold bath.
 :
 
 #+begin_src jupyter-julia
-ot.plot_bloch_components(off_ax_models[1])
+  ot.plot_bloch_components(off_ax_models[0])
 #+end_src
 
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 340x320 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | > |
-[[file:./.ob-jupyter/e322b02f00b192353074490f3ccb65cb06b4f3cb.svg]]
+[[file:./.ob-jupyter/e69f3f0bcc548ae510cff4c2ec6ca0a46c17c078.svg]]
 :END:
 
 
 #+begin_src jupyter-python
   for model in off_ax_models:
-      ot.plot_energy(model)
+      print(model.power(steady_idx=1).value / baseline.power(steady_idx=1).value, model.efficiency(steady_idx=1).value / baseline.efficiency(steady_idx=1).value)
 #+end_src
 
 #+RESULTS:
-:RESULTS:
-[[file:./.ob-jupyter/0bda9729fd4c2dc1e8bb0d7c5b410ee176f4d66a.svg]]
-[[file:./.ob-jupyter/4e0a91915083d35989203937146b00aaf46055d7.svg]]
-:END:
+: 1.0574121708551179 1.016329556714788
+: 1.1608389370275625 0.9458062530964767
+
+Interestingly, even with the too-fast switching we have greater power.
