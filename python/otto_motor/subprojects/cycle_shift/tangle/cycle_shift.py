@@ -1,4 +1,3 @@
-import figsaver as fs
 import plot_utils as pu
 from hiro_models.one_qubit_model import StocProcTolerances
 from hiro_models.otto_cycle import OttoEngine
@@ -11,6 +10,7 @@ import matplotlib.pyplot as plt
 import otto_utilities as ot
 import shift_cycle as sc
 import ray
+import figsaver as fs
 ray.shutdown()
 
 #ray.init(address='auto')
@@ -18,7 +18,6 @@ ray.init()
 from hops.util.logging_setup import logging_setup
 import logging
 logging_setup(logging.INFO)
-plt.rcParams['figure.figsize'] = (12,4)
 
 ot.plot_cycle(baseline)
 fs.export_fig("cycle_prototype", y_scaling=.7)
@@ -40,7 +39,7 @@ def thermal_state(T, Ω):
     return ρ
 import hops.util.utilities
 from hopsflow.util import EnsembleValue
-for model in models[3:4]:
+for model in [baseline]:
     with aux.get_data(model) as data:
         trace_dist_c = hops.util.utilities.trace_distance(data, relative_to=thermal_state(model.T[0], model.energy_gaps[0]))
         trace_dist_h = hops.util.utilities.trace_distance(data, relative_to=thermal_state(model.T[1], model.energy_gaps[1]))
@@ -277,8 +276,6 @@ ax.add_artist(legend_1)
 ax.set_xlim((0, long_models[0].Θ))
 fs.export_fig("cycle_shift_long_shifts", x_scaling=2, y_scaling=.5)
 
-long_baseline = long_models[np.argmin(abs(np.array(shifts) - 0))]
-long_baseline = best_shift_model
 for shift, model in zip(shifts, long_models):
     print(
         shift, best_shift,
@@ -416,7 +413,22 @@ fs.export_fig("cycle_shift_power_efficiency_longer_vs_only_cold", y_scaling=.7, 
 ot.plot_multi_powers_and_efficiencies(shifts, [models, long_models, cold_models], ["shifted", "shifted + slower modulation", "slower + only cold shifted"], xlabel=r"Shift $\delta$")
 fs.export_fig("shift_comparison", y_scaling=1, x_scaling=2)
 
-ot.plot_bloch_components(off_ax_models[0])
+aux.import_results(other_data_path="taurus/.data_oa", other_results_path="taurus/results")
 
-for model in off_ax_models:
-    print(model.power(steady_idx=1).value / baseline.power(steady_idx=1).value, model.efficiency(steady_idx=1).value / baseline.efficiency(steady_idx=1).value)
+for (i, model), weight in zip(enumerate(off_ax_models), weights):
+    f, a = ot.plot_bloch_components(model)
+    #ot.plot_bloch_components(off_ax_models[i+2], ax=a, linestyle="--", label=None)
+
+    a.set_title(rf"$r_y={weight}$")
+    fs.export_fig(f"bloch_expectation_offaxis_{weight}", y_scaling=.7)
+
+np.array(weights) / np.sqrt(1 + np.array(weights) ** 2)
+
+baselines = [baseline] * 2 + [long_baseline] * 2
+for model, ref in zip(off_ax_models, baselines):
+    print(model.power(steady_idx=1).value / ref.power(steady_idx=1).value, model.efficiency(steady_idx=1).value / ref.efficiency(steady_idx=1).value)
+
+for (i, model), weight in zip(enumerate(off_ax_models), weights):
+    f, a = ot.plot_energy(model)
+    a.set_title(rf"$r_y={weight}$")
+    fs.export_fig(f"full_energy_offaxis_{weight}", x_scaling=2, y_scaling=1)

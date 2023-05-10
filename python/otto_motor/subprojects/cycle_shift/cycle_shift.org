@@ -9,7 +9,6 @@ find if there is an improvement.
 * Boilerplate
 #+name: boilerplate
 #+begin_src jupyter-python :results none
-  import figsaver as fs
   import plot_utils as pu
   from hiro_models.one_qubit_model import StocProcTolerances
   from hiro_models.otto_cycle import OttoEngine
@@ -22,6 +21,7 @@ find if there is an improvement.
   import otto_utilities as ot
   import shift_cycle as sc
   import ray
+  import figsaver as fs
   ray.shutdown()
 
   #ray.init(address='auto')
@@ -29,7 +29,6 @@ find if there is an improvement.
   from hops.util.logging_setup import logging_setup
   import logging
   logging_setup(logging.INFO)
-  plt.rcParams['figure.figsize'] = (12,4)
 #+end_src
 
 * Cycles
@@ -80,7 +79,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/af1722dd51faebbec05b3013eba2c2e2864dd0f4.svg]]
+[[file:./.ob-jupyter/02cbbf58cd0cbe9a198d4e1b1ca05e1435224c50.svg]]
 
 #+begin_src jupyter-python :tangle no
   #ot.plot_cycles(models, bath=0, legend=True)
@@ -104,7 +103,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/73ad99c8f33025ef14048abda5eeefe8c0dd7b15.svg]]
+[[file:./.ob-jupyter/2eaccf65458d4ed821c07abbb83664ee16b423f9.svg]]
 
 ** Integrate
 #+begin_src jupyter-python :tangle tangle/original.py
@@ -112,7 +111,6 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-: 88731cee-8bf8-411e-b9db-0b0138807646
 
 ** Analysis
 #+begin_src jupyter-python
@@ -147,7 +145,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+RESULTS:
 :RESULTS:
 : \(N=80000\)
-[[file:./.ob-jupyter/7c4c619d2f9e55840f6181197c2c4e96a71c324a.svg]]
+[[file:./.ob-jupyter/f365b8ee0b20cdf41f305aaaf802be5b634b2953.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -158,7 +156,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
       return ρ
   import hops.util.utilities
   from hopsflow.util import EnsembleValue
-  for model in models[3:4]:
+  for model in [baseline]:
       with aux.get_data(model) as data:
           trace_dist_c = hops.util.utilities.trace_distance(data, relative_to=thermal_state(model.T[0], model.energy_gaps[0]))
           trace_dist_h = hops.util.utilities.trace_distance(data, relative_to=thermal_state(model.T[1], model.energy_gaps[1]))
@@ -202,7 +200,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
   /nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5346: ComplexWarning: Casting complex values to real discards the imaginary part
     pts[N+2:, 1] = dep2slice[::-1]
 #+end_example
-[[file:./.ob-jupyter/81d7229d7ed52abe3f521c318cdeeeb4c52e5a87.svg]]
+[[file:./.ob-jupyter/de007b03b6f53431f27dcfefdd5740a92e27b785.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -211,6 +209,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
+[[file:./.ob-jupyter/1a1f8810d9deff000ef064ac9ff34c328f5e846b.svg]]
 
 
 #+begin_src jupyter-python
@@ -606,13 +605,30 @@ modulation.
 :END:
 
 ** Slower switching
-#+begin_src jupyter-python :results none :tangle tangle/long.py
-  <<boilerplate>>
+#+begin_src jupyter-python :tangle tangle/long.py
+  #<<boilerplate>>
   shifts = sc.make_shifts(extra_r=4)
 
-  long_models = [sc.make_model(shift, shift, switch_t=6., switch_t_sys=3) for shift in shifts]
+  #long_models = [sc.make_model(shift, shift, switch_t=6., switch_t_sys=3) for shift in shifts]
   long_models = [sc.make_model(shift, shift, switch_t=6.) for shift in shifts]
+  long_baseline = sc.make_model(0., 0., switch_t=6.)
 #+end_src
+
+#+RESULTS:
+#+begin_example
+  7.199999999999999
+  7.199999999999999
+  7.199999999999999
+  7.199999999999999
+  7.199999999999999
+  7.199999999999999
+  7.199999999999999
+  7.199999999999999
+  7.199999999999999
+  7.199999999999999
+  7.199999999999999
+  7.199999999999999
+#+end_example
 
 #+begin_src jupyter-python :tangle no
   fig, ax = plt.subplots()
@@ -631,8 +647,8 @@ modulation.
 
 #+RESULTS:
 :RESULTS:
-: <matplotlib.legend.Legend at 0x7fe9b15f0340>
-[[file:./.ob-jupyter/cb7df72fdbae443014029e58c57c8cd040d2cdad.svg]]
+: <matplotlib.legend.Legend at 0x7fe235bfd1f0>
+[[file:./.ob-jupyter/b97b3645c10c9324bb66e178bdf8b63ec4a5a628.svg]]
 :END:
 
 
@@ -660,16 +676,15 @@ modulation.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/ad6aa52c6730f14c9f10f32edb03ae96b8f6a006.svg]]
-
+[[file:./.ob-jupyter/ac824b547713cd79da184599c7f503e85b44bc40.svg]]
 
 #+begin_src jupyter-python :tangle tangle/long.py
   ot.integrate_online_multi(long_models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))
 #+end_src
 
+#+RESULTS:
+
 #+begin_src jupyter-python
-  long_baseline = long_models[np.argmin(abs(np.array(shifts) - 0))]
-  long_baseline = best_shift_model
   for shift, model in zip(shifts, long_models):
       print(
           shift, best_shift,
@@ -682,17 +697,17 @@ modulation.
 
 #+RESULTS:
 #+begin_example
-  -0.18 0.12 80000 -0.7432352797196996 -98.3933277583729 (-0.6547883379568094, 0.32914493962691976)
-  -0.12 0.12 80000 0.5515764970059213 -4.588837155210551 (0.28325656807481425, 0.32914493962691976)
-  -0.06 0.12 80000 0.9849641934327689 10.389858999462525 (0.433043529621545, 0.32914493962691976)
-  0.0 0.12 80000 0.9864290608793423 10.386118256193916 (0.4330061221888589, 0.32914493962691976)
-  0.06 0.12 80000 0.9777553355809067 10.616195121156663 (0.4353068908384864, 0.32914493962691976)
-  0.12 0.12 80000 1.1185864670592693 10.712677023075978 (0.43627170985767955, 0.32914493962691976)
-  0.18 0.12 80000 1.280064611377701 7.403981413620636 (0.4031847537631261, 0.32914493962691976)
-  0.24 0.12 80000 1.1867997141496045 2.747192020803302 (0.3566168598349528, 0.32914493962691976)
-  0.3 0.12 80000 0.7281813558728701 -10.479096524510464 (0.22435397438181512, 0.32914493962691976)
-  0.36 0.12 80000 -0.45197344202291523 -49.898300662353925 (-0.16983806699661946, 0.32914493962691976)
-  0.42 0.12 80000 -1.4644608753444812 -108.49803909971185 (-0.7558354513701987, 0.32914493962691976)
+  -0.18 0.12 80000 -0.7534604455561659 -108.77944601456684 (-0.6547883379568094, 0.4330061221888589)
+  -0.12 0.12 80000 0.5591648896822077 -14.974955411404467 (0.28325656807481425, 0.4330061221888589)
+  -0.06 0.12 80000 0.9985149794296736 0.0037407432686098474 (0.433043529621545, 0.4330061221888589)
+  0.0 0.12 80000 1.0 0.0 (0.4330061221888589, 0.4330061221888589)
+  0.06 0.12 80000 0.991206944683175 0.23007686496274715 (0.4353068908384864, 0.4330061221888589)
+  0.12 0.12 80000 1.1339755806282883 0.3265587668820624 (0.43627170985767955, 0.4330061221888589)
+  0.18 0.12 80000 1.297675283650504 -2.9821368425732797 (0.4031847537631261, 0.4330061221888589)
+  0.24 0.12 80000 1.2031272812376834 -7.638926235390614 (0.3566168598349528, 0.4330061221888589)
+  0.3 0.12 80000 0.7381994151953918 -20.86521478070438 (0.22435397438181512, 0.4330061221888589)
+  0.36 0.12 80000 -0.45819153140116126 -60.284418918547836 (-0.16983806699661946, 0.4330061221888589)
+  0.42 0.12 80000 -1.4846084056353754 -118.88415735590576 (-0.7558354513701987, 0.4330061221888589)
 #+end_example
 
 
@@ -710,7 +725,7 @@ modulation.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/3c84f70ced5643089d048ba60451f50a3409c231.svg]]
+[[file:./.ob-jupyter/04d76de3e6d507097b891765428934a25429abaf.svg]]
 
 Aho! The trick is just to slow down the coupling switching.
 
@@ -723,8 +738,8 @@ Aho! The trick is just to slow down the coupling switching.
 
 #+RESULTS:
 :RESULTS:
-: <matplotlib.legend.Legend at 0x7fe9b08ff2e0>
-[[file:./.ob-jupyter/4fb778a2d542fde60accec2963706290dff4418b.svg]]
+: <matplotlib.legend.Legend at 0x7f0ef3d3d940>
+[[file:./.ob-jupyter/bbb9d138d6915d98c086c7f49d76baf55e5f8e0c.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -741,7 +756,7 @@ Aho! The trick is just to slow down the coupling switching.
 # [goto error]
 : [0;31m---------------------------------------------------------------------------[0m
 : [0;31mNameError[0m                                 Traceback (most recent call last)
-: Cell [0;32mIn[27], line 3[0m
+: Cell [0;32mIn[53], line 3[0m
 : [1;32m      1[0m powers_long [38;5;241m=[39m [[38;5;241m-[39mmodel[38;5;241m.[39mpower(steady_idx[38;5;241m=[39m[38;5;241m2[39m)[38;5;241m.[39mvalue [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m long_models]
 : [1;32m      2[0m powers_short [38;5;241m=[39m [[38;5;241m-[39mmodel[38;5;241m.[39mpower(steady_idx[38;5;241m=[39m[38;5;241m2[39m)[38;5;241m.[39mvalue [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models]
 : [0;32m----> 3[0m power_overlap [38;5;241m=[39m [38;5;241m-[39m[43moverlap_models[49m[[38;5;241m0[39m][38;5;241m.[39mpower(steady_idx[38;5;241m=[39m[38;5;241m2[39m)[38;5;241m.[39mvalue
@@ -804,7 +819,7 @@ Now let's try to find out why the efficiency improved.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/1446c6e53dac7fbcb1089dcf980e7299b7d75301.svg]]
+[[file:./.ob-jupyter/8cb5b5062c2f5c2b8d1cb21f999a299098958e0d.svg]]
 Way less energy is dumped into the cold bath.
 
 #+begin_src jupyter-python
@@ -853,17 +868,17 @@ Way less energy is dumped into the cold bath.
 
 #+RESULTS:
 :RESULTS:
-: /home/hiro/src/hopsflow/hopsflow/util.py:332: RuntimeWarning: divide by zero encountered in divide
+: /home/hiro/src/hopsflow/hopsflow/util.py:331: RuntimeWarning: divide by zero encountered in divide
 :   left_i[1] / right_i[1],
-: /home/hiro/src/hopsflow/hopsflow/util.py:332: RuntimeWarning: invalid value encountered in divide
+: /home/hiro/src/hopsflow/hopsflow/util.py:331: RuntimeWarning: invalid value encountered in divide
 :   left_i[1] / right_i[1],
-: /home/hiro/src/hopsflow/hopsflow/util.py:334: RuntimeWarning: divide by zero encountered in divide
+: /home/hiro/src/hopsflow/hopsflow/util.py:333: RuntimeWarning: divide by zero encountered in divide
 :   (left_i[2] / right_i[1]) ** 2
-: /home/hiro/src/hopsflow/hopsflow/util.py:335: RuntimeWarning: divide by zero encountered in divide
+: /home/hiro/src/hopsflow/hopsflow/util.py:334: RuntimeWarning: divide by zero encountered in divide
 :   + (left_i[1] / (right_i[1]) ** 2 * right_i[2]) ** 2
-: /home/hiro/src/hopsflow/hopsflow/util.py:335: RuntimeWarning: invalid value encountered in divide
+: /home/hiro/src/hopsflow/hopsflow/util.py:334: RuntimeWarning: invalid value encountered in divide
 :   + (left_i[1] / (right_i[1]) ** 2 * right_i[2]) ** 2
-[[file:./.ob-jupyter/3d588233ddaeb47b80e2d98855937e09ec32bd3f.svg]]
+[[file:./.ob-jupyter/73f0fb2a97297159d4517b28ae328108d70c260c.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -895,8 +910,38 @@ Way less energy is dumped into the cold bath.
 #+end_src
 
 #+begin_src jupyter-python :tangle tangle/only_cold.py
-  ot.integrate_online_multi(cold_models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))
+  ot.integrate_online_multi(cold_models, 1, increment=1, analyze_kwargs=dict(every=10_000))
 #+end_src
+
+#+RESULTS:
+#+begin_example
+  [INFO    hops.core.integration     7496] Choosing the nonlinear integrator.
+  [INFO    root                      7496] Starting analysis process.
+  [INFO    root                      7496] Started analysis process with pid 16271.
+  /home/hiro/src/hops/hops/core/hierarchy_data.py:570: UserWarning: Moving .data/5d118bc5b64eb105ed45c825742f9241f81efa681dc7f6095b7d27ab6b96c284/_6/5d118bc5b64eb105ed45c825742f9241f81efa681dc7f6095b7d27ab6b96c284_6c882ba21738f240daf65b5a8bfeab4b_1.h5 to .data/5d118bc5b64eb105ed45c825742f9241f81efa681dc7f6095b7d27ab6b96c284/_6/5d118bc5b64eb105ed45c825742f9241f81efa681dc7f6095b7d27ab6b96c284_6c882ba21738f240daf65b5a8bfeab4b_1.h5backup_1683647050.4820192 and starting fresh.
+    warnings.warn(
+  [INFO    hops.core.hierarchy_data  7496] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/results_5d118bc5b64eb105ed45c825742f9241f81efa681dc7f6095b7d27ab6b96c284.fifo
+  [INFO    hops.core.integration     7496] Using 13 integrators.
+  [INFO    hops.core.integration     7496] Some 1 trajectories have to be integrated.
+  [INFO    hops.core.integration     7496] Using 1001 hierarchy states.
+100% 1/1 [00:09<00:00,  9.14s/it]
+  [INFO    hops.core.integration     7496] Choosing the nonlinear integrator.
+  [INFO    root                      7496] Starting analysis process.
+  [INFO    root                      7496] Started analysis process with pid 16288.
+  [INFO    hops.core.hierarchy_data  7496] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/results_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.fifo
+  [INFO    hops.core.integration     7496] Using 13 integrators.
+  [INFO    hops.core.integration     7496] Some 1 trajectories have to be integrated.
+  [INFO    hops.core.integration     7496] Using 1001 hierarchy states.
+100% 1/1 [00:08<00:00,  8.61s/it]
+  [INFO    hops.core.integration     7496] Choosing the nonlinear integrator.
+  [INFO    root                      7496] Starting analysis process.
+  [INFO    root                      7496] Started analysis process with pid 16320.
+  [INFO    hops.core.hierarchy_data  7496] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/results_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.fifo
+  [INFO    hops.core.integration     7496] Using 13 integrators.
+  [INFO    hops.core.integration     7496] Some 1 trajectories have to be integrated.
+  [INFO    hops.core.integration     7496] Using 1001 hierarchy states.
+100% 1/1 [00:09<00:00,  9.09s/it]
+#+end_example
 
 *** Cycle showcase
 #+begin_src jupyter-python :tangle no
@@ -916,9 +961,8 @@ Way less energy is dumped into the cold bath.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/de3eb2a9f0973f77f95d912248d6f10ee0635854.svg]]
+[[file:./.ob-jupyter/6f46b84d2bad1908064cc760b32f1330b4dd9530.svg]]
 
-[[file:./.ob-jupyter/e3413d8306c7996bd7476d0047a621c7c973187e.svg]]
 
 #+begin_src jupyter-python
   from itertools import cycle
@@ -942,7 +986,7 @@ Way less energy is dumped into the cold bath.
 #+RESULTS:
 :RESULTS:
 | 0.0 | 60.0 |
-[[file:./.ob-jupyter/71e4dbcb0c094107e336437a1247ef0a1e316bcb.svg]]
+[[file:./.ob-jupyter/91f5f58abe88d312dda69ea17845661d235cbb7b.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -967,13 +1011,12 @@ Way less energy is dumped into the cold bath.
 # [goto error]
 #+begin_example
   [0;31m---------------------------------------------------------------------------[0m
-  [0;31mValueError[0m                                Traceback (most recent call last)
-  Cell [0;32mIn[36], line 3[0m
+  [0;31mRuntimeError[0m                              Traceback (most recent call last)
+  Cell [0;32mIn[56], line 2[0m
   [1;32m      1[0m fig, (ax2, ax1, ax3) [38;5;241m=[39m plt[38;5;241m.[39msubplots(nrows[38;5;241m=[39m[38;5;241m1[39m, ncols[38;5;241m=[39m[38;5;241m3[39m)
-  [1;32m      2[0m _, ax1_right [38;5;241m=[39m ot[38;5;241m.[39mplot_powers_and_efficiencies(np[38;5;241m.[39marray(shifts) [38;5;241m*[39m [38;5;241m100[39m, cold_models, xlabel[38;5;241m=[39m[38;5;124m"[39m[38;5;124mCycle Shift[39m[38;5;124m"[39m, ax[38;5;241m=[39max1)[[38;5;241m2[39m]
-  [0;32m----> 3[0m _, ax2_right [38;5;241m=[39m [43mot[49m[38;5;241;43m.[39;49m[43mplot_powers_and_efficiencies[49m[43m([49m[43mnp[49m[38;5;241;43m.[39;49m[43marray[49m[43m([49m[43mshifts[49m[43m)[49m[43m [49m[38;5;241;43m*[39;49m[43m [49m[38;5;241;43m100[39;49m[43m,[49m[43m [49m[43mlong_models[49m[43m,[49m[43m [49m[43mxlabel[49m[38;5;241;43m=[39;49m[38;5;124;43m"[39;49m[38;5;124;43mCycle Shift[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43max[49m[38;5;241;43m=[39;49m[43max2[49m[43m)[49m[[38;5;241m2[39m]
+  [0;32m----> 2[0m _, ax1_right [38;5;241m=[39m [43mot[49m[38;5;241;43m.[39;49m[43mplot_powers_and_efficiencies[49m[43m([49m[43mnp[49m[38;5;241;43m.[39;49m[43marray[49m[43m([49m[43mshifts[49m[43m)[49m[43m [49m[38;5;241;43m*[39;49m[43m [49m[38;5;241;43m100[39;49m[43m,[49m[43m [49m[43mcold_models[49m[43m,[49m[43m [49m[43mxlabel[49m[38;5;241;43m=[39;49m[38;5;124;43m"[39;49m[38;5;124;43mCycle Shift[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43max[49m[38;5;241;43m=[39;49m[43max1[49m[43m)[49m[[38;5;241m2[39m]
+  [1;32m      3[0m _, ax2_right [38;5;241m=[39m ot[38;5;241m.[39mplot_powers_and_efficiencies(np[38;5;241m.[39marray(shifts) [38;5;241m*[39m [38;5;241m100[39m, long_models, xlabel[38;5;241m=[39m[38;5;124m"[39m[38;5;124mCycle Shift[39m[38;5;124m"[39m, ax[38;5;241m=[39max2)[[38;5;241m2[39m]
   [1;32m      4[0m _, ax3_right [38;5;241m=[39m ot[38;5;241m.[39mplot_powers_and_efficiencies(np[38;5;241m.[39marray(shifts) [38;5;241m*[39m [38;5;241m100[39m, models, xlabel[38;5;241m=[39m[38;5;124m"[39m[38;5;124mCycle Shift[39m[38;5;124m"[39m, ax[38;5;241m=[39max3)[[38;5;241m2[39m]
-  [1;32m      6[0m ax1_right[38;5;241m.[39msharey(ax2_right)
 
   File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/plot_utils.py:40[0m, in [0;36mwrap_plot.<locals>.wrapped[0;34m(ax, setup_function, *args, **kwargs)[0m
   [1;32m     37[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m ax:
@@ -981,42 +1024,70 @@ Way less energy is dumped into the cold bath.
   [0;32m---> 40[0m ret_val [38;5;241m=[39m [43mf[49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[43max[49m[38;5;241;43m=[39;49m[43max[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
   [1;32m     41[0m [38;5;28;01mreturn[39;00m (fig, ax, ret_val) [38;5;28;01mif[39;00m ret_val [38;5;28;01melse[39;00m (fig, ax)
 
-  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/otto_utilities.py:80[0m, in [0;36mplot_powers_and_efficiencies[0;34m(x, models, steady_idx, ax, xlabel)[0m
-  [1;32m     78[0m mask [38;5;241m=[39m efficiencies [38;5;241m>[39m [38;5;241m0[39m
-  [1;32m     79[0m a2 [38;5;241m=[39m ax[38;5;241m.[39mtwinx()
-  [0;32m---> 80[0m [43max[49m[38;5;241;43m.[39;49m[43merrorbar[49m[43m([49m[43mx[49m[43m,[49m[43m [49m[43mpowers[49m[43m,[49m[43m [49m[43myerr[49m[38;5;241;43m=[39;49m[43mpowers_σ[49m[43m,[49m[43m [49m[43mmarker[49m[38;5;241;43m=[39;49m[38;5;124;43m"[39;49m[38;5;124;43m.[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mlabel[49m[38;5;241;43m=[39;49m[38;5;124;43mr[39;49m[38;5;124;43m"[39;49m[38;5;124;43m$[39;49m[38;5;124;43m\[39;49m[38;5;124;43mbar[39;49m[38;5;132;43;01m{P}[39;49;00m[38;5;124;43m$[39;49m[38;5;124;43m"[39;49m[43m)[49m
-  [1;32m     81[0m ax[38;5;241m.[39merrorbar(
-  [1;32m     82[0m     x,
-  [1;32m     83[0m     system_powers,
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/otto_utilities.py:30[0m, in [0;36mplot_powers_and_efficiencies[0;34m(x, models, steady_idx, ax, xlabel)[0m
+  [1;32m     28[0m [38;5;129m@pu[39m[38;5;241m.[39mwrap_plot
+  [1;32m     29[0m [38;5;28;01mdef[39;00m [38;5;21mplot_powers_and_efficiencies[39m(x, models, steady_idx[38;5;241m=[39m[38;5;241m1[39m, ax[38;5;241m=[39m[38;5;28;01mNone[39;00m, xlabel[38;5;241m=[39m[38;5;124m"[39m[38;5;124m"[39m):
+  [0;32m---> 30[0m     powers [38;5;241m=[39m [[38;5;241m-[39mmodel[38;5;241m.[39mpower(steady_idx[38;5;241m=[39msteady_idx)[38;5;241m.[39mvalue [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models]
+  [1;32m     31[0m     powers_σ [38;5;241m=[39m [model[38;5;241m.[39mpower(steady_idx[38;5;241m=[39msteady_idx)[38;5;241m.[39mσ [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models]
+  [1;32m     33[0m     ax[38;5;241m.[39maxhline([38;5;241m0[39m, color[38;5;241m=[39m[38;5;124m"[39m[38;5;124mlightgray[39m[38;5;124m"[39m)
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/otto_utilities.py:30[0m, in [0;36m<listcomp>[0;34m(.0)[0m
+  [1;32m     28[0m [38;5;129m@pu[39m[38;5;241m.[39mwrap_plot
+  [1;32m     29[0m [38;5;28;01mdef[39;00m [38;5;21mplot_powers_and_efficiencies[39m(x, models, steady_idx[38;5;241m=[39m[38;5;241m1[39m, ax[38;5;241m=[39m[38;5;28;01mNone[39;00m, xlabel[38;5;241m=[39m[38;5;124m"[39m[38;5;124m"[39m):
+  [0;32m---> 30[0m     powers [38;5;241m=[39m [[38;5;241m-[39m[43mmodel[49m[38;5;241;43m.[39;49m[43mpower[49m[43m([49m[43msteady_idx[49m[38;5;241;43m=[39;49m[43msteady_idx[49m[43m)[49m[38;5;241m.[39mvalue [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models]
+  [1;32m     31[0m     powers_σ [38;5;241m=[39m [model[38;5;241m.[39mpower(steady_idx[38;5;241m=[39msteady_idx)[38;5;241m.[39mσ [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models]
+  [1;32m     33[0m     ax[38;5;241m.[39maxhline([38;5;241m0[39m, color[38;5;241m=[39m[38;5;124m"[39m[38;5;124mlightgray[39m[38;5;124m"[39m)
+
+  File [0;32m<@beartype(hiro_models.otto_cycle.OttoEngine.power) at 0x7f0f4ec2a820>:31[0m, in [0;36mpower[0;34m(__beartype_func, __beartype_conf, __beartype_get_violation, *args, **kwargs)[0m
+
+  File [0;32m~/src/two_qubit_model/hiro_models/otto_cycle.py:483[0m, in [0;36mOttoEngine.power[0;34m(self, steady_idx, *args, **kwargs)[0m
+  [1;32m    476[0m [38;5;124;03m"""[39;00m
+  [1;32m    477[0m [38;5;124;03mCalculate the mean steady state power.  For the arguments see[39;00m
+  [1;32m    478[0m [38;5;124;03m:any:`steady_energy_change`.[39;00m
+  [1;32m    479[0m [38;5;124;03m"""[39;00m
+  [1;32m    481[0m _, indices [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mstrobe
+  [0;32m--> 483[0m [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mtotal_power[49m[43m([49m[43m)[49m[38;5;241m.[39mslice([38;5;28mslice[39m(indices[steady_idx], [38;5;28;01mNone[39;00m, [38;5;241m1[39m))[38;5;241m.[39mmean
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_base.py:649[0m, in [0;36mModel.total_power[0;34m(self, data, **kwargs)[0m
+  [1;32m    638[0m [38;5;28;01mdef[39;00m [38;5;21mtotal_power[39m([38;5;28mself[39m, data: Optional[HIData] [38;5;241m=[39m [38;5;28;01mNone[39;00m, [38;5;241m*[39m[38;5;241m*[39mkwargs) [38;5;241m-[39m[38;5;241m>[39m EnsembleValue:
+  [1;32m    639[0m     [38;5;124;03m"""Calculates the total power from the trajectories in[39;00m
+  [1;32m    640[0m [38;5;124;03m    ``data`` or, if not supplied, tries to load[39;00m
+  [1;32m    641[0m [38;5;124;03m    the online results from ``results_path``.[39;00m
   [0;32m   (...)[0m
-  [1;32m     86[0m     label[38;5;241m=[39m[38;5;124mr[39m[38;5;124m"[39m[38;5;124m$[39m[38;5;124m\[39m[38;5;124mbar[39m[38;5;132;01m{P}[39;00m[38;5;124m_[39m[38;5;124m{[39m[38;5;124m\[39m[38;5;124mmathrm[39m[38;5;132;01m{sys}[39;00m[38;5;124m}$[39m[38;5;124m"[39m,
-  [1;32m     87[0m )
-  [1;32m     89[0m ax[38;5;241m.[39merrorbar(
-  [1;32m     90[0m     x,
-  [1;32m     91[0m     interaction_powers,
+  [1;32m    646[0m [38;5;124;03m    :returns: The total power.[39;00m
+  [1;32m    647[0m [38;5;124;03m    """[39;00m
+  [0;32m--> 649[0m     power [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43minteraction_power[49m[43m([49m[43mdata[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m[38;5;241m.[39msum_baths()
+  [1;32m    650[0m     system_power [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39msystem_power(data, [38;5;241m*[39m[38;5;241m*[39mkwargs)
+  [1;32m    652[0m     [38;5;28;01mif[39;00m system_power [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_base.py:560[0m, in [0;36mModel.interaction_power[0;34m(self, data, results_path, **kwargs)[0m
+  [1;32m    550[0m [38;5;124;03m"""Calculates interaction power from the hierarchy data[39;00m
+  [1;32m    551[0m [38;5;124;03m``data`` or, if not supplied, tries to load the online results from ``results_path``.[39;00m
+  [1;32m    552[0m
   [0;32m   (...)[0m
-  [1;32m     94[0m     label[38;5;241m=[39m[38;5;124mr[39m[38;5;124m"[39m[38;5;124m$[39m[38;5;124m\[39m[38;5;124mbar[39m[38;5;132;01m{P}[39;00m[38;5;124m_[39m[38;5;124m{[39m[38;5;124m\[39m[38;5;124mmathrm[39m[38;5;132;01m{int}[39;00m[38;5;124m}$[39m[38;5;124m"[39m,
-  [1;32m     95[0m )
+  [1;32m    556[0m [38;5;124;03m:returns: See :any:`hopsflow.util.interaction_energy_ensemble`.[39;00m
+  [1;32m    557[0m [38;5;124;03m"""[39;00m
+  [1;32m    559[0m [38;5;28;01mif[39;00m data [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+  [0;32m--> 560[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mtry_get_online_data[49m[43m([49m
+  [1;32m    561[0m [43m        [49m[43mresults_path[49m[43m,[49m[43m [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43monline_interaction_power_name[49m
+  [1;32m    562[0m [43m    [49m[43m)[49m
+  [1;32m    564[0m N, kwargs [38;5;241m=[39m _get_N_kwargs(kwargs, data)
+  [1;32m    566[0m [38;5;28;01mreturn[39;00m hopsflow[38;5;241m.[39mhopsflow[38;5;241m.[39minteraction_energy_ensemble(
+  [1;32m    567[0m     data[38;5;241m.[39mvalid_sample_iterator(data[38;5;241m.[39mstoc_traj),  [38;5;66;03m# type: ignore[39;00m
+  [1;32m    568[0m     data[38;5;241m.[39mvalid_sample_iterator(data[38;5;241m.[39maux_states),  [38;5;66;03m# type: ignore[39;00m
+  [0;32m   (...)[0m
+  [1;32m    574[0m     [38;5;241m*[39m[38;5;241m*[39mkwargs,
+  [1;32m    575[0m )
 
-  File [0;32m/nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/__init__.py:1423[0m, in [0;36m_preprocess_data.<locals>.inner[0;34m(ax, data, *args, **kwargs)[0m
-  [1;32m   1420[0m [38;5;129m@functools[39m[38;5;241m.[39mwraps(func)
-  [1;32m   1421[0m [38;5;28;01mdef[39;00m [38;5;21minner[39m(ax, [38;5;241m*[39margs, data[38;5;241m=[39m[38;5;28;01mNone[39;00m, [38;5;241m*[39m[38;5;241m*[39mkwargs):
-  [1;32m   1422[0m     [38;5;28;01mif[39;00m data [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
-  [0;32m-> 1423[0m         [38;5;28;01mreturn[39;00m [43mfunc[49m[43m([49m[43max[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;28;43mmap[39;49m[43m([49m[43msanitize_sequence[49m[43m,[49m[43m [49m[43margs[49m[43m)[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
-  [1;32m   1425[0m     bound [38;5;241m=[39m new_sig[38;5;241m.[39mbind(ax, [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs)
-  [1;32m   1426[0m     auto_label [38;5;241m=[39m (bound[38;5;241m.[39marguments[38;5;241m.[39mget(label_namer)
-  [1;32m   1427[0m                   [38;5;129;01mor[39;00m bound[38;5;241m.[39mkwargs[38;5;241m.[39mget(label_namer))
+  File [0;32m~/src/two_qubit_model/hiro_models/model_base.py:298[0m, in [0;36mModel.try_get_online_data[0;34m(self, path, results_path)[0m
+  [1;32m    296[0m file_path [38;5;241m=[39m os[38;5;241m.[39mpath[38;5;241m.[39mjoin(path, results_path)
+  [1;32m    297[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m os[38;5;241m.[39mpath[38;5;241m.[39mexists(file_path):
+  [0;32m--> 298[0m     [38;5;28;01mraise[39;00m [38;5;167;01mRuntimeError[39;00m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mNo data found under [39m[38;5;124m'[39m[38;5;132;01m{[39;00mfile_path[38;5;132;01m}[39;00m[38;5;124m'[39m[38;5;124m.[39m[38;5;124m"[39m)
+  [1;32m    300[0m [38;5;28;01mreturn[39;00m hopsflow[38;5;241m.[39mutil[38;5;241m.[39mget_online_values_from_cache(file_path)
 
-  File [0;32m/nix/store/08ccd1bg10pbkpv71fwccyxabr1cycim-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:3491[0m, in [0;36mAxes.errorbar[0;34m(self, x, y, yerr, xerr, fmt, ecolor, elinewidth, capsize, barsabove, lolims, uplims, xlolims, xuplims, errorevery, capthick, **kwargs)[0m
-  [1;32m   3489[0m x, y [38;5;241m=[39m np[38;5;241m.[39matleast_1d(x, y)  [38;5;66;03m# Make sure all the args are iterable.[39;00m
-  [1;32m   3490[0m [38;5;28;01mif[39;00m [38;5;28mlen[39m(x) [38;5;241m!=[39m [38;5;28mlen[39m(y):
-  [0;32m-> 3491[0m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([38;5;124m"[39m[38;5;124m'[39m[38;5;124mx[39m[38;5;124m'[39m[38;5;124m and [39m[38;5;124m'[39m[38;5;124my[39m[38;5;124m'[39m[38;5;124m must have the same size[39m[38;5;124m"[39m)
-  [1;32m   3493[0m everymask [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39m_errorevery_to_mask(x, errorevery)
-  [1;32m   3495[0m label [38;5;241m=[39m kwargs[38;5;241m.[39mpop([38;5;124m"[39m[38;5;124mlabel[39m[38;5;124m"[39m, [38;5;28;01mNone[39;00m)
-
-  [0;31mValueError[0m: 'x' and 'y' must have the same size
+  [0;31mRuntimeError[0m: No data found under 'results/interaction_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz'.
 #+end_example
-[[file:./.ob-jupyter/0808a4e641f3bfd149695bb00c73368d6b872d03.svg]]
+[[file:./.ob-jupyter/93e52118286ecb9820456f385076257d6d00cdaf.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -1094,53 +1165,98 @@ Way less energy is dumped into the cold bath.
   <<boilerplate>>
 #+end_src
 
+#+begin_src jupyter-python
+  aux.import_results(other_data_path="taurus/.data_oa", other_results_path="taurus/results")
+#+end_src
+
+#+RESULTS:
+#+begin_example
+  [INFO    root                      465451] Not importing 3a88241b44e111869567acbf6ae02285aed02d52bb726b72ac72f9ab31dd3519.
+  [WARNING root                      465451] Importing taurus/.data_oa/1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a/_b/1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a_b840f965f993ebd32f9155891c0b1cb4_1.h5 to .data/1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a/_b/1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a_b840f965f993ebd32f9155891c0b1cb4_1.h5.
+  [WARNING root                      465451] The model description is 'Classic Cycle'.
+  [WARNING root                      465451] Importing taurus/results/flow_1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a.npz to results/flow_1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a_10000.npz.
+  [WARNING root                      465451] Importing taurus/results/flow_1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a.npz to results/flow_1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a.npz.
+  [WARNING root                      465451] Importing taurus/results/interaction_1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a.npz to results/interaction_1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a_10000.npz.
+  [WARNING root                      465451] Importing taurus/results/interaction_1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a.npz to results/interaction_1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a.npz.
+  [WARNING root                      465451] Importing taurus/results/interaction_power_1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a.npz to results/interaction_power_1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a_10000.npz.
+  [WARNING root                      465451] Importing taurus/results/interaction_power_1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a.npz to results/interaction_power_1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a.npz.
+  [WARNING root                      465451] Importing taurus/results/system_1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a.npz to results/system_1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a.npz.
+  [WARNING root                      465451] Importing taurus/results/system_1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a.npz to results/system_1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a_10000.npz.
+  [WARNING root                      465451] Importing taurus/results/system_power_1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a.npz to results/system_power_1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a_10000.npz.
+  [WARNING root                      465451] Importing taurus/results/system_power_1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a.npz to results/system_power_1ebe2f33ba38ab70dc6af5f72cd5e4163422489db2447d034dcd8d405a0fc79a.npz.
+#+end_example
+
 #+begin_src jupyter-python :tangle tangle/off_axis.py
-  proto = sc.make_model(0, 0, switch_t=6)
   off_ax_models = []
-  for weight in [.3, .6]:
-      off_ax = proto.copy()
+  weights = [.3, .6]
+  param_iter = lambda: itertools.product([3, 6], weights)
+  for switch_t, weight in param_iter():
+      off_ax = sc.make_model(0, 0, switch_t=switch_t)
       off_ax.H_0  = 1 / 2 * (qt.sigmaz().full() + np.eye(2) + weight * qt.sigmax().full())
+      # NOTE: the hamiltonians will be normalzed so that their smallest EV is 0 and the largest one is 1
+
       off_ax.H_1  = off_ax.H_0.copy()
 
       off_ax_models.append(off_ax)
 #+end_src
 
 #+RESULTS:
+: 3.5999999999999996
+: 3.5999999999999996
+: 7.199999999999999
 : 7.199999999999999
 
 #+begin_src jupyter-python :tangle tangle/off_axis.py
-  ot.integrate_online_multi(off_ax_models, 10_000, increment=10_000, analyze_kwargs=dict(every=10_000))
+  ot.integrate_online_multi(off_ax_models, 10, increment=10, analyze_kwargs=dict(every=10_000))
 #+end_src
 
-#+RESULTS:
-: [INFO    hops.core.integration     4057165] Choosing the nonlinear integrator.
-: [INFO    root                      4057165] Starting analysis process.
-: [INFO    root                      4057165] Started analysis process with pid 146332.
-: [INFO    hops.core.hierarchy_data  4057165] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/results_f41081a896f5826d5ec9ec455f52afb2020d140c4d25bd2986b63fb73863ee2d.fifo
-: [INFO    hops.core.integration     4057165] Using 16 integrators.
-: [INFO    hops.core.integration     4057165] Some 10 trajectories have to be integrated.
-: [INFO    hops.core.integration     4057165] Using 1001 hierarchy states.
-: 100% 10/10 [00:45<00:00,  4.58s/it]
-:
 
-#+begin_src jupyter-julia
-  ot.plot_bloch_components(off_ax_models[0])
+#+begin_src jupyter-python
+  for (i, model), weight in zip(enumerate(off_ax_models), weights):
+      f, a = ot.plot_bloch_components(model)
+      #ot.plot_bloch_components(off_ax_models[i+2], ax=a, linestyle="--", label=None)
+
+      a.set_title(rf"$r_y={weight}$")
+      fs.export_fig(f"bloch_expectation_offaxis_{weight}", y_scaling=.7)
 #+end_src
 
 #+RESULTS:
 :RESULTS:
-| <Figure | size | 340x320 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | > |
-[[file:./.ob-jupyter/e69f3f0bcc548ae510cff4c2ec6ca0a46c17c078.svg]]
+[[file:./.ob-jupyter/9728f3b41ba1c00b9b3b8cdef827909ece227deb.svg]]
+[[file:./.ob-jupyter/66410d6f93476857e9f7f681a59a0091ebc27231.svg]]
 :END:
+
+#+begin_src jupyter-python
+  np.array(weights) / np.sqrt(1 + np.array(weights) ** 2)
+#+end_src
+
+#+RESULTS:
+: array([0.28734789, 0.51449576])
 
 
 #+begin_src jupyter-python
-  for model in off_ax_models:
-      print(model.power(steady_idx=1).value / baseline.power(steady_idx=1).value, model.efficiency(steady_idx=1).value / baseline.efficiency(steady_idx=1).value)
+  baselines = [baseline] * 2 + [long_baseline] * 2
+  for model, ref in zip(off_ax_models, baselines):
+      print(model.power(steady_idx=1).value / ref.power(steady_idx=1).value, model.efficiency(steady_idx=1).value / ref.efficiency(steady_idx=1).value)
 #+end_src
 
 #+RESULTS:
 : 1.0574121708551179 1.016329556714788
 : 1.1608389370275625 0.9458062530964767
+: 1.039411606725501 0.9835515009556695
+: 1.117040153314062 0.9663817206527843
 
-Interestingly, even with the too-fast switching we have greater power.
+Interestingly, even with the too-fast switching we have greater power, and greater efficiency.
+
+#+begin_src jupyter-python
+  for (i, model), weight in zip(enumerate(off_ax_models), weights):
+      f, a = ot.plot_energy(model)
+      a.set_title(rf"$r_y={weight}$")
+      fs.export_fig(f"full_energy_offaxis_{weight}", x_scaling=2, y_scaling=1)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+[[file:./.ob-jupyter/b0afa48c75085e2a541587c350698ad79958b170.svg]]
+[[file:./.ob-jupyter/cb9eaeab19b96ffab30ddb3adde4ba165801064d.svg]]
+:END:
