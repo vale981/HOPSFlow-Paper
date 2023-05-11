@@ -84,6 +84,7 @@ coupling-change/cycle time.
   ot.integrate_online_multi(models, 50_000, increment=10_000, analyze_kwargs=dict(every=10_000))
 #+end_src
 
+
 * Analysis
 #+begin_src jupyter-python
   ot.plot_energy(models[0])

@@ -20,16 +20,19 @@ import logging
 logging_setup(logging.INFO)
 plt.rcParams['figure.figsize'] = (12,4)
 
-def make_shift_model(shift_c, shift_h, switch_t=3):
-    switch_time = switch_t / 50
+T = 50
 
-    (p_H, p_L) = ot.timings(switch_time, switch_time)
+def make_model_orig(shift_c, shift_h, switch_t=3.0, switch_t_sys=None, only_cold=False):
+    switch_time = switch_t / T
+    switch_time_sys = (switch_t_sys if switch_t_sys else switch_t) / T
+
+    (p_H, p_L) = ot.timings(switch_time_sys, switch_time)
     return OttoEngine(
-        δ=[.7, .7],
+        δ=[0.7, 0.7],
         ω_c=[1, 1],
         ψ_0=qt.basis([2], [1]),
         description=f"Classic Cycle",
-        k_max=5,
+        k_max=4,
         bcf_terms=[5] * 2,
         truncation_scheme="simplex",
         driving_process_tolerances=[StocProcTolerances(1e-3, 1e-3)] * 2,
@@ -44,30 +47,11 @@ def make_shift_model(shift_c, shift_h, switch_t=3):
         timings_L=p_L,
         streaming_mode=True,
         shift_to_resonance=(False, False),
-        L_shift=(shift_c, shift_h),
+        L_shift=(shift_c, 0 if only_cold else shift_h),
     )
-
-def overlap(shift_model, N, step, switch_t=6):
-    switch_time = switch_t / 50
-    next_model = shift_model.copy()
-    (p_H, p_L) = ot.timings(switch_time, switch_time)
-
-    #next_model.timings_H=p_H
-    next_model.timings_L=p_L
-
-    (a, b, c, d) = next_model.timings_L[0]
-    (e, f, g, h) = next_model.timings_L[1]
-    next_step = step * N
-    (s1, s2) = next_model.L_shift
-    next_model.L_shift = (s1 + next_step, s2 - next_step)
-    next_model.timings_L = (
-        (a - 2 * next_step, b - 2 * next_step, c, d),
-        (e, f, g + 2 * next_step, h + 2 * next_step),
-    )
-    return next_model
 
 def make_model(ω_c, T_c):
-    model =  make_shift_model(0,0, switch_t = 6)
+    model =  make_model_orig(0, 0, switch_t = 6.)
 
 
     model.T[0] = T_c
@@ -82,52 +66,3 @@ import itertools
 models = [make_model(ω, T) for ω, T, in itertools.product(ωs, Ts)]
 
 ot.integrate_online_multi(models, 30_000, increment=10_000, analyze_kwargs=dict(every=10_000))
-
-models[1].T
-
-fig, ax = plt.subplots()
-for model in models[:22]:
-    pu.plot_with_σ(models[0].t, model.interaction_power().sum_baths().integrate(model.t), ax=ax)
-    print(model.power(steady_idx=2).value, model.T[0], model.ω_c[0])
-
-fig, ax = plt.subplots()
-for model in models[:22]:
-  pu.plot_with_σ(models[0].t, model.system_energy(), ax=ax)
-
-pu.plot_with_σ(models[0].t, models[0].interaction_power().sum_baths().integrate(models[0].t))
-
-ot.plot_power_eff_convergence(models[:10], 2)
-
-f = plt.figure()
-a_power = f.add_subplot(121, projection="3d")
-a_efficiency = f.add_subplot(122, projection="3d")
-
-for ax in [a_power, a_efficiency]:
-    ax.set_box_aspect(aspect=None, zoom=0.7)
-    ax.set_xlabel(r"$T_c$")
-    ax.set_ylabel(r"$\omega_c$")
-    ax.xaxis.labelpad = 10
-    ax.view_init(elev=30.0, azim=-29, roll=0)
-
-ot.plot_3d_heatmap(
-    models[:20],
-    lambda model: np.clip(-model.power(steady_idx=2).value, 0, np.inf),
-    lambda model: model.T[0],
-    lambda model: model.ω_c[0],
-    ax=a_power,
-)
-a_power.set_zlabel(r"$P$")
-
-
-ot.plot_3d_heatmap(
-    models[:20],
-    lambda model: np.clip(np.nan_to_num(model.efficiency(steady_idx=2).value * 100), 0, np.inf),
-    lambda model: model.T[0],
-    lambda model: model.ω_c[0],
-    ax=a_efficiency,
-)
-a_efficiency.set_zlabel(r"$\eta$")
-fs.export_fig("bath_memory_power_efficiency", x_scaling=2, y_scaling=1)
-
-for model in models:
-    ot.plot_bloch_components(model)

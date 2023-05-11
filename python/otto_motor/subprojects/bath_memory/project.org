@@ -1,10 +1,10 @@
-#+PROPERTY: header-args :session bath_memory :kernel python :pandoc no :async yes :tangle tangle/bath_memory.py
+#+PROPERTY: header-args :session bath_memory :kernel python :pandoc no :async yes
 
 Here we scan bath memory and maybe temperature gradient later.
 
 * Boilerplate
 #+name: boilerplate
-#+begin_src jupyter-python :results none
+#+begin_src jupyter-python :results none :tangle tangle/bath_memory.py
   import figsaver as fs
   import plot_utils as pu
   from hiro_models.one_qubit_model import StocProcTolerances
@@ -34,9 +34,10 @@ We take the same baseline as in [[id:c06111fd-d719-433d-a316-c163f6e1d384][cycle
 
 But we vary the cycle speed while keeping a fixed proportion
 coupling-change/cycle time.
-#+begin_src jupyter-python
+#+begin_src jupyter-python :tangle tangle/bath_memory.py
   T = 50
-  def make_model_orig(shift_c, shift_h, switch_t=6.0, switch_t_sys=None, only_cold=False):
+
+  def make_model_orig(shift_c, shift_h, switch_t=3.0, switch_t_sys=None, only_cold=False):
       switch_time = switch_t / T
       switch_time_sys = (switch_t_sys if switch_t_sys else switch_t) / T
 
@@ -65,7 +66,7 @@ coupling-change/cycle time.
       )
 
   def make_model(ω_c, T_c):
-      model =  make_model_orig(0, 0, switch_t = 6)
+      model =  make_model_orig(0, 0, switch_t = 6.)
 
 
       model.T[0] = T_c
@@ -76,7 +77,7 @@ coupling-change/cycle time.
 #+RESULTS:
 
 
-#+begin_src jupyter-python
+#+begin_src jupyter-python :tangle tangle/bath_memory.py
   ωs = [round(ω, 3) for ω in np.linspace(.5, 1.5, 5)]
   Ts = [round(T, 3) for T in np.linspace(.4, .6, 5)]
   ωs, Ts
@@ -86,7 +87,7 @@ coupling-change/cycle time.
 | 0.5 | 0.75 | 1.0 | 1.25 | 1.5 |
 | 0.4 | 0.45 | 0.5 | 0.55 | 0.6 |
 
-#+begin_src jupyter-python
+#+begin_src jupyter-python :tangle tangle/bath_memory.py
   import itertools
   models = [make_model(ω, T) for ω, T, in itertools.product(ωs, Ts)]
 #+end_src
@@ -95,9 +96,42 @@ coupling-change/cycle time.
 
 
 * Integrate
-#+begin_src jupyter-python
+#+begin_src jupyter-python :tangle tangle/bath_memory.py
   ot.integrate_online_multi(models, 30_000, increment=10_000, analyze_kwargs=dict(every=10_000))
 #+end_src
+
+#+begin_src jupyter-python
+  aux.import_results(other_data_path="taurus/.data", other_results_path="taurus/results", models_to_import=models)
+#+end_src
+
+#+RESULTS:
+#+begin_example
+  [INFO    root                      40217] Skipping 392528aafa00ae3876e428dfcc31d41433f972c7b5c3ee5d6ab417d49eab371e.
+  [INFO    root                      40217] Skipping 432d072ae79e9b454118814f3b75b83232f076d659c1e244ee1f90dbea00a11c.
+  [INFO    root                      40217] Skipping 1d430a943063e42af991804b9bc36f2559a7964d633ba1e0294ec45215e18ee3.
+  [INFO    root                      40217] Skipping 9aafe6208871226a9362c9c4d3c970883aae89b1e424cfbc80dd8d1449b99a61.
+  [INFO    root                      40217] Skipping 65b12f0d83ba066d30ae7ea0a9bf717894ba7e093f24651268cc9ffdb9f88860.
+  [INFO    root                      40217] Skipping 33798d09f7fb6e782e025bdf0fb00be82068cec65b7a1b116972780c12345a3e.
+  [INFO    root                      40217] Skipping 78ebb11b0e402f83dc7812f8a43a1125b18de2006f69deed4dd4eace18765c6c.
+  [INFO    root                      40217] Skipping 3715b5c9f8b8acb0833a6f17f6ed95f211e41cc24dc1281be941f5bce6104323.
+  [INFO    root                      40217] Skipping b0df550fb3fd6a6fcc71770701f99178e8e927d1ff9c429acb1bc8fac4b76788.
+  [INFO    root                      40217] Skipping 74cd0ef251e62badc6a9e3ff32cb22be575d21b0e3390381c0ec521d2b4ad275.
+  [INFO    root                      40217] Skipping 7af8cd8857c3efb85ac9ec20d4c67ce7a8bcf08d3a63d095ec23330e26f9b694.
+  [INFO    root                      40217] Skipping 9e2b244d480fb663597c6d54248bc40114cdc09681ef29d148253aad8f496b02.
+  [INFO    root                      40217] Skipping 1752f9806eb37316019cdb15c56f2eff23cb660cf5700c45199140691c1170fd.
+  [INFO    root                      40217] Skipping 1d8d64b7ad00c64fe3770fdf9b083c2f12ee8073485e49db821863b62ce953f1.
+  [INFO    root                      40217] Skipping 563fbcd0092f079b122816cddf6f63f582082fea07e44fb62518a969a59e4352.
+  [INFO    root                      40217] Skipping 726124c6e532b63b0ca0c008fa91df4c793ffe9352920f5e5761255024c452a2.
+  [INFO    root                      40217] Skipping 5d0434eed0415ae21021d2bb2132dc87e8f1b1bb477bef6daeee28283bd84187.
+  [INFO    root                      40217] Skipping 5d71c75c91f661d53814a257fc865695e7f71729881d551ce12ed572b7d38ca6.
+  [INFO    root                      40217] Skipping 606e56f0478ea7298cae6414ca68ee421dda9677c3e526b4c98e9a19108c42d6.
+  [INFO    root                      40217] Skipping e7109d2bc08dc1372be13708b9343e2d69c90c9b9c43d90b0024cb496a3ca879.
+  [INFO    root                      40217] Skipping 147235c1e3d0c3d5ed4971fb784b287c790ddea25a2b0a8160f44f774da287ff.
+  [INFO    root                      40217] Skipping 666039618a7ffaa17d42cabfee8d4938467e340807af2dacb97993bb84d1c8c7.
+  [INFO    root                      40217] Skipping 38fcd74a99b9473c2d705a28cbc3c57448e3cb1116ab196a4042a83544262fd7.
+  [INFO    root                      40217] Skipping c2d2a848079a48791e8909ad2a8570f5fb231492102708e645ecf9d5603b4b66.
+  [INFO    root                      40217] Skipping 83f3cea795fe54a3a6c3bc0fa5361cbad8d7a66082cf60dc72cabd807b83ab6c.
+#+end_example
 
 * Analysis
 #+begin_src jupyter-python
