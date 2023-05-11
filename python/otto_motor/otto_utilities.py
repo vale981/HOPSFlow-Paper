@@ -9,7 +9,7 @@ import qutip as qt
 import itertools
 
 
-def plot_power_eff_convergence(models, steady_idx=1):
+def plot_power_eff_convergence(models, steady_idx=2):
     f, (a_power, a_efficiency) = plt.subplots(ncols=2)
 
     a_efficiency.set_yscale("log")
@@ -26,7 +26,7 @@ def plot_power_eff_convergence(models, steady_idx=1):
 
 
 @pu.wrap_plot
-def plot_powers_and_efficiencies(x, models, steady_idx=1, ax=None, xlabel=""):
+def plot_powers_and_efficiencies(x, models, steady_idx=2, ax=None, xlabel=""):
     powers = [-model.power(steady_idx=steady_idx).value for model in models]
     powers_σ = [model.power(steady_idx=steady_idx).σ for model in models]
 
@@ -112,7 +112,7 @@ def plot_powers_and_efficiencies(x, models, steady_idx=1, ax=None, xlabel=""):
 
 
 def plot_multi_powers_and_efficiencies(
-    x, multi_models, titles, steady_idx=1, xlabel=""
+    x, multi_models, titles, steady_idx=2, xlabel=""
 ):
     fig, axs = plt.subplots(nrows=2, ncols=2)
     (efficiency, power, system_power, interaction_power) = axs.flatten()

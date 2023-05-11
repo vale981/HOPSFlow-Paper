@@ -22,9 +22,6 @@ logging_setup(logging.INFO)
 ot.plot_cycle(baseline)
 fs.export_fig("cycle_prototype", y_scaling=.7)
 
-for model in models:
-  print(model.power(steady_idx=1).value / baseline.power(steady_idx=1).value, model.efficiency(steady_idx=1).value)
-
 ot.plot_energy(baseline)
 print(
     fs.tex_value(baseline.system_energy().N,  prefix="N="),
@@ -70,20 +67,22 @@ fs.export_fig("state_evolution", y_scaling=.7)
 ot.plot_steady_energy_changes([baseline], 2, label_fn=lambda _: "")
 fs.export_fig("prototype_energy_change", y_scaling=.7)
 
+for model in models:
+  print(model.power(steady_idx=2).value / baseline.power(steady_idx=2).value, model.efficiency(steady_idx=2).value)
+
 ot.plot_power_eff_convergence(models)
 fs.export_fig("cycle_shift_convergence", x_scaling=2, y_scaling=.7)
 
 ot.plot_powers_and_efficiencies(np.array(shifts) * 100, models, xlabel="Cycle Shift")
 fs.export_fig("cycle_shift_power_efficiency", y_scaling=.7, x_scaling=1)
 
-fig, ax =ot.plot_steady_energy_changes([baseline, models[3+2]], 2, label_fn=lambda m: ("baseline" if m.hexhash == baseline.hexhash else "shifted"))
+best_shift = shifts[np.argmax([-model.power(steady_idx=2).value for model in models])]
+best_shift_model = sc.make_model(best_shift, best_shift)
+best_shift
+
+fig, ax =ot.plot_steady_energy_changes([baseline, best_shift_model], 2, label_fn=lambda m: ("baseline" if m.hexhash == baseline.hexhash else "shifted"))
 ax.legend(loc="lower left")
 fs.export_fig("shift_energy_change", y_scaling=.7)
-
-best_shift = shifts[3+2]#[np.argmax([-model.power(steady_idx=2).value for model in models])]
-best_shift_model = sc.make_model(best_shift, best_shift)
-
-ot.plot_bloch_components(best_shift_model)
 
 t_shift_begin = (2 - best_shift) * baseline.Θ
 t_begin = 2 * baseline.Θ
@@ -131,10 +130,6 @@ ax.set_xlabel(r"$\tau$")
 ax.set_ylabel(r"$P_{\mathrm{int}}$")
 fs.export_fig("shift_power", y_scaling=0.7)
 
-ot.plot_energy(baseline)
-f, a = ot.plot_energy(best_shift_model)
-a.plot(best_shift_model.t, best_shift_model.H(best_shift_model.t)[:, 0,0])
-
 f, a = plt.subplots()
 a.axhline(best_shift_model.system_energy().value[np.argmin(abs(best_shift_model.t - model.Θ * 2))], color="gray", linestyle="--")
 r = pu.plot_with_σ(
@@ -161,120 +156,12 @@ a.plot(
     label="system modulation"
 )
 # a.plot(best_shift_model.t, best_shift_model.coupling_operators[1].operator_norm(best_shift_model.t) / 5)
-a.set_xlim((model.Θ * 2, model.Θ * 2 + 7))
+a.set_xlim((model.Θ * 2, model.Θ * 2 + 11))
 
 a.set_ylim((-.21, .45))
 a.set_xlabel(r"$\tau$")
 a.legend(loc="upper right", fontsize="x-small")
 fs.export_fig("cold_bath_decoupling", y_scaling=.6)
-
-def overlap(shift_model, N, step, switch_t=3.):
-    switch_time = switch_t / T
-    (p_H, p_L) = ot.timings(switch_time, switch_time)
-    next_model = shift_model.copy()
-
-    #next_model.timings_H=p_H
-    next_model.timings_L=p_L
-
-    (a, b, c, d) = next_model.timings_L[0]
-    (e, f, g, h) = next_model.timings_L[1]
-    next_step = step * N
-    (s1, s2) = next_model.L_shift
-
-
-    next_model.L_shift = (s1 + next_step, s2 - next_step)
-    next_model.timings_L = (
-        (a - 2 * next_step, b - 2 * next_step, c, d),
-        (e, f, g + 2 * next_step, h + 2 * next_step),
-    )
-    return next_model
-
-
-def overlap_cold(shift_model, N, step):
-    next_model = shift_model.copy()
-    (a, b, c, d) = next_model.timings_L[0]
-    (e, f, g, h) = next_model.timings_L[1]
-    next_step = step * N
-    (s1, s2) = next_model.L_shift
-    next_model.L_shift = (s1 + next_step, s2 - next_step)
-    next_model.timings_L = (
-        (a - 2 * next_step, b - 2 * next_step, c - next_step, d - next_step),
-        (e + next_step, f + next_step, g + 2 * next_step, h + 2 * next_step),
-    )
-    return next_model
-
-
-Ns = list(range(1, 4))[:1]
-overlap_models = [overlap(best_shift_model, N, step) for N in Ns]
-overlap_models = [overlap_cold(best_shift_model, N, step) for N in Ns]
-new_step_size = 6
-mini_step = (new_step_size / (N-N_over) / T)
-print(mini_step)
-overlap_models = [overlap(best_shift_model, N, mini_step, new_step_size) for N in Ns]
-
-all_overlap_models = [best_shift_model, *overlap_models]
-
-ot.integrate_online_multi(overlap_models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))
-
-ot.plot_power_eff_convergence(all_overlap_models, 2)
-
-f, a= ot.plot_energy(all_overlap_models[-1])
-a.plot(model.t, model.coupling_operators[0].operator_norm(model.t))
-a.plot(model.t, model.coupling_operators[1].operator_norm(model.t))
-a.plot(model.t, model.system.operator_norm(model.t))
-
-[model.power(steady_idx=2).value / best_shift_model.power(steady_idx=2).value for model in all_overlap_models]
-
-[model.efficiency(steady_idx=2).value / best_shift_model.efficiency(steady_idx=2).value for model in all_overlap_models]
-
-[model.power(steady_idx=2).N  for model in all_overlap_models]
-
-ot.plot_powers_and_efficiencies([0] + Ns, all_overlap_models)
-
-f, a = plt.subplots()
-a.axhline(0, color="lightgrey")
-for model, label in zip(all_overlap_models[:2], ["Shifted", "Shifted with Overlap"]):
-    _, _, lines = pu.plot_with_σ(model.t, model.interaction_power().sum_baths().integrate(model.t), ax=a, label=fr"$W_\mathrm{{int}}$ {label}")
-    pu.plot_with_σ(model.t, model.system_power().integrate(model.t), ax=a, color=lines[0][0].get_color(), linestyle="--", label=fr"$W_\mathrm{{sys}}$ {label}")
-a.set_ylabel(r"$W_{\mathrm{int/sys}}$")
-a.set_xlabel(r"$\tau$")
-a.legend()
-fs.export_fig("cycle_shift_shift_vs_overlap_power", x_scaling=2, y_scaling=.6)
-
-fig, ax =ot.plot_steady_energy_changes(all_overlap_models, 2, label_fn=(lambda m: ["without overlap", "with overlap"][all_overlap_models.index(m)]))
-ax.legend(loc="lower left")
-
-fs.export_fig("overlap_energy_change", y_scaling=.9)
-
-fig, ax =ot.plot_steady_work_baths(all_overlap_models, 2, label_fn=(lambda m: ["without overlap", "with overlap"][all_overlap_models.index(m)]))
-ax.legend(loc="lower left")
-
-fs.export_fig("overlap_energy_change_hot_cold", y_scaling=.9)
-
-r = pu.plot_with_σ(all_overlap_models[-1].t, all_overlap_models[-1].interaction_energy().for_bath(0))
-# a.plot(all_overlap_models[-1].t, all_overlap_models[-1].H(all_overlap_models[-1].t)[:, 0,0])
-r[1].plot(all_overlap_models[-1].t, all_overlap_models[-1].coupling_operators[0].operator_norm(all_overlap_models[-1].t) / 5)
-r[1].plot(all_overlap_models[-1].t, all_overlap_models[-1].coupling_operators[1].operator_norm(all_overlap_models[-1].t) / 5)
-r[1].set_xlim((model.Θ*2, model.Θ*2+15))
-
-from itertools import cycle
-lines = ["--","-.",":", "-"]
-linecycler = cycle(lines)
-
-fig, ax = plt.subplots()
-t = np.linspace(0, long_models[0].Θ, 1000)
-l, = ax.plot(t, long_models[0].H.operator_norm(t)/2-.5, linewidth=3, color="lightgrey")
-legend_1 = ax.legend([l], [r"$(||H||-1)/2$"], loc="center left", title="Reference")
-from cycler import cycler
-for model in [best_shift_model, long_models[5]]:
-    ax.plot(t, model.coupling_operators[1].operator_norm(t), label=fr"${model.L_shift[0] * 100:.0f}\%$", linestyle=(next(linecycler)))
-    #ax.plot(t, model.coupling_operators[0].operator_norm(t), label=fr"${model.L_shift[0] * 100:.0f}\%$", linestyle=(next(linecycler)))
-ax.legend(title=r"Shift of $L_h$", fontsize="x-small", ncols=2)
-ax.set_xlabel(r"$\tau$")
-ax.set_ylabel(r"Operator Norm")
-ax.add_artist(legend_1)
-ax.set_xlim((0, long_models[0].Θ))
-fs.export_fig("cycle_shift_long_shifts", x_scaling=2, y_scaling=.5)
 
 for shift, model in zip(shifts, long_models):
     print(
@@ -296,24 +183,15 @@ ax1.set_title("Fast Coupling")
 ax2.set_title("Slow Coupling")
 fs.export_fig("cycle_shift_power_efficiency_with_slower", y_scaling=.7, x_scaling=2)
 
-fig, ax =ot.plot_steady_energy_changes([long_models[3+2], models[3+2]], 2, label_fn=lambda m: ("long" if m.hexhash == long_models[3+2].hexhash else "short"))
+best_long_idx = np.argmax([-model.power(steady_idx=2).value for model in long_models])
+best_long_shift = shifts[best_long_idx]
+best_long_shift_model = long_models[best_long_idx]
+best_long_shift
+
+fig, ax =ot.plot_steady_energy_changes([best_long_shift_model, best_shift_model], 2, label_fn=lambda m: ("long" if m.hexhash == best_long_shift_model.hexhash else "short"))
 ax.legend(loc="lower left")
 
-#fs.export_fig("shift_energy_change", y_scaling=.7)
-
-powers_long = [-model.power(steady_idx=2).value for model in long_models]
-powers_short = [-model.power(steady_idx=2).value for model in models]
-power_overlap = -overlap_models[0].power(steady_idx=2).value
-plt.plot(shifts, powers_short)
-plt.plot(shifts, powers_long)
-plt.axhline(power_overlap)
-
-efficiencys_long = [model.efficiency(steady_idx=2).value for model in long_models]
-efficiencys_short = [model.efficiency(steady_idx=2).value for model in models]
-efficiency_overlap = overlap_models[0].efficiency(steady_idx=2).value
-plt.plot(shifts, efficiencys_short)
-plt.plot(shifts, efficiencys_long)
-plt.axhline(efficiency_overlap)
+fs.export_fig("long_short_energy_change", y_scaling=.7)
 
 best_long_model = long_models[5]
 
@@ -327,7 +205,7 @@ plt.plot(best_shift_model.t, flow_short.value, label="fast coupling")
 plt.plot(best_shift_model.t, flow_long.value, label="slow coupling")
 plt.plot(best_shift_model.t, power_short.value, linestyle="--", color="C0")
 plt.plot(best_shift_model.t, power_long.value, linestyle="--",  color="C1")
-plt.xlim((2*best_long_model.Θ-5, 2*best_long_model.Θ+10))
+plt.xlim((2*best_long_model.Θ-5, 2*best_long_model.Θ+12))
 plt.ylim((-.015,.06))
 plt.legend()
 plt.xlabel(r"$\tau$")
@@ -374,9 +252,6 @@ plt.legend()
 plt.xlabel(r"$\tau$")
 plt.ylabel(r"$-\Delta \langle{H_{\mathrm{B},c}}\rangle/\Delta \langle{H_{\mathrm{B},h}}\rangle$")
 fs.export_fig("hot_vs_cold_bath", y_scaling=.7)
-
-plt.plot(best_shift_model.t, (best_shift_model.bath_energy().for_bath(0) / best_shift_model.bath_energy().for_bath(1)).value)
-plt.ylim((-1, 1))
 
 aux.import_results(other_data_path="taurus/.data", other_results_path="taurus/results", models_to_import=cold_models)
 
@@ -428,7 +303,7 @@ np.array(weights) / np.sqrt(1 + np.array(weights) ** 2)
 
 baselines = [baseline] * 2 + [long_baseline] * 2
 for model, ref in zip(off_ax_models, baselines):
-    print(model.power(steady_idx=1).value / ref.power(steady_idx=1).value, model.efficiency(steady_idx=1).value / ref.efficiency(steady_idx=1).value)
+    print(model.power(steady_idx=2).value / ref.power(steady_idx=2).value, model.efficiency(steady_idx=2).value / ref.efficiency(steady_idx=2).value)
 
 for (i, model), weight in zip(enumerate(off_ax_models), weights):
     f, a = ot.plot_energy(model)

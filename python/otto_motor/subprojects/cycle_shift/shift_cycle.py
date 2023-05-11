@@ -10,7 +10,7 @@ T = 50
 def make_model(shift_c, shift_h, switch_t=3.0, switch_t_sys=None, only_cold=False):
     switch_time = switch_t / T
     switch_time_sys = (switch_t_sys if switch_t_sys else switch_t) / T
-    print(switch_time * 60)
+
     (p_H, p_L) = ot.timings(switch_time_sys, switch_time)
     return OttoEngine(
         δ=[0.7, 0.7],
@@ -34,6 +34,10 @@ def make_model(shift_c, shift_h, switch_t=3.0, switch_t_sys=None, only_cold=Fals
         shift_to_resonance=(False, False),
         L_shift=(shift_c, 0 if only_cold else shift_h),
     )
+
+
+def make_step(N=3, N_over=2):
+    return 3.0 / (T * (N - N_over))
 
 
 def make_shifts(N=3, N_over=2, extra_r=2):
