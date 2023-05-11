@@ -2,6 +2,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import os
 from pathlib import Path
+import pickle
 
 from contextlib import contextmanager
 import numpy as np
@@ -16,7 +17,9 @@ fig_path = Path(os.getcwd()) / "figures"
 val_path = Path(os.getcwd()) / "values"
 
 
-def export_fig(name, fig=None, x_scaling=1, y_scaling=0.4, tikz=True, **kwargs):
+def export_fig(
+    name, fig=None, x_scaling=1, y_scaling=0.4, tikz=True, save_pickle=True, **kwargs
+):
     fig_path.mkdir(parents=True, exist_ok=True)
     if fig is None:
         fig = plt.gcf()
@@ -43,6 +46,10 @@ def export_fig(name, fig=None, x_scaling=1, y_scaling=0.4, tikz=True, **kwargs):
             axis_height="\\figH",
             **kwargs,
         )
+
+    if save_pickle:
+        with open(fig_path / f"{name}.pickle", "wb") as file:
+            pickle.dump(fig, file)
 
 
 def scientific_round(val, *err, retprec=False):

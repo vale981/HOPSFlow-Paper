@@ -26,10 +26,10 @@
       python = pkgs: pkgs.python39Full;
       shellOverride = (pkgs: oldAttrs: {
         shellHook = ''
-                        export PYTHONPATH=/home/hiro/src/stocproc/:$PYTHONPATH
-                        export PYTHONPATH=/home/hiro/src/two_qubit_model/:$PYTHONPATH
-                        export PYTHONPATH=/home/hiro/src/hops/:$PYTHONPATH
-                        export PYTHONPATH=/home/hiro/src/hopsflow/:$PYTHONPATH
+                        # export PYTHONPATH=/home/hiro/src/stocproc/:$PYTHONPATH
+                        # export PYTHONPATH=/home/hiro/src/two_qubit_model/:$PYTHONPATH
+                        # export PYTHONPATH=/home/hiro/src/hops/:$PYTHONPATH
+                        # export PYTHONPATH=/home/hiro/src/hopsflow/:$PYTHONPATH
                         export LD_LIBRARY_PATH="${(pkgs.lib.makeLibraryPath [pkgs.arb])}"
           #               '';
       });

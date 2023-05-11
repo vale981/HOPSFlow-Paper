@@ -60,6 +60,8 @@ We shift so that we just overlap with coupling/decoupling and one above.
   baseline = models[3]
 #+end_src
 
+#+RESULTS:
+
 
 #+begin_src jupyter-python
   ot.plot_cycle(baseline)
@@ -67,7 +69,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/02cbbf58cd0cbe9a198d4e1b1ca05e1435224c50.svg]]
+[[file:./.ob-jupyter/85082ca1e70888f4feae9d4bf5a0ea0a0f45b08a.svg]]
 
 #+begin_src jupyter-python :tangle no
   #ot.plot_cycles(models, bath=0, legend=True)
@@ -91,7 +93,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/2eaccf65458d4ed821c07abbb83664ee16b423f9.svg]]
+[[file:./.ob-jupyter/aceb237b37f0eef4754a27ed3ee238133aa9db06.svg]]
 
 ** Integrate
 Here we integrate/simulate the models. This should be run on the
@@ -119,7 +121,7 @@ This plots the full energy overview for the baseline model.
 #+RESULTS:
 :RESULTS:
 : \(N=80000\)
-[[file:./.ob-jupyter/9f290df44db1418e0b27a61a97d2591f6845fa65.svg]]
+[[file:./.ob-jupyter/4e700e6b13e30f8557fcc330ee71d08ec472489d.svg]]
 :END:
 
 We would like to know how close all of this comes to the thermal states.
@@ -175,7 +177,7 @@ We would like to know how close all of this comes to the thermal states.
   /nix/store/x2w7bp64b3isjcw3ps8xsadrhxsnbpwh-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5346: ComplexWarning: Casting complex values to real discards the imaginary part
     pts[N+2:, 1] = dep2slice[::-1]
 #+end_example
-[[file:./.ob-jupyter/412ae179270758c9b9892f2e1a93b5583ede630b.svg]]
+[[file:./.ob-jupyter/75fa2fe14d11490c47d2bf0c629822f9a03e6784.svg]]
 :END:
 
 Plotting the pauli matrix expectation values, we can see that the
@@ -186,7 +188,7 @@ dynamics only take place on the z-axis. This is addressed in [[id:9d7a11f2-f479-
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/ce6428315398ce5b39b5c39aae9d2b1cbdfd20f8.svg]]
+[[file:./.ob-jupyter/746d8e3986e828734631ca1ab8a8bce243963588.svg]]
 
 Let us plot an overview of the work done by system and interaction
 modulation over a cycle for the baseline model.
@@ -196,7 +198,7 @@ modulation over a cycle for the baseline model.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/e11fc10ff666262bc6ab9abedc2cb0de38262905.svg]]
+[[file:./.ob-jupyter/e05d323e86738a3362e6c70adc16bd5d940e5cdd.svg]]
 
 *** Shifted Models
 Let us print the power output (relative to the baseline = unshifted model) and efficiency.
@@ -207,17 +209,17 @@ Let us print the power output (relative to the baseline = unshifted model) and e
 
 #+RESULTS:
 #+begin_example
-  -2.7704455654085876 -2.5219916727767804
-  -2.034015641972767 -1.6675487518853185
-  0.571544457513159 0.19650010500179352
-  1.0 0.30209537308799783
-  1.1652434363371367 0.3239348992880912
-  1.6254413169874071 0.3309674632505577
-  1.6802797038561466 0.3190991034856301
-  1.6058539780552505 0.2979616403269744
-  1.413212538480568 0.26307105710019735
-  0.7332591894799324 0.1434372231954891
-  -1.2500012707944386 -0.29523872560546577
+  -2.77597511693978 -2.4772877227717958
+  -2.0434846540636498 -1.6243768550730728
+  0.5710213861808199 0.19310160522534914
+  1.0 0.3002164459369506
+  1.1580729241081245 0.3201551362641393
+  1.621073860181052 0.32914493962691976
+  1.676329717306901 0.3155858623648209
+  1.6056907132267833 0.29627949690062266
+  1.4297898620293028 0.264279816138587
+  0.7161356715968495 0.13903993767016806
+  -1.2535087048383218 -0.29154092061712156
 #+end_example
 
 
@@ -229,7 +231,7 @@ size to check convergence.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/8471d776db4404270d3df20b7173e59f783b92ba.svg]]
+[[file:./.ob-jupyter/c671a1b46de1f5b65905925fb69604e13a924e19.svg]]
 
 We see that we get a pretty good picture after about 30k-40k samples.
 
@@ -240,7 +242,7 @@ This is an overview over powers and the efficiency.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/50e0848230990f02d9ad40c7e049bcf8c6dcebc7.svg]]
+[[file:./.ob-jupyter/c134d0ea85b5900cc5fc809ee73e68d332d429d6.svg]]
 
 The best shift:
 #+begin_src jupyter-python
@@ -261,7 +263,7 @@ and the best shift model.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/60efd5889fe957f7b8cfe8d446f9953a95c516c9.svg]]
+[[file:./.ob-jupyter/f7afc8eb774b72b6f9a3080a0884226164759391.svg]]
 
 
 Let us plot the interaction power in the steady state for baseline and
@@ -315,7 +317,7 @@ best-shift. We have to shift the time to make them overlap correctly.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/479a2efc17d04e372b0a09cfe1a97f48da88fa19.svg]]
+[[file:./.ob-jupyter/3e6540b6d222f368a38f57540b7c70c5758f5b99.svg]]
 
 
 Let us zoom in on the cold bath decoupling process to understnad this better.
@@ -355,7 +357,7 @@ Let us zoom in on the cold bath decoupling process to understnad this better.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/fa8d96bb86b08eaed1c7d3fe969e9a82c38a03c7.svg]]
+[[file:./.ob-jupyter/089f655a55a69cbc238eda6899340662091d2ca0.svg]]
 
 
 * Slower switching
@@ -393,8 +395,8 @@ switch slower.
 
 #+RESULTS:
 :RESULTS:
-: <matplotlib.legend.Legend at 0x7f6ce04d5d60>
-[[file:./.ob-jupyter/4cc96e897c1648694dbc559354d2868d6bee8dd0.svg]]
+: <matplotlib.legend.Legend at 0x7fa23abe1d30>
+[[file:./.ob-jupyter/2dced993880319a85c1923005f6b88e6bc158f64.svg]]
 :END:
 
 
@@ -420,17 +422,17 @@ Let us look at power and efficiency.
 
 #+RESULTS:
 #+begin_example
-  -0.18 0.12 80000 -0.7534604455561659 -108.77944601456684 (-0.6547883379568094, 0.4330061221888589)
-  -0.12 0.12 80000 0.5591648896822077 -14.974955411404467 (0.28325656807481425, 0.4330061221888589)
-  -0.06 0.12 80000 0.9985149794296736 0.0037407432686098474 (0.433043529621545, 0.4330061221888589)
-  0.0 0.12 80000 1.0 0.0 (0.4330061221888589, 0.4330061221888589)
-  0.06 0.12 80000 0.991206944683175 0.23007686496274715 (0.4353068908384864, 0.4330061221888589)
-  0.12 0.12 80000 1.1339755806282883 0.3265587668820624 (0.43627170985767955, 0.4330061221888589)
-  0.18 0.12 80000 1.297675283650504 -2.9821368425732797 (0.4031847537631261, 0.4330061221888589)
-  0.24 0.12 80000 1.2031272812376834 -7.638926235390614 (0.3566168598349528, 0.4330061221888589)
-  0.3 0.12 80000 0.7381994151953918 -20.86521478070438 (0.22435397438181512, 0.4330061221888589)
-  0.36 0.12 80000 -0.45819153140116126 -60.284418918547836 (-0.16983806699661946, 0.4330061221888589)
-  0.42 0.12 80000 -1.4846084056353754 -118.88415735590576 (-0.7558354513701987, 0.4330061221888589)
+  -0.18 0.18 80000 -0.7534604455561659 -108.77944601456684 (-0.6547883379568094, 0.4330061221888589)
+  -0.12 0.18 80000 0.5591648896822077 -14.974955411404467 (0.28325656807481425, 0.4330061221888589)
+  -0.06 0.18 80000 0.9985149794296736 0.0037407432686098474 (0.433043529621545, 0.4330061221888589)
+  0.0 0.18 80000 1.0 0.0 (0.4330061221888589, 0.4330061221888589)
+  0.06 0.18 80000 0.991206944683175 0.23007686496274715 (0.4353068908384864, 0.4330061221888589)
+  0.12 0.18 80000 1.1339755806282883 0.3265587668820624 (0.43627170985767955, 0.4330061221888589)
+  0.18 0.18 80000 1.297675283650504 -2.9821368425732797 (0.4031847537631261, 0.4330061221888589)
+  0.24 0.18 80000 1.2031272812376834 -7.638926235390614 (0.3566168598349528, 0.4330061221888589)
+  0.3 0.18 80000 0.7381994151953918 -20.86521478070438 (0.22435397438181512, 0.4330061221888589)
+  0.36 0.18 80000 -0.45819153140116126 -60.284418918547836 (-0.16983806699661946, 0.4330061221888589)
+  0.42 0.18 80000 -1.4846084056353754 -118.88415735590576 (-0.7558354513701987, 0.4330061221888589)
 #+end_example
 
 Here, we contrast the slow/fast coupling modulation protocols.
@@ -448,7 +450,7 @@ Here, we contrast the slow/fast coupling modulation protocols.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/dfee46d2b1411c9ca3f0619ae9460a2435bd0825.svg]]
+[[file:./.ob-jupyter/d874adc97bcc335737347c1205a48c7b39561198.svg]]
 
 Aho! The trick is just to slow down the coupling switching.
 
@@ -473,7 +475,7 @@ Let's contrast the energy change dynamics in slow vs fast modulation
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/739b3f82650ec9b841aadeb72d8ff4bb04ecb999.svg]]
+[[file:./.ob-jupyter/5418d985119098ea7dd34a612cee7193d550431c.svg]]
 
 Now let's try to find out why the efficiency improved.
 
@@ -498,7 +500,7 @@ Now let's try to find out why the efficiency improved.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/562aa3c2c2a3c3c1a83020137bdbd45bbe0f550d.svg]]
+[[file:./.ob-jupyter/9cecea40e225eaae34f9003fdf7e004ea0463e84.svg]]
 Way less energy is dumped into the cold bath.
 #+begin_src jupyter-python
   t, rel_short_cold = ot.val_relative_to_steady(
@@ -556,7 +558,7 @@ Way less energy is dumped into the cold bath.
 :   + (left_i[1] / (right_i[1]) ** 2 * right_i[2]) ** 2
 : /home/hiro/src/hopsflow/hopsflow/util.py:334: RuntimeWarning: invalid value encountered in divide
 :   + (left_i[1] / (right_i[1]) ** 2 * right_i[2]) ** 2
-[[file:./.ob-jupyter/e773c9a5072cc7643a93d1f05180f5083f93a823.svg]]
+[[file:./.ob-jupyter/8cc13fa6fb6a9a90c4d74df045df24daeb3632cb.svg]]
 :END:
 
 * Slower switching + Only Cold Bath Coupling Shifted
@@ -577,6 +579,80 @@ The last section gave me the hunch, that only this shift matters.
 #+begin_src jupyter-python :tangle tangle/only_cold.py
   ot.integrate_online_multi(cold_models, 1, increment=1, analyze_kwargs=dict(every=10_000))
 #+end_src
+
+#+RESULTS:
+:RESULTS:
+#+begin_example
+  [INFO    hops.core.integration     660003] Choosing the nonlinear integrator.
+  [INFO    root                      660003] Starting analysis process.
+  [INFO    root                      660003] Started analysis process with pid 660744.
+  /home/hiro/src/hops/hops/core/hierarchy_data.py:564: UserWarning: test_file_version FAILED with exception Unable to open file (file is already open for write/SWMR write (may use <h5clear file> to clear file consistency flags))
+    warnings.warn(
+  /home/hiro/src/hops/hops/core/hierarchy_data.py:567: UserWarning: hdf5_name .data/a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f/_b/a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_b5106778b26241a26c10be1488e24172_1.h5
+    warnings.warn("hdf5_name {}".format(self.hdf5_name))
+  /home/hiro/src/hops/hops/core/hierarchy_data.py:570: UserWarning: Moving .data/a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f/_b/a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_b5106778b26241a26c10be1488e24172_1.h5 to .data/a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f/_b/a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_b5106778b26241a26c10be1488e24172_1.h5backup_1683828067.6098497 and starting fresh.
+    warnings.warn(
+  [INFO    hops.core.hierarchy_data  660003] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/results_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.fifo
+  [INFO    hops.core.integration     660003] Using 16 integrators.
+  [INFO    hops.core.integration     660003] Some 1 trajectories have to be integrated.
+  [INFO    hops.core.integration     660003] Using 1001 hierarchy states.
+  0% 0/1 [00:00<?, ?it/s][INFO    hops.core.signal_delay    660003] caught sig 'SIGINT'
+  0% 0/1 [00:10<?, ?it/s]
+  [INFO    hops.core.signal_delay    660003] caught 1 signal(s)
+  [INFO    hops.core.signal_delay    660003] emit signal 'SIGINT'
+  [INFO    hops.core.signal_delay    660003] caught sig 'SIGINT'
+  2023-05-11 14:01:17,869       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  [INFO    hops.core.signal_delay    660003] caught 1 signal(s)
+  [INFO    hops.core.signal_delay    660003] emit signal 'SIGINT'
+#+end_example
+# [goto error]
+#+begin_example
+  [0;31m---------------------------------------------------------------------------[0m
+  [0;31mKeyboardInterrupt[0m                         Traceback (most recent call last)
+  Cell [0;32mIn[26], line 1[0m
+  [0;32m----> 1[0m [43mot[49m[38;5;241;43m.[39;49m[43mintegrate_online_multi[49m[43m([49m[43mcold_models[49m[43m,[49m[43m [49m[38;5;241;43m1[39;49m[43m,[49m[43m [49m[43mincrement[49m[38;5;241;43m=[39;49m[38;5;241;43m1[39;49m[43m,[49m[43m [49m[43manalyze_kwargs[49m[38;5;241;43m=[39;49m[38;5;28;43mdict[39;49m[43m([49m[43mevery[49m[38;5;241;43m=[39;49m[38;5;241;43m10_000[39;49m[43m)[49m[43m)[49m
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/otto_utilities.py:387[0m, in [0;36mintegrate_online_multi[0;34m(models, n, increment, *args, **kwargs)[0m
+  [1;32m    385[0m     count [38;5;241m=[39m get_sample_count(model)
+  [1;32m    386[0m     [38;5;28;01mif[39;00m count [38;5;241m<[39m current_target:
+  [0;32m--> 387[0m         [43mintegrate_online[49m[43m([49m[43mmodel[49m[43m,[49m[43m [49m[43mcurrent_target[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
+  [1;32m    389[0m target [38;5;241m+[39m[38;5;241m=[39m increment
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/otto_utilities.py:360[0m, in [0;36mintegrate_online[0;34m(model, n, stream_folder, **kwargs)[0m
+  [1;32m    359[0m [38;5;28;01mdef[39;00m [38;5;21mintegrate_online[39m(model, n, stream_folder[38;5;241m=[39m[38;5;28;01mNone[39;00m, [38;5;241m*[39m[38;5;241m*[39mkwargs):
+  [0;32m--> 360[0m     [43maux[49m[38;5;241;43m.[39;49m[43mintegrate[49m[43m([49m
+  [1;32m    361[0m [43m        [49m[43mmodel[49m[43m,[49m
+  [1;32m    362[0m [43m        [49m[43mn[49m[43m,[49m
+  [1;32m    363[0m [43m        [49m[43mstream_file[49m[38;5;241;43m=[39;49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43m"[39;49m[43m [49m[38;5;28;43;01mif[39;49;00m[43m [49m[43mstream_folder[49m[43m [49m[38;5;129;43;01mis[39;49;00m[43m [49m[38;5;28;43;01mNone[39;49;00m[43m [49m[38;5;28;43;01melse[39;49;00m[43m [49m[43mstream_folder[49m[43m)[49m
+  [1;32m    364[0m [43m        [49m[38;5;241;43m+[39;49m[43m [49m[38;5;124;43mf[39;49m[38;5;124;43m"[39;49m[38;5;124;43mresults_[39;49m[38;5;132;43;01m{[39;49;00m[43mmodel[49m[38;5;241;43m.[39;49m[43mhexhash[49m[38;5;132;43;01m}[39;49;00m[38;5;124;43m.fifo[39;49m[38;5;124;43m"[39;49m[43m,[49m
+  [1;32m    365[0m [43m        [49m[43manalyze[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
+  [1;32m    366[0m [43m        [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m,[49m
+  [1;32m    367[0m [43m    [49m[43m)[49m
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_auxiliary.py:201[0m, in [0;36mintegrate[0;34m(model, n, data_path, clear_pd, single_process, stream_file, analyze, results_path, analyze_kwargs)[0m
+  [1;32m    199[0m         supervisor[38;5;241m.[39mintegrate_single_process(clear_pd)
+  [1;32m    200[0m     [38;5;28;01melse[39;00m:
+  [0;32m--> 201[0m         supervisor[38;5;241m.[39mintegrate(clear_pd)
+  [1;32m    203[0m cleanup([38;5;241m0[39m)
+
+  File [0;32m~/src/hops/hops/core/signal_delay.py:87[0m, in [0;36msig_delay.__exit__[0;34m(self, exc_type, exc_val, exc_tb)[0m
+  [1;32m     84[0m [38;5;28;01mif[39;00m [38;5;28mlen[39m([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught) [38;5;241m>[39m [38;5;241m0[39m [38;5;129;01mand[39;00m [38;5;28mself[39m[38;5;241m.[39mhandler [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+  [1;32m     85[0m     [38;5;28mself[39m[38;5;241m.[39mhandler([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught)
+  [0;32m---> 87[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_restore[49m[43m([49m[43m)[49m
+
+  File [0;32m~/src/hops/hops/core/signal_delay.py:68[0m, in [0;36msig_delay._restore[0;34m(self)[0m
+  [1;32m     66[0m [38;5;28;01mfor[39;00m i, s [38;5;129;01min[39;00m [38;5;28menumerate[39m([38;5;28mself[39m[38;5;241m.[39msigs):
+  [1;32m     67[0m     signal[38;5;241m.[39msignal(s, [38;5;28mself[39m[38;5;241m.[39mold_handlers[i])
+  [0;32m---> 68[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msigh[49m[38;5;241;43m.[39;49m[43memit[49m[43m([49m[43m)[49m
+
+  File [0;32m~/src/hops/hops/core/signal_delay.py:42[0m, in [0;36mSigHandler.emit[0;34m(self)[0m
+  [1;32m     40[0m [38;5;28;01mfor[39;00m s [38;5;129;01min[39;00m [38;5;28mself[39m[38;5;241m.[39msigs_caught:
+  [1;32m     41[0m     log[38;5;241m.[39minfo([38;5;124m"[39m[38;5;124memit signal [39m[38;5;124m'[39m[38;5;132;01m{}[39;00m[38;5;124m'[39m[38;5;124m"[39m[38;5;241m.[39mformat(SIG_MAP[s]))
+  [0;32m---> 42[0m     [43mos[49m[38;5;241;43m.[39;49m[43mkill[49m[43m([49m[43mos[49m[38;5;241;43m.[39;49m[43mgetpid[49m[43m([49m[43m)[49m[43m,[49m[43m [49m[43ms[49m[43m)[49m
+
+  [0;31mKeyboardInterrupt[0m:
+#+end_example
+:END:
 
 #+begin_src jupyter-julia
   aux.import_results(other_data_path="taurus/.data", other_results_path="taurus/results", models_to_import=cold_models)
@@ -600,7 +676,7 @@ The last section gave me the hunch, that only this shift matters.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/90dc100de7e68a738757c7ceec88d138523edd24.svg]]
+[[file:./.ob-jupyter/452910da5da1d556764e6b6d81e8c15cd2ce5a67.svg]]
 
 
 #+begin_src jupyter-python
@@ -648,7 +724,7 @@ Let's contrast all three protocols.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/c3ba93c44254765a56fc0ba9f0d578fa5ebfa682.svg]]
+[[file:./.ob-jupyter/0566a3f8b3266b69979cc58b4459835bba36744d.svg]]
 
 And do it again, but in a more convenient format.
 #+begin_src jupyter-python
@@ -657,7 +733,7 @@ And do it again, but in a more convenient format.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/25b9c2b69b9e6bea35b3b7765c35ac370ddb6e24.svg]]
+[[file:./.ob-jupyter/66f9994b67426aae52943a1f9ab6540b6fcadeff.svg]]
 
 * Findings
 - coupling overlap doesn't help much
@@ -715,8 +791,8 @@ Let's plot the pauli expectation values.
 
 #+RESULTS:
 :RESULTS:
-[[file:./.ob-jupyter/e0388abacb7b8d8791b4a243661de3e7cf92321e.svg]]
-[[file:./.ob-jupyter/bf8f086e5b8211108f5481f511133342ddfb5c33.svg]]
+[[file:./.ob-jupyter/216aad96418805e8cbb925e939bb261bdb09c332.svg]]
+[[file:./.ob-jupyter/ed2cd60a871ccc8b23781492e0b98084bae04018.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -750,6 +826,6 @@ Interestingly, even with the too-fast switching we have greater power, and great
 
 #+RESULTS:
 :RESULTS:
-[[file:./.ob-jupyter/5639272b64cefcf447899df6ecf4d49baf35988d.svg]]
-[[file:./.ob-jupyter/e0adfb01a3b456c2a8a22ecf281cbb7e914939a6.svg]]
+[[file:./.ob-jupyter/48801c84dacb82ca9d37f0af0519727e298ec1fd.svg]]
+[[file:./.ob-jupyter/0ef615f736de27bf2129d27452b3f55fb30ff82e.svg]]
 :END:
