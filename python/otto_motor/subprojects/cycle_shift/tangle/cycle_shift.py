@@ -378,6 +378,8 @@ fs.export_fig("hot_vs_cold_bath", y_scaling=.7)
 plt.plot(best_shift_model.t, (best_shift_model.bath_energy().for_bath(0) / best_shift_model.bath_energy().for_bath(1)).value)
 plt.ylim((-1, 1))
 
+aux.import_results(other_data_path="taurus/.data", other_results_path="taurus/results", models_to_import=cold_models)
+
 from itertools import cycle
 lines = ["--","-.",":", "-"]
 linecycler = cycle(lines)
