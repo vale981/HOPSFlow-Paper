@@ -69,7 +69,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/85082ca1e70888f4feae9d4bf5a0ea0a0f45b08a.svg]]
+[[file:./.ob-jupyter/81013ffe4eb552aa29ee981e91c9734909c87581.svg]]
 
 #+begin_src jupyter-python :tangle no
   #ot.plot_cycles(models, bath=0, legend=True)
@@ -93,7 +93,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/aceb237b37f0eef4754a27ed3ee238133aa9db06.svg]]
+[[file:./.ob-jupyter/200e51f331a007eb0a07c20b2d9522fc4866756e.svg]]
 
 ** Integrate
 Here we integrate/simulate the models. This should be run on the
@@ -369,6 +369,8 @@ switch slower.
   <<boilerplate>>
 #+end_src
 
+#+RESULTS:
+
 #+begin_src jupyter-python :tangle tangle/long.py
   shifts = sc.make_shifts(extra_r=4)
 
@@ -395,8 +397,8 @@ switch slower.
 
 #+RESULTS:
 :RESULTS:
-: <matplotlib.legend.Legend at 0x7fa23abe1d30>
-[[file:./.ob-jupyter/2dced993880319a85c1923005f6b88e6bc158f64.svg]]
+: <matplotlib.legend.Legend at 0x7f5da18c38e0>
+[[file:./.ob-jupyter/b77a8b40f7c3265be026db00a76524da7bff95c4.svg]]
 :END:
 
 
@@ -580,83 +582,153 @@ The last section gave me the hunch, that only this shift matters.
   ot.integrate_online_multi(cold_models, 1, increment=1, analyze_kwargs=dict(every=10_000))
 #+end_src
 
-#+RESULTS:
-:RESULTS:
-#+begin_example
-  [INFO    hops.core.integration     660003] Choosing the nonlinear integrator.
-  [INFO    root                      660003] Starting analysis process.
-  [INFO    root                      660003] Started analysis process with pid 660744.
-  /home/hiro/src/hops/hops/core/hierarchy_data.py:564: UserWarning: test_file_version FAILED with exception Unable to open file (file is already open for write/SWMR write (may use <h5clear file> to clear file consistency flags))
-    warnings.warn(
-  /home/hiro/src/hops/hops/core/hierarchy_data.py:567: UserWarning: hdf5_name .data/a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f/_b/a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_b5106778b26241a26c10be1488e24172_1.h5
-    warnings.warn("hdf5_name {}".format(self.hdf5_name))
-  /home/hiro/src/hops/hops/core/hierarchy_data.py:570: UserWarning: Moving .data/a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f/_b/a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_b5106778b26241a26c10be1488e24172_1.h5 to .data/a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f/_b/a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_b5106778b26241a26c10be1488e24172_1.h5backup_1683828067.6098497 and starting fresh.
-    warnings.warn(
-  [INFO    hops.core.hierarchy_data  660003] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/results_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.fifo
-  [INFO    hops.core.integration     660003] Using 16 integrators.
-  [INFO    hops.core.integration     660003] Some 1 trajectories have to be integrated.
-  [INFO    hops.core.integration     660003] Using 1001 hierarchy states.
-  0% 0/1 [00:00<?, ?it/s][INFO    hops.core.signal_delay    660003] caught sig 'SIGINT'
-  0% 0/1 [00:10<?, ?it/s]
-  [INFO    hops.core.signal_delay    660003] caught 1 signal(s)
-  [INFO    hops.core.signal_delay    660003] emit signal 'SIGINT'
-  [INFO    hops.core.signal_delay    660003] caught sig 'SIGINT'
-  2023-05-11 14:01:17,869       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
-  [INFO    hops.core.signal_delay    660003] caught 1 signal(s)
-  [INFO    hops.core.signal_delay    660003] emit signal 'SIGINT'
-#+end_example
-# [goto error]
-#+begin_example
-  [0;31m---------------------------------------------------------------------------[0m
-  [0;31mKeyboardInterrupt[0m                         Traceback (most recent call last)
-  Cell [0;32mIn[26], line 1[0m
-  [0;32m----> 1[0m [43mot[49m[38;5;241;43m.[39;49m[43mintegrate_online_multi[49m[43m([49m[43mcold_models[49m[43m,[49m[43m [49m[38;5;241;43m1[39;49m[43m,[49m[43m [49m[43mincrement[49m[38;5;241;43m=[39;49m[38;5;241;43m1[39;49m[43m,[49m[43m [49m[43manalyze_kwargs[49m[38;5;241;43m=[39;49m[38;5;28;43mdict[39;49m[43m([49m[43mevery[49m[38;5;241;43m=[39;49m[38;5;241;43m10_000[39;49m[43m)[49m[43m)[49m
-
-  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/otto_utilities.py:387[0m, in [0;36mintegrate_online_multi[0;34m(models, n, increment, *args, **kwargs)[0m
-  [1;32m    385[0m     count [38;5;241m=[39m get_sample_count(model)
-  [1;32m    386[0m     [38;5;28;01mif[39;00m count [38;5;241m<[39m current_target:
-  [0;32m--> 387[0m         [43mintegrate_online[49m[43m([49m[43mmodel[49m[43m,[49m[43m [49m[43mcurrent_target[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
-  [1;32m    389[0m target [38;5;241m+[39m[38;5;241m=[39m increment
-
-  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_shift/otto_utilities.py:360[0m, in [0;36mintegrate_online[0;34m(model, n, stream_folder, **kwargs)[0m
-  [1;32m    359[0m [38;5;28;01mdef[39;00m [38;5;21mintegrate_online[39m(model, n, stream_folder[38;5;241m=[39m[38;5;28;01mNone[39;00m, [38;5;241m*[39m[38;5;241m*[39mkwargs):
-  [0;32m--> 360[0m     [43maux[49m[38;5;241;43m.[39;49m[43mintegrate[49m[43m([49m
-  [1;32m    361[0m [43m        [49m[43mmodel[49m[43m,[49m
-  [1;32m    362[0m [43m        [49m[43mn[49m[43m,[49m
-  [1;32m    363[0m [43m        [49m[43mstream_file[49m[38;5;241;43m=[39;49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43m"[39;49m[43m [49m[38;5;28;43;01mif[39;49;00m[43m [49m[43mstream_folder[49m[43m [49m[38;5;129;43;01mis[39;49;00m[43m [49m[38;5;28;43;01mNone[39;49;00m[43m [49m[38;5;28;43;01melse[39;49;00m[43m [49m[43mstream_folder[49m[43m)[49m
-  [1;32m    364[0m [43m        [49m[38;5;241;43m+[39;49m[43m [49m[38;5;124;43mf[39;49m[38;5;124;43m"[39;49m[38;5;124;43mresults_[39;49m[38;5;132;43;01m{[39;49;00m[43mmodel[49m[38;5;241;43m.[39;49m[43mhexhash[49m[38;5;132;43;01m}[39;49;00m[38;5;124;43m.fifo[39;49m[38;5;124;43m"[39;49m[43m,[49m
-  [1;32m    365[0m [43m        [49m[43manalyze[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
-  [1;32m    366[0m [43m        [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m,[49m
-  [1;32m    367[0m [43m    [49m[43m)[49m
-
-  File [0;32m~/src/two_qubit_model/hiro_models/model_auxiliary.py:201[0m, in [0;36mintegrate[0;34m(model, n, data_path, clear_pd, single_process, stream_file, analyze, results_path, analyze_kwargs)[0m
-  [1;32m    199[0m         supervisor[38;5;241m.[39mintegrate_single_process(clear_pd)
-  [1;32m    200[0m     [38;5;28;01melse[39;00m:
-  [0;32m--> 201[0m         supervisor[38;5;241m.[39mintegrate(clear_pd)
-  [1;32m    203[0m cleanup([38;5;241m0[39m)
-
-  File [0;32m~/src/hops/hops/core/signal_delay.py:87[0m, in [0;36msig_delay.__exit__[0;34m(self, exc_type, exc_val, exc_tb)[0m
-  [1;32m     84[0m [38;5;28;01mif[39;00m [38;5;28mlen[39m([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught) [38;5;241m>[39m [38;5;241m0[39m [38;5;129;01mand[39;00m [38;5;28mself[39m[38;5;241m.[39mhandler [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
-  [1;32m     85[0m     [38;5;28mself[39m[38;5;241m.[39mhandler([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught)
-  [0;32m---> 87[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_restore[49m[43m([49m[43m)[49m
-
-  File [0;32m~/src/hops/hops/core/signal_delay.py:68[0m, in [0;36msig_delay._restore[0;34m(self)[0m
-  [1;32m     66[0m [38;5;28;01mfor[39;00m i, s [38;5;129;01min[39;00m [38;5;28menumerate[39m([38;5;28mself[39m[38;5;241m.[39msigs):
-  [1;32m     67[0m     signal[38;5;241m.[39msignal(s, [38;5;28mself[39m[38;5;241m.[39mold_handlers[i])
-  [0;32m---> 68[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msigh[49m[38;5;241;43m.[39;49m[43memit[49m[43m([49m[43m)[49m
-
-  File [0;32m~/src/hops/hops/core/signal_delay.py:42[0m, in [0;36mSigHandler.emit[0;34m(self)[0m
-  [1;32m     40[0m [38;5;28;01mfor[39;00m s [38;5;129;01min[39;00m [38;5;28mself[39m[38;5;241m.[39msigs_caught:
-  [1;32m     41[0m     log[38;5;241m.[39minfo([38;5;124m"[39m[38;5;124memit signal [39m[38;5;124m'[39m[38;5;132;01m{}[39;00m[38;5;124m'[39m[38;5;124m"[39m[38;5;241m.[39mformat(SIG_MAP[s]))
-  [0;32m---> 42[0m     [43mos[49m[38;5;241;43m.[39;49m[43mkill[49m[43m([49m[43mos[49m[38;5;241;43m.[39;49m[43mgetpid[49m[43m([49m[43m)[49m[43m,[49m[43m [49m[43ms[49m[43m)[49m
-
-  [0;31mKeyboardInterrupt[0m:
-#+end_example
-:END:
-
 #+begin_src jupyter-julia
   aux.import_results(other_data_path="taurus/.data", other_results_path="taurus/results", models_to_import=cold_models)
 #+end_src
+
+#+RESULTS:
+#+begin_example
+  [INFO    root                      18669] Skipping b05446a4d349d3dc0a69a7a44affc2876f07d0cb964e26a48db1d34a5eabc0b9.
+  [INFO    root                      18669] Skipping c76f580d0b1ffe427087a52af3ca33fee3c2e43edd4e8bdb144eb966e2090572.
+  [INFO    root                      18669] Skipping f7e312e39019400e3fcd54b1a27c7af544455f30dda398cede314be7c15605ae.
+  [INFO    root                      18669] Skipping de7eef8967925e6fb09ed542f3d720ee25d6403beede20a4a9a1d480f10ad57b.
+  [INFO    root                      18669] Skipping dd3f4f099a70356c0d0887af79f84c7a95c9509ae4d1fa489b8fce2dbea18ec9.
+  [INFO    root                      18669] Skipping 39a0bb585dfb2ebf6436a4968e21c52ee1f38e9cd50973184b9cb33ffa39dea6.
+  [INFO    root                      18669] Skipping 1bc5695f1454d8f6684c52a55cd633ebd4958eb852fb30f018170b3fdc97f614.
+  [INFO    root                      18669] Skipping e027c1dcb06971275f06fd7512bbb14441fe0aed619aaf5be4dcf31e1f435083.
+  [INFO    root                      18669] Skipping 3ddbe4cb5d72f6213a2ed9a17f44a3baf5c3526a4a076b666ab422b359d3b8fd.
+  [INFO    root                      18669] Skipping 7cac0199140ff8f9fb2e0073b950e079e582466b8a6aea99f286d5d81b62cad8.
+  [INFO    root                      18669] Skipping e5b39af5f44f26550adedd55bd23583dcefac4f67b88c3d2892f03563900f8fd.
+  [INFO    root                      18669] Skipping 9a60e106d3fc8e3b71721be3b4629d871bdb2b0dfc4ae5cdabfc30dd51d02db5.
+  [INFO    root                      18669] Skipping 891fdc8c533ec0736bbf6bdde377c99f7824ba5b0ad328be6e7083a3d4f12678.
+  [INFO    root                      18669] Skipping abe7b4314386941d0913ffb64ee0ad59bb0c1be62b5f56cfaae965b955d16686.
+  [INFO    root                      18669] Skipping 7d1434769d5f44d7dd611430d3974eeb675d6a00e02bde4dd0c32fb34827ea54.
+  [INFO    root                      18669] Skipping 8b5e60297f93b8e77fae00d86b07621aa4aa66367404cfe15b04c145778c1a80.
+  [INFO    root                      18669] Skipping 586c5a0355f66a85ed09281931b8fcfc7c283e73f7d6440252d02f160186ceec.
+  [INFO    root                      18669] Skipping cfad63977aad412a4d035ea4122d748504bc638b4df70749bf6a9f0a0ecbcf4b.
+  [INFO    root                      18669] Skipping 5246668cb8f908e4b4ebf125167c55e8e2e239c4a4b4d1119d30cc4db4339815.
+  [INFO    root                      18669] Skipping 3b7ca29c512453d9a7edac46f40b3aaaa6e08622cf57ac0e30def3cb8f7f0eed.
+  [INFO    root                      18669] Skipping 5f81eec546a7aeb8b0721dde139a38de00422500a5f48c987bc485dd542a40e6.
+  [INFO    root                      18669] Skipping 634357aeae7ae179438dfdcdcb1bfc3fa1fee9f09c1f91928a5cab21affd14a8.
+  [INFO    root                      18669] Skipping b8df6a7c8e7b196a20fb22bd53497aef48260b605831439feab8c76c14edb9f4.
+  [INFO    root                      18669] Skipping a6ee3dbf94afda02f8dbde095e3cf63c0daac8552eb018f4edd15c43de703a0a.
+  [INFO    root                      18669] Skipping 443531c8c81136c8345f7d362d19c66ed09e578bc715b2abd49cf31f21ae01bd.
+  [INFO    root                      18669] Skipping 2e5e3febeffbfa79aa5f85e4a75d725275ca55163aaea81fb7a266ab5eb1820d.
+  [INFO    root                      18669] Skipping e938456955f7ed0fdbfa6ac6ffd85a484eae2ffb8cc33017ee1e207ab356bc09.
+  [INFO    root                      18669] Skipping 932e4091f4c6604017cafdd80412639f59ed7a4b71b036aafdb7e1bd3aa79071.
+  [INFO    root                      18669] Skipping 3cfac01aae7bfa3974096efb73eafaeaa6dcf75848ed6d0dc9ce9174be8bc32f.
+  [INFO    root                      18669] Skipping aa6f7c208759a151d2e37dd5f43dc26bb56b971168bd81e70e501e9ed3b611b0.
+  [INFO    root                      18669] Skipping 3818bc0e971ff867e05708b90a6f44488caaa383f3ed286205757d358a08ef58.
+  [INFO    root                      18669] Skipping 5547498a828a507d2023ae3f30e478dc3d05fdce0d5f085157b074ade8dbc6c8.
+  [INFO    root                      18669] Skipping b666793171ffe0a006adb1e5c7adae7bb02136a455e1b8e46e41b03773993e1a.
+  [INFO    root                      18669] Not importing ce0913ebbcdbe3adfd693b9cad66c06c43a943272068f46ca1b8e12fd4581119.
+  [INFO    root                      18669] Not importing fb5094e0693ce460ba63d2374e8c5f7852dbdfd4487a0ea393a3088bfd3c4117.
+  [INFO    root                      18669] Not importing 84ce4409ca0d9e6fce328c2bdb0fe931cef2ad6b76311488d58fc74029b04bb7.
+  [INFO    root                      18669] Not importing 2f2c1b910ad4e7a706dd2b2b1ced68375356c69964c57b256818558dd067d008.
+  [INFO    root                      18669] Not importing 26ee5023b7589d901c41037537bdab89154b395927af2a3ed6bf8c472d7625c4.
+  [INFO    root                      18669] Not importing 5d118bc5b64eb105ed45c825742f9241f81efa681dc7f6095b7d27ab6b96c284.
+  [INFO    root                      18669] Not importing 7c7fed9fd4ff2ecfeb9a1013c58e3a402deb966068f7a2e97aa55f1008088731.
+  [INFO    root                      18669] Not importing 84ff43949573f3b0abed26950782793b605a85dee7df40b86963ecc5873bf747.
+  [INFO    root                      18669] Not importing 36a2ffb10a838af7fb97670a69866c682282a058d20913f37c98043351bb83a2.
+  [INFO    root                      18669] Skipping e87e6ed047bb6e2b589374542556d6f22b9cfe04939db4c657fbd76bd1305394.
+  [INFO    root                      18669] Skipping 3031942ac59f6098d27f4312de139565543dfa97f5aed457dfb0d80cefc41c9b.
+  [INFO    root                      18669] Skipping 0079a4c20543824a40a98912580968424e9cf182634960ff37973c3b01d65433.
+  [INFO    root                      18669] Skipping f72a3b93aca01363f1029255be581618eed90fa6b607e96f98178d336e3506ff.
+  [WARNING root                      18669] Importing taurus/.data/a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f/_b/a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_b5106778b26241a26c10be1488e24172_1.h5 to .data/a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f/_b/a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_b5106778b26241a26c10be1488e24172_1.h5.
+  [WARNING root                      18669] The model description is 'Classic Cycle'.
+  [WARNING root                      18669] Importing taurus/results/flow_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/flow_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_10000.npz.
+  [WARNING root                      18669] Importing taurus/results/flow_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/flow_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_50000.npz.
+  [WARNING root                      18669] Importing taurus/results/flow_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/flow_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_20000.npz.
+  [WARNING root                      18669] Importing taurus/results/flow_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/flow_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_30000.npz.
+  [WARNING root                      18669] Importing taurus/results/flow_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/flow_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_80000.npz.
+  [WARNING root                      18669] Importing taurus/results/flow_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/flow_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_40000.npz.
+  [WARNING root                      18669] Importing taurus/results/flow_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/flow_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz.
+  [WARNING root                      18669] Importing taurus/results/flow_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/flow_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_70000.npz.
+  [WARNING root                      18669] Importing taurus/results/flow_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/flow_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_60000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/interaction_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_40000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/interaction_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_10000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/interaction_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_60000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/interaction_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_30000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/interaction_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_70000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/interaction_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_80000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/interaction_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/interaction_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_20000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/interaction_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_50000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/interaction_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_60000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/interaction_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_70000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/interaction_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_30000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/interaction_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_80000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/interaction_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_40000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/interaction_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_20000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/interaction_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_10000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/interaction_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/interaction_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_50000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/system_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_40000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/system_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_60000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/system_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz.
+  [WARNING root                      18669] Importing taurus/results/system_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/system_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_50000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/system_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_10000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/system_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_20000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/system_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_80000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/system_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_70000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/system_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_30000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/system_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_60000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/system_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_50000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/system_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_20000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/system_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_30000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/system_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_40000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/system_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz.
+  [WARNING root                      18669] Importing taurus/results/system_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/system_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_10000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/system_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_70000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f.npz to results/system_power_a86b8a23ecd962904a2008808f85b00b9c337e36dc6bebe3b806343510f0ec7f_80000.npz.
+  [WARNING root                      18669] Importing taurus/.data/ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454/_5/ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_57ce0945dd8dfa165278d59ed17b5666_1.h5 to .data/ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454/_5/ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_57ce0945dd8dfa165278d59ed17b5666_1.h5.
+  [WARNING root                      18669] The model description is 'Classic Cycle'.
+  [WARNING root                      18669] Importing taurus/results/flow_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/flow_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_30000.npz.
+  [WARNING root                      18669] Importing taurus/results/flow_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/flow_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_70000.npz.
+  [WARNING root                      18669] Importing taurus/results/flow_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/flow_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz.
+  [WARNING root                      18669] Importing taurus/results/flow_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/flow_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_20000.npz.
+  [WARNING root                      18669] Importing taurus/results/flow_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/flow_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_40000.npz.
+  [WARNING root                      18669] Importing taurus/results/flow_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/flow_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_50000.npz.
+  [WARNING root                      18669] Importing taurus/results/flow_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/flow_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_10000.npz.
+  [WARNING root                      18669] Importing taurus/results/flow_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/flow_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_80000.npz.
+  [WARNING root                      18669] Importing taurus/results/flow_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/flow_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_60000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/interaction_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_30000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/interaction_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_70000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/interaction_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_40000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/interaction_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/interaction_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_10000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/interaction_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_20000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/interaction_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_50000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/interaction_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_60000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/interaction_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_80000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/interaction_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_10000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/interaction_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_30000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/interaction_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_70000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/interaction_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_20000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/interaction_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/interaction_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_60000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/interaction_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_40000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/interaction_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_50000.npz.
+  [WARNING root                      18669] Importing taurus/results/interaction_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/interaction_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_80000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/system_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_80000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/system_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_30000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/system_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_10000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/system_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_70000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/system_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_40000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/system_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_60000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/system_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_20000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/system_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz.
+  [WARNING root                      18669] Importing taurus/results/system_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/system_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_50000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/system_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz.
+  [WARNING root                      18669] Importing taurus/results/system_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/system_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_30000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/system_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_20000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/system_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_70000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/system_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_50000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/system_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_40000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/system_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_60000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/system_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_80000.npz.
+  [WARNING root                      18669] Importing taurus/results/system_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454.npz to results/system_power_ca94f36cbacd1b29d6e4f3cf384624ef0f4930ef3b0f12b09179efb17e327454_10000.npz.
+#+end_example
 
 *** Cycle showcase
 #+begin_src jupyter-python :tangle no
@@ -720,11 +792,12 @@ Let's contrast all three protocols.
 
   ax1.set_title("Cold Shifted")
   ax2.set_title("Both Shifted")
-  fs.export_fig("cycle_shift_power_efficiency_longer_vs_only_cold", y_scaling=.7, x_scaling=2)
+  ax3.set_title("Fast Modulation")
+  fs.export_fig("cycle_shift_power_efficiency_longer_vs_only_cold", y_scaling=.7, x_scaling=2.5)
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/0566a3f8b3266b69979cc58b4459835bba36744d.svg]]
+[[file:./.ob-jupyter/bdb51a4a3f8c24984da621312c2898b079ee8d55.svg]]
 
 And do it again, but in a more convenient format.
 #+begin_src jupyter-python
@@ -733,7 +806,7 @@ And do it again, but in a more convenient format.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/66f9994b67426aae52943a1f9ab6540b6fcadeff.svg]]
+[[file:./.ob-jupyter/31768eb7041b22ce745ca08564de4479c81b662b.svg]]
 
 * Findings
 - coupling overlap doesn't help much

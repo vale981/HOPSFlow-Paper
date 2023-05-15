@@ -285,7 +285,8 @@ ax3.sharey(ax1)
 
 ax1.set_title("Cold Shifted")
 ax2.set_title("Both Shifted")
-fs.export_fig("cycle_shift_power_efficiency_longer_vs_only_cold", y_scaling=.7, x_scaling=2)
+ax3.set_title("Fast Modulation")
+fs.export_fig("cycle_shift_power_efficiency_longer_vs_only_cold", y_scaling=.7, x_scaling=2.5)
 
 ot.plot_multi_powers_and_efficiencies(shifts, [models, long_models, cold_models], ["shifted", "shifted + slower modulation", "slower + only cold shifted"], xlabel=r"Shift $\delta$")
 fs.export_fig("shift_comparison", y_scaling=1, x_scaling=2)
