@@ -87,13 +87,13 @@ coupling-change/cycle time.
 
 * Analysis
 #+begin_src jupyter-python
-  ot.plot_energy(models[0])
+  ot.plot_energy(models[5])
 #+end_src
 
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
-[[file:./.ob-jupyter/45a0259c0d9bbbf985af1123e6595bb5711ec874.svg]]
+[[file:./.ob-jupyter/dcb84273573f02eab9be5cb49c8855b61ef57f84.svg]]
 :END:
 
 

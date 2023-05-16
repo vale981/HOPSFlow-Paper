@@ -9,7 +9,8 @@ import utilities as ut
 import stocproc
 import matplotlib.pyplot as plt
 import otto_utilities as ot
-
+import hops
+from hopsflow.util import EnsembleValue
 import ray
 ray.shutdown()
 
@@ -18,7 +19,6 @@ ray.init()
 from hops.util.logging_setup import logging_setup
 import logging
 logging_setup(logging.INFO)
-plt.rcParams['figure.figsize'] = (12,4)
 
 T = 50
 

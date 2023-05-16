@@ -16,7 +16,8 @@ Here we scan bath memory and maybe temperature gradient later.
   import stocproc
   import matplotlib.pyplot as plt
   import otto_utilities as ot
-
+  import hops
+  from hopsflow.util import EnsembleValue
   import ray
   ray.shutdown()
 
@@ -25,7 +26,6 @@ Here we scan bath memory and maybe temperature gradient later.
   from hops.util.logging_setup import logging_setup
   import logging
   logging_setup(logging.INFO)
-  plt.rcParams['figure.figsize'] = (12,4)
 #+end_src
 
 * Cycles
@@ -104,35 +104,6 @@ coupling-change/cycle time.
   aux.import_results(other_data_path="taurus/.data", other_results_path="taurus/results", models_to_import=models)
 #+end_src
 
-#+RESULTS:
-#+begin_example
-  [INFO    root                      40217] Skipping 392528aafa00ae3876e428dfcc31d41433f972c7b5c3ee5d6ab417d49eab371e.
-  [INFO    root                      40217] Skipping 432d072ae79e9b454118814f3b75b83232f076d659c1e244ee1f90dbea00a11c.
-  [INFO    root                      40217] Skipping 1d430a943063e42af991804b9bc36f2559a7964d633ba1e0294ec45215e18ee3.
-  [INFO    root                      40217] Skipping 9aafe6208871226a9362c9c4d3c970883aae89b1e424cfbc80dd8d1449b99a61.
-  [INFO    root                      40217] Skipping 65b12f0d83ba066d30ae7ea0a9bf717894ba7e093f24651268cc9ffdb9f88860.
-  [INFO    root                      40217] Skipping 33798d09f7fb6e782e025bdf0fb00be82068cec65b7a1b116972780c12345a3e.
-  [INFO    root                      40217] Skipping 78ebb11b0e402f83dc7812f8a43a1125b18de2006f69deed4dd4eace18765c6c.
-  [INFO    root                      40217] Skipping 3715b5c9f8b8acb0833a6f17f6ed95f211e41cc24dc1281be941f5bce6104323.
-  [INFO    root                      40217] Skipping b0df550fb3fd6a6fcc71770701f99178e8e927d1ff9c429acb1bc8fac4b76788.
-  [INFO    root                      40217] Skipping 74cd0ef251e62badc6a9e3ff32cb22be575d21b0e3390381c0ec521d2b4ad275.
-  [INFO    root                      40217] Skipping 7af8cd8857c3efb85ac9ec20d4c67ce7a8bcf08d3a63d095ec23330e26f9b694.
-  [INFO    root                      40217] Skipping 9e2b244d480fb663597c6d54248bc40114cdc09681ef29d148253aad8f496b02.
-  [INFO    root                      40217] Skipping 1752f9806eb37316019cdb15c56f2eff23cb660cf5700c45199140691c1170fd.
-  [INFO    root                      40217] Skipping 1d8d64b7ad00c64fe3770fdf9b083c2f12ee8073485e49db821863b62ce953f1.
-  [INFO    root                      40217] Skipping 563fbcd0092f079b122816cddf6f63f582082fea07e44fb62518a969a59e4352.
-  [INFO    root                      40217] Skipping 726124c6e532b63b0ca0c008fa91df4c793ffe9352920f5e5761255024c452a2.
-  [INFO    root                      40217] Skipping 5d0434eed0415ae21021d2bb2132dc87e8f1b1bb477bef6daeee28283bd84187.
-  [INFO    root                      40217] Skipping 5d71c75c91f661d53814a257fc865695e7f71729881d551ce12ed572b7d38ca6.
-  [INFO    root                      40217] Skipping 606e56f0478ea7298cae6414ca68ee421dda9677c3e526b4c98e9a19108c42d6.
-  [INFO    root                      40217] Skipping e7109d2bc08dc1372be13708b9343e2d69c90c9b9c43d90b0024cb496a3ca879.
-  [INFO    root                      40217] Skipping 147235c1e3d0c3d5ed4971fb784b287c790ddea25a2b0a8160f44f774da287ff.
-  [INFO    root                      40217] Skipping 666039618a7ffaa17d42cabfee8d4938467e340807af2dacb97993bb84d1c8c7.
-  [INFO    root                      40217] Skipping 38fcd74a99b9473c2d705a28cbc3c57448e3cb1116ab196a4042a83544262fd7.
-  [INFO    root                      40217] Skipping c2d2a848079a48791e8909ad2a8570f5fb231492102708e645ecf9d5603b4b66.
-  [INFO    root                      40217] Skipping 83f3cea795fe54a3a6c3bc0fa5361cbad8d7a66082cf60dc72cabd807b83ab6c.
-#+end_example
-
 * Analysis
 #+begin_src jupyter-python
   models[1].T
@@ -151,30 +122,30 @@ coupling-change/cycle time.
 #+RESULTS:
 :RESULTS:
 #+begin_example
-  -0.006066419789176171 0.4 0.5
-  -0.005586445662789428 0.45 0.5
-  -0.005038545160476334 0.5 0.5
-  -0.004551607899071748 0.55 0.5
-  -0.004084369471683145 0.6 0.5
-  -0.006276938479392601 0.4 0.75
-  -0.005883213741945448 0.45 0.75
-  -0.0054760722009299465 0.5 0.75
-  -0.00509961243651586 0.55 0.75
-  -0.004713792601165993 0.6 0.75
-  -0.006003694926219254 0.4 1.0
-  -0.005630008851490323 0.45 1.0
-  -0.005247723184476385 0.5 1.0
-  -0.004922650999264568 0.55 1.0
-  -0.004561986692017902 0.6 1.0
-  -0.005792018673164359 0.4 1.25
-  -0.005411940557486204 0.45 1.25
-  -0.005122848900745669 0.5 1.25
-  -0.004739985218211038 0.55 1.25
-  -0.004424832509632545 0.6 1.25
-  -0.005671859616295697 0.4 1.5
-  -0.005321236317782547 0.45 1.5
+  -0.0034551659388595505 0.4 0.5
+  -0.002904596596987212 0.45 0.5
+  -0.0023659365036140375 0.5 0.5
+  -0.0019355134236714987 0.55 0.5
+  -0.0014524274934447788 0.6 0.5
+  -0.004793786801168995 0.4 0.75
+  -0.004345910814395173 0.45 0.75
+  -0.003837955397297659 0.5 0.75
+  -0.0033846244411344056 0.55 0.75
+  -0.0029960642459121102 0.6 0.75
+  -0.004871336818211319 0.4 1.0
+  -0.004443564282016794 0.45 1.0
+  -0.0039839481344293454 0.5 1.0
+  -0.0035662462002002022 0.55 1.0
+  -0.0031004548905917647 0.6 1.0
+  -0.0047150449741200865 0.4 1.25
+  -0.004223951236090775 0.45 1.25
+  -0.003871633835637403 0.5 1.25
+  -0.0034857454518454926 0.55 1.25
+  -0.003170841523344448 0.6 1.25
+  -0.004713925136010963 0.4 1.5
+  -0.004262014237031279 0.45 1.5
 #+end_example
-[[file:./.ob-jupyter/917c1ebe76592c18cce8b87737189b95b83c50db.svg]]
+[[file:./.ob-jupyter/0717c8898072b9d5d4c6d7ac8e6097ba822e7de8.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -184,27 +155,248 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-
+[[file:./.ob-jupyter/64e281864076e8697d6c337f105aeb08bfd9c5e7.svg]]
 
 #+begin_src jupyter-python
-  pu.plot_with_σ(models[0].t, models[0].interaction_power().sum_baths().integrate(models[0].t))
+  fig, ax = plt.subplots()
+  styles = [".", "*"]
+  for bath, style in enumerate(styles):
+      for i, T in enumerate(Ts):
+          inters = np.array([abs(model.interaction_energy().for_bath(bath).slice(slice(model.strobe[1][2], -1))).max.value for model in models[i::len(Ts)]])
+          bcf_scales = np.array([(model.bcf_scales[bath]) for model in models[i::len(Ts)]])
+          ωs_filter = [model.ω_c[0] for model in models[::len(Ts)]]
+          #ax.plot(ωs_filter, inters)
+          #ax.plot(ωs_filter, bcf_scales, linestyle=style, marker=".", label=rf"$T={T}$" if bath == 0 else None)
+          ax.plot(ωs_filter, inters, linestyle="dashed", marker=style, label=rf"${T}$" if bath == 0 else None, color=f"C{i}")
+
+
+  ax.set_xlabel(r"$\omega_c$")
+  ax.set_ylabel(r"$E_\mathrm{I}$")
+  from matplotlib.lines import Line2D
+  custom_lines = [Line2D([0], [0], linestyle="dashed", color="black", marker=style) for style in styles]
+  legend_orig = ax.legend(title=r"$T_c$")
+  ax.legend(custom_lines, ["Cold Bath", "Hot Bath"], loc="upper center", bbox_to_anchor=[0.4, 1])
+  ax.add_artist(legend_orig)
+  fs.export_fig("bath_memory_interaction_strength", x_scaling=1, y_scaling=.7)
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/4bab11b09986f9da381c9b7358ef6791b055decc.svg]]
+
+#+begin_src jupyter-python
+  fig, ax = plt.subplots()
+  styles = [".", "*"]
+  for bath, style in enumerate(styles):
+      for i, T in enumerate(Ts):
+          print(T, [(model.T) for model in models[i::len(Ts)]], bath, style)
+          inters = np.array([(ot.val_relative_to_steady(
+              model,
+              -1 * model.interaction_power().for_bath(bath).integrate(model.t) * 1 / model.Θ,
+              steady_idx=2,
+          )[1].value[-1]) for model in models[i::len(Ts)]])
+          bcf_scales = np.array([(model.bcf_scales[bath]) for model in models[i::len(Ts)]])
+          ωs_filter = [model.ω_c[0] for model in models[::len(Ts)]]
+          #ax.plot(ωs_filter, inters)
+          #ax.plot(ωs_filter, bcf_scales, linestyle=style, marker=".", label=rf"$T={T}$" if bath == 0 else None)
+          ax.plot(ωs_filter, inters, linestyle="dashed", marker=style, label=rf"${T}$" if bath == 0 else None, color=f"C{i}")
+
+
+  ax.set_xlabel(r"$\omega_c$")
+  ax.set_ylabel(r"$\bar{P}_\mathrm{I}$")
+  from matplotlib.lines import Line2D
+  custom_lines = [Line2D([0], [0], linestyle="dashed", marker=style, color="black") for style in styles]
+  legend_orig = ax.legend(title=r"$T_c$")
+  ax.legend(custom_lines, ["Cold Bath", "Hot Bath"], loc="upper center", bbox_to_anchor=[0.6, .56])
+  ax.add_artist(legend_orig)
+  fs.export_fig("bath_memory_interaction_power", x_scaling=1, y_scaling=.7)
 #+end_src
 
 #+RESULTS:
 :RESULTS:
-| <Figure | size | 340x320 | with | 1 | Axes> | <AxesSubplot: | > | ((<matplotlib.lines.Line2D at 0x7efe37c44190>) <matplotlib.collections.PolyCollection at 0x7efe37c44400>) |
-[[file:./.ob-jupyter/ab54ecc61173b390e1ce63542f07af12649117dd.svg]]
+#+begin_example
+  0.4 [[0.4, 4], [0.4, 4], [0.4, 4], [0.4, 4], [0.4, 4]] 0 .
+  0.45 [[0.45, 4], [0.45, 4], [0.45, 4], [0.45, 4], [0.45, 4]] 0 .
+  0.5 [[0.5, 4], [0.5, 4], [0.5, 4], [0.5, 4], [0.5, 4]] 0 .
+  0.55 [[0.55, 4], [0.55, 4], [0.55, 4], [0.55, 4], [0.55, 4]] 0 .
+  0.6 [[0.6, 4], [0.6, 4], [0.6, 4], [0.6, 4], [0.6, 4]] 0 .
+  0.4 [[0.4, 4], [0.4, 4], [0.4, 4], [0.4, 4], [0.4, 4]] 1 *
+  0.45 [[0.45, 4], [0.45, 4], [0.45, 4], [0.45, 4], [0.45, 4]] 1 *
+  0.5 [[0.5, 4], [0.5, 4], [0.5, 4], [0.5, 4], [0.5, 4]] 1 *
+  0.55 [[0.55, 4], [0.55, 4], [0.55, 4], [0.55, 4], [0.55, 4]] 1 *
+  0.6 [[0.6, 4], [0.6, 4], [0.6, 4], [0.6, 4], [0.6, 4]] 1 *
+#+end_example
+[[file:./.ob-jupyter/1b920c5dba7f08df2f49d6d7da450af7216683da.svg]]
 :END:
 
 
 #+begin_src jupyter-python
-  ot.plot_power_eff_convergence(models[:10], 2)
+  fig, ax = plt.subplots()
+  for model in models[len(Ts)*4:len(Ts)*5]:
+      pu.plot_with_σ(model.t, model.interaction_energy().for_bath(1), ax=ax)
+      pu.plot_with_σ(model.t, model.system_energy(), ax=ax)
+      pu.plot_with_σ(model.t, model.interaction_power().for_bath(1), ax=ax, linestyle="dashed")
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/146835727a15a6be7ad2a4f97c5abfd83e1897d1.svg]]
+
+
+[[file:./.ob-jupyter/b9024c9d49fcea3025a1a688e979b6854d435e3a.svg]]
+
+
+#+begin_src jupyter-python
+  fig, ax = plt.subplots()
+  ax.set_xlim(models[0].Θ * 2, models[0].Θ * 3)
+  for i, model in enumerate(models[0::len(Ts)]):
+      T_c = model.T[0]
+      pu.plot_with_σ(model.t, model.interaction_energy().for_bath(0), ax=ax, color=f"C{i}", label=f"{model.ω_c[0]}")
+      pu.plot_with_σ(model.t, model.interaction_energy().for_bath(1), ax=ax, color=f"C{i}", linestyle="dotted")
+      pu.plot_with_σ(model.t, model.system_energy(), ax=ax, linestyle="dashed", color=f"C{i}")
+
+      #ax.plot(model.t, model.system.operator_norm(model.t), linestyle="dashed", color=f"C{i}")
+      #pu.plot_with_σ(model.t, model.interaction_power().for_bath(1), ax=ax, linestyle="dashed")
+
+  custom_lines = [Line2D([0], [0], linestyle=style, color="black") for style in ["-", "dotted", "dashed"]]
+  legend_orig = fig.legend(title=r"$\omega_c$", loc="upper center", bbox_to_anchor=[1.1, .7])
+  fig.legend(custom_lines, [r"$\langle H_{\mathrm{I},c}\rangle$", r"$\langle H_{\mathrm{I},h}\rangle$", r"$\langle H_{\mathrm{S}}\rangle$"], loc="upper center", bbox_to_anchor=[1.1, 1])
+  fig.add_artist(legend_orig)
+  ax.set_title(rf"$T_c={T_c}$")
+  ax.set_xlabel(r"$\tau$")
+  fs.export_fig("bath_memory_constant_t_overview", x_scaling=1, y_scaling=.7)
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/8d5d54d8efe0e86485ed8e6f1e7472795815c3cb.svg]]
+
+#+begin_src jupyter-python
+  def thermal_state(T, Ω):
+      ρ = np.array([[np.exp(-Ω / T), 0], [0, 1]])
+      ρ /= np.sum(np.diag(ρ))
+
+      return ρ
+  fig, ax = plt.subplots()
+  ax.set_xlim(models[0].Θ * 2, models[0].Θ * 3)
+
+  for i, model in enumerate(models[0::len(Ts)]):
+      T_c = model.T[0]
+      pu.plot_with_σ(model.t, model.interaction_energy().for_bath(0), ax=ax, color=f"C{i}", label=f"{model.ω_c[0]}")
+      pu.plot_with_σ(model.t, model.interaction_energy().for_bath(1), ax=ax, color=f"C{i}", linestyle="dotted")
+
+      with aux.get_data(model) as d:
+            pu.plot_with_σ(
+                model.t,
+                EnsembleValue(
+                    hops.util.utilities.trace_distance(
+                        d, relative_to=thermal_state(model.T[0], model.energy_gaps[0])
+                    )
+                ),
+                linestyle="dashed",
+                color=f"C{i}",
+                ax=ax,
+            )
+            pu.plot_with_σ(
+                model.t,
+                EnsembleValue(
+                    hops.util.utilities.trace_distance(
+                        d, relative_to=thermal_state(model.T[1], model.energy_gaps[1])
+                    )
+                ),
+                linestyle="dashdot",
+                color=f"C{i}",
+                ax=ax,
+            )
+      #ax.plot(model.t, model.coupling_operators[0].operator_norm(model.t), linestyle="dashed", color=f"C{i}")
+      #ax.plot(model.t, model.system.operator_norm(model.t), linestyle="dashed", color=f"C{i}")
+      #pu.plot_with_σ(model.t, model.interaction_power().for_bath(1), ax=ax, linestyle="dashed")
+
+  custom_lines = [Line2D([0], [0], linestyle=style, color="black") for style in ["-", "dotted", "dashed", "dashdot"]]
+  legend_orig = fig.legend(title=r"$\omega_c$", loc="upper center", bbox_to_anchor=[1.1, .6])
+  fig.legend(custom_lines, [r"$\langle H_{\mathrm{I},c}\rangle$", r"$\langle H_{\mathrm{I},h}\rangle$", r"$||\rho(\tau)-\rho_c||$",  r"$||\rho(\tau)-\rho_h||$"], loc="upper center", bbox_to_anchor=[1.15, 1])
+  fig.add_artist(legend_orig)
+  ax.set_title(rf"$T_c={T_c}$")
+  ax.set_xlabel(r"$\tau$")
+  fs.export_fig("bath_memory_constant_t_thermalization", x_scaling=1, y_scaling=.7)
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/24d3d765fb2bb5e24b4345e42a8a4e8542634396.svg]]
+
+
+#+begin_src jupyter-python
+  fig, ax = plt.subplots()
+  ax.set_xlim(models[0].Θ * 2, models[0].Θ * 3)
+
+
+  for i, model in enumerate(models[len(Ts) : 2*len(Ts)]):
+      ω_c = model.ω_c[0]
+      pu.plot_with_σ(
+          model.t,
+          model.interaction_energy().for_bath(0),
+          ax=ax,
+          color=f"C{i}",
+          label=f"{model.T[0]}",
+      )
+      pu.plot_with_σ(
+          model.t,
+          model.interaction_energy().for_bath(1),
+          ax=ax,
+          color=f"C{i}",
+          linestyle="dotted",
+      )
+      pu.plot_with_σ(
+          model.t, model.system_energy(), ax=ax, linestyle="dashed", color=f"C{i}"
+      )
+
+      # ax.plot(model.t, model.coupling_operators[0].operator_norm(model.t), linestyle="dashed", color=f"C{i}")
+      # ax.plot(model.t, model.system.operator_norm(model.t), linestyle="dashed", color=f"C{i}")
+      # pu.plot_with_σ(model.t, model.interaction_power().for_bath(1), ax=ax, linestyle="dashed")
+
+  custom_lines = [
+      Line2D([0], [0], linestyle=style, color="black")
+      for style in ["-", "dotted", "dashed"]
+  ]
+  legend_orig = fig.legend(title=r"$T_c$", loc="upper center", bbox_to_anchor=[1.1, 0.7])
+  fig.legend(
+      custom_lines,
+      [
+          r"$\langle H_{\mathrm{I},c}\rangle$",
+          r"$\langle H_{\mathrm{I},h}\rangle$",
+          r"$\langle H_{\mathrm{S}}\rangle$",
+      ],
+      loc="upper center",
+      bbox_to_anchor=[1.1, 1],
+  )
+  fig.add_artist(legend_orig)
+  ax.set_title(rf"$\omega_c={ω_c}$")
+  ax.set_xlabel(r"$\tau$")
+
+  fs.export_fig("bath_memory_constant_omega_overview", x_scaling=1, y_scaling=0.7)
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/2854b499d604a8059c207d92caa3c8efe6397bd7.svg]]
+
+
+#+begin_src jupyter-python
+  ot.plot_powers_and_efficiencies(np.array(ωs), models[0::len(Ts)], xlabel=r"$\omega_c$")
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 340x320 | with | 2 | Axes> | <AxesSubplot: | xlabel= | $\omega_c$ | ylabel= | $\bar{P}$ | > | (<AxesSubplot: xlabel= $\omega_c$ ylabel= $\bar{P}$ > <AxesSubplot: ylabel= $\eta$ >) |
+[[file:./.ob-jupyter/e751cd9e1c9dcf2f40ab250a3572403e86aa7fde.svg]]
+:END:
+
+
+
+#+begin_src jupyter-python
+  ot.plot_power_eff_convergence(models, 2)
 #+end_src
 
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 340x320 | with | 2 | Axes> | (<AxesSubplot: xlabel= $N$ ylabel= $P$ > <AxesSubplot: xlabel= $N$ ylabel= $\eta$ >) |
-[[file:./.ob-jupyter/d61ecf7ba68b6c20786353099fd031aa665f86aa.svg]]
+[[file:./.ob-jupyter/86c7d202e4f7026fe2c9b0540698a8d8993ec2ea.svg]]
 :END:
 
 
@@ -215,24 +407,24 @@ coupling-change/cycle time.
   a_efficiency = f.add_subplot(122, projection="3d")
 
   for ax in [a_power, a_efficiency]:
-      ax.set_box_aspect(aspect=None, zoom=0.7)
+      ax.set_box_aspect(aspect=None, zoom=0.78)
       ax.set_xlabel(r"$T_c$")
       ax.set_ylabel(r"$\omega_c$")
       ax.xaxis.labelpad = 10
       ax.view_init(elev=30.0, azim=-29, roll=0)
 
   ot.plot_3d_heatmap(
-      models[:20],
+      models,
       lambda model: np.clip(-model.power(steady_idx=2).value, 0, np.inf),
       lambda model: model.T[0],
       lambda model: model.ω_c[0],
       ax=a_power,
   )
-  a_power.set_zlabel(r"$P$")
+  a_power.set_zlabel(r"$\bar{P}$")
 
 
   ot.plot_3d_heatmap(
-      models[:20],
+      models,
       lambda model: np.clip(np.nan_to_num(model.efficiency(steady_idx=2).value * 100), 0, np.inf),
       lambda model: model.T[0],
       lambda model: model.ω_c[0],
@@ -243,7 +435,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/59482d74634fe63bcb6cc489dfb1b792da1c169a.svg]]
+[[file:./.ob-jupyter/11faec2aead41b5c9976099a19b26a58cb10d969.svg]]
 
 #+begin_src jupyter-python
   for model in models:

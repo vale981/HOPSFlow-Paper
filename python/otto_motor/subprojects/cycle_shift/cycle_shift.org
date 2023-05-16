@@ -69,7 +69,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/81013ffe4eb552aa29ee981e91c9734909c87581.svg]]
+[[file:./.ob-jupyter/fc9a5d0d4ed29593313534e3d1a1a28da016afa8.svg]]
 
 #+begin_src jupyter-python :tangle no
   #ot.plot_cycles(models, bath=0, legend=True)
@@ -93,7 +93,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/200e51f331a007eb0a07c20b2d9522fc4866756e.svg]]
+[[file:./.ob-jupyter/7114f916ea0d46a3e8951acfc5664ac12f2a1b9d.svg]]
 
 ** Integrate
 Here we integrate/simulate the models. This should be run on the

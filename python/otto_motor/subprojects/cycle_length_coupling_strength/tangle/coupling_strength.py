@@ -54,7 +54,7 @@ models = [make_model(Θ, δ) for Θ, δ, in itertools.product(Θs, δs)]
 
 ot.integrate_online_multi(models, 50_000, increment=10_000, analyze_kwargs=dict(every=10_000))
 
-ot.plot_energy(models[0])
+ot.plot_energy(models[5])
 
 #[model.efficiency(steady_idx=2).value * 100 for model in models][10]
 models[10].strobe, models[1].strobe
