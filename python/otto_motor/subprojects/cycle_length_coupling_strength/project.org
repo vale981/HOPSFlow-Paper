@@ -94,6 +94,15 @@ coupling-change/cycle time.
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
 [[file:./.ob-jupyter/dcb84273573f02eab9be5cb49c8855b61ef57f84.svg]]
+: [2m[36m(pid=gcs_server)[0m [2023-05-16 18:24:06,597 E 443560 443560] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
+: [2m[36m(pid=gcs_server)[0m [2023-05-16 18:24:06,597 E 443560 443560] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
+: [2m[36m(pid=gcs_server)[0m [2023-05-16 18:24:06,597 E 443560 443560] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
+: [2m[36m(pid=gcs_server)[0m [2023-05-16 18:24:06,597 E 443560 443560] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
+: [2m[36m(pid=gcs_server)[0m [2023-05-16 18:25:13,636 E 443560 443560] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
+: [2m[36m(pid=gcs_server)[0m [2023-05-16 18:25:13,636 E 443560 443560] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
+: [2m[36m(pid=gcs_server)[0m [2023-05-16 18:25:13,636 E 443560 443560] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
+: [2m[36m(pid=gcs_server)[0m [2023-05-16 18:25:13,637 E 443560 443560] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
+: [2m[36m(pid=gcs_server)[0m [2023-05-16 18:25:13,637 E 443560 443560] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
 :END:
 
 

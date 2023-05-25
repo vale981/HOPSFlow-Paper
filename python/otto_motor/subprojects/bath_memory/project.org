@@ -181,7 +181,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/4bab11b09986f9da381c9b7358ef6791b055decc.svg]]
+[[file:./.ob-jupyter/a6d1361f6b9238fd63a5cce405fdd9209d6f635b.svg]]
 
 #+begin_src jupyter-python
   fig, ax = plt.subplots()
@@ -225,7 +225,7 @@ coupling-change/cycle time.
   0.55 [[0.55, 4], [0.55, 4], [0.55, 4], [0.55, 4], [0.55, 4]] 1 *
   0.6 [[0.6, 4], [0.6, 4], [0.6, 4], [0.6, 4], [0.6, 4]] 1 *
 #+end_example
-[[file:./.ob-jupyter/1b920c5dba7f08df2f49d6d7da450af7216683da.svg]]
+[[file:./.ob-jupyter/d802e193d6695eb382972e8a3652a157a854a569.svg]]
 :END:
 
 
@@ -238,7 +238,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/146835727a15a6be7ad2a4f97c5abfd83e1897d1.svg]]
+[[file:./.ob-jupyter/b69b1130c17be6de63bc0ed992a34fbea26daa18.svg]]
 
 
 [[file:./.ob-jupyter/b9024c9d49fcea3025a1a688e979b6854d435e3a.svg]]
@@ -266,7 +266,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/8d5d54d8efe0e86485ed8e6f1e7472795815c3cb.svg]]
+[[file:./.ob-jupyter/253ca412ce97ab193b8e0d63b443a255138f8944.svg]]
 
 #+begin_src jupyter-python
   def thermal_state(T, Ω):
@@ -319,7 +319,19 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/24d3d765fb2bb5e24b4345e42a8a4e8542634396.svg]]
+:RESULTS:
+: /nix/store/y48ylcnfb6lb7447lrmmddfsqcna3a9q-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/cbook/__init__.py:1369: ComplexWarning: Casting complex values to real discards the imaginary part
+:   return np.asarray(x, float)
+: /nix/store/y48ylcnfb6lb7447lrmmddfsqcna3a9q-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5340: ComplexWarning: Casting complex values to real discards the imaginary part
+:   pts[0] = start
+: /nix/store/y48ylcnfb6lb7447lrmmddfsqcna3a9q-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5341: ComplexWarning: Casting complex values to real discards the imaginary part
+:   pts[N + 1] = end
+: /nix/store/y48ylcnfb6lb7447lrmmddfsqcna3a9q-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5344: ComplexWarning: Casting complex values to real discards the imaginary part
+:   pts[1:N+1, 1] = dep1slice
+: /nix/store/y48ylcnfb6lb7447lrmmddfsqcna3a9q-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5346: ComplexWarning: Casting complex values to real discards the imaginary part
+:   pts[N+2:, 1] = dep2slice[::-1]
+[[file:./.ob-jupyter/02fe89bca1c7946a8228dce3381435aa45921b6a.svg]]
+:END:
 
 
 #+begin_src jupyter-python
@@ -374,7 +386,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/2854b499d604a8059c207d92caa3c8efe6397bd7.svg]]
+[[file:./.ob-jupyter/5229f244f0a611e72d9445d2a9bc66bcb279c11a.svg]]
 
 
 #+begin_src jupyter-python
@@ -384,7 +396,7 @@ coupling-change/cycle time.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 340x320 | with | 2 | Axes> | <AxesSubplot: | xlabel= | $\omega_c$ | ylabel= | $\bar{P}$ | > | (<AxesSubplot: xlabel= $\omega_c$ ylabel= $\bar{P}$ > <AxesSubplot: ylabel= $\eta$ >) |
-[[file:./.ob-jupyter/e751cd9e1c9dcf2f40ab250a3572403e86aa7fde.svg]]
+[[file:./.ob-jupyter/cb7d0dc9bc64c874514e72287385326a2f710625.svg]]
 :END:
 
 
@@ -396,7 +408,7 @@ coupling-change/cycle time.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 340x320 | with | 2 | Axes> | (<AxesSubplot: xlabel= $N$ ylabel= $P$ > <AxesSubplot: xlabel= $N$ ylabel= $\eta$ >) |
-[[file:./.ob-jupyter/86c7d202e4f7026fe2c9b0540698a8d8993ec2ea.svg]]
+[[file:./.ob-jupyter/6384006b2616a827ceb6cd032b029cbccf0773f3.svg]]
 :END:
 
 
@@ -435,7 +447,14 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/11faec2aead41b5c9976099a19b26a58cb10d969.svg]]
+:RESULTS:
+[[file:./.ob-jupyter/22b8e23a40d90760837338c77db60ceb8f46b39e.svg]]
+: [2m[36m(pid=gcs_server)[0m [2023-05-18 16:55:57,199 E 126618 126618] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
+: [2m[36m(pid=gcs_server)[0m [2023-05-18 16:55:57,199 E 126618 126618] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
+: [2m[36m(pid=gcs_server)[0m [2023-05-18 16:55:57,199 E 126618 126618] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
+: [2m[36m(pid=gcs_server)[0m [2023-05-18 16:55:57,199 E 126618 126618] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
+: [2m[36m(pid=gcs_server)[0m [2023-05-18 16:55:57,200 E 126618 126618] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
+:END:
 
 #+begin_src jupyter-python
   for model in models:
