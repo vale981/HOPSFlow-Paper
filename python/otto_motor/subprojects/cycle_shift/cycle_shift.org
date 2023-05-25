@@ -902,3 +902,50 @@ Interestingly, even with the too-fast switching we have greater power, and great
 [[file:./.ob-jupyter/48801c84dacb82ca9d37f0af0519727e298ec1fd.svg]]
 [[file:./.ob-jupyter/0ef615f736de27bf2129d27452b3f55fb30ff82e.svg]]
 :END:
+
+
+* Rotating Hamiltonian
+Let us brieofly demonstrate the effects of rotating the system
+hamiltonian.
+
+** Construction
+#+begin_src jupyter-python :tangle tangle/rot.py :results none
+  <<boilerplate>>
+  import itertools
+  from hops.util.dynamic_matrix import ConstantMatrix
+#+end_src
+
+#+begin_src jupyter-python :tangle tangle/rot.py
+  rot_models = []
+  weights = [.3, .6]
+  for weight in weights:
+      off_ax = sc.make_model(0, 0)
+      off_ax.H_bias = ConstantMatrix(.3 / 2 * qt.sigmax().full())
+      rot_models.append(off_ax)
+#+end_src
+
+#+RESULTS:
+
+#+begin_src jupyter-python
+  τs = rot_models[0].t
+  #plt.plot(τs, np.einsum('tij,ij->t', rot_models[0].H(τs), qt.sigmay().full()).real)
+  plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 0]))
+  plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 1]))
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+: ConstantMatrix(array([[0. +0.j, 0.15+0.j], [0.15+0.j, 0. +0.j]]))
+: ConstantMatrix(array([[0. +0.j, 0.15+0.j], [0.15+0.j, 0. +0.j]]))
+| <matplotlib.lines.Line2D | at | 0x7f12bfd809a0> |
+[[file:./.ob-jupyter/d0d95f8d7e00f7a9dda3749f2a14973988e6887b.svg]]
+:END:
+
+** Integration
+#+begin_src jupyter-python :tangle tangle/rot.py
+  ot.integrate_online_multi(off_ax_models, 10, increment=10, analyze_kwargs=dict(every=10_000))
+#+end_src
+
+#+begin_src jupyter-python
+  aux.import_results(other_data_path="taurus/.data_oa", other_results_path="taurus/results")
+#+end_src

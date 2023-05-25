@@ -732,7 +732,7 @@ qutip = "^4.6.3"
 type = "git"
 url = "git@github.com:vale981/two_qubit_model.git"
 reference = "main"
-resolved_reference = "1306895b4a44f384f7dca65a02dcbb4bd7d0e8fb"
+resolved_reference = "9c2dd0f625b16c3be723382fdc83796086660578"
 
 [[package]]
 name = "hops"

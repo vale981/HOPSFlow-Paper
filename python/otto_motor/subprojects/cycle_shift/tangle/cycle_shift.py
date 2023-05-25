@@ -310,3 +310,10 @@ for (i, model), weight in zip(enumerate(off_ax_models), weights):
     f, a = ot.plot_energy(model)
     a.set_title(rf"$r_y={weight}$")
     fs.export_fig(f"full_energy_offaxis_{weight}", x_scaling=2, y_scaling=1)
+
+τs = rot_models[0].t
+#plt.plot(τs, np.einsum('tij,ij->t', rot_models[0].H(τs), qt.sigmay().full()).real)
+plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 0]))
+plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 1]))
+
+aux.import_results(other_data_path="taurus/.data_oa", other_results_path="taurus/results")
