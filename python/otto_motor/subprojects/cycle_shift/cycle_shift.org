@@ -943,7 +943,7 @@ hamiltonian.
 
 ** Integration
 #+begin_src jupyter-python :tangle tangle/rot.py
-  ot.integrate_online_multi(off_ax_models, 10, increment=10, analyze_kwargs=dict(every=10_000))
+  ot.integrate_online_multi(rot_models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))
 #+end_src
 
 #+begin_src jupyter-python

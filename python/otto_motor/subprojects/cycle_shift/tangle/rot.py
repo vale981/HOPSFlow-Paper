@@ -28,4 +28,4 @@ for weight in weights:
     off_ax.H_bias = ConstantMatrix(.3 / 2 * qt.sigmax().full())
     rot_models.append(off_ax)
 
-ot.integrate_online_multi(off_ax_models, 10, increment=10, analyze_kwargs=dict(every=10_000))
+ot.integrate_online_multi(rot_models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))
