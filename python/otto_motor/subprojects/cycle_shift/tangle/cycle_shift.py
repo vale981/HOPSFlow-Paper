@@ -311,9 +311,70 @@ for (i, model), weight in zip(enumerate(off_ax_models), weights):
     a.set_title(rf"$r_y={weight}$")
     fs.export_fig(f"full_energy_offaxis_{weight}", x_scaling=2, y_scaling=1)
 
+fig, axs = plt.subplots(ncols=2)
+(ax_full, ax) = axs
+
+for ax in axs:
+    ax.set_xlabel(r"$\tau$")
+    ax.set_ylabel(r"$\Delta X$")
+
+for (i, model) in enumerate([off_ax_models[0], baseline]):
+    for j, (val, label) in enumerate(zip([
+        model.total_energy_from_power(),
+        model.system_energy(),
+        model.interaction_energy().sum_baths(),
+        model.bath_energy().for_bath(0),
+        model.bath_energy().for_bath(1),
+    ], ["Total", "System", "Interaction", "Cold Bath", "Hot Bath"])):
+        linestyle = "dashed" if model == baseline else None
+        pu.plot_with_σ(model.t[:1000], val.slice(slice(0, 1000, 1)), ax=ax_full, linestyle=linestyle, color=f"C{j}")
+        t, steady_total = ot.val_relative_to_steady(model, val, steady_idx=2)
+        pu.plot_with_σ(t, steady_total, ax=ax, label=label if model != baseline else None, linestyle=linestyle, color=f"C{j}")
+
+ax.legend()
+fs.export_fig(f"energy_change_off_axis", x_scaling=2, y_scaling=0.7)
+
 τs = rot_models[0].t
 #plt.plot(τs, np.einsum('tij,ij->t', rot_models[0].H(τs), qt.sigmay().full()).real)
 plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 0]))
 plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 1]))
 
-aux.import_results(other_data_path="taurus/.data_oa", other_results_path="taurus/results")
+aux.import_results(other_data_path="taurus/.data", other_results_path="taurus/results", models_to_import=rot_models)
+
+for (i, model), weight in zip(enumerate(rot_models), weights):
+    f, a = ot.plot_bloch_components(model)
+    #ot.plot_bloch_components(off_ax_models[i+2], ax=a, linestyle="--", label=None)
+
+    a.set_title(rf"$r_x={weight}$")
+    fs.export_fig(f"bloch_expectation_rot_{weight}", y_scaling=.7)
+
+for (i, model), weight in zip(enumerate(rot_models), weights):
+    f, a = ot.plot_energy(model)
+    a.set_title(rf"$r_y={weight}$")
+    fs.export_fig(f"full_energy_rot_{weight}", x_scaling=2, y_scaling=1)
+
+for model in rot_models:
+    print(model.power(steady_idx=2).value / baseline.power(steady_idx=2).value, model.efficiency(steady_idx=2).value / baseline.efficiency(steady_idx=2).value)
+
+fig, axs = plt.subplots(ncols=2)
+(ax_full, ax) = axs
+
+for ax in axs:
+    ax.set_xlabel(r"$\tau$")
+    ax.set_ylabel(r"$\Delta X$")
+
+for (i, model) in enumerate([*rot_models, baseline]):
+    for j, (val, label) in enumerate(zip([
+        model.total_energy_from_power(),
+        model.system_energy(),
+        model.interaction_energy().sum_baths(),
+        model.bath_energy().for_bath(0),
+        model.bath_energy().for_bath(1),
+    ], ["Total", "System", "Interaction", "Cold Bath", "Hot Bath"])):
+        linestyle = "dashed" if model == baseline else None
+        pu.plot_with_σ(model.t[:1000], val.slice(slice(0, 1000, 1)), ax=ax_full, linestyle=linestyle, color=f"C{j}")
+        t, steady_total = ot.val_relative_to_steady(model, val, steady_idx=2)
+        pu.plot_with_σ(t, steady_total, ax=ax, label=label if model != baseline else None, linestyle=linestyle, color=f"C{j}")
+
+ax.legend()
+fs.export_fig(f"energy_change_rot", x_scaling=2, y_scaling=0.7)

@@ -22,10 +22,10 @@ import itertools
 from hops.util.dynamic_matrix import ConstantMatrix
 
 rot_models = []
-weights = [.3, .6]
+weights = [.3]
 for weight in weights:
     off_ax = sc.make_model(0, 0)
-    off_ax.H_bias = ConstantMatrix(.3 / 2 * qt.sigmax().full())
+    off_ax.H_bias = ConstantMatrix(weight / 2 * qt.sigmax().full())
     rot_models.append(off_ax)
 
 ot.integrate_online_multi(rot_models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))
