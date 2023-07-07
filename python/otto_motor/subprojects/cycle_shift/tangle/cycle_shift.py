@@ -133,7 +133,7 @@ fs.export_fig("shift_power", y_scaling=0.7)
 f, a = plt.subplots()
 a.axhline(best_shift_model.system_energy().value[np.argmin(abs(best_shift_model.t - model.Θ * 2))], color="gray", linestyle="--")
 r = pu.plot_with_σ(
-    best_shift_model.t, best_shift_model.interaction_energy().for_bath(0), ax=a,
+    best_shift_model.t, best_shift_model.interaction_energy().sum_baths(), ax=a,
     label=r"$\langle H_\mathrm{inter}\rangle$"
 )
 pu.plot_with_σ(
@@ -146,22 +146,59 @@ a.plot(
     label="cold bath modulation",
 )
 
-# a.plot(
-#     best_shift_model.t,
-#     best_shift_model.coupling_operators[1].operator_norm(best_shift_model.t) / 5,
-#     label="hot bath modulation",
-# )
+
 a.plot(
     best_shift_model.t, best_shift_model.system.operator_norm(best_shift_model.t) / 5,
     label="system modulation"
 )
+
+a.plot(
+    best_shift_model.t,
+    best_shift_model.coupling_operators[1].operator_norm(best_shift_model.t) / 5,
+    label="hot bath modulation",
+)
 # a.plot(best_shift_model.t, best_shift_model.coupling_operators[1].operator_norm(best_shift_model.t) / 5)
-a.set_xlim((model.Θ * 2, model.Θ * 2 + 11))
+a.set_xlim((model.Θ * 2, model.Θ * 2 + 20))
 
 a.set_ylim((-.21, .45))
 a.set_xlabel(r"$\tau$")
 a.legend(loc="upper right", fontsize="x-small")
 fs.export_fig("cold_bath_decoupling", y_scaling=.6)
+
+f, a = plt.subplots()
+a.axhline(baseline.system_energy().value[np.argmin(abs(baseline.t - model.Θ * 2))], color="gray", linestyle="--")
+r = pu.plot_with_σ(
+    baseline.t, baseline.interaction_energy().sum_baths(), ax=a,
+    label=r"$\langle H_\mathrm{inter}\rangle$"
+)
+pu.plot_with_σ(
+    baseline.t, baseline.system_energy(), ax=a, label=r"$\langle H_\mathrm{sys}\rangle$"
+)
+# a.plot(baseline.t, baseline.H(baseline.t)[:, 0,0])
+a.plot(
+    baseline.t,
+    baseline.coupling_operators[0].operator_norm(baseline.t) / 5,
+    label="cold bath modulation",
+)
+
+a.plot(
+      baseline.t, baseline.system.operator_norm(baseline.t) / 5,
+      label="system modulation"
+  )
+a.plot(
+    baseline.t,
+    baseline.coupling_operators[1].operator_norm(baseline.t) / 5,
+    label="hot bath modulation",
+)
+
+# a.plot(baseline.t, baseline.coupling_operators[1].operator_norm(baseline.t) / 5)
+a.set_xlim((model.Θ * 2, model.Θ * 2 + 11))
+
+a.set_ylim((-.21, .45))
+a.set_xlabel(r"$\tau$")
+a.legend(loc="upper right", fontsize="x-small")
+#fs.export_fig("cold_bath_decoupling", y_scaling=.6)
+fs.export_fig("cold_bath_decoupling_baseline", y_scaling=.6)
 
 for shift, model in zip(shifts, long_models):
     print(
@@ -338,6 +375,7 @@ fs.export_fig(f"energy_change_off_axis", x_scaling=2, y_scaling=0.7)
 #plt.plot(τs, np.einsum('tij,ij->t', rot_models[0].H(τs), qt.sigmay().full()).real)
 plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 0]))
 plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 1]))
+plt.plot(τs, abs(rot_models[0].H.operator_norm(τs)))
 
 aux.import_results(other_data_path="taurus/.data", other_results_path="taurus/results", models_to_import=rot_models)
 

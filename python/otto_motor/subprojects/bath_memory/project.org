@@ -114,38 +114,60 @@ coupling-change/cycle time.
 
 #+begin_src jupyter-python
   fig, ax = plt.subplots()
-  for model in models[:22]:
+  for model in models:
       pu.plot_with_σ(models[0].t, model.interaction_power().sum_baths().integrate(model.t), ax=ax)
       print(model.power(steady_idx=2).value, model.T[0], model.ω_c[0])
 #+end_src
 
 #+RESULTS:
 :RESULTS:
+: -0.0035256859094574657 0.4 0.5
+: -0.003003232549170266 0.45 0.5
+: -0.002486223631053281 0.5 0.5
+: -0.002031171680593496 0.55 0.5
+: -0.0015762813191599482 0.6 0.5
+: -0.004799000397073388 0.4 0.75
+: -0.0043251633398041734 0.45 0.75
+: -0.0038327711397568402 0.5 0.75
+: -0.0034164331023658415 0.55 0.75
+# [goto error]
 #+begin_example
-  -0.0034551659388595505 0.4 0.5
-  -0.002904596596987212 0.45 0.5
-  -0.0023659365036140375 0.5 0.5
-  -0.0019355134236714987 0.55 0.5
-  -0.0014524274934447788 0.6 0.5
-  -0.004793786801168995 0.4 0.75
-  -0.004345910814395173 0.45 0.75
-  -0.003837955397297659 0.5 0.75
-  -0.0033846244411344056 0.55 0.75
-  -0.0029960642459121102 0.6 0.75
-  -0.004871336818211319 0.4 1.0
-  -0.004443564282016794 0.45 1.0
-  -0.0039839481344293454 0.5 1.0
-  -0.0035662462002002022 0.55 1.0
-  -0.0031004548905917647 0.6 1.0
-  -0.0047150449741200865 0.4 1.25
-  -0.004223951236090775 0.45 1.25
-  -0.003871633835637403 0.5 1.25
-  -0.0034857454518454926 0.55 1.25
-  -0.003170841523344448 0.6 1.25
-  -0.004713925136010963 0.4 1.5
-  -0.004262014237031279 0.45 1.5
+  [0;31m---------------------------------------------------------------------------[0m
+  [0;31mRuntimeError[0m                              Traceback (most recent call last)
+  Cell [0;32mIn[20], line 3[0m
+  [1;32m      1[0m fig, ax [38;5;241m=[39m plt[38;5;241m.[39msubplots()
+  [1;32m      2[0m [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models:
+  [0;32m----> 3[0m     pu[38;5;241m.[39mplot_with_σ(models[[38;5;241m0[39m][38;5;241m.[39mt, [43mmodel[49m[38;5;241;43m.[39;49m[43minteraction_power[49m[43m([49m[43m)[49m[38;5;241m.[39msum_baths()[38;5;241m.[39mintegrate(model[38;5;241m.[39mt), ax[38;5;241m=[39max)
+  [1;32m      4[0m     [38;5;28mprint[39m(model[38;5;241m.[39mpower(steady_idx[38;5;241m=[39m[38;5;241m2[39m)[38;5;241m.[39mvalue, model[38;5;241m.[39mT[[38;5;241m0[39m], model[38;5;241m.[39mω_c[[38;5;241m0[39m])
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_base.py:560[0m, in [0;36mModel.interaction_power[0;34m(self, data, results_path, **kwargs)[0m
+  [1;32m    550[0m [38;5;124;03m"""Calculates interaction power from the hierarchy data[39;00m
+  [1;32m    551[0m [38;5;124;03m``data`` or, if not supplied, tries to load the online results from ``results_path``.[39;00m
+  [1;32m    552[0m
+  [0;32m   (...)[0m
+  [1;32m    556[0m [38;5;124;03m:returns: See :any:`hopsflow.util.interaction_energy_ensemble`.[39;00m
+  [1;32m    557[0m [38;5;124;03m"""[39;00m
+  [1;32m    559[0m [38;5;28;01mif[39;00m data [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+  [0;32m--> 560[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mtry_get_online_data[49m[43m([49m
+  [1;32m    561[0m [43m        [49m[43mresults_path[49m[43m,[49m[43m [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43monline_interaction_power_name[49m
+  [1;32m    562[0m [43m    [49m[43m)[49m
+  [1;32m    564[0m N, kwargs [38;5;241m=[39m _get_N_kwargs(kwargs, data)
+  [1;32m    566[0m [38;5;28;01mreturn[39;00m hopsflow[38;5;241m.[39mhopsflow[38;5;241m.[39minteraction_energy_ensemble(
+  [1;32m    567[0m     data[38;5;241m.[39mvalid_sample_iterator(data[38;5;241m.[39mstoc_traj),  [38;5;66;03m# type: ignore[39;00m
+  [1;32m    568[0m     data[38;5;241m.[39mvalid_sample_iterator(data[38;5;241m.[39maux_states),  [38;5;66;03m# type: ignore[39;00m
+  [0;32m   (...)[0m
+  [1;32m    574[0m     [38;5;241m*[39m[38;5;241m*[39mkwargs,
+  [1;32m    575[0m )
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_base.py:298[0m, in [0;36mModel.try_get_online_data[0;34m(self, path, results_path)[0m
+  [1;32m    296[0m file_path [38;5;241m=[39m os[38;5;241m.[39mpath[38;5;241m.[39mjoin(path, results_path)
+  [1;32m    297[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m os[38;5;241m.[39mpath[38;5;241m.[39mexists(file_path):
+  [0;32m--> 298[0m     [38;5;28;01mraise[39;00m [38;5;167;01mRuntimeError[39;00m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mNo data found under [39m[38;5;124m'[39m[38;5;132;01m{[39;00mfile_path[38;5;132;01m}[39;00m[38;5;124m'[39m[38;5;124m.[39m[38;5;124m"[39m)
+  [1;32m    300[0m [38;5;28;01mreturn[39;00m hopsflow[38;5;241m.[39mutil[38;5;241m.[39mget_online_values_from_cache(file_path)
+
+  [0;31mRuntimeError[0m: No data found under 'results/interaction_power_1c98408e7172b7ca2a5507aed3dcd2b5a45ba1fded942d635720693e91be50c2.npz'.
 #+end_example
-[[file:./.ob-jupyter/0717c8898072b9d5d4c6d7ac8e6097ba822e7de8.svg]]
+[[file:./.ob-jupyter/3f12e992b6683aa19bdb72118d76e5b70849f69c.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -155,7 +177,38 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/64e281864076e8697d6c337f105aeb08bfd9c5e7.svg]]
+:RESULTS:
+# [goto error]
+#+begin_example
+  [0;31m---------------------------------------------------------------------------[0m
+  [0;31mRuntimeError[0m                              Traceback (most recent call last)
+  Cell [0;32mIn[11], line 3[0m
+  [1;32m      1[0m fig, ax [38;5;241m=[39m plt[38;5;241m.[39msubplots()
+  [1;32m      2[0m [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models[:[38;5;241m22[39m]:
+  [0;32m----> 3[0m   pu[38;5;241m.[39mplot_with_σ(models[[38;5;241m0[39m][38;5;241m.[39mt, [43mmodel[49m[38;5;241;43m.[39;49m[43msystem_energy[49m[43m([49m[43m)[49m, ax[38;5;241m=[39max)
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_base.py:315[0m, in [0;36mModel.system_energy[0;34m(self, data, results_path, **kwargs)[0m
+  [1;32m    305[0m [38;5;124;03m"""Calculates the system energy from the hierarchy data[39;00m
+  [1;32m    306[0m [38;5;124;03m``data`` or, if not supplied, tries to load the online results from ``results_path``.[39;00m
+  [1;32m    307[0m
+  [0;32m   (...)[0m
+  [1;32m    311[0m [38;5;124;03m:returns: See :any:`hopsflow.util.ensemble_mean`.[39;00m
+  [1;32m    312[0m [38;5;124;03m"""[39;00m
+  [1;32m    314[0m [38;5;28;01mif[39;00m data [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+  [0;32m--> 315[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mtry_get_online_data[49m[43m([49m[43mresults_path[49m[43m,[49m[43m [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43monline_system_name[49m[43m)[49m
+  [1;32m    317[0m operator [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39msystem
+  [1;32m    318[0m [38;5;28;01mreturn[39;00m [38;5;28mself[39m[38;5;241m.[39msystem_expectation(data, operator, real[38;5;241m=[39m[38;5;28;01mTrue[39;00m, [38;5;241m*[39m[38;5;241m*[39mkwargs)
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_base.py:298[0m, in [0;36mModel.try_get_online_data[0;34m(self, path, results_path)[0m
+  [1;32m    296[0m file_path [38;5;241m=[39m os[38;5;241m.[39mpath[38;5;241m.[39mjoin(path, results_path)
+  [1;32m    297[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m os[38;5;241m.[39mpath[38;5;241m.[39mexists(file_path):
+  [0;32m--> 298[0m     [38;5;28;01mraise[39;00m [38;5;167;01mRuntimeError[39;00m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mNo data found under [39m[38;5;124m'[39m[38;5;132;01m{[39;00mfile_path[38;5;132;01m}[39;00m[38;5;124m'[39m[38;5;124m.[39m[38;5;124m"[39m)
+  [1;32m    300[0m [38;5;28;01mreturn[39;00m hopsflow[38;5;241m.[39mutil[38;5;241m.[39mget_online_values_from_cache(file_path)
+
+  [0;31mRuntimeError[0m: No data found under 'results/system_1c98408e7172b7ca2a5507aed3dcd2b5a45ba1fded942d635720693e91be50c2.npz'.
+#+end_example
+[[file:./.ob-jupyter/bd5dd629f6ab7c9804f51e1ce295e899dd88b2c4.svg]]
+:END:
 
 #+begin_src jupyter-python
   fig, ax = plt.subplots()
@@ -181,7 +234,81 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/a6d1361f6b9238fd63a5cce405fdd9209d6f635b.svg]]
+:RESULTS:
+# [goto error]
+#+begin_example
+  [0;31m---------------------------------------------------------------------------[0m
+  [0;31mEOFError[0m                                  Traceback (most recent call last)
+  File [0;32m/nix/store/fai1b55231rnk4jyj0kjicdnqcgdf9ph-python3-3.9.15-env/lib/python3.9/site-packages/numpy/lib/npyio.py:441[0m, in [0;36mload[0;34m(file, mmap_mode, allow_pickle, fix_imports, encoding, max_header_size)[0m
+  [1;32m    440[0m [38;5;28;01mtry[39;00m:
+  [0;32m--> 441[0m     [38;5;28;01mreturn[39;00m [43mpickle[49m[38;5;241;43m.[39;49m[43mload[49m[43m([49m[43mfid[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mpickle_kwargs[49m[43m)[49m
+  [1;32m    442[0m [38;5;28;01mexcept[39;00m [38;5;167;01mException[39;00m [38;5;28;01mas[39;00m e:
+
+  [0;31mEOFError[0m: Ran out of input
+
+  The above exception was the direct cause of the following exception:
+
+  [0;31mUnpicklingError[0m                           Traceback (most recent call last)
+  Cell [0;32mIn[21], line 5[0m
+  [1;32m      3[0m [38;5;28;01mfor[39;00m bath, style [38;5;129;01min[39;00m [38;5;28menumerate[39m(styles):
+  [1;32m      4[0m     [38;5;28;01mfor[39;00m i, T [38;5;129;01min[39;00m [38;5;28menumerate[39m(Ts):
+  [0;32m----> 5[0m         inters [38;5;241m=[39m np[38;5;241m.[39marray([[38;5;28mabs[39m(model[38;5;241m.[39minteraction_energy()[38;5;241m.[39mfor_bath(bath)[38;5;241m.[39mslice([38;5;28mslice[39m(model[38;5;241m.[39mstrobe[[38;5;241m1[39m][[38;5;241m2[39m], [38;5;241m-[39m[38;5;241m1[39m)))[38;5;241m.[39mmax[38;5;241m.[39mvalue [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models[i::[38;5;28mlen[39m(Ts)]])
+  [1;32m      6[0m         bcf_scales [38;5;241m=[39m np[38;5;241m.[39marray([(model[38;5;241m.[39mbcf_scales[bath]) [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models[i::[38;5;28mlen[39m(Ts)]])
+  [1;32m      7[0m         ωs_filter [38;5;241m=[39m [model[38;5;241m.[39mω_c[[38;5;241m0[39m] [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models[::[38;5;28mlen[39m(Ts)]]
+
+  Cell [0;32mIn[21], line 5[0m, in [0;36m<listcomp>[0;34m(.0)[0m
+  [1;32m      3[0m [38;5;28;01mfor[39;00m bath, style [38;5;129;01min[39;00m [38;5;28menumerate[39m(styles):
+  [1;32m      4[0m     [38;5;28;01mfor[39;00m i, T [38;5;129;01min[39;00m [38;5;28menumerate[39m(Ts):
+  [0;32m----> 5[0m         inters [38;5;241m=[39m np[38;5;241m.[39marray([[38;5;28mabs[39m([43mmodel[49m[38;5;241;43m.[39;49m[43minteraction_energy[49m[43m([49m[43m)[49m[38;5;241m.[39mfor_bath(bath)[38;5;241m.[39mslice([38;5;28mslice[39m(model[38;5;241m.[39mstrobe[[38;5;241m1[39m][[38;5;241m2[39m], [38;5;241m-[39m[38;5;241m1[39m)))[38;5;241m.[39mmax[38;5;241m.[39mvalue [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models[i::[38;5;28mlen[39m(Ts)]])
+  [1;32m      6[0m         bcf_scales [38;5;241m=[39m np[38;5;241m.[39marray([(model[38;5;241m.[39mbcf_scales[bath]) [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models[i::[38;5;28mlen[39m(Ts)]])
+  [1;32m      7[0m         ωs_filter [38;5;241m=[39m [model[38;5;241m.[39mω_c[[38;5;241m0[39m] [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models[::[38;5;28mlen[39m(Ts)]]
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_base.py:533[0m, in [0;36mModel.interaction_energy[0;34m(self, data, results_path, **kwargs)[0m
+  [1;32m    523[0m [38;5;124;03m"""Calculates interaction energy from the hierarchy data[39;00m
+  [1;32m    524[0m [38;5;124;03m``data`` or, if not supplied, tries to load the online results from ``results_path``.[39;00m
+  [1;32m    525[0m
+  [0;32m   (...)[0m
+  [1;32m    529[0m [38;5;124;03m:returns: See :any:`hopsflow.util.interaction_energy_ensemble`.[39;00m
+  [1;32m    530[0m [38;5;124;03m"""[39;00m
+  [1;32m    532[0m [38;5;28;01mif[39;00m data [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+  [0;32m--> 533[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mtry_get_online_data[49m[43m([49m[43mresults_path[49m[43m,[49m[43m [49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43monline_interaction_name[49m[43m)[49m
+  [1;32m    535[0m N, kwargs [38;5;241m=[39m _get_N_kwargs(kwargs, data)
+  [1;32m    537[0m [38;5;28;01mreturn[39;00m hopsflow[38;5;241m.[39mhopsflow[38;5;241m.[39minteraction_energy_ensemble(
+  [1;32m    538[0m     data[38;5;241m.[39mvalid_sample_iterator(data[38;5;241m.[39mstoc_traj),  [38;5;66;03m# type: ignore[39;00m
+  [1;32m    539[0m     data[38;5;241m.[39mvalid_sample_iterator(data[38;5;241m.[39maux_states),  [38;5;66;03m# type: ignore[39;00m
+  [0;32m   (...)[0m
+  [1;32m    544[0m     [38;5;241m*[39m[38;5;241m*[39mkwargs,
+  [1;32m    545[0m )
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_base.py:300[0m, in [0;36mModel.try_get_online_data[0;34m(self, path, results_path)[0m
+  [1;32m    297[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m os[38;5;241m.[39mpath[38;5;241m.[39mexists(file_path):
+  [1;32m    298[0m     [38;5;28;01mraise[39;00m [38;5;167;01mRuntimeError[39;00m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mNo data found under [39m[38;5;124m'[39m[38;5;132;01m{[39;00mfile_path[38;5;132;01m}[39;00m[38;5;124m'[39m[38;5;124m.[39m[38;5;124m"[39m)
+  [0;32m--> 300[0m [38;5;28;01mreturn[39;00m [43mhopsflow[49m[38;5;241;43m.[39;49m[43mutil[49m[38;5;241;43m.[39;49m[43mget_online_values_from_cache[49m[43m([49m[43mfile_path[49m[43m)[49m
+
+  File [0;32m~/src/hopsflow/hopsflow/util.py:902[0m, in [0;36mget_online_values_from_cache[0;34m(path)[0m
+  [1;32m    899[0m vals [38;5;241m=[39m []
+  [1;32m    901[0m [38;5;28;01mfor[39;00m path [38;5;129;01min[39;00m all_versions:
+  [0;32m--> 902[0m     agg [38;5;241m=[39m [43mWelfordAggregator[49m[38;5;241;43m.[39;49m[43mfrom_dump[49m[43m([49m[38;5;28;43mstr[39;49m[43m([49m[43mpath[49m[43m)[49m[43m)[49m
+  [1;32m    903[0m     vals[38;5;241m.[39mappend([agg[38;5;241m.[39mn, agg[38;5;241m.[39mmean, agg[38;5;241m.[39mensemble_std])
+  [1;32m    904[0m vals[38;5;241m.[39msort(key[38;5;241m=[39m[38;5;28;01mlambda[39;00m el: el[[38;5;241m0[39m])
+
+  File [0;32m~/src/hopsflow/hopsflow/util.py:730[0m, in [0;36mWelfordAggregator.from_dump[0;34m(cls, path)[0m
+  [1;32m    728[0m instance [38;5;241m=[39m [38;5;28mcls[39m(np[38;5;241m.[39mempty([38;5;241m1[39m))
+  [1;32m    729[0m [38;5;28;01mwith[39;00m portalocker[38;5;241m.[39mLock(path, [38;5;124m"[39m[38;5;124mrb[39m[38;5;124m"[39m, flags[38;5;241m=[39mportalocker[38;5;241m.[39mLockFlags[38;5;241m.[39mEXCLUSIVE) [38;5;28;01mas[39;00m f:
+  [0;32m--> 730[0m     dump_file [38;5;241m=[39m [43mnp[49m[38;5;241;43m.[39;49m[43mload[49m[43m([49m[43mf[49m[43m,[49m[43m [49m[43mallow_pickle[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m)[49m
+  [1;32m    732[0m     instance[38;5;241m.[39mn [38;5;241m=[39m [38;5;28mint[39m(dump_file[[38;5;124m"[39m[38;5;124mn[39m[38;5;124m"[39m])
+  [1;32m    733[0m     instance[38;5;241m.[39mmean [38;5;241m=[39m dump_file[[38;5;124m"[39m[38;5;124mmean[39m[38;5;124m"[39m]
+
+  File [0;32m/nix/store/fai1b55231rnk4jyj0kjicdnqcgdf9ph-python3-3.9.15-env/lib/python3.9/site-packages/numpy/lib/npyio.py:443[0m, in [0;36mload[0;34m(file, mmap_mode, allow_pickle, fix_imports, encoding, max_header_size)[0m
+  [1;32m    441[0m     [38;5;28;01mreturn[39;00m pickle[38;5;241m.[39mload(fid, [38;5;241m*[39m[38;5;241m*[39mpickle_kwargs)
+  [1;32m    442[0m [38;5;28;01mexcept[39;00m [38;5;167;01mException[39;00m [38;5;28;01mas[39;00m e:
+  [0;32m--> 443[0m     [38;5;28;01mraise[39;00m pickle[38;5;241m.[39mUnpicklingError(
+  [1;32m    444[0m         [38;5;124mf[39m[38;5;124m"[39m[38;5;124mFailed to interpret file [39m[38;5;132;01m{[39;00mfile[38;5;132;01m!r}[39;00m[38;5;124m as a pickle[39m[38;5;124m"[39m) [38;5;28;01mfrom[39;00m [38;5;21;01me[39;00m
+
+  [0;31mUnpicklingError[0m: Failed to interpret file <_io.BufferedReader name='results/interaction_5343573c062907a778a707b8bb68db373c0082ab4606d528534812fdb0f94786_60000.npz'> as a pickle
+#+end_example
+[[file:./.ob-jupyter/fdd2225c78b3d368377fec25eab6bfb3e5699f7e.svg]]
+:END:
 
 #+begin_src jupyter-python
   fig, ax = plt.subplots()
@@ -225,7 +352,7 @@ coupling-change/cycle time.
   0.55 [[0.55, 4], [0.55, 4], [0.55, 4], [0.55, 4], [0.55, 4]] 1 *
   0.6 [[0.6, 4], [0.6, 4], [0.6, 4], [0.6, 4], [0.6, 4]] 1 *
 #+end_example
-[[file:./.ob-jupyter/d802e193d6695eb382972e8a3652a157a854a569.svg]]
+[[file:./.ob-jupyter/828b5a24bad8964f79a87618f48012aa3d81c549.svg]]
 :END:
 
 
@@ -238,10 +365,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/b69b1130c17be6de63bc0ed992a34fbea26daa18.svg]]
-
-
-[[file:./.ob-jupyter/b9024c9d49fcea3025a1a688e979b6854d435e3a.svg]]
+[[file:./.ob-jupyter/112a8c6e447f4211f90e5db647df83a97bdfb292.svg]]
 
 
 #+begin_src jupyter-python
@@ -266,7 +390,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/253ca412ce97ab193b8e0d63b443a255138f8944.svg]]
+[[file:./.ob-jupyter/582e63e77847cd7744d08b50f6b3a44972a66156.svg]]
 
 #+begin_src jupyter-python
   def thermal_state(T, Ω):
@@ -320,17 +444,17 @@ coupling-change/cycle time.
 
 #+RESULTS:
 :RESULTS:
-: /nix/store/y48ylcnfb6lb7447lrmmddfsqcna3a9q-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/cbook/__init__.py:1369: ComplexWarning: Casting complex values to real discards the imaginary part
+: /nix/store/32immcyww09pavyq3x5gdn14r3rfy8nl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/cbook/__init__.py:1369: ComplexWarning: Casting complex values to real discards the imaginary part
 :   return np.asarray(x, float)
-: /nix/store/y48ylcnfb6lb7447lrmmddfsqcna3a9q-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5340: ComplexWarning: Casting complex values to real discards the imaginary part
+: /nix/store/32immcyww09pavyq3x5gdn14r3rfy8nl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5340: ComplexWarning: Casting complex values to real discards the imaginary part
 :   pts[0] = start
-: /nix/store/y48ylcnfb6lb7447lrmmddfsqcna3a9q-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5341: ComplexWarning: Casting complex values to real discards the imaginary part
+: /nix/store/32immcyww09pavyq3x5gdn14r3rfy8nl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5341: ComplexWarning: Casting complex values to real discards the imaginary part
 :   pts[N + 1] = end
-: /nix/store/y48ylcnfb6lb7447lrmmddfsqcna3a9q-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5344: ComplexWarning: Casting complex values to real discards the imaginary part
+: /nix/store/32immcyww09pavyq3x5gdn14r3rfy8nl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5344: ComplexWarning: Casting complex values to real discards the imaginary part
 :   pts[1:N+1, 1] = dep1slice
-: /nix/store/y48ylcnfb6lb7447lrmmddfsqcna3a9q-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5346: ComplexWarning: Casting complex values to real discards the imaginary part
+: /nix/store/32immcyww09pavyq3x5gdn14r3rfy8nl-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5346: ComplexWarning: Casting complex values to real discards the imaginary part
 :   pts[N+2:, 1] = dep2slice[::-1]
-[[file:./.ob-jupyter/02fe89bca1c7946a8228dce3381435aa45921b6a.svg]]
+[[file:./.ob-jupyter/87ee9582d91c2e1b413352d63ce90bec9395a473.svg]]
 :END:
 
 
@@ -386,7 +510,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/5229f244f0a611e72d9445d2a9bc66bcb279c11a.svg]]
+[[file:./.ob-jupyter/b9ca63a22b07896f059e501f293122a207f60016.svg]]
 
 
 #+begin_src jupyter-python
@@ -396,7 +520,7 @@ coupling-change/cycle time.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 340x320 | with | 2 | Axes> | <AxesSubplot: | xlabel= | $\omega_c$ | ylabel= | $\bar{P}$ | > | (<AxesSubplot: xlabel= $\omega_c$ ylabel= $\bar{P}$ > <AxesSubplot: ylabel= $\eta$ >) |
-[[file:./.ob-jupyter/cb7d0dc9bc64c874514e72287385326a2f710625.svg]]
+[[file:./.ob-jupyter/69b499338780926af7bb8c3936bf6c23a27c7d9e.svg]]
 :END:
 
 
@@ -408,7 +532,7 @@ coupling-change/cycle time.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 340x320 | with | 2 | Axes> | (<AxesSubplot: xlabel= $N$ ylabel= $P$ > <AxesSubplot: xlabel= $N$ ylabel= $\eta$ >) |
-[[file:./.ob-jupyter/6384006b2616a827ceb6cd032b029cbccf0773f3.svg]]
+[[file:./.ob-jupyter/8146b7071cda2606563186cddc75c7551a4508b8.svg]]
 :END:
 
 
@@ -447,49 +571,173 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-:RESULTS:
-[[file:./.ob-jupyter/22b8e23a40d90760837338c77db60ceb8f46b39e.svg]]
-: [2m[36m(pid=gcs_server)[0m [2023-05-18 16:55:57,199 E 126618 126618] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
-: [2m[36m(pid=gcs_server)[0m [2023-05-18 16:55:57,199 E 126618 126618] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
-: [2m[36m(pid=gcs_server)[0m [2023-05-18 16:55:57,199 E 126618 126618] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
-: [2m[36m(pid=gcs_server)[0m [2023-05-18 16:55:57,199 E 126618 126618] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
-: [2m[36m(pid=gcs_server)[0m [2023-05-18 16:55:57,200 E 126618 126618] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
-:END:
+[[file:./.ob-jupyter/28cfefab23d9ed0190a04f826614e6220cd36555.svg]]
 
 #+begin_src jupyter-python
   for model in models:
       ot.plot_bloch_components(model)
 #+end_src
 
+
 #+RESULTS:
 :RESULTS:
 : /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/bath_memory/plot_utils.py:38: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
 :   fig, ax = setup_function()
-[[file:./.ob-jupyter/ca6f8c77e0d1c2c4c0588a27f1d5a73f06959b28.svg]]
-[[file:./.ob-jupyter/9f04f59f958f8cd05e7fcfae012822448e28a0fa.svg]]
-[[file:./.ob-jupyter/7e64dd5c305b62d7e61c8d54061ba0d5c0bd9c71.svg]]
-[[file:./.ob-jupyter/a1049ebdd7cfc3033bda8fa6d8db69c76b10c5d4.svg]]
-[[file:./.ob-jupyter/6f7c25ffff1125b68ed93c42984b3fbdbc623e4f.svg]]
-[[file:./.ob-jupyter/bd8ed043725eac4e7087ce04a8f79cb6dd550bea.svg]]
-[[file:./.ob-jupyter/b9f416d4b1330798fc77fc4e38c6ec544c84a2ad.svg]]
-[[file:./.ob-jupyter/b7f019626c425b7fd2e28f1d70953cd433a26848.svg]]
-[[file:./.ob-jupyter/fdde454c6d1a1e31736ab2f26b35c64424e217f3.svg]]
-[[file:./.ob-jupyter/e0af7e1701860e27f7e3fe45f05b8c7c7bf21925.svg]]
-[[file:./.ob-jupyter/af151eefe6085deb9679052c683cd68c4d511ade.svg]]
-[[file:./.ob-jupyter/28b0b7edde79a9c047b455633716a30c742dcd8f.svg]]
-[[file:./.ob-jupyter/471db72082118a478b1ca5e58ac27511fdb93ad5.svg]]
-[[file:./.ob-jupyter/66c1ff99f83e6c30af2feb9341d02522d77dde69.svg]]
-[[file:./.ob-jupyter/623e14113817b5d8f1074943abccdb7caa0c0bb0.svg]]
-[[file:./.ob-jupyter/675689df6d994ce4b35bb864a382f9d7d285b248.svg]]
-[[file:./.ob-jupyter/1ac491c0d095e16d95afe9602af94955acde385f.svg]]
-[[file:./.ob-jupyter/41bcaaaa18868654a7a90a5f911a994028d3d3e8.svg]]
-[[file:./.ob-jupyter/0bc90e1a20c538d634aa21afed202d1c2648222a.svg]]
-[[file:./.ob-jupyter/b4790ef001a8c49fdf9a178196428c3ccdb95d25.svg]]
-[[file:./.ob-jupyter/70822f7bcdb6cffa813ca2c828a59e6b3307d4ef.svg]]
-[[file:./.ob-jupyter/7bcf53ab551180350c7516d1cd29b3c0608229b7.svg]]
-[[file:./.ob-jupyter/6375902d049d7c66e42fc1ef593ce9a109b5992c.svg]]
-[[file:./.ob-jupyter/9911ddfe7318ac880f7254510fc9dd449cf1a11d.svg]]
-[[file:./.ob-jupyter/2b14a9fdd7d143dbeeba0b108a2df8c49e853c01.svg]]
+# [goto error]
+#+begin_example
+  [0;31m---------------------------------------------------------------------------[0m
+  [0;31mOSError[0m                                   Traceback (most recent call last)
+  File [0;32m~/src/two_qubit_model/hiro_models/model_auxiliary.py:221[0m, in [0;36mget_data[0;34m(model, data_path, read_only, **kwargs)[0m
+  [1;32m    220[0m [38;5;28;01mtry[39;00m:
+  [0;32m--> 221[0m     [38;5;28;01mreturn[39;00m [43mHIData[49m[43m([49m[43mpath[49m[43m,[49m[43m [49m[43mread_only[49m[38;5;241;43m=[39;49m[43mread_only[49m[43m,[49m[43m [49m[43mrobust[49m[38;5;241;43m=[39;49m[38;5;28;43;01mFalse[39;49;00m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
+  [1;32m    222[0m [38;5;28;01mexcept[39;00m:
+
+  File [0;32m/nix/store/32immcyww09pavyq3x5gdn14r3rfy8nl-python3-3.9.15-env/lib/python3.9/site-packages/hops/core/hierarchy_data.py:255[0m, in [0;36mHIData.__init__[0;34m(self, hdf5_name, read_only, hi_key, hi_key_bin, hi_key_bin_hash, check_consistency, overwrite_key, robust, stream_file)[0m
+  [1;32m    254[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m hi_key:
+  [0;32m--> 255[0m     [38;5;28;01mwith[39;00m [43mh5py[49m[38;5;241;43m.[39;49m[43mFile[49m[43m([49m[43mhdf5_name[49m[43m,[49m[43m [49m[38;5;124;43m"[39;49m[38;5;124;43mr[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mlibver[49m[38;5;241;43m=[39;49m[38;5;124;43m"[39;49m[38;5;124;43mlatest[39;49m[38;5;124;43m"[39;49m[43m)[49m [38;5;28;01mas[39;00m h5File:
+  [1;32m    256[0m         [38;5;28;01mtry[39;00m:
+
+  File [0;32m/nix/store/32immcyww09pavyq3x5gdn14r3rfy8nl-python3-3.9.15-env/lib/python3.9/site-packages/h5py/_hl/files.py:533[0m, in [0;36mFile.__init__[0;34m(self, name, mode, driver, libver, userblock_size, swmr, rdcc_nslots, rdcc_nbytes, rdcc_w0, track_order, fs_strategy, fs_persist, fs_threshold, fs_page_size, page_buf_size, min_meta_keep, min_raw_keep, locking, alignment_threshold, alignment_interval, **kwds)[0m
+  [1;32m    530[0m     fcpl [38;5;241m=[39m make_fcpl(track_order[38;5;241m=[39mtrack_order, fs_strategy[38;5;241m=[39mfs_strategy,
+  [1;32m    531[0m                      fs_persist[38;5;241m=[39mfs_persist, fs_threshold[38;5;241m=[39mfs_threshold,
+  [1;32m    532[0m                      fs_page_size[38;5;241m=[39mfs_page_size)
+  [0;32m--> 533[0m     fid [38;5;241m=[39m [43mmake_fid[49m[43m([49m[43mname[49m[43m,[49m[43m [49m[43mmode[49m[43m,[49m[43m [49m[43muserblock_size[49m[43m,[49m[43m [49m[43mfapl[49m[43m,[49m[43m [49m[43mfcpl[49m[43m,[49m[43m [49m[43mswmr[49m[38;5;241;43m=[39;49m[43mswmr[49m[43m)[49m
+  [1;32m    535[0m [38;5;28;01mif[39;00m [38;5;28misinstance[39m(libver, [38;5;28mtuple[39m):
+
+  File [0;32m/nix/store/32immcyww09pavyq3x5gdn14r3rfy8nl-python3-3.9.15-env/lib/python3.9/site-packages/h5py/_hl/files.py:226[0m, in [0;36mmake_fid[0;34m(name, mode, userblock_size, fapl, fcpl, swmr)[0m
+  [1;32m    225[0m         flags [38;5;241m|[39m[38;5;241m=[39m h5f[38;5;241m.[39mACC_SWMR_READ
+  [0;32m--> 226[0m     fid [38;5;241m=[39m [43mh5f[49m[38;5;241;43m.[39;49m[43mopen[49m[43m([49m[43mname[49m[43m,[49m[43m [49m[43mflags[49m[43m,[49m[43m [49m[43mfapl[49m[38;5;241;43m=[39;49m[43mfapl[49m[43m)[49m
+  [1;32m    227[0m [38;5;28;01melif[39;00m mode [38;5;241m==[39m [38;5;124m'[39m[38;5;124mr+[39m[38;5;124m'[39m:
+
+  File [0;32mh5py/_objects.pyx:54[0m, in [0;36mh5py._objects.with_phil.wrapper[0;34m()[0m
+
+  File [0;32mh5py/_objects.pyx:55[0m, in [0;36mh5py._objects.with_phil.wrapper[0;34m()[0m
+
+  File [0;32mh5py/h5f.pyx:106[0m, in [0;36mh5py.h5f.open[0;34m()[0m
+
+  [0;31mOSError[0m: Unable to open file (file is already open for write (may use <h5clear file> to clear file consistency flags))
+
+  During handling of the above exception, another exception occurred:
+
+  [0;31mOSError[0m                                   Traceback (most recent call last)
+  Cell [0;32mIn[33], line 2[0m
+  [1;32m      1[0m [38;5;28;01mfor[39;00m model [38;5;129;01min[39;00m models:
+  [0;32m----> 2[0m     [43mot[49m[38;5;241;43m.[39;49m[43mplot_bloch_components[49m[43m([49m[43mmodel[49m[43m)[49m
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/bath_memory/plot_utils.py:40[0m, in [0;36mwrap_plot.<locals>.wrapped[0;34m(ax, setup_function, *args, **kwargs)[0m
+  [1;32m     37[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m ax:
+  [1;32m     38[0m     fig, ax [38;5;241m=[39m setup_function()
+  [0;32m---> 40[0m ret_val [38;5;241m=[39m [43mf[49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[43max[49m[38;5;241;43m=[39;49m[43max[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
+  [1;32m     41[0m [38;5;28;01mreturn[39;00m (fig, ax, ret_val) [38;5;28;01mif[39;00m ret_val [38;5;28;01melse[39;00m (fig, ax)
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/bath_memory/otto_utilities.py:553[0m, in [0;36mplot_bloch_components[0;34m(model, ax, **kwargs)[0m
+  [1;32m    551[0m [38;5;129m@pu[39m[38;5;241m.[39mwrap_plot
+  [1;32m    552[0m [38;5;28;01mdef[39;00m [38;5;21mplot_bloch_components[39m(model, ax[38;5;241m=[39m[38;5;28;01mNone[39;00m, [38;5;241m*[39m[38;5;241m*[39mkwargs):
+  [0;32m--> 553[0m     [38;5;28;01mwith[39;00m [43maux[49m[38;5;241;43m.[39;49m[43mget_data[49m[43m([49m[43mmodel[49m[43m)[49m [38;5;28;01mas[39;00m data:
+  [1;32m    554[0m         ρ [38;5;241m=[39m data[38;5;241m.[39mrho_t_accum[38;5;241m.[39mmean[:]
+  [1;32m    555[0m         σ_ρ [38;5;241m=[39m data[38;5;241m.[39mrho_t_accum[38;5;241m.[39mensemble_std[:]
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_auxiliary.py:223[0m, in [0;36mget_data[0;34m(model, data_path, read_only, **kwargs)[0m
+  [1;32m    221[0m         [38;5;28;01mreturn[39;00m HIData(path, read_only[38;5;241m=[39mread_only, robust[38;5;241m=[39m[38;5;28;01mFalse[39;00m, [38;5;241m*[39m[38;5;241m*[39mkwargs)
+  [1;32m    222[0m     [38;5;28;01mexcept[39;00m:
+  [0;32m--> 223[0m         [38;5;28;01mreturn[39;00m [43mHIData[49m[43m([49m
+  [1;32m    224[0m [43m            [49m[43mpath[49m[43m,[49m
+  [1;32m    225[0m [43m            [49m[43mhi_key[49m[38;5;241;43m=[39;49m[43mmodel[49m[38;5;241;43m.[39;49m[43mhops_config[49m[43m,[49m
+  [1;32m    226[0m [43m            [49m[43mread_only[49m[38;5;241;43m=[39;49m[38;5;28;43;01mFalse[39;49;00m[43m,[49m
+  [1;32m    227[0m [43m            [49m[43mcheck_consistency[49m[38;5;241;43m=[39;49m[38;5;28;43;01mFalse[39;49;00m[43m,[49m
+  [1;32m    228[0m [43m            [49m[43moverwrite_key[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
+  [1;32m    229[0m [43m            [49m[43mrobust[49m[38;5;241;43m=[39;49m[38;5;28;43;01mFalse[39;49;00m[43m,[49m
+  [1;32m    230[0m [43m            [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m,[49m
+  [1;32m    231[0m [43m        [49m[43m)[49m
+  [1;32m    233[0m [38;5;28;01melse[39;00m:
+  [1;32m    234[0m     [38;5;28;01mraise[39;00m [38;5;167;01mRuntimeError[39;00m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mNo data found for model with hash [39m[38;5;124m'[39m[38;5;132;01m{[39;00mhexhash[38;5;132;01m}[39;00m[38;5;124m'[39m[38;5;124m.[39m[38;5;124m"[39m)
+
+  File [0;32m/nix/store/32immcyww09pavyq3x5gdn14r3rfy8nl-python3-3.9.15-env/lib/python3.9/site-packages/hops/core/hierarchy_data.py:416[0m, in [0;36mHIData.__init__[0;34m(self, hdf5_name, read_only, hi_key, hi_key_bin, hi_key_bin_hash, check_consistency, overwrite_key, robust, stream_file)[0m
+  [1;32m    404[0m [38;5;124;03m"""The time points on which the trajectories and everything else are[39;00m
+  [1;32m    405[0m [38;5;124;03mgiven.[39;00m
+  [1;32m    406[0m
+  [0;32m   (...)[0m
+  [1;32m    412[0m [38;5;124;03m:any:`time_set`.[39;00m
+  [1;32m    413[0m [38;5;124;03m"""[39;00m
+  [1;32m    415[0m [38;5;28mself[39m[38;5;241m.[39m_init_bcf_terms_and_aux_states()
+  [0;32m--> 416[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_open_file[49m[43m([49m[43mread_only[49m[43m,[49m[43m [49m[43mhi_key_bin[49m[43m,[49m[43m [49m[43mhi_key_bin_hash[49m[43m,[49m[43m [49m[43moverwrite_key[49m[43m,[49m[43m [49m[43mrobust[49m[43m)[49m
+  [1;32m    418[0m [38;5;28;01mif[39;00m check_consistency:
+  [1;32m    419[0m     [38;5;28mself[39m[38;5;241m.[39m_check_consistency(hi_key_bin, hi_key_bin_hash)
+
+  File [0;32m/nix/store/32immcyww09pavyq3x5gdn14r3rfy8nl-python3-3.9.15-env/lib/python3.9/site-packages/hops/core/hierarchy_data.py:552[0m, in [0;36mHIData._open_file[0;34m(self, read_only, hi_key_bin, hi_key_bin_hash, overwrite_key, backup_if_error)[0m
+  [1;32m    550[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m read_only:
+  [1;32m    551[0m     [38;5;28;01mtry[39;00m:
+  [0;32m--> 552[0m         p [38;5;241m=[39m [43mtest_file_version[49m[43m([49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mhdf5_name[49m[43m)[49m
+  [1;32m    553[0m         [38;5;28;01mif[39;00m p:
+  [1;32m    554[0m             warnings[38;5;241m.[39mwarn(
+  [1;32m    555[0m                 [38;5;124m"[39m[38;5;124mcan not check version! process list [39m[38;5;132;01m{}[39;00m[38;5;124m has access to hdf5 file [39m[38;5;132;01m{}[39;00m[38;5;124m"[39m[38;5;241m.[39mformat(
+  [1;32m    556[0m                     p, [38;5;28mself[39m[38;5;241m.[39mhdf5_name
+  [1;32m    557[0m                 )
+  [1;32m    558[0m             )
+
+  File [0;32m/nix/store/32immcyww09pavyq3x5gdn14r3rfy8nl-python3-3.9.15-env/lib/python3.9/site-packages/hops/core/hierarchy_data.py:1543[0m, in [0;36mtest_file_version[0;34m(hdf5_name)[0m
+  [1;32m   1538[0m [38;5;28;01mif[39;00m [38;5;28mlen[39m(p) [38;5;241m>[39m [38;5;241m0[39m:
+  [1;32m   1539[0m     [38;5;66;03m# another process accesses the file, assume that the file has allready the new format,[39;00m
+  [1;32m   1540[0m     [38;5;66;03m# since that other process has already changed it[39;00m
+  [1;32m   1541[0m     [38;5;28;01mreturn[39;00m p
+  [0;32m-> 1543[0m [38;5;28;01mwith[39;00m [43mh5py[49m[38;5;241;43m.[39;49m[43mFile[49m[43m([49m[43mhdf5_name[49m[43m,[49m[43m [49m[38;5;124;43m"[39;49m[38;5;124;43mr+[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mlibver[49m[38;5;241;43m=[39;49m[38;5;124;43m"[39;49m[38;5;124;43mlatest[39;49m[38;5;124;43m"[39;49m[43m)[49m [38;5;28;01mas[39;00m h5File:
+  [1;32m   1544[0m     [38;5;66;03m# print("test file, open", hdf5_name, "'r+")[39;00m
+  [1;32m   1545[0m     [38;5;28;01mtry[39;00m:
+  [1;32m   1546[0m         [38;5;66;03m# print("test file, try to set swmr_mode True")[39;00m
+  [1;32m   1547[0m         h5File[38;5;241m.[39mswmr_mode [38;5;241m=[39m [38;5;28;01mTrue[39;00m
+
+  File [0;32m/nix/store/32immcyww09pavyq3x5gdn14r3rfy8nl-python3-3.9.15-env/lib/python3.9/site-packages/h5py/_hl/files.py:533[0m, in [0;36mFile.__init__[0;34m(self, name, mode, driver, libver, userblock_size, swmr, rdcc_nslots, rdcc_nbytes, rdcc_w0, track_order, fs_strategy, fs_persist, fs_threshold, fs_page_size, page_buf_size, min_meta_keep, min_raw_keep, locking, alignment_threshold, alignment_interval, **kwds)[0m
+  [1;32m    525[0m     fapl [38;5;241m=[39m make_fapl(driver, libver, rdcc_nslots, rdcc_nbytes, rdcc_w0,
+  [1;32m    526[0m                      locking, page_buf_size, min_meta_keep, min_raw_keep,
+  [1;32m    527[0m                      alignment_threshold[38;5;241m=[39malignment_threshold,
+  [1;32m    528[0m                      alignment_interval[38;5;241m=[39malignment_interval,
+  [1;32m    529[0m                      [38;5;241m*[39m[38;5;241m*[39mkwds)
+  [1;32m    530[0m     fcpl [38;5;241m=[39m make_fcpl(track_order[38;5;241m=[39mtrack_order, fs_strategy[38;5;241m=[39mfs_strategy,
+  [1;32m    531[0m                      fs_persist[38;5;241m=[39mfs_persist, fs_threshold[38;5;241m=[39mfs_threshold,
+  [1;32m    532[0m                      fs_page_size[38;5;241m=[39mfs_page_size)
+  [0;32m--> 533[0m     fid [38;5;241m=[39m [43mmake_fid[49m[43m([49m[43mname[49m[43m,[49m[43m [49m[43mmode[49m[43m,[49m[43m [49m[43muserblock_size[49m[43m,[49m[43m [49m[43mfapl[49m[43m,[49m[43m [49m[43mfcpl[49m[43m,[49m[43m [49m[43mswmr[49m[38;5;241;43m=[39;49m[43mswmr[49m[43m)[49m
+  [1;32m    535[0m [38;5;28;01mif[39;00m [38;5;28misinstance[39m(libver, [38;5;28mtuple[39m):
+  [1;32m    536[0m     [38;5;28mself[39m[38;5;241m.[39m_libver [38;5;241m=[39m libver
+
+  File [0;32m/nix/store/32immcyww09pavyq3x5gdn14r3rfy8nl-python3-3.9.15-env/lib/python3.9/site-packages/h5py/_hl/files.py:228[0m, in [0;36mmake_fid[0;34m(name, mode, userblock_size, fapl, fcpl, swmr)[0m
+  [1;32m    226[0m     fid [38;5;241m=[39m h5f[38;5;241m.[39mopen(name, flags, fapl[38;5;241m=[39mfapl)
+  [1;32m    227[0m [38;5;28;01melif[39;00m mode [38;5;241m==[39m [38;5;124m'[39m[38;5;124mr+[39m[38;5;124m'[39m:
+  [0;32m--> 228[0m     fid [38;5;241m=[39m [43mh5f[49m[38;5;241;43m.[39;49m[43mopen[49m[43m([49m[43mname[49m[43m,[49m[43m [49m[43mh5f[49m[38;5;241;43m.[39;49m[43mACC_RDWR[49m[43m,[49m[43m [49m[43mfapl[49m[38;5;241;43m=[39;49m[43mfapl[49m[43m)[49m
+  [1;32m    229[0m [38;5;28;01melif[39;00m mode [38;5;129;01min[39;00m [[38;5;124m'[39m[38;5;124mw-[39m[38;5;124m'[39m, [38;5;124m'[39m[38;5;124mx[39m[38;5;124m'[39m]:
+  [1;32m    230[0m     fid [38;5;241m=[39m h5f[38;5;241m.[39mcreate(name, h5f[38;5;241m.[39mACC_EXCL, fapl[38;5;241m=[39mfapl, fcpl[38;5;241m=[39mfcpl)
+
+  File [0;32mh5py/_objects.pyx:54[0m, in [0;36mh5py._objects.with_phil.wrapper[0;34m()[0m
+
+  File [0;32mh5py/_objects.pyx:55[0m, in [0;36mh5py._objects.with_phil.wrapper[0;34m()[0m
+
+  File [0;32mh5py/h5f.pyx:106[0m, in [0;36mh5py.h5f.open[0;34m()[0m
+
+  [0;31mOSError[0m: Unable to open file (file is already open for write/SWMR write (may use <h5clear file> to clear file consistency flags))
+#+end_example
+[[file:./.ob-jupyter/391839204016c027928dce723e2f60989df24238.svg]]
+[[file:./.ob-jupyter/9cabaf41cf638bbfa616935e4dbca0b60bcfd3cd.svg]]
+[[file:./.ob-jupyter/397d515cf3f849f2c51109ec484f8cecce7fddae.svg]]
+[[file:./.ob-jupyter/f387eaadc3e789d6657cc553054130a90f9d954d.svg]]
+[[file:./.ob-jupyter/5a16efe74b0164bb08689d0240fac7670b841b3b.svg]]
+[[file:./.ob-jupyter/4150efcade266857daeff2a083dbacb5890d4f0b.svg]]
+[[file:./.ob-jupyter/ef888b06352df909cb330d223bc51c7a2ce4b964.svg]]
+[[file:./.ob-jupyter/840187a1542d72f699a7eb68d2a13067ab633e64.svg]]
+[[file:./.ob-jupyter/aecd112aabeff70627d43b3808a17a0d5ffcd53a.svg]]
+[[file:./.ob-jupyter/151a897d81d62634709dba7ef6b2ea0860cf7061.svg]]
+[[file:./.ob-jupyter/3cb4a449492bba16272b7701c096f694fe025415.svg]]
+[[file:./.ob-jupyter/48a2d5d58391caa1218752b06fca5c80fad369c1.svg]]
+[[file:./.ob-jupyter/154c3792555d3122b19ac015cb5cba784852433f.svg]]
+[[file:./.ob-jupyter/b9d0c73884c96e71bb4d517ade6d0ff1641e6936.svg]]
+[[file:./.ob-jupyter/d56c099c7f74f44c3067a8da8efcef6ec451eba2.svg]]
+[[file:./.ob-jupyter/c55409a2e0a9df91920de0513761c0410b31887a.svg]]
+[[file:./.ob-jupyter/157f23707f76f0d13ed9bf18c950c4c744a6e165.svg]]
+[[file:./.ob-jupyter/ef56e6d0cc0f6b2ad02ed7d9ec09787d1a9fc2ab.svg]]
+[[file:./.ob-jupyter/d82c24f06bcd2def905b57ebe722fd0f2f291259.svg]]
+[[file:./.ob-jupyter/70060d2704674ed3f3d250adcdb0769f3e394332.svg]]
+[[file:./.ob-jupyter/e9f5e3979a389f3825659c508f36ce78c0db6808.svg]]
+[[file:./.ob-jupyter/07ca0ea14076941372969a52b2c15e5b5518f8fd.svg]]
+[[file:./.ob-jupyter/d5aa80f97eecfd980f1543c8892cd434d05d5552.svg]]
+[[file:./.ob-jupyter/0df7cfe50115ce562288e0ee5ac51256a864dbe6.svg]]
 :END:
 
 * Things to Look At
