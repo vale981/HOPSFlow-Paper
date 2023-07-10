@@ -56,6 +56,14 @@ ot.integrate_online_multi(models, 50_000, increment=10_000, analyze_kwargs=dict(
 
 ot.plot_energy(models[5])
 
+for i in range(len(Θs)):
+  fig, ax = plt.subplots()
+  for model in models[len(δs) * i :len(δs) * (i+1)]:
+    pu.plot_with_σ(model.t, model.system_energy(), ax=ax)
+
+for model in models:
+    plt.plot(model.t, abs(model.total_energy_from_power().value - model.total_energy().value))
+
 #[model.efficiency(steady_idx=2).value * 100 for model in models][10]
 models[10].strobe, models[1].strobe
 
@@ -191,4 +199,4 @@ ot.plot_3d_heatmap(
 a_efficiency.set_zlabel(r"$\sigma_\eta/|\eta|$")
 fs.export_fig("coupling_speed_scan_power_efficiency_uncertainty")
 
-
+ot.plot_energy(weak_coupling_model)

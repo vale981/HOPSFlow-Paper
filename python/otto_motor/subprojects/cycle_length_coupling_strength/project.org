@@ -1,4 +1,4 @@
-#+PROPERTY: header-args :session otto_cycle_length :kernel python :pandoc no :async yes :tangle tangle/coupling_strength.py
+#+PROPERTY: header-args :session otto_cycle_length :kernel python :pandoc no :async yes :tangle tangle/coupling_strength.py :noweb yes
 
 Here we scan the cycle length and coupling strength.
 
@@ -33,6 +33,7 @@ We take the same baseline as in [[id:c06111fd-d719-433d-a316-c163f6e1d384][cycle
 
 But we vary the cycle speed while keeping a fixed proportion
 coupling-change/cycle time.
+#+NAME: make-model
 #+begin_src jupyter-python :results none
   def make_model(Θ, δ):
       (p_H, p_L) = ot.timings(.06, .06)
@@ -93,17 +94,32 @@ coupling-change/cycle time.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
-[[file:./.ob-jupyter/dcb84273573f02eab9be5cb49c8855b61ef57f84.svg]]
-: [2m[36m(pid=gcs_server)[0m [2023-05-16 18:24:06,597 E 443560 443560] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
-: [2m[36m(pid=gcs_server)[0m [2023-05-16 18:24:06,597 E 443560 443560] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
-: [2m[36m(pid=gcs_server)[0m [2023-05-16 18:24:06,597 E 443560 443560] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
-: [2m[36m(pid=gcs_server)[0m [2023-05-16 18:24:06,597 E 443560 443560] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
-: [2m[36m(pid=gcs_server)[0m [2023-05-16 18:25:13,636 E 443560 443560] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
-: [2m[36m(pid=gcs_server)[0m [2023-05-16 18:25:13,636 E 443560 443560] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
-: [2m[36m(pid=gcs_server)[0m [2023-05-16 18:25:13,636 E 443560 443560] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
-: [2m[36m(pid=gcs_server)[0m [2023-05-16 18:25:13,637 E 443560 443560] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
-: [2m[36m(pid=gcs_server)[0m [2023-05-16 18:25:13,637 E 443560 443560] (gcs_server) gcs_server.cc:283: Failed to get the resource load: GrpcUnavailable: RPC Error message: Connection reset by peer; RPC Error details:
+[[file:./.ob-jupyter/164cf59963539ffe267c06050906eacc5c84a306.svg]]
 :END:
+
+#+begin_src jupyter-python
+  for i in range(len(Θs)):
+    fig, ax = plt.subplots()
+    for model in models[len(δs) * i :len(δs) * (i+1)]:
+      pu.plot_with_σ(model.t, model.system_energy(), ax=ax)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+[[file:./.ob-jupyter/e260500c9f6e3ee5bffaa8e55362d765f315dbd9.svg]]
+[[file:./.ob-jupyter/b689998cdfdd74781109afb6a523502318876d06.svg]]
+[[file:./.ob-jupyter/88fcef6f0d71dbae4e9a3e3cbaa67b1a3db1363c.svg]]
+[[file:./.ob-jupyter/73c5fc49ba925c3d94b2261ba9acb883c7d63471.svg]]
+:END:
+
+
+#+begin_src jupyter-python
+    for model in models:
+        plt.plot(model.t, abs(model.total_energy_from_power().value - model.total_energy().value))
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/c273a43c171394f3692125872ff6c55120ae3433.svg]]
 
 
 #+begin_src jupyter-python
@@ -129,7 +145,7 @@ coupling-change/cycle time.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 2 | Axes> | (<AxesSubplot: xlabel= $N$ ylabel= $P$ > <AxesSubplot: xlabel= $N$ ylabel= $\eta$ >) |
-[[file:./.ob-jupyter/b83fcdfb93a1d0a389b5cd9da2636a6608fa8984.svg]]
+[[file:./.ob-jupyter/9153bc446bd9633e64c8e85412f9927be1726228.svg]]
 :END:
 
 
@@ -237,11 +253,11 @@ coupling-change/cycle time.
 
 #+RESULTS:
 :RESULTS:
-[[file:./.ob-jupyter/ee03f1655e72e9136c7065f01d0b7ba04b650017.svg]]
-[[file:./.ob-jupyter/f1a1d3e17092ad84d554061c23b8309c424d0de1.svg]]
-[[file:./.ob-jupyter/06a89fcc4c201fe7e9c39443a887282b76e54249.svg]]
-[[file:./.ob-jupyter/b03717337099eef176d08e0082ceeb6305a8acae.svg]]
-[[file:./.ob-jupyter/2c31e3832d8aaecafdf50e0f29694c30c77591c3.svg]]
+[[file:./.ob-jupyter/2f0b0c42049806b930471968f418c6e09a12bb14.svg]]
+[[file:./.ob-jupyter/37e8a4ed48d03590f17e8fa905d06a079ef9489d.svg]]
+[[file:./.ob-jupyter/58030ee1b1a60e263a7ecff46e5e0978c0ebf080.svg]]
+[[file:./.ob-jupyter/3e5f7ce49106a6dccaec67c139a3960c3b5977a3.svg]]
+[[file:./.ob-jupyter/0f0039092a2d1bba7e2ee7161fd53005eea9c3d3.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -275,12 +291,51 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-\[[file:./.ob-jupyter/1b3959a046911e0ebcbce3e6d6f5df7f5867ffbb.svg]]
+[[file:./.ob-jupyter/40d7d6c96595d9d2028f7c9d6b5bb9e1646e07b4.svg]]
 
 
-#+begin_src jupyter-python
-
+* Weak Coupling Limit
+#+begin_src jupyter-python :tangle tangle/weak_coupling_model.py
+  <<boilerplate>>
+  <<make-model>>
 #+end_src
+
+#+RESULTS:
+
+#+begin_src jupyter-python :results none :tangle tangle/weak_coupling_model.py
+  weak_coupling_model = make_model(50, .01)
+  weak_coupling_model.num_cycles = 10
+  weak_coupling_model.k_max = 2
+#+end_src
+
+
+** Integrate
+#+begin_src jupyter-python  :tangle tangle/weak_coupling_model.py
+  ot.integrate_online(weak_coupling_model, 10, analyze_kwargs=dict(every=10_000))
+#+end_src
+
+#+RESULTS:
+: [INFO    hops.core.integration     137953] Choosing the nonlinear integrator.
+: [INFO    root                      137953] Starting analysis process.
+: [INFO    root                      137953] Started analysis process with pid 142086.
+: [INFO    hops.core.hierarchy_data  137953] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_length_coupling_strength/results_84524c4b2c9c8428030cfd17a749cdee70253c3d428b2416de22620c4b230cbd.fifo
+: [INFO    hops.core.integration     137953] Using 16 integrators.
+: [INFO    hops.core.integration     137953] Some 10 trajectories have to be integrated.
+: [INFO    hops.core.integration     137953] Using 66 hierarchy states.
+: 100% 10/10 [01:56<00:00, 11.60s/it]
+:
+
+** Analysis
+#+begin_src jupyter-python
+  ot.plot_energy(weak_coupling_model)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
+[[file:./.ob-jupyter/cee1630d28ef76e85c16f224fc9c6516c3680e3f.svg]]
+:END:
+
 
 * Things to Look At
 - power and efficiency

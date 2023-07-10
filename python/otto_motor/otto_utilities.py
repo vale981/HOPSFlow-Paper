@@ -14,9 +14,12 @@ def plot_power_eff_convergence(models, steady_idx=2):
 
     a_efficiency.set_yscale("log")
     for model in models:
-        Ns = model.power(steady_idx=steady_idx).Ns
-        a_power.plot(Ns, model.power(steady_idx=steady_idx).values)
-        a_efficiency.plot(Ns, np.abs(model.efficiency(steady_idx=steady_idx).values))
+        try:
+            Ns = model.power(steady_idx=steady_idx).Ns
+            a_power.plot(Ns, model.power(steady_idx=steady_idx).values)
+            a_efficiency.plot(Ns, np.abs(model.efficiency(steady_idx=steady_idx).values))
+        except:
+            pass
 
     a_power.set_xlabel("$N$")
     a_power.set_ylabel("$P$")
