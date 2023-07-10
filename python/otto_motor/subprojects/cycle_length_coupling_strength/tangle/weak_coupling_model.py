@@ -44,8 +44,7 @@ def make_model(Θ, δ):
           L_shift=(0, 0),
       )
 
-weak_coupling_model = make_model(50, .01)
-weak_coupling_model.num_cycles = 15
-weak_coupling_model.k_max = 2
+weak_coupling_model = make_model(50, .2)
+weak_coupling_model.num_cycles = 5
 
-ot.integrate_online(weak_coupling_model, 100, analyze_kwargs=dict(every=10_000))
+ot.integrate_online(weak_coupling_model, 50_000, analyze_kwargs=dict(every=10_000))

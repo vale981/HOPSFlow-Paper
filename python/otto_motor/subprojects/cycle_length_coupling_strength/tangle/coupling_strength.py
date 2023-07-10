@@ -202,10 +202,6 @@ fs.export_fig("coupling_speed_scan_power_efficiency_uncertainty")
 ot.plot_energy(weak_coupling_model)
 weak_coupling_model.total_energy_from_power().slice(slice(weak_coupling_model.strobe[1][1], None, 1)).values
 
-weak_coupling_model.total_power().value[weak_coupling_model.strobe[1][7]:-1].mean()
-
 #weak_coupling_model.strobe[1]
 
-weak_coupling_model.efficiency(steady_idx=7)
-weak_coupling_model.steady_bath_energy_change(steady_idx=7, bath=1)
-weak_coupling_model.steady_total_energy_change(steady_idx=7)
+weak_coupling_model.efficiency(steady_idx=-3)
