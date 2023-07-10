@@ -192,7 +192,7 @@ a.plot(
 )
 
 # a.plot(baseline.t, baseline.coupling_operators[1].operator_norm(baseline.t) / 5)
-a.set_xlim((model.Θ * 2, model.Θ * 2 + 11))
+a.set_xlim((model.Θ * 2-5, model.Θ * 2 + 13))
 
 a.set_ylim((-.21, .45))
 a.set_xlabel(r"$\tau$")
