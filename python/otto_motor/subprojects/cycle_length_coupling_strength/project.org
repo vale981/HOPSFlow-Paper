@@ -304,37 +304,126 @@ coupling-change/cycle time.
 
 #+begin_src jupyter-python :results none :tangle tangle/weak_coupling_model.py
   weak_coupling_model = make_model(50, .01)
-  weak_coupling_model.num_cycles = 10
+  weak_coupling_model.num_cycles = 15
   weak_coupling_model.k_max = 2
 #+end_src
 
 
 ** Integrate
 #+begin_src jupyter-python  :tangle tangle/weak_coupling_model.py
-  ot.integrate_online(weak_coupling_model, 10, analyze_kwargs=dict(every=10_000))
-#+end_src
-
-#+RESULTS:
-: [INFO    hops.core.integration     137953] Choosing the nonlinear integrator.
-: [INFO    root                      137953] Starting analysis process.
-: [INFO    root                      137953] Started analysis process with pid 142086.
-: [INFO    hops.core.hierarchy_data  137953] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_length_coupling_strength/results_84524c4b2c9c8428030cfd17a749cdee70253c3d428b2416de22620c4b230cbd.fifo
-: [INFO    hops.core.integration     137953] Using 16 integrators.
-: [INFO    hops.core.integration     137953] Some 10 trajectories have to be integrated.
-: [INFO    hops.core.integration     137953] Using 66 hierarchy states.
-: 100% 10/10 [01:56<00:00, 11.60s/it]
-:
-
-** Analysis
-#+begin_src jupyter-python
-  ot.plot_energy(weak_coupling_model)
+  ot.integrate_online(weak_coupling_model, 100, analyze_kwargs=dict(every=10_000))
 #+end_src
 
 #+RESULTS:
 :RESULTS:
-| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
-[[file:./.ob-jupyter/cee1630d28ef76e85c16f224fc9c6516c3680e3f.svg]]
+#+begin_example
+  [INFO    hops.core.integration     290962] Choosing the nonlinear integrator.
+  [INFO    root                      290962] Starting analysis process.
+  [INFO    root                      290962] Started analysis process with pid 293338.
+  [INFO    hops.core.hierarchy_data  290962] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_length_coupling_strength/results_ef8e3679c35345f6c603306d9c116e7f72af929efd9037b1f3858e1f3d306a87.fifo
+  [INFO    hops.core.integration     290962] Using 16 integrators.
+  [INFO    hops.core.integration     290962] Some 100 trajectories have to be integrated.
+  [INFO    hops.core.integration     290962] Using 66 hierarchy states.
+    0% 0/100 [00:00<?, ?it/s][INFO    hops.core.signal_delay    290962] caught sig 'SIGINT'
+
+    0% 0/100 [00:10<?, ?it/s]
+  2023-07-10 14:21:28,916       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-07-10 14:21:28,917       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-07-10 14:21:28,919       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-07-10 14:21:28,920       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  [INFO    hops.core.signal_delay    290962] caught 1 signal(s)
+  2023-07-10 14:21:28,921       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  [INFO    hops.core.signal_delay    290962] emit signal 'SIGINT'
+  [INFO    hops.core.signal_delay    290962] caught sig 'SIGINT'
+  2023-07-10 14:21:28,924       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-07-10 14:21:28,927       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-07-10 14:21:28,928       WARNING worker.py:1404 -- A worker died or was killed while executing a task by an unexpected system error. To troubleshoot the problem, check the logs for the dead worker. RayTask ID: 42eb0de981b10f9ded44f707c2238576ac033f1501000000 Worker ID: ab3bee80797ba4d55a20a02edba9fc252c2f48eed15636ec6543f53b Node ID: 6f18af98e8f1029efc0c6aab222a211f324ccc8890393f00385bece8 Worker IP address: 10.121.151.166 Worker port: 37335 Worker PID: 291261
+  2023-07-10 14:21:28,961       WARNING worker.py:1404 -- A worker died or was killed while executing a task by an unexpected system error. To troubleshoot the problem, check the logs for the dead worker. RayTask ID: c73273ba2de9e743dd3864a96c16b15a37f8a0bb01000000 Worker ID: 47c18d4d67e434163287de7d8bd0dad4d633903880d6e64886a1b419 Node ID: 6f18af98e8f1029efc0c6aab222a211f324ccc8890393f00385bece8 Worker IP address: 10.121.151.166 Worker port: 46419 Worker PID: 291262
+  2023-07-10 14:21:28,962       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-07-10 14:21:29,022       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-07-10 14:21:29,045       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-07-10 14:21:29,058       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-07-10 14:21:29,091       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-07-10 14:21:29,129       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-07-10 14:21:29,160       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-07-10 14:21:29,206       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  2023-07-10 14:21:29,247       ERROR worker.py:94 -- Unhandled error (suppress with 'RAY_IGNORE_UNHANDLED_ERRORS=1'): The worker died unexpectedly while executing this task. Check python-core-worker-*.log files for more information.
+  [INFO    hops.core.signal_delay    290962] caught 1 signal(s)
+  [INFO    hops.core.signal_delay    290962] emit signal 'SIGINT'
+#+end_example
+# [goto error]
+#+begin_example
+  [0;31m---------------------------------------------------------------------------[0m
+  [0;31mKeyboardInterrupt[0m                         Traceback (most recent call last)
+  Cell [0;32mIn[86], line 1[0m
+  [0;32m----> 1[0m [43mot[49m[38;5;241;43m.[39;49m[43mintegrate_online[49m[43m([49m[43mweak_coupling_model[49m[43m,[49m[43m [49m[38;5;241;43m100[39;49m[43m,[49m[43m [49m[43manalyze_kwargs[49m[38;5;241;43m=[39;49m[38;5;28;43mdict[39;49m[43m([49m[43mevery[49m[38;5;241;43m=[39;49m[38;5;241;43m10_000[39;49m[43m)[49m[43m)[49m
+
+  File [0;32m~/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_length_coupling_strength/otto_utilities.py:363[0m, in [0;36mintegrate_online[0;34m(model, n, stream_folder, **kwargs)[0m
+  [1;32m    362[0m [38;5;28;01mdef[39;00m [38;5;21mintegrate_online[39m(model, n, stream_folder[38;5;241m=[39m[38;5;28;01mNone[39;00m, [38;5;241m*[39m[38;5;241m*[39mkwargs):
+  [0;32m--> 363[0m     [43maux[49m[38;5;241;43m.[39;49m[43mintegrate[49m[43m([49m
+  [1;32m    364[0m [43m        [49m[43mmodel[49m[43m,[49m
+  [1;32m    365[0m [43m        [49m[43mn[49m[43m,[49m
+  [1;32m    366[0m [43m        [49m[43mstream_file[49m[38;5;241;43m=[39;49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43m"[39;49m[43m [49m[38;5;28;43;01mif[39;49;00m[43m [49m[43mstream_folder[49m[43m [49m[38;5;129;43;01mis[39;49;00m[43m [49m[38;5;28;43;01mNone[39;49;00m[43m [49m[38;5;28;43;01melse[39;49;00m[43m [49m[43mstream_folder[49m[43m)[49m
+  [1;32m    367[0m [43m        [49m[38;5;241;43m+[39;49m[43m [49m[38;5;124;43mf[39;49m[38;5;124;43m"[39;49m[38;5;124;43mresults_[39;49m[38;5;132;43;01m{[39;49;00m[43mmodel[49m[38;5;241;43m.[39;49m[43mhexhash[49m[38;5;132;43;01m}[39;49;00m[38;5;124;43m.fifo[39;49m[38;5;124;43m"[39;49m[43m,[49m
+  [1;32m    368[0m [43m        [49m[43manalyze[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m
+  [1;32m    369[0m [43m        [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m,[49m
+  [1;32m    370[0m [43m    [49m[43m)[49m
+
+  File [0;32m~/src/two_qubit_model/hiro_models/model_auxiliary.py:201[0m, in [0;36mintegrate[0;34m(model, n, data_path, clear_pd, single_process, stream_file, analyze, results_path, analyze_kwargs)[0m
+  [1;32m    199[0m         supervisor[38;5;241m.[39mintegrate_single_process(clear_pd)
+  [1;32m    200[0m     [38;5;28;01melse[39;00m:
+  [0;32m--> 201[0m         supervisor[38;5;241m.[39mintegrate(clear_pd)
+  [1;32m    203[0m cleanup([38;5;241m0[39m)
+
+  File [0;32m/nix/store/fai1b55231rnk4jyj0kjicdnqcgdf9ph-python3-3.9.15-env/lib/python3.9/site-packages/hops/core/signal_delay.py:87[0m, in [0;36msig_delay.__exit__[0;34m(self, exc_type, exc_val, exc_tb)[0m
+  [1;32m     84[0m [38;5;28;01mif[39;00m [38;5;28mlen[39m([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught) [38;5;241m>[39m [38;5;241m0[39m [38;5;129;01mand[39;00m [38;5;28mself[39m[38;5;241m.[39mhandler [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+  [1;32m     85[0m     [38;5;28mself[39m[38;5;241m.[39mhandler([38;5;28mself[39m[38;5;241m.[39msigh[38;5;241m.[39msigs_caught)
+  [0;32m---> 87[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_restore[49m[43m([49m[43m)[49m
+
+  File [0;32m/nix/store/fai1b55231rnk4jyj0kjicdnqcgdf9ph-python3-3.9.15-env/lib/python3.9/site-packages/hops/core/signal_delay.py:68[0m, in [0;36msig_delay._restore[0;34m(self)[0m
+  [1;32m     66[0m [38;5;28;01mfor[39;00m i, s [38;5;129;01min[39;00m [38;5;28menumerate[39m([38;5;28mself[39m[38;5;241m.[39msigs):
+  [1;32m     67[0m     signal[38;5;241m.[39msignal(s, [38;5;28mself[39m[38;5;241m.[39mold_handlers[i])
+  [0;32m---> 68[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msigh[49m[38;5;241;43m.[39;49m[43memit[49m[43m([49m[43m)[49m
+
+  File [0;32m/nix/store/fai1b55231rnk4jyj0kjicdnqcgdf9ph-python3-3.9.15-env/lib/python3.9/site-packages/hops/core/signal_delay.py:42[0m, in [0;36mSigHandler.emit[0;34m(self)[0m
+  [1;32m     40[0m [38;5;28;01mfor[39;00m s [38;5;129;01min[39;00m [38;5;28mself[39m[38;5;241m.[39msigs_caught:
+  [1;32m     41[0m     log[38;5;241m.[39minfo([38;5;124m"[39m[38;5;124memit signal [39m[38;5;124m'[39m[38;5;132;01m{}[39;00m[38;5;124m'[39m[38;5;124m"[39m[38;5;241m.[39mformat(SIG_MAP[s]))
+  [0;32m---> 42[0m     [43mos[49m[38;5;241;43m.[39;49m[43mkill[49m[43m([49m[43mos[49m[38;5;241;43m.[39;49m[43mgetpid[49m[43m([49m[43m)[49m[43m,[49m[43m [49m[43ms[49m[43m)[49m
+
+  [0;31mKeyboardInterrupt[0m:
+#+end_example
 :END:
+
+** Analysis
+#+begin_src jupyter-python
+  ot.plot_energy(weak_coupling_model)
+  weak_coupling_model.total_energy_from_power().slice(slice(weak_coupling_model.strobe[1][1], None, 1)).values
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| array | ((-0.03997036 -0.03997036 -0.03996733 ... -0.21910526 -0.21910526 -0.21910526)) |
+[[file:./.ob-jupyter/c1241b127ae3595367627adfdc9a1f6114cbc6af.svg]]
+:END:
+#+begin_src jupyter-python
+  weak_coupling_model.total_power().value[weak_coupling_model.strobe[1][7]:-1].mean()
+
+  #weak_coupling_model.strobe[1]
+#+end_src
+
+#+RESULTS:
+: 0.0
+
+
+
+#+begin_src jupyter-python
+weak_coupling_model.efficiency(steady_idx=7)
+weak_coupling_model.steady_bath_energy_change(steady_idx=7, bath=1)
+weak_coupling_model.steady_total_energy_change(steady_idx=7)
+#+end_src
+
+#+RESULTS:
+: EnsembleValue([(100, 8.326672684688674e-17, 0.010617712466080408)])
 
 
 * Things to Look At
