@@ -229,21 +229,25 @@ def plot_with_σ(
     bath=None,
     strobe_frequency=None,
     strobe_tolerance=1e-3,
+    strobe_data=None,
     hybrid=False,
     **kwargs,
 ):
     err = (y.σ[bath] if bath is not None else y.σ).real
     y_final = transform(y.value[bath] if bath is not None else y.value)
 
-    strobe_mode = strobe_frequency is not None
+    strobe_mode = strobe_frequency is not None or strobe_data
     strobe_indices = None
     strobe_times = None
     strobe_style = dict(linestyle="none", marker="o", markersize=2) | kwargs
 
     if strobe_mode:
-        strobe_times, strobe_indices = ut.strobe_times(
-            x, strobe_frequency, strobe_tolerance
-        )
+        if strobe_data:
+            strobe_times, strobe_indices = strobe_data
+        else:
+            strobe_times, strobe_indices = ut.strobe_times(
+                x, strobe_frequency, strobe_tolerance
+            )
 
         line = ax.errorbar(
             strobe_times,

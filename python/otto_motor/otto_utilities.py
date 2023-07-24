@@ -348,7 +348,7 @@ def full_report(model):
 def plot_energy(model):
     f, a = pu.plot_energy_overview(
         model,
-        strobe_frequency=model.Ω,
+        strobe_data=model.strobe,
         hybrid=True,
         bath_names=["cold", "hot"],
         online=True,
