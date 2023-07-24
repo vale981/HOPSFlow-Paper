@@ -18,7 +18,7 @@ ray.init()
 from hops.util.logging_setup import logging_setup
 import logging
 logging_setup(logging.INFO)
-plt.rcParams['figure.figsize'] = (12,4)
+#plt.rcParams['figure.figsize'] = (12,4)
 def make_model(Θ, δ):
     (p_H, p_L) = ot.timings(.06, .06)
     return OttoEngine(
@@ -34,7 +34,7 @@ def make_model(Θ, δ):
           T=[0.5, 4],
           therm_methods=["tanhsinh", "tanhsinh"],
           Δ=1,
-          num_cycles=3,
+          num_cycles=3 if δ >= .25 else 5,
           Θ=Θ,
           dt=0.001,
           timings_H=p_H,

@@ -18,7 +18,7 @@ ray.init()
 from hops.util.logging_setup import logging_setup
 import logging
 logging_setup(logging.INFO)
-plt.rcParams['figure.figsize'] = (12,4)
+#plt.rcParams['figure.figsize'] = (12,4)
 
 def make_model(Θ, δ):
     (p_H, p_L) = ot.timings(.06, .06)
@@ -35,7 +35,7 @@ def make_model(Θ, δ):
           T=[0.5, 4],
           therm_methods=["tanhsinh", "tanhsinh"],
           Δ=1,
-          num_cycles=3,
+          num_cycles=3 if δ >= .25 else 5,
           Θ=Θ,
           dt=0.001,
           timings_H=p_H,
@@ -83,7 +83,7 @@ f_mean_system_power = plt.figure()
 a_mean_system_power = f_mean_system_power.add_subplot(1, 1, 1, projection="3d")
 
 for ax in [a_power, a_efficiency, a_work, a_mean_inter_power, a_mean_system_power]:
-    ax.set_box_aspect(aspect=None, zoom=0.7)
+    ax.set_box_aspect(aspect=None, zoom=.7)
     ax.set_xlabel(r"$\delta$")
     ax.set_ylabel(r"$\Theta$")
     ax.xaxis.labelpad = 10
@@ -175,7 +175,7 @@ f = plt.figure()
 a_power = f.add_subplot(121, projection="3d")
 a_efficiency = f.add_subplot(122, projection="3d")
 for ax in [a_power, a_efficiency]:
-    ax.set_box_aspect(aspect=None, zoom=0.85)
+    ax.set_box_aspect(aspect=None, zoom=0.7)
     ax.set_xlabel(r"$\delta$")
     ax.set_ylabel(r"$\Theta$")
 
@@ -200,8 +200,9 @@ a_efficiency.set_zlabel(r"$\sigma_\eta/|\eta|$")
 fs.export_fig("coupling_speed_scan_power_efficiency_uncertainty")
 
 ot.plot_energy(weak_coupling_model)
-weak_coupling_model.total_energy_from_power().slice(slice(weak_coupling_model.strobe[1][1], None, 1)).values
 
-#weak_coupling_model.strobe[1]
+weak_coupling_model.power(steady_idx=-2).value
 
-weak_coupling_model.efficiency(steady_idx=-3)
+weak_coupling_model.efficiency(steady_idx=-2).value
+
+weak_coupling_model.strobe

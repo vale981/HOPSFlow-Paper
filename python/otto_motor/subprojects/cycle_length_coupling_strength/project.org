@@ -5,27 +5,27 @@ Here we scan the cycle length and coupling strength.
 * Boilerplate
 #+name: boilerplate
 #+begin_src jupyter-python :results none
-    import figsaver as fs
-    import plot_utils as pu
-    from hiro_models.one_qubit_model import StocProcTolerances
-    from hiro_models.otto_cycle import OttoEngine
-    import hiro_models.model_auxiliary as aux
-    import numpy as np
-    import qutip as qt
-    import utilities as ut
-    import stocproc
-    import matplotlib.pyplot as plt
-    import otto_utilities as ot
+  import figsaver as fs
+  import plot_utils as pu
+  from hiro_models.one_qubit_model import StocProcTolerances
+  from hiro_models.otto_cycle import OttoEngine
+  import hiro_models.model_auxiliary as aux
+  import numpy as np
+  import qutip as qt
+  import utilities as ut
+  import stocproc
+  import matplotlib.pyplot as plt
+  import otto_utilities as ot
 
-    import ray
-    ray.shutdown()
+  import ray
+  ray.shutdown()
 
-    #ray.init(address='auto')
-    ray.init()
-    from hops.util.logging_setup import logging_setup
-    import logging
-    logging_setup(logging.INFO)
-    plt.rcParams['figure.figsize'] = (12,4)
+  #ray.init(address='auto')
+  ray.init()
+  from hops.util.logging_setup import logging_setup
+  import logging
+  logging_setup(logging.INFO)
+  #plt.rcParams['figure.figsize'] = (12,4)
 #+end_src
 
 * Cycles
@@ -50,7 +50,7 @@ coupling-change/cycle time.
             T=[0.5, 4],
             therm_methods=["tanhsinh", "tanhsinh"],
             Δ=1,
-            num_cycles=3,
+            num_cycles=3 if δ >= .25 else 5,
             Θ=Θ,
             dt=0.001,
             timings_H=p_H,
@@ -94,7 +94,7 @@ coupling-change/cycle time.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
-[[file:./.ob-jupyter/164cf59963539ffe267c06050906eacc5c84a306.svg]]
+[[file:./.ob-jupyter/0c263a5e752ea44a9e03c1d330ab5e9f59d315ba.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -106,10 +106,9 @@ coupling-change/cycle time.
 
 #+RESULTS:
 :RESULTS:
-[[file:./.ob-jupyter/e260500c9f6e3ee5bffaa8e55362d765f315dbd9.svg]]
-[[file:./.ob-jupyter/b689998cdfdd74781109afb6a523502318876d06.svg]]
-[[file:./.ob-jupyter/88fcef6f0d71dbae4e9a3e3cbaa67b1a3db1363c.svg]]
-[[file:./.ob-jupyter/73c5fc49ba925c3d94b2261ba9acb883c7d63471.svg]]
+[[file:./.ob-jupyter/f446e5aaee78e8d94583cab562c7c2125470aa63.svg]]
+[[file:./.ob-jupyter/ee49c5ceb452b52f13bf8a069300f080c261b616.svg]]
+[[file:./.ob-jupyter/0cf190cd7dc8af40d9a5f4c556d89adeb0e04077.svg]]
 :END:
 
 
@@ -119,7 +118,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/c273a43c171394f3692125872ff6c55120ae3433.svg]]
+[[file:./.ob-jupyter/d6b9f659fcf729fe4084269c091ef875e3892bb9.svg]]
 
 
 #+begin_src jupyter-python
@@ -146,6 +145,7 @@ coupling-change/cycle time.
 :RESULTS:
 | <Figure | size | 1200x400 | with | 2 | Axes> | (<AxesSubplot: xlabel= $N$ ylabel= $P$ > <AxesSubplot: xlabel= $N$ ylabel= $\eta$ >) |
 [[file:./.ob-jupyter/9153bc446bd9633e64c8e85412f9927be1726228.svg]]
+[[file:./.ob-jupyter/d43858257516d780f9e7abeb2fafeaec34cf66f0.svg]]
 :END:
 
 
@@ -162,7 +162,7 @@ coupling-change/cycle time.
   a_mean_system_power = f_mean_system_power.add_subplot(1, 1, 1, projection="3d")
 
   for ax in [a_power, a_efficiency, a_work, a_mean_inter_power, a_mean_system_power]:
-      ax.set_box_aspect(aspect=None, zoom=0.7)
+      ax.set_box_aspect(aspect=None, zoom=.7)
       ax.set_xlabel(r"$\delta$")
       ax.set_ylabel(r"$\Theta$")
       ax.xaxis.labelpad = 10
@@ -253,19 +253,20 @@ coupling-change/cycle time.
 
 #+RESULTS:
 :RESULTS:
-[[file:./.ob-jupyter/2f0b0c42049806b930471968f418c6e09a12bb14.svg]]
-[[file:./.ob-jupyter/37e8a4ed48d03590f17e8fa905d06a079ef9489d.svg]]
-[[file:./.ob-jupyter/58030ee1b1a60e263a7ecff46e5e0978c0ebf080.svg]]
-[[file:./.ob-jupyter/3e5f7ce49106a6dccaec67c139a3960c3b5977a3.svg]]
-[[file:./.ob-jupyter/0f0039092a2d1bba7e2ee7161fd53005eea9c3d3.svg]]
+[[file:./.ob-jupyter/c4019fb161ccdcc4acc6edd25a46d6d274bfe8ba.svg]]
+[[file:./.ob-jupyter/59a4c40a9f170ea41039e18ce0dd15383f24329a.svg]]
+[[file:./.ob-jupyter/fd9bd90642d9b58bbe9f3a2eb5a2c81524d3221e.svg]]
+[[file:./.ob-jupyter/11ba4df46a172e790ad40e59370f8e5e8186e65d.svg]]
+[[file:./.ob-jupyter/da4a2b94509d6cf7c98534133b0ae0c0b118fe72.svg]]
 :END:
+
 
 #+begin_src jupyter-python
   f = plt.figure()
   a_power = f.add_subplot(121, projection="3d")
   a_efficiency = f.add_subplot(122, projection="3d")
   for ax in [a_power, a_efficiency]:
-      ax.set_box_aspect(aspect=None, zoom=0.85)
+      ax.set_box_aspect(aspect=None, zoom=0.7)
       ax.set_xlabel(r"$\delta$")
       ax.set_ylabel(r"$\Theta$")
 
@@ -291,7 +292,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/40d7d6c96595d9d2028f7c9d6b5bb9e1646e07b4.svg]]
+[[file:./.ob-jupyter/6af04b1a6b4f02304a7d09976d499185668970b9.svg]]
 
 
 * Weak Coupling Limit
@@ -313,56 +314,79 @@ coupling-change/cycle time.
   ot.integrate_online(weak_coupling_model, 50_000, analyze_kwargs=dict(every=10_000))
 #+end_src
 
+
+#+begin_src jupyter-python :tangle no
+  aux.import_results(other_data_path="taurus/.data", other_results_path="taurus/results", models_to_import=[weak_coupling_model], force=True)
+#+end_src
+
 #+RESULTS:
-: [INFO    hops.core.integration     290962] Choosing the nonlinear integrator.
-: [INFO    root                      290962] Starting analysis process.
-: [INFO    root                      290962] Started analysis process with pid 304855.
-: [INFO    hops.core.hierarchy_data  290962] Creating the streaming fifo at: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/cycle_length_coupling_strength/results_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.fifo
-: [INFO    hops.core.integration     290962] Using 16 integrators.
-: [INFO    hops.core.integration     290962] Some 16 trajectories have to be integrated.
-: [INFO    hops.core.integration     290962] Using 1001 hierarchy states.
-: 100% 16/16 [01:28<00:00,  5.52s/it]
-:
+#+begin_example
+  [WARNING root                      855863] Importing taurus/.data/f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49/_d/f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_d48f009a0d8d35cbd63b22cfaca9a422_1.h5 to .data/f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49/_d/f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_d48f009a0d8d35cbd63b22cfaca9a422_1.h5.
+  [WARNING root                      855863] The model description is 'Classic Cycle'.
+  [WARNING root                      855863] Importing taurus/results/flow_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/flow_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_40000.npz.
+  [WARNING root                      855863] Importing taurus/results/flow_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/flow_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_20000.npz.
+  [WARNING root                      855863] Importing taurus/results/flow_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/flow_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_10000.npz.
+  [WARNING root                      855863] Importing taurus/results/flow_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/flow_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_50000.npz.
+  [WARNING root                      855863] Importing taurus/results/flow_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/flow_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz.
+  [WARNING root                      855863] Importing taurus/results/flow_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/flow_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_30000.npz.
+  [WARNING root                      855863] Importing taurus/results/interaction_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/interaction_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_40000.npz.
+  [WARNING root                      855863] Importing taurus/results/interaction_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/interaction_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz.
+  [WARNING root                      855863] Importing taurus/results/interaction_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/interaction_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_10000.npz.
+  [WARNING root                      855863] Importing taurus/results/interaction_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/interaction_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_20000.npz.
+  [WARNING root                      855863] Importing taurus/results/interaction_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/interaction_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_50000.npz.
+  [WARNING root                      855863] Importing taurus/results/interaction_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/interaction_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_30000.npz.
+  [WARNING root                      855863] Importing taurus/results/interaction_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/interaction_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_20000.npz.
+  [WARNING root                      855863] Importing taurus/results/interaction_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/interaction_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_40000.npz.
+  [WARNING root                      855863] Importing taurus/results/interaction_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/interaction_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz.
+  [WARNING root                      855863] Importing taurus/results/interaction_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/interaction_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_10000.npz.
+  [WARNING root                      855863] Importing taurus/results/interaction_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/interaction_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_30000.npz.
+  [WARNING root                      855863] Importing taurus/results/interaction_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/interaction_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_50000.npz.
+  [WARNING root                      855863] Importing taurus/results/system_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/system_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_20000.npz.
+  [WARNING root                      855863] Importing taurus/results/system_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/system_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_50000.npz.
+  [WARNING root                      855863] Importing taurus/results/system_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/system_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_30000.npz.
+  [WARNING root                      855863] Importing taurus/results/system_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/system_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_40000.npz.
+  [WARNING root                      855863] Importing taurus/results/system_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/system_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_10000.npz.
+  [WARNING root                      855863] Importing taurus/results/system_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/system_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz.
+  [WARNING root                      855863] Importing taurus/results/system_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/system_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_40000.npz.
+  [WARNING root                      855863] Importing taurus/results/system_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/system_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_20000.npz.
+  [WARNING root                      855863] Importing taurus/results/system_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/system_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz.
+  [WARNING root                      855863] Importing taurus/results/system_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/system_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_10000.npz.
+  [WARNING root                      855863] Importing taurus/results/system_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/system_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_30000.npz.
+  [WARNING root                      855863] Importing taurus/results/system_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49.npz to results/system_power_f9d1bda1cf5d0f7419d0cc1b1b5db082c13604538255d3dfbc05af9f0d354f49_50000.npz.
+#+end_example
 
 ** Analysis
 #+begin_src jupyter-python
   ot.plot_energy(weak_coupling_model)
-  weak_coupling_model.total_energy_from_power().slice(slice(weak_coupling_model.strobe[1][1], None, 1)).values
 #+end_src
 
 #+RESULTS:
 :RESULTS:
-| array | ((-0.18507824 -0.18507818 -0.18506804 ... -0.87570649 -0.87570633 -0.87570633)) |
-[[file:./.ob-jupyter/ed60941fac1fe754ef3b56d5f56b7b83a3d91291.svg]]
+| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
+[[file:./.ob-jupyter/481435fea60cb1e894453c732dac9705c7a9f35f.svg]]
 :END:
 
-
 #+begin_src jupyter-python
-
-  #weak_coupling_model.strobe[1]
+weak_coupling_model.power(steady_idx=-2).value
 #+end_src
 
 #+RESULTS:
-:RESULTS:
-# [goto error]
-: [0;31m---------------------------------------------------------------------------[0m
-: [0;31mIndexError[0m                                Traceback (most recent call last)
-: Cell [0;32mIn[92], line 1[0m
-: [0;32m----> 1[0m weak_coupling_model[38;5;241m.[39mtotal_power()[38;5;241m.[39mvalue[[43mweak_coupling_model[49m[38;5;241;43m.[39;49m[43mstrobe[49m[43m[[49m[38;5;241;43m1[39;49m[43m][49m[43m[[49m[38;5;241;43m7[39;49m[43m][49m:[38;5;241m-[39m[38;5;241m1[39m][38;5;241m.[39mmean()
-: [1;32m      3[0m [38;5;66;03m#weak_coupling_model.strobe[1][39;00m
-:
-: [0;31mIndexError[0m: index 7 is out of bounds for axis 0 with size 6
-:END:
-
-
+: -0.003196289993151554
 
 #+begin_src jupyter-python
-weak_coupling_model.efficiency(steady_idx=-3)
+weak_coupling_model.efficiency(steady_idx=-2).value
 #+end_src
 
 #+RESULTS:
-: EnsembleValue([(16, 0.3649132926357113, 0.21802876349189884)])
+: 0.41954860019427215
 
+
+#+begin_src jupyter-python
+  weak_coupling_model.strobe
+#+end_src
+
+#+RESULTS:
+| array | ((0 50 100 150 200 250)) | array | ((0 1000 2001 3003 4003 5003)) |
 
 * Things to Look At
 - power and efficiency
