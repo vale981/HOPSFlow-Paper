@@ -123,11 +123,10 @@ coupling-change/cycle time.
 :RESULTS:
 #+begin_example
   80000 -0.0035256859094574657 0.4 0.5
-  80000 -0.003003232549170266 0.45 0.5
+  80000 -0.0030032325491702837 0.45 0.5
   80000 -0.002486223631053281 0.5 0.5
   80000 -0.002031171680593496 0.55 0.5
   80000 -0.0015762813191599482 0.6 0.5
-  [WARNING root                      142566] Adding values with unequal snapshot count discards the snapshots.
   80000 -0.004799000397073388 0.4 0.75
   80000 -0.0043251633398041734 0.45 0.75
   80000 -0.0038327711397568402 0.5 0.75
@@ -143,15 +142,16 @@ coupling-change/cycle time.
   80000 -0.003857041901181338 0.5 1.25
   80000 -0.00346715373726747 0.55 1.25
   80000 -0.003096942043813691 0.6 1.25
-  [WARNING root                      142566] Adding values with unequal snapshot count discards the snapshots.
   80000 -0.004676219366752152 0.4 1.5
+  [WARNING root                      920112] Adding values with unequal snapshot count discards the snapshots.
   80000 -0.004230301763725065 0.45 1.5
-  80000 -0.0038056213003110195 0.5 1.5
+  80000 -0.0038099156239590234 0.5 1.5
   80000 -0.0034230466153926742 0.55 1.5
   80000 -0.003075466706937633 0.6 1.5
 #+end_example
-[[file:./.ob-jupyter/551a6d3eda70b32bf49c903c03bd14899634183c.svg]]
+[[file:./.ob-jupyter/4804acb609ecd2a12056faa7886c86f056ed5df7.svg]]
 :END:
+
 
 #+begin_src jupyter-python
   fig, ax = plt.subplots()

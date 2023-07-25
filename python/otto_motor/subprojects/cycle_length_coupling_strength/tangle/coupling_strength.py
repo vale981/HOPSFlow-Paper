@@ -45,7 +45,7 @@ def make_model(Θ, δ):
           L_shift=(0, 0),
       )
 
-δs = [round(δ, 3) for δ in np.linspace(.3, .7, 5)]
+δs = [.2] + [round(δ, 3) for δ in np.linspace(.3, .7, 5)]
 Θs = [round(Θ, 3) for Θ in np.linspace(20, 80, 5)][1:]
 δs, Θs
 
@@ -53,6 +53,8 @@ import itertools
 models = [make_model(Θ, δ) for Θ, δ, in itertools.product(Θs, δs)]
 
 ot.integrate_online_multi(models, 50_000, increment=10_000, analyze_kwargs=dict(every=10_000))
+
+aux.import_results(other_data_path="taurus/.data", other_results_path="taurus/results", models_to_import=models)
 
 ot.plot_energy(models[5])
 

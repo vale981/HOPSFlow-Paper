@@ -63,14 +63,14 @@ coupling-change/cycle time.
 
 
 #+begin_src jupyter-python
-  δs = [round(δ, 3) for δ in np.linspace(.3, .7, 5)]
+  δs = [.2] + [round(δ, 3) for δ in np.linspace(.3, .7, 5)]
   Θs = [round(Θ, 3) for Θ in np.linspace(20, 80, 5)][1:]
   δs, Θs
 #+end_src
 
 #+RESULTS:
-|  0.3 |  0.4 |  0.5 |  0.6 | 0.7 |
-| 35.0 | 50.0 | 65.0 | 80.0 |     |
+|  0.2 |  0.3 |  0.4 |  0.5 | 0.6 | 0.7 |
+| 35.0 | 50.0 | 65.0 | 80.0 |     |     |
 
 #+begin_src jupyter-python
   import itertools
@@ -85,6 +85,9 @@ coupling-change/cycle time.
   ot.integrate_online_multi(models, 50_000, increment=10_000, analyze_kwargs=dict(every=10_000))
 #+end_src
 
+#+begin_src jupyter-python
+  aux.import_results(other_data_path="taurus/.data", other_results_path="taurus/results", models_to_import=models)
+#+end_src
 
 * Analysis
 #+begin_src jupyter-python
@@ -93,8 +96,8 @@ coupling-change/cycle time.
 
 #+RESULTS:
 :RESULTS:
-| <Figure | size | 1200x400 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
-[[file:./.ob-jupyter/0c263a5e752ea44a9e03c1d330ab5e9f59d315ba.svg]]
+| <Figure | size | 340x320 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
+[[file:./.ob-jupyter/cf041b8ceb725ae01a8a9e1c0176c6ff745c3dc7.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -143,9 +146,8 @@ coupling-change/cycle time.
 
 #+RESULTS:
 :RESULTS:
-| <Figure | size | 1200x400 | with | 2 | Axes> | (<AxesSubplot: xlabel= $N$ ylabel= $P$ > <AxesSubplot: xlabel= $N$ ylabel= $\eta$ >) |
-[[file:./.ob-jupyter/9153bc446bd9633e64c8e85412f9927be1726228.svg]]
-[[file:./.ob-jupyter/d43858257516d780f9e7abeb2fafeaec34cf66f0.svg]]
+| <Figure | size | 340x320 | with | 2 | Axes> | (<AxesSubplot: xlabel= $N$ ylabel= $P$ > <AxesSubplot: xlabel= $N$ ylabel= $\eta$ >) |
+[[file:./.ob-jupyter/c7dbf7eaaf7875b816c3199d9f3524d44914a695.svg]]
 :END:
 
 
@@ -253,11 +255,11 @@ coupling-change/cycle time.
 
 #+RESULTS:
 :RESULTS:
-[[file:./.ob-jupyter/c4019fb161ccdcc4acc6edd25a46d6d274bfe8ba.svg]]
-[[file:./.ob-jupyter/59a4c40a9f170ea41039e18ce0dd15383f24329a.svg]]
-[[file:./.ob-jupyter/fd9bd90642d9b58bbe9f3a2eb5a2c81524d3221e.svg]]
-[[file:./.ob-jupyter/11ba4df46a172e790ad40e59370f8e5e8186e65d.svg]]
-[[file:./.ob-jupyter/da4a2b94509d6cf7c98534133b0ae0c0b118fe72.svg]]
+[[file:./.ob-jupyter/7a3d06e0b864e218f488d870a018e449c8747efb.svg]]
+[[file:./.ob-jupyter/f55c402ea2f7ec919999aaeb24cd4e68e0cf7a26.svg]]
+[[file:./.ob-jupyter/5e0a5eff11cca2fe9fd9cd72453217c63a3e67c6.svg]]
+[[file:./.ob-jupyter/93b23c8dfaf36e510fde11ec619dab38b963a8d2.svg]]
+[[file:./.ob-jupyter/29dbaee13f9c519b0e982f8f1537345e0bc9346f.svg]]
 :END:
 
 
