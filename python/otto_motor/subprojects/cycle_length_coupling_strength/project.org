@@ -33,6 +33,7 @@ We take the same baseline as in [[id:c06111fd-d719-433d-a316-c163f6e1d384][cycle
 
 But we vary the cycle speed while keeping a fixed proportion
 coupling-change/cycle time.
+
 #+NAME: make-model
 #+begin_src jupyter-python :results none
   def make_model(Θ, δ):
@@ -125,7 +126,7 @@ coupling-change/cycle time.
 
 
 #+begin_src jupyter-python
-  #[model.efficiency(steady_idx=2).value * 100 for model in models][10]
+  #[model.efficiency(steady_idx=-2).value * 100 for model in models][10]
   models[10].strobe, models[1].strobe
 #+end_src
 
@@ -174,7 +175,7 @@ coupling-change/cycle time.
   ot.plot_3d_heatmap(
       models,
       lambda model: np.clip(
-          np.nan_to_num(model.efficiency(steady_idx=2).value * 100), 0, np.inf
+          np.nan_to_num(model.efficiency(steady_idx=-2).value * 100), 0, np.inf
       ),
       lambda model: model.δ[0],
       lambda model: model.Θ,
@@ -184,7 +185,7 @@ coupling-change/cycle time.
 
   ot.plot_3d_heatmap(
       models,
-      lambda model: np.clip(-model.power(steady_idx=2).value * 1000, 0, np.inf),
+      lambda model: np.clip(-model.power(steady_idx=-2).value * 1000, 0, np.inf),
       lambda model: model.δ[0],
       lambda model: model.Θ,
       ax=a_power,
@@ -229,7 +230,7 @@ coupling-change/cycle time.
 
   ot.plot_3d_heatmap(
       models,
-      lambda model: np.clip(-model.power(steady_idx=2).value * model.Θ, 0, np.inf),
+      lambda model: np.clip(-model.power(steady_idx=-2).value * model.Θ, 0, np.inf),
       lambda model: model.δ[0],
       lambda model: model.Θ,
       ax=a_work,
@@ -255,12 +256,13 @@ coupling-change/cycle time.
 
 #+RESULTS:
 :RESULTS:
-[[file:./.ob-jupyter/7a3d06e0b864e218f488d870a018e449c8747efb.svg]]
-[[file:./.ob-jupyter/f55c402ea2f7ec919999aaeb24cd4e68e0cf7a26.svg]]
-[[file:./.ob-jupyter/5e0a5eff11cca2fe9fd9cd72453217c63a3e67c6.svg]]
-[[file:./.ob-jupyter/93b23c8dfaf36e510fde11ec619dab38b963a8d2.svg]]
-[[file:./.ob-jupyter/29dbaee13f9c519b0e982f8f1537345e0bc9346f.svg]]
+[[file:./.ob-jupyter/b0aa1cfccf4cd1d8ce6ef7d54830ca8f3c178da3.svg]]
+[[file:./.ob-jupyter/e4cc58ca4c704d14df7e2b38948acb0c9e47cbab.svg]]
+[[file:./.ob-jupyter/839baa7aa85839f3073dd6eb4e11584aa4f5e972.svg]]
+[[file:./.ob-jupyter/c6fa9c1a1b2fdf210a09e58f32ceb43ddfcb3791.svg]]
+[[file:./.ob-jupyter/7cd116167e67e1ecaa314c3df0e69df8d5e607be.svg]]
 :END:
+
 
 
 #+begin_src jupyter-python
@@ -274,7 +276,7 @@ coupling-change/cycle time.
 
   ot.plot_3d_heatmap(
       models,
-      lambda model: np.divide(np.abs(model.power(steady_idx=2).σ), np.abs(model.power(steady_idx=2).value)),
+      lambda model: np.divide(np.abs(model.power(steady_idx=-2).σ), np.abs(model.power(steady_idx=-2).value)),
       lambda model: model.δ[0],
       lambda model: model.Θ,
       ax=a_power,
@@ -284,7 +286,7 @@ coupling-change/cycle time.
 
   ot.plot_3d_heatmap(
       models,
-      lambda model: np.divide(np.clip(np.nan_to_num(model.efficiency(steady_idx=2).σ * 100), 0, np.inf), np.abs(model.efficiency(steady_idx=2).value * 100)),
+      lambda model: np.divide(np.clip(np.nan_to_num(model.efficiency(steady_idx=-2).σ * 100), 0, np.inf), np.abs(model.efficiency(steady_idx=-2).value * 100)),
       lambda model: model.δ[0],
       lambda model: model.Θ,
       ax=a_efficiency,
@@ -294,7 +296,8 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/6af04b1a6b4f02304a7d09976d499185668970b9.svg]]
+[[file:./.ob-jupyter/f7ad9a0e9f9caefc557f1690582b5aa6abe22a01.svg]]
+
 
 
 * Weak Coupling Limit

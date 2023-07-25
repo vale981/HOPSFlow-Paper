@@ -66,7 +66,7 @@ for i in range(len(Θs)):
 for model in models:
     plt.plot(model.t, abs(model.total_energy_from_power().value - model.total_energy().value))
 
-#[model.efficiency(steady_idx=2).value * 100 for model in models][10]
+#[model.efficiency(steady_idx=-2).value * 100 for model in models][10]
 models[10].strobe, models[1].strobe
 
 models[10].system_energy().N
@@ -95,7 +95,7 @@ for ax in [a_power, a_efficiency, a_work, a_mean_inter_power, a_mean_system_powe
 ot.plot_3d_heatmap(
     models,
     lambda model: np.clip(
-        np.nan_to_num(model.efficiency(steady_idx=2).value * 100), 0, np.inf
+        np.nan_to_num(model.efficiency(steady_idx=-2).value * 100), 0, np.inf
     ),
     lambda model: model.δ[0],
     lambda model: model.Θ,
@@ -105,7 +105,7 @@ a_efficiency.set_zlabel(r"$\eta$")
 
 ot.plot_3d_heatmap(
     models,
-    lambda model: np.clip(-model.power(steady_idx=2).value * 1000, 0, np.inf),
+    lambda model: np.clip(-model.power(steady_idx=-2).value * 1000, 0, np.inf),
     lambda model: model.δ[0],
     lambda model: model.Θ,
     ax=a_power,
@@ -150,7 +150,7 @@ a_mean_system_power.zaxis.labelpad = 8
 
 ot.plot_3d_heatmap(
     models,
-    lambda model: np.clip(-model.power(steady_idx=2).value * model.Θ, 0, np.inf),
+    lambda model: np.clip(-model.power(steady_idx=-2).value * model.Θ, 0, np.inf),
     lambda model: model.δ[0],
     lambda model: model.Θ,
     ax=a_work,
@@ -183,7 +183,7 @@ for ax in [a_power, a_efficiency]:
 
 ot.plot_3d_heatmap(
     models,
-    lambda model: np.divide(np.abs(model.power(steady_idx=2).σ), np.abs(model.power(steady_idx=2).value)),
+    lambda model: np.divide(np.abs(model.power(steady_idx=-2).σ), np.abs(model.power(steady_idx=-2).value)),
     lambda model: model.δ[0],
     lambda model: model.Θ,
     ax=a_power,
@@ -193,7 +193,7 @@ a_power.set_zlabel(r"$\sigma_P/|P|$")
 
 ot.plot_3d_heatmap(
     models,
-    lambda model: np.divide(np.clip(np.nan_to_num(model.efficiency(steady_idx=2).σ * 100), 0, np.inf), np.abs(model.efficiency(steady_idx=2).value * 100)),
+    lambda model: np.divide(np.clip(np.nan_to_num(model.efficiency(steady_idx=-2).σ * 100), 0, np.inf), np.abs(model.efficiency(steady_idx=-2).value * 100)),
     lambda model: model.δ[0],
     lambda model: model.Θ,
     ax=a_efficiency,
