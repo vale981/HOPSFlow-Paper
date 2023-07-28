@@ -31,7 +31,6 @@ Here we scan bath memory and maybe temperature gradient later.
 * Cycles
 We take the same baseline as in [[id:c06111fd-d719-433d-a316-c163f6e1d384][cycle_shift.org]].
 
-
 But we vary the cycle speed while keeping a fixed proportion
 coupling-change/cycle time.
 #+begin_src jupyter-python :tangle tangle/bath_memory.py
@@ -120,37 +119,20 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-:RESULTS:
 #+begin_example
-  80000 -0.0035256859094574657 0.4 0.5
-  80000 -0.0030032325491702837 0.45 0.5
-  80000 -0.002486223631053281 0.5 0.5
-  80000 -0.002031171680593496 0.55 0.5
-  80000 -0.0015762813191599482 0.6 0.5
-  80000 -0.004799000397073388 0.4 0.75
-  80000 -0.0043251633398041734 0.45 0.75
-  80000 -0.0038327711397568402 0.5 0.75
-  80000 -0.0034164331023658415 0.55 0.75
-  80000 -0.0030187130898665132 0.6 0.75
-  80000 -0.004801786634051003 0.4 1.0
-  80000 -0.00434091475109094 0.45 1.0
-  80000 -0.003910766374706591 0.5 1.0
-  80000 -0.0034755454875544786 0.55 1.0
-  80000 -0.0030651376043712942 0.6 1.0
-  80000 -0.004734363159180772 0.4 1.25
-  80000 -0.004263187042045658 0.45 1.25
-  80000 -0.003857041901181338 0.5 1.25
-  80000 -0.00346715373726747 0.55 1.25
-  80000 -0.003096942043813691 0.6 1.25
-  80000 -0.004676219366752152 0.4 1.5
-  [WARNING root                      920112] Adding values with unequal snapshot count discards the snapshots.
-  80000 -0.004230301763725065 0.45 1.5
-  80000 -0.0038099156239590234 0.5 1.5
-  80000 -0.0034230466153926742 0.55 1.5
-  80000 -0.003075466706937633 0.6 1.5
+  100000 -0.0035488097495756884 0.4 0.5
+  100000 -0.0030230702698324334 0.45 0.5
+  90000 -0.0025068620989412353 0.5 0.5
+  90000 -0.0020493778751333913 0.55 0.5
+  90000 -0.001606240956288459 0.6 0.5
+  90000 -0.004762254093973542 0.4 0.75
+  90000 -0.004291657187886886 0.45 0.75
+  90000 -0.003813983726866509 0.5 0.75
+  90000 -0.0033985551697407164 0.55 0.75
+  90000 -0.0029932266470821846 0.6 0.75
+  90000 -0.0048136244545500416 0.4 1.0
+  90000 -0.0043606909182305875 0.45 1.0
 #+end_example
-[[file:./.ob-jupyter/4804acb609ecd2a12056faa7886c86f056ed5df7.svg]]
-:END:
 
 
 #+begin_src jupyter-python
@@ -160,7 +142,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/31011c08fcf8cb9aab5b6fb5e9479c830b5523ce.svg]]
+[[file:./.ob-jupyter/d309a0f5287133736614819b4698027c92c12fe1.svg]]
 
 #+begin_src jupyter-python
     for model in models:
@@ -168,10 +150,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-:RESULTS:
-: [WARNING root                      241349] Adding values with unequal snapshot count discards the snapshots.
-[[file:./.ob-jupyter/5f60ec2379fadc805d6dd4073ac4a3fc64e04b29.svg]]
-:END:
+[[file:./.ob-jupyter/fa5ec90259d514bc84e5cf15ec64944bfdb1c630.svg]]
 
 
 #+begin_src jupyter-python
@@ -198,14 +177,13 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/3d747faae890aff5b004df68059ffb918e14d0ae.svg]]
+[[file:./.ob-jupyter/1d23b5f9499d588049ff6ab13eddc9eadcfa3c5a.svg]]
 
 #+begin_src jupyter-python
   fig, ax = plt.subplots()
   styles = [".", "*"]
   for bath, style in enumerate(styles):
       for i, T in enumerate(Ts):
-          print(T, [(model.T) for model in models[i::len(Ts)]], bath, style)
           inters = np.array([(ot.val_relative_to_steady(
               model,
               -1 * model.interaction_power().for_bath(bath).integrate(model.t) * 1 / model.Θ,
@@ -229,21 +207,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-:RESULTS:
-#+begin_example
-  0.4 [[0.4, 4], [0.4, 4], [0.4, 4], [0.4, 4], [0.4, 4]] 0 .
-  0.45 [[0.45, 4], [0.45, 4], [0.45, 4], [0.45, 4], [0.45, 4]] 0 .
-  0.5 [[0.5, 4], [0.5, 4], [0.5, 4], [0.5, 4], [0.5, 4]] 0 .
-  0.55 [[0.55, 4], [0.55, 4], [0.55, 4], [0.55, 4], [0.55, 4]] 0 .
-  0.6 [[0.6, 4], [0.6, 4], [0.6, 4], [0.6, 4], [0.6, 4]] 0 .
-  0.4 [[0.4, 4], [0.4, 4], [0.4, 4], [0.4, 4], [0.4, 4]] 1 *
-  0.45 [[0.45, 4], [0.45, 4], [0.45, 4], [0.45, 4], [0.45, 4]] 1 *
-  0.5 [[0.5, 4], [0.5, 4], [0.5, 4], [0.5, 4], [0.5, 4]] 1 *
-  0.55 [[0.55, 4], [0.55, 4], [0.55, 4], [0.55, 4], [0.55, 4]] 1 *
-  0.6 [[0.6, 4], [0.6, 4], [0.6, 4], [0.6, 4], [0.6, 4]] 1 *
-#+end_example
-[[file:./.ob-jupyter/fcabeb7c6f63fc7bc1d6d2a8f82c5a9eaf839bc7.svg]]
-:END:
+[[file:./.ob-jupyter/0d27f2d2ae508238056da203e2ca2ec9c08014bc.svg]]
 
 
 #+begin_src jupyter-python
@@ -255,7 +219,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/112a8c6e447f4211f90e5db647df83a97bdfb292.svg]]
+[[file:./.ob-jupyter/8e98ea284e9c67db5146d91f0192923e1e68af2f.svg]]
 
 
 #+begin_src jupyter-python
@@ -280,7 +244,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/8ef5c4a0dfcaa4b6b15229c7e03690990bda22ea.svg]]
+[[file:./.ob-jupyter/a5895bfb6815ee778c0fe011a6cf54a430b31570.svg]]
 
 #+begin_src jupyter-python
   def thermal_state(T, Ω):
@@ -344,7 +308,7 @@ coupling-change/cycle time.
 :   pts[1:N+1, 1] = dep1slice
 : /nix/store/fai1b55231rnk4jyj0kjicdnqcgdf9ph-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5346: ComplexWarning: Casting complex values to real discards the imaginary part
 :   pts[N+2:, 1] = dep2slice[::-1]
-[[file:./.ob-jupyter/045efebdb7009899f180780898a31b7f6c48e106.svg]]
+[[file:./.ob-jupyter/7b8184a84f8d317abf4dcee0d8c8db8b1c019cc6.svg]]
 :END:
 
 
@@ -400,7 +364,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/2a877ebd7c84b122825c60319a419fe5cd199876.svg]]
+[[file:./.ob-jupyter/2fc96eaf090533398de5fb190bfab66b1bb3b120.svg]]
 
 
 #+begin_src jupyter-python
@@ -410,7 +374,7 @@ coupling-change/cycle time.
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 340x320 | with | 2 | Axes> | <AxesSubplot: | xlabel= | $\omega_c$ | ylabel= | $\bar{P}$ | > | (<AxesSubplot: xlabel= $\omega_c$ ylabel= $\bar{P}$ > <AxesSubplot: ylabel= $\eta$ >) |
-[[file:./.ob-jupyter/6eccb61abca525820e2df7e9a93704f42eefc925.svg]]
+[[file:./.ob-jupyter/197bccc7fe40338af6232a5f1ff24e8a06b3d0f7.svg]]
 :END:
 
 
@@ -421,14 +385,8 @@ coupling-change/cycle time.
 
 #+RESULTS:
 :RESULTS:
-: [WARNING root                      241349] Adding values with unequal snapshot count discards the snapshots.
-: [WARNING root                      241349] Adding values with unequal snapshot count discards the snapshots.
-: [WARNING root                      241349] Adding values with unequal snapshot count discards the snapshots.
-: [WARNING root                      241349] Adding values with unequal snapshot count discards the snapshots.
-: [WARNING root                      241349] Adding values with unequal snapshot count discards the snapshots.
-: [WARNING root                      241349] Adding values with unequal snapshot count discards the snapshots.
 | <Figure | size | 340x320 | with | 2 | Axes> | (<AxesSubplot: xlabel= $N$ ylabel= $P$ > <AxesSubplot: xlabel= $N$ ylabel= $\eta$ >) |
-[[file:./.ob-jupyter/c11f1a91e2f5aff480076974436ee62a17d4f1be.svg]]
+[[file:./.ob-jupyter/92eb14fc6298a31f763a69186ae203923187aa38.svg]]
 :END:
 
 
@@ -467,52 +425,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-:RESULTS:
-: [WARNING root                      269253] Adding values with unequal snapshot count discards the snapshots.
-: [WARNING root                      269253] Adding values with unequal snapshot count discards the snapshots.
-: [WARNING root                      269253] Adding values with unequal snapshot count discards the snapshots.
-: [WARNING root                      269253] Dividing values with unequal snapshot count discards the snapshots.
-: [WARNING root                      269253] Adding values with unequal snapshot count discards the snapshots.
-: [WARNING root                      269253] Dividing values with unequal snapshot count discards the snapshots.
-[[file:./.ob-jupyter/9f7b5b9ac4f5aeaf6b4769542196b14333e652d3.svg]]
-:END:
-
-#+begin_src jupyter-python
-  for model in models:
-      ot.plot_bloch_components(model)
-#+end_src
-
-
-#+RESULTS:
-:RESULTS:
-: /home/hiro/Documents/Projects/UNI/master/eflow_paper/python/otto_motor/subprojects/bath_memory/plot_utils.py:38: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
-:   fig, ax = setup_function()
-[[file:./.ob-jupyter/7b586b9d458aae65d6bb03350905bc132f897b19.svg]]
-[[file:./.ob-jupyter/7312898112e29a7fbe0c551bdea7727170f51aa5.svg]]
-[[file:./.ob-jupyter/ab1364d48bac7a0407d12bfc571ff22839ef0b9e.svg]]
-[[file:./.ob-jupyter/5130570263d371cf29b5f885fbe3a17b14e1525c.svg]]
-[[file:./.ob-jupyter/ec66deb9232d33e038fc9d7695eafbbc66fd32b6.svg]]
-[[file:./.ob-jupyter/8a4fb84fa9e3403cc504bf346399d716a3632874.svg]]
-[[file:./.ob-jupyter/66a6c0a8155fb358ddaff688faf0b9688d811970.svg]]
-[[file:./.ob-jupyter/aac1cd42fcea2716c112f423674620996e971b51.svg]]
-[[file:./.ob-jupyter/b2474a687485dd0c5ef432bab65577445bfb3af8.svg]]
-[[file:./.ob-jupyter/c05e38691ec6390fcb6a1d348ad676f7f1593f95.svg]]
-[[file:./.ob-jupyter/bdf956f38937df3eea83c24b78b56a39c53c94c9.svg]]
-[[file:./.ob-jupyter/b869d7a4f7c8ef6ea1ec832172c6e9f0874e52e4.svg]]
-[[file:./.ob-jupyter/69d46626832953e6cef4eaa7588057bb340a35e5.svg]]
-[[file:./.ob-jupyter/e23c99ac76f0c7171ffc8928c0826506a06c4105.svg]]
-[[file:./.ob-jupyter/f771cb1d92e5dedbba4ff856543ca0e59b5b3fee.svg]]
-[[file:./.ob-jupyter/e06ab97aff6d6f97a0025e3c9fd47ccf4ba1e06c.svg]]
-[[file:./.ob-jupyter/4b60282e07356bc7faa706d37adf0469093142fe.svg]]
-[[file:./.ob-jupyter/eb6bb6240be7c02c5d3f7f6cb2e16fbf26715d62.svg]]
-[[file:./.ob-jupyter/6b03ad3f30e07aeeb96fa1337d6343a413ddadda.svg]]
-[[file:./.ob-jupyter/50b37a6e55de4c46d338671cb9701a4368de9743.svg]]
-[[file:./.ob-jupyter/8fa686381fd81aa7a62f133814ebc30d55d74c65.svg]]
-[[file:./.ob-jupyter/0ce1c995679c905cf03f5f22b77d170c6bb36256.svg]]
-[[file:./.ob-jupyter/fc83287a59e890e937b19644ee4280935950fc9a.svg]]
-[[file:./.ob-jupyter/b344bce75b6a4a7600eea5af656816936e75fef1.svg]]
-[[file:./.ob-jupyter/7e601568d54a636a176925f29f8bd289530c643b.svg]]
-:END:
+[[file:./.ob-jupyter/fd401b4549a06638d0d95f0020299ebd09257bf5.svg]]
 
 * Things to Look At
 - power and efficiency
