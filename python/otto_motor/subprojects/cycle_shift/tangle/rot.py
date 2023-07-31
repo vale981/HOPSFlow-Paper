@@ -1,6 +1,6 @@
 import plot_utils as pu
 from hiro_models.one_qubit_model import StocProcTolerances
-from hiro_models.otto_cycle import OttoEngine
+from hiro_models.otto_cycle import OttoEngine, get_energy_gap
 import hiro_models.model_auxiliary as aux
 import numpy as np
 import qutip as qt
@@ -26,6 +26,7 @@ weights = [.3]
 for weight in weights:
     off_ax = sc.make_model(0, 0)
     off_ax.H_bias = ConstantMatrix(weight / 2 * qt.sigmax().full())
+    off_ax.normalize_bias = True
     rot_models.append(off_ax)
 
 ot.integrate_online_multi(rot_models, 80_000, increment=10_000, analyze_kwargs=dict(every=10_000))

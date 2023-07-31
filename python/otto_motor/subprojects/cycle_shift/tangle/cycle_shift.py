@@ -1,6 +1,6 @@
 import plot_utils as pu
 from hiro_models.one_qubit_model import StocProcTolerances
-from hiro_models.otto_cycle import OttoEngine
+from hiro_models.otto_cycle import OttoEngine, get_energy_gap
 import hiro_models.model_auxiliary as aux
 import numpy as np
 import qutip as qt
@@ -376,6 +376,8 @@ fs.export_fig(f"energy_change_off_axis", x_scaling=2, y_scaling=0.7)
 plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 0]))
 plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 1]))
 plt.plot(τs, abs(rot_models[0].H.operator_norm(τs)))
+H = rot_models[0].H
+plt.plot(τs, list(map(lambda t: get_energy_gap(H(t)), τs)), color="black")
 
 aux.import_results(other_data_path="taurus/.data", other_results_path="taurus/results", models_to_import=rot_models)
 

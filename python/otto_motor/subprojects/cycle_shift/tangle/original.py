@@ -1,6 +1,6 @@
 import plot_utils as pu
 from hiro_models.one_qubit_model import StocProcTolerances
-from hiro_models.otto_cycle import OttoEngine
+from hiro_models.otto_cycle import OttoEngine, get_energy_gap
 import hiro_models.model_auxiliary as aux
 import numpy as np
 import qutip as qt

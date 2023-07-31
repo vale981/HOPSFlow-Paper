@@ -11,7 +11,7 @@ find if there is an improvement.
 #+begin_src jupyter-python :results none
   import plot_utils as pu
   from hiro_models.one_qubit_model import StocProcTolerances
-  from hiro_models.otto_cycle import OttoEngine
+  from hiro_models.otto_cycle import OttoEngine, get_energy_gap
   import hiro_models.model_auxiliary as aux
   import numpy as np
   import qutip as qt
@@ -987,28 +987,31 @@ hamiltonian.
 #+end_src
 
 #+begin_src jupyter-python :tangle tangle/rot.py
- rot_models = []
- weights = [.3]
- for weight in weights:
-     off_ax = sc.make_model(0, 0)
-     off_ax.H_bias = ConstantMatrix(weight / 2 * qt.sigmax().full())
-     rot_models.append(off_ax)
+  rot_models = []
+  weights = [.3]
+  for weight in weights:
+      off_ax = sc.make_model(0, 0)
+      off_ax.H_bias = ConstantMatrix(weight / 2 * qt.sigmax().full())
+      off_ax.normalize_bias = True
+      rot_models.append(off_ax)
 #+end_src
 
 #+RESULTS:
 
 #+begin_src jupyter-python
- τs = rot_models[0].t
- #plt.plot(τs, np.einsum('tij,ij->t', rot_models[0].H(τs), qt.sigmay().full()).real)
- plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 0]))
- plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 1]))
- plt.plot(τs, abs(rot_models[0].H.operator_norm(τs)))
+  τs = rot_models[0].t
+  #plt.plot(τs, np.einsum('tij,ij->t', rot_models[0].H(τs), qt.sigmay().full()).real)
+  plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 0]))
+  plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 1]))
+  plt.plot(τs, abs(rot_models[0].H.operator_norm(τs)))
+  H = rot_models[0].H
+  plt.plot(τs, list(map(lambda t: get_energy_gap(H(t)), τs)), color="black")
 #+end_src
 
 #+RESULTS:
 :RESULTS:
-| <matplotlib.lines.Line2D | at | 0x7faaf05603d0> |
-[[file:./.ob-jupyter/a2d1d6854cd9f63e6ff03e314d41d013d6ac7d20.svg]]
+| <matplotlib.lines.Line2D | at | 0x7f36244f3340> |
+[[file:./.ob-jupyter/e2600fe61c160903c60b7159b388b82b5ce667d0.svg]]
 :END:
 
 ** Integration
@@ -1130,7 +1133,7 @@ hamiltonian.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/ee02523c7ea4aa3ea9a4109ffc9747c3fc6452d2.svg]]
+[[file:./.ob-jupyter/fc25ed2715cfa569942ee1d2f49229335cb7b476.svg]]
 
 #+begin_src jupyter-python
  for (i, model), weight in zip(enumerate(rot_models), weights):
@@ -1140,7 +1143,7 @@ hamiltonian.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/34ec9ca8e0a14d56b53ef1c1321ddab9b4bbce8d.svg]]
+[[file:./.ob-jupyter/dadb90f0626b8b89f51b77552f2cc31f2411a0d7.svg]]
 
 
 #+begin_src jupyter-python
