@@ -988,7 +988,7 @@ hamiltonian.
 
 #+begin_src jupyter-python :tangle tangle/rot.py
   rot_models = []
-  weights = [.3]
+  weights = [.5]
   for weight in weights:
       off_ax = sc.make_model(0, 0)
       off_ax.H_bias = ConstantMatrix(weight / 2 * qt.sigmax().full())
@@ -1001,17 +1001,17 @@ hamiltonian.
 #+begin_src jupyter-python
   τs = rot_models[0].t
   #plt.plot(τs, np.einsum('tij,ij->t', rot_models[0].H(τs), qt.sigmay().full()).real)
-  plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 0]))
-  plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 1]))
-  plt.plot(τs, abs(rot_models[0].H.operator_norm(τs)))
+  # plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 0]))
+  # plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 1]))
+  # plt.plot(τs, abs(rot_models[0].H.operator_norm(τs)))
   H = rot_models[0].H
   plt.plot(τs, list(map(lambda t: get_energy_gap(H(t)), τs)), color="black")
 #+end_src
 
 #+RESULTS:
 :RESULTS:
-| <matplotlib.lines.Line2D | at | 0x7f36244f3340> |
-[[file:./.ob-jupyter/e2600fe61c160903c60b7159b388b82b5ce667d0.svg]]
+| <matplotlib.lines.Line2D | at | 0x7f36470cdd00> |
+[[file:./.ob-jupyter/d5d7c229833877657c2abc95a30a085919c05d40.svg]]
 :END:
 
 ** Integration

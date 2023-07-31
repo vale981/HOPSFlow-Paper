@@ -373,9 +373,9 @@ fs.export_fig(f"energy_change_off_axis", x_scaling=2, y_scaling=0.7)
 
 τs = rot_models[0].t
 #plt.plot(τs, np.einsum('tij,ij->t', rot_models[0].H(τs), qt.sigmay().full()).real)
-plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 0]))
-plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 1]))
-plt.plot(τs, abs(rot_models[0].H.operator_norm(τs)))
+# plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 0]))
+# plt.plot(τs, abs(rot_models[0].H(τs)[:, 0, 1]))
+# plt.plot(τs, abs(rot_models[0].H.operator_norm(τs)))
 H = rot_models[0].H
 plt.plot(τs, list(map(lambda t: get_energy_gap(H(t)), τs)), color="black")
 
