@@ -568,6 +568,42 @@ def plot_steady_energy_changes(
     return fig, ax
 
 
+def plot_modulation_interaction_diagram(model, steady_idx, bath=0):
+    fig, ax = plt.subplots()
+
+    t, inter = val_relative_to_steady(
+        model,
+        (model.interaction_energy().for_bath(bath)),
+        steady_idx,
+    )
+
+    modulation = model.coupling_operators[bath].operator_norm(t)
+    ax.plot(modulation, inter.value)
+
+    bath_names = ["c", "h"]
+    ax.set_xlabel(rf"$||L_{bath_names[bath]}(t)||$")
+    ax.set_ylabel(r"$\langle{H_\mathrm{I}}\rangle$")
+
+    return fig, ax
+
+
+def plot_modulation_system_diagram(model, steady_idx):
+    fig, ax = plt.subplots()
+
+    t, system = val_relative_to_steady(
+        model,
+        (model.system_energy().sum_baths()),
+        steady_idx,
+    )
+
+    modulation = model.H.operator_norm(t)
+    ax.plot(modulation, system.value)
+    ax.set_xlabel(r"$||H_\mathrm{S}||$")
+    ax.set_ylabel(r"$\langle{H_\mathrm{S}}\rangle$")
+
+    return fig, ax
+
+
 def plot_steady_work_baths(models, steady_idx=2, label_fn=model_description):
     fig, ax = plt.subplots()
 
