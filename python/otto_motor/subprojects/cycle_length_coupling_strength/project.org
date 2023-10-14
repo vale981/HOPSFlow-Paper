@@ -92,63 +92,13 @@ coupling-change/cycle time.
 
 * Analysis
 #+begin_src jupyter-python
-  ot.plot_energy(models[5])
+    ot.plot_energy(models[5])
 #+end_src
 
 #+RESULTS:
 :RESULTS:
 | <Figure | size | 340x320 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
-[[file:./.ob-jupyter/cf041b8ceb725ae01a8a9e1c0176c6ff745c3dc7.svg]]
-:END:
-
-#+begin_src jupyter-python
-  for i in range(len(Θs)):
-    fig, ax = plt.subplots()
-    for model in models[len(δs) * i :len(δs) * (i+1)]:
-      pu.plot_with_σ(model.t, model.system_energy(), ax=ax)
-#+end_src
-
-#+RESULTS:
-:RESULTS:
-[[file:./.ob-jupyter/f446e5aaee78e8d94583cab562c7c2125470aa63.svg]]
-[[file:./.ob-jupyter/ee49c5ceb452b52f13bf8a069300f080c261b616.svg]]
-[[file:./.ob-jupyter/0cf190cd7dc8af40d9a5f4c556d89adeb0e04077.svg]]
-:END:
-
-
-#+begin_src jupyter-python
-    for model in models:
-        plt.plot(model.t, abs(model.total_energy_from_power().value - model.total_energy().value))
-#+end_src
-
-#+RESULTS:
-[[file:./.ob-jupyter/d6b9f659fcf729fe4084269c091ef875e3892bb9.svg]]
-
-
-#+begin_src jupyter-python
-  #[model.efficiency(steady_idx=-2).value * 100 for model in models][10]
-  models[10].strobe, models[1].strobe
-#+end_src
-
-#+RESULTS:
-| array | ((0 65 130 195)) | array | ((0 1000 2001 3001)) |
-| array | ((0 35 70 105))  | array | ((0 1000 2001 3001)) |
-
-#+begin_src jupyter-python
-  models[10].system_energy().N
-#+end_src
-
-#+RESULTS:
-: 80000
-
-#+begin_src jupyter-python
-  ot.plot_power_eff_convergence(models, 2)
-#+end_src
-
-#+RESULTS:
-:RESULTS:
-| <Figure | size | 340x320 | with | 2 | Axes> | (<AxesSubplot: xlabel= $N$ ylabel= $P$ > <AxesSubplot: xlabel= $N$ ylabel= $\eta$ >) |
-[[file:./.ob-jupyter/c7dbf7eaaf7875b816c3199d9f3524d44914a695.svg]]
+[[file:./.ob-jupyter/3da29ea23fbb86d0c258f8b077c4568444a3894e.svg]]
 :END:
 
 
@@ -235,7 +185,7 @@ coupling-change/cycle time.
       lambda model: model.Θ,
       ax=a_work,
   )
-  a_work.set_zlabel(r"$-W$")
+  a_work.set_zlabel(r"$W$")
   a_work.zaxis.labelpad = 8
 
 
@@ -256,14 +206,140 @@ coupling-change/cycle time.
 
 #+RESULTS:
 :RESULTS:
-[[file:./.ob-jupyter/b0aa1cfccf4cd1d8ce6ef7d54830ca8f3c178da3.svg]]
-[[file:./.ob-jupyter/e4cc58ca4c704d14df7e2b38948acb0c9e47cbab.svg]]
-[[file:./.ob-jupyter/839baa7aa85839f3073dd6eb4e11584aa4f5e972.svg]]
-[[file:./.ob-jupyter/c6fa9c1a1b2fdf210a09e58f32ceb43ddfcb3791.svg]]
-[[file:./.ob-jupyter/7cd116167e67e1ecaa314c3df0e69df8d5e607be.svg]]
+[[file:./.ob-jupyter/a4fded1708431af976271eb4a82f9e521a57a7eb.svg]]
+[[file:./.ob-jupyter/55fb3469794892bbb3e378daca3aa6d7b600b239.svg]]
+[[file:./.ob-jupyter/f8981aa4603d7ef3a58555400d2a24873608ab8c.svg]]
+[[file:./.ob-jupyter/54d2889e653fd41dab4c17e9cc71bd7c03007295.svg]]
+[[file:./.ob-jupyter/6ffe6a67ffb005d5f582305846cdce6df560a1e7.svg]]
+:END:
+#+begin_src jupyter-python
+  f_mean_system_power = plt.figure()
+  a_mean_system_power = f_mean_system_power.add_subplot(1, 1, 1)
+
+  (_, _, (c_mean_sytem_power, data_mean_system_power)) = ot.plot_contour(
+        models,
+        lambda model:
+            -ot.val_relative_to_steady(model, model.system_power().sum_baths(), 2)[
+                1
+            ].mean.value,
+        lambda model: model.δ[0],
+        lambda model: model.Θ,
+        ax=a_mean_system_power,
+    )
+  a_mean_system_power.set_title(r"$\bar{P}_\mathrm{sys}/\Omega^2$")
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+: Text(0.5, 1.0, '$\\bar{P}_\\mathrm{sys}/\\Omega^2$')
+[[file:./.ob-jupyter/8f10f47f9025c26b3b30a075c89c5cdc751d1e00.svg]]
 :END:
 
 
+#+begin_src jupyter-python
+  f_power = plt.figure()
+  a_power = f_power.add_subplot(1, 1, 1)
+  f_work = plt.figure()
+  a_work = f_work.add_subplot(1, 1, 1)
+  f_efficiency = plt.figure()
+  a_efficiency = f_efficiency.add_subplot(1, 1, 1)
+  f_mean_inter_power = plt.figure()
+  a_mean_inter_power = f_mean_inter_power.add_subplot(1, 1, 1)
+  f_mean_system_power = plt.figure()
+  a_mean_system_power = f_mean_system_power.add_subplot(1, 1, 1)
+
+  axs = [a_power, a_efficiency, a_work, a_mean_inter_power, a_mean_system_power]
+  figs = [f_power, f_efficiency, f_work, f_mean_inter_power, f_mean_system_power]
+  for ax in axs:
+      ax.set_xlabel(r"$\delta$")
+      ax.set_ylabel(r"$\Theta$")
+
+
+  (_, _, (c_efficiency, data_efficiency)) = ot.plot_contour(
+      models,
+      lambda model: np.clip(
+          np.nan_to_num(model.efficiency(steady_idx=-2).value * 100), 0, np.inf
+      ),
+      lambda model: model.δ[0],
+      lambda model: model.Θ,
+      ax=a_efficiency,
+  )
+  a_efficiency.set_title(r"$\eta$")
+
+  (_, _, (c_power, data_power)) =ot.plot_contour(
+      models,
+      lambda model: np.clip(-model.power(steady_idx=-2).value, 0, np.inf),
+      lambda model: model.δ[0],
+      lambda model: model.Θ,
+      ax=a_power,
+  )
+  a_power.set_title(r"$\bar{P}/\Omega^2$")
+
+  (_, _, (c_mean_inter_power, data_mean_inter_power)) = ot.plot_contour(
+      models,
+      lambda model: np.clip(
+          ot.val_relative_to_steady(model, model.interaction_power().sum_baths(), 2)[
+              1
+          ].mean.value,
+          0,
+          np.inf,
+      ),
+      lambda model: model.δ[0],
+      lambda model: model.Θ,
+      ax=a_mean_inter_power,
+  )
+  a_mean_inter_power.set_title(r"$-\bar{P}_\mathrm{int}/\Omega^2$")
+
+  (_, _, (c_mean_system_power, data_mean_system_power)) = ot.plot_contour(
+      models,
+      lambda model:
+          -ot.val_relative_to_steady(model, model.system_power().sum_baths(), 2)[
+              1
+          ].mean.value,
+      lambda model: model.δ[0],
+      lambda model: model.Θ,
+      ax=a_mean_system_power,
+  )
+  a_mean_system_power.set_title(r"$\bar{P}_\mathrm{sys}/\Omega^2$")
+
+  (_, _, (c_work, data_work)) = ot.plot_contour(
+      models,
+      lambda model: np.clip(-model.power(steady_idx=-2).value * model.Θ, 0, np.inf),
+      lambda model: model.δ[0],
+      lambda model: model.Θ,
+      ax=a_work,
+  )
+  a_work.set_title(r"$W/\Omega$")
+
+
+  plt.tight_layout()
+  contours = [c_power, c_efficiency, c_work, c_mean_inter_power, c_mean_system_power]
+  datas = [data_power, data_efficiency, data_work, data_mean_inter_power, data_mean_system_power]
+
+  for fig, contour in zip(figs, contours):
+      fig.colorbar(contour)
+
+  fs.export_fig("coupling_speed_scan_power_contour", x_scaling=1, y_scaling=1, fig=f_power, data=data_power)
+  fs.export_fig("coupling_speed_scan_work_contour", x_scaling=1, y_scaling=1, fig=f_work, data=data_work)
+  fs.export_fig(
+      "coupling_speed_scan_efficiency_contour", x_scaling=1, y_scaling=1, fig=f_efficiency, data=data_efficiency
+  )
+  fs.export_fig(
+      "coupling_speed_scan_interpower_contour", x_scaling=1, y_scaling=1, fig=f_mean_inter_power, data=data_mean_inter_power
+  )
+  fs.export_fig(
+      "coupling_speed_scan_syspower_contour", x_scaling=1, y_scaling=1, fig=f_mean_system_power, data=data_mean_system_power
+  )
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+[[file:./.ob-jupyter/67bf5c82306b318ce650433463e13e7dee354bd5.svg]]
+[[file:./.ob-jupyter/7e340c9e451d8dbd012b84be33801965f96122ac.svg]]
+[[file:./.ob-jupyter/32153d4bce153c132414c148d3e489130fdc87b3.svg]]
+[[file:./.ob-jupyter/6218def4404f7bf670a4d3e75c28d07ac6d9f101.svg]]
+[[file:./.ob-jupyter/806dbc342f97c822035fcf647f53b26b7cd846f0.svg]]
+:END:
 
 #+begin_src jupyter-python
   f = plt.figure()
@@ -296,7 +372,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/f7ad9a0e9f9caefc557f1690582b5aa6abe22a01.svg]]
+[[file:./.ob-jupyter/43634f8b38594ef86dce9c67d4da46131bd0ad48.svg]]
 
 
 

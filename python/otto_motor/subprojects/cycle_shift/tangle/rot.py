@@ -22,7 +22,7 @@ import itertools
 from hops.util.dynamic_matrix import ConstantMatrix
 
 rot_models = []
-weights = [.5]
+weights = [.3, .5]
 for weight in weights:
     off_ax = sc.make_model(0, 0)
     off_ax.H_bias = ConstantMatrix(weight / 2 * qt.sigmax().full())

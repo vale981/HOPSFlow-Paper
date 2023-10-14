@@ -17,7 +17,9 @@ def plot_power_eff_convergence(models, steady_idx=2):
         try:
             Ns = model.power(steady_idx=steady_idx).Ns
             a_power.plot(Ns, model.power(steady_idx=steady_idx).values)
-            a_efficiency.plot(Ns, np.abs(model.efficiency(steady_idx=steady_idx).values))
+            a_efficiency.plot(
+                Ns, np.abs(model.efficiency(steady_idx=steady_idx).values)
+            )
         except:
             pass
 
@@ -449,6 +451,58 @@ def plot_3d_heatmap(models, value_accessor, x_spec, y_spec, normalize=False, ax=
     ax.set_yticks(y_labels)
 
 
+@pu.wrap_plot
+def plot_contour(
+    models, value_accessor, x_spec, y_spec, normalize=False, ax=None, levels=None
+):
+    value_dict = {}
+    x_labels = set()
+    y_labels = set()
+
+    for model in models:
+        x_label = x_spec(model)
+        y_label = y_spec(model)
+        value = value_accessor(model)
+
+        if x_label not in value_dict:
+            value_dict[x_label] = {}
+
+        if y_label in value_dict[x_label]:
+            raise ValueError(
+                f"Dublicate value for model with x={x_label}, y={y_label}."
+            )
+
+        value_dict[x_label][y_label] = value_accessor(model)
+
+        x_labels.add(x_label)
+        y_labels.add(y_label)
+
+    x_labels = np.sort(list(x_labels))
+    y_labels = np.sort(list(y_labels))
+
+    _xx, _yy = np.meshgrid(x_labels, y_labels, indexing="ij")
+    x, y = _xx.ravel(), _yy.ravel()
+
+    values = (
+        np.fromiter((value_dict[_x][_y] for _x, _y in zip(x, y)), dtype=float)
+        .reshape(len(x_labels), len(y_labels))
+        .T
+    )
+
+    normalized_values = abs(values) - abs(values).min()
+    normalized_values /= abs(normalized_values).max()
+
+    cont = ax.contourf(
+        x_labels,
+        y_labels,
+        values / abs(values).max() if normalize else values,
+        levels=levels,
+    )
+    ax.set_xticks(x_labels)
+    ax.set_yticks(y_labels)
+    return cont, (x_labels, y_labels, values)
+
+
 def val_relative_to_steady(model, val, steady_idx, shift=0):
     shift_idx = int(1 / model.dt * shift)
     begin_idx = model.strobe[1][steady_idx] - shift_idx
@@ -578,3 +632,20 @@ def plot_bloch_components(model, ax=None, **kwargs):
         )
         ax.legend()
         ax.set_xlabel(r"$\tau$")
+
+
+@pu.wrap_plot
+def plot_energy_deviation(models, ax=None, labels=None):
+    ax.set_xlabel(r"$\tau$")
+    ax.set_ylabel(r"$\Delta||H||/\max||H||$")
+
+    for i, model in enumerate(models):
+        ax.plot(
+            model.t,
+            abs(model.total_energy_from_power().value - model.total_energy().value)
+            / max(abs(model.total_energy_from_power().value)),
+            label=labels[i] if labels else None,
+        )
+
+    if labels:
+        ax.legend()

@@ -379,6 +379,9 @@ fs.export_fig(f"energy_change_off_axis", x_scaling=2, y_scaling=0.7)
 H = rot_models[0].H
 plt.plot(τs, list(map(lambda t: get_energy_gap(H(t)), τs)), color="black")
 
+for model in rot_models:
+    print(model.energy_gaps[1] - model.energy_gaps[0])
+
 aux.import_results(other_data_path="taurus/.data", other_results_path="taurus/results", models_to_import=rot_models)
 
 for (i, model), weight in zip(enumerate(rot_models), weights):
@@ -403,7 +406,7 @@ for ax in axs:
     ax.set_xlabel(r"$\tau$")
     ax.set_ylabel(r"$\Delta X$")
 
-for (i, model) in enumerate([*rot_models, baseline]):
+for (i, model) in enumerate([*rot_models[1:], baseline]):
     for j, (val, label) in enumerate(zip([
         model.total_energy_from_power(),
         model.system_energy(),

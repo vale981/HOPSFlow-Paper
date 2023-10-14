@@ -115,24 +115,11 @@ coupling-change/cycle time.
   fig, ax = plt.subplots()
   for model in models:
       pu.plot_with_σ(models[0].t, model.interaction_power().sum_baths().integrate(model.t), ax=ax)
-      print(model.system_energy().N, model.power(steady_idx=2).value, model.T[0], model.ω_c[0])
+      #print(model.system_energy().N, model.power(steady_idx=2).value, model.T[0], model.ω_c[0])
 #+end_src
 
 #+RESULTS:
-#+begin_example
-  100000 -0.0035488097495756884 0.4 0.5
-  100000 -0.0030230702698324334 0.45 0.5
-  90000 -0.0025068620989412353 0.5 0.5
-  90000 -0.0020493778751333913 0.55 0.5
-  90000 -0.001606240956288459 0.6 0.5
-  90000 -0.004762254093973542 0.4 0.75
-  90000 -0.004291657187886886 0.45 0.75
-  90000 -0.003813983726866509 0.5 0.75
-  90000 -0.0033985551697407164 0.55 0.75
-  90000 -0.0029932266470821846 0.6 0.75
-  90000 -0.0048136244545500416 0.4 1.0
-  90000 -0.0043606909182305875 0.45 1.0
-#+end_example
+[[file:./.ob-jupyter/5a3bab0efb62516d5f68e6b330770c6fd8740bf7.svg]]
 
 
 #+begin_src jupyter-python
@@ -145,12 +132,14 @@ coupling-change/cycle time.
 [[file:./.ob-jupyter/d309a0f5287133736614819b4698027c92c12fe1.svg]]
 
 #+begin_src jupyter-python
-    for model in models:
-        plt.plot(model.t, abs(model.total_energy_from_power().value - model.total_energy().value))
+  ot.plot_energy_deviation(models)
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/fa5ec90259d514bc84e5cf15ec64944bfdb1c630.svg]]
+:RESULTS:
+| <Figure | size | 340x320 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | $\Delta |   | H |   | /\max |   | H |   | $ | > |
+[[file:./.ob-jupyter/c04269e0edbcb54c512e19b6da56f23825778a43.svg]]
+:END:
 
 
 #+begin_src jupyter-python
@@ -177,7 +166,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/1d23b5f9499d588049ff6ab13eddc9eadcfa3c5a.svg]]
+[[file:./.ob-jupyter/a25ccbba91487a7d4ac757e0527d502a790830b1.svg]]
 
 #+begin_src jupyter-python
   fig, ax = plt.subplots()
@@ -207,7 +196,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/0d27f2d2ae508238056da203e2ca2ec9c08014bc.svg]]
+[[file:./.ob-jupyter/6037d87d2d4f3519db8d960319384d87040a33b8.svg]]
 
 
 #+begin_src jupyter-python
@@ -389,6 +378,58 @@ coupling-change/cycle time.
 [[file:./.ob-jupyter/92eb14fc6298a31f763a69186ae203923187aa38.svg]]
 :END:
 
+#+begin_src jupyter-python
+  f=ot.plot_contour(
+        models,
+        lambda model: np.clip(-model.power(steady_idx=2).value, 0, np.inf),
+        lambda model: model.T[0],
+        lambda model: model.ω_c[0],
+        levels=10
+    )
+  plt.gcf().colorbar(f[2][0])
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+: <matplotlib.colorbar.Colorbar at 0x7ff4ac4da4c0>
+[[file:./.ob-jupyter/ac6550b4f2034c623c6f1ba7c59ec20ae037eccd.svg]]
+:END:
+
+#+begin_src jupyter-python
+  f = plt.figure()
+  a_power = f.add_subplot(121)
+  a_efficiency = f.add_subplot(122)
+  axs = [a_power, a_efficiency]
+
+  for ax in axs:
+      ax.set_xlabel(r"$T_c$")
+      ax.set_ylabel(r"$\omega_c$")
+
+  (_, _, (c1, data1)) = ot.plot_contour(
+      models,
+      lambda model: np.clip(-model.power(steady_idx=2).value, 0, np.inf),
+      lambda model: model.T[0],
+      lambda model: model.ω_c[0],
+      ax=a_power,
+  )
+  a_power.set_title(r"$\bar{P}/\Omega$")
+
+
+  (_, _, (c2, data2)) = ot.plot_contour(
+      models,
+      lambda model: np.clip(np.nan_to_num(model.efficiency(steady_idx=2).value * 100), 0, np.inf),
+      lambda model: model.T[0],
+      lambda model: model.ω_c[0],
+      ax=a_efficiency,
+  )
+  a_efficiency.set_title(r"$\eta\, [\%]$")
+  f.colorbar(c1, ax=axs[0])
+  f.colorbar(c2, ax=axs[1])
+  fs.export_fig("bath_memory_power_efficiency_contour", x_scaling=2, y_scaling=.8, data=(data1, data2))
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/5fc81f79f65d63721168aba9a472c104ac45df91.svg]]
 
 
 #+begin_src jupyter-python
@@ -425,7 +466,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/fd401b4549a06638d0d95f0020299ebd09257bf5.svg]]
+[[file:./.ob-jupyter/306565c079f017833496fccc16e3cf4f0b20a4aa.svg]]
 
 * Things to Look At
 - power and efficiency

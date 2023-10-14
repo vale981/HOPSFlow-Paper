@@ -58,21 +58,6 @@ aux.import_results(other_data_path="taurus/.data", other_results_path="taurus/re
 
 ot.plot_energy(models[5])
 
-for i in range(len(Θs)):
-  fig, ax = plt.subplots()
-  for model in models[len(δs) * i :len(δs) * (i+1)]:
-    pu.plot_with_σ(model.t, model.system_energy(), ax=ax)
-
-for model in models:
-    plt.plot(model.t, abs(model.total_energy_from_power().value - model.total_energy().value))
-
-#[model.efficiency(steady_idx=-2).value * 100 for model in models][10]
-models[10].strobe, models[1].strobe
-
-models[10].system_energy().N
-
-ot.plot_power_eff_convergence(models, 2)
-
 f_power = plt.figure()
 a_power = f_power.add_subplot(1, 1, 1, projection="3d")
 f_work = plt.figure()
@@ -155,7 +140,7 @@ ot.plot_3d_heatmap(
     lambda model: model.Θ,
     ax=a_work,
 )
-a_work.set_zlabel(r"$-W$")
+a_work.set_zlabel(r"$W$")
 a_work.zaxis.labelpad = 8
 
 
@@ -171,6 +156,115 @@ fs.export_fig(
 )
 fs.export_fig(
     "coupling_speed_scan_syspower", x_scaling=1, y_scaling=1, fig=f_mean_system_power
+)
+
+f_mean_system_power = plt.figure()
+a_mean_system_power = f_mean_system_power.add_subplot(1, 1, 1)
+
+(_, _, (c_mean_sytem_power, data_mean_system_power)) = ot.plot_contour(
+      models,
+      lambda model:
+          -ot.val_relative_to_steady(model, model.system_power().sum_baths(), 2)[
+              1
+          ].mean.value,
+      lambda model: model.δ[0],
+      lambda model: model.Θ,
+      ax=a_mean_system_power,
+  )
+a_mean_system_power.set_title(r"$\bar{P}_\mathrm{sys}/\Omega^2$")
+
+f_power = plt.figure()
+a_power = f_power.add_subplot(1, 1, 1)
+f_work = plt.figure()
+a_work = f_work.add_subplot(1, 1, 1)
+f_efficiency = plt.figure()
+a_efficiency = f_efficiency.add_subplot(1, 1, 1)
+f_mean_inter_power = plt.figure()
+a_mean_inter_power = f_mean_inter_power.add_subplot(1, 1, 1)
+f_mean_system_power = plt.figure()
+a_mean_system_power = f_mean_system_power.add_subplot(1, 1, 1)
+
+axs = [a_power, a_efficiency, a_work, a_mean_inter_power, a_mean_system_power]
+figs = [f_power, f_efficiency, f_work, f_mean_inter_power, f_mean_system_power]
+for ax in axs:
+    ax.set_xlabel(r"$\delta$")
+    ax.set_ylabel(r"$\Theta$")
+
+
+(_, _, (c_efficiency, data_efficiency)) = ot.plot_contour(
+    models,
+    lambda model: np.clip(
+        np.nan_to_num(model.efficiency(steady_idx=-2).value * 100), 0, np.inf
+    ),
+    lambda model: model.δ[0],
+    lambda model: model.Θ,
+    ax=a_efficiency,
+)
+a_efficiency.set_title(r"$\eta$")
+
+(_, _, (c_power, data_power)) =ot.plot_contour(
+    models,
+    lambda model: np.clip(-model.power(steady_idx=-2).value, 0, np.inf),
+    lambda model: model.δ[0],
+    lambda model: model.Θ,
+    ax=a_power,
+)
+a_power.set_title(r"$\bar{P}/\Omega^2$")
+
+(_, _, (c_mean_inter_power, data_mean_inter_power)) = ot.plot_contour(
+    models,
+    lambda model: np.clip(
+        ot.val_relative_to_steady(model, model.interaction_power().sum_baths(), 2)[
+            1
+        ].mean.value,
+        0,
+        np.inf,
+    ),
+    lambda model: model.δ[0],
+    lambda model: model.Θ,
+    ax=a_mean_inter_power,
+)
+a_mean_inter_power.set_title(r"$-\bar{P}_\mathrm{int}/\Omega^2$")
+
+(_, _, (c_mean_system_power, data_mean_system_power)) = ot.plot_contour(
+    models,
+    lambda model:
+        -ot.val_relative_to_steady(model, model.system_power().sum_baths(), 2)[
+            1
+        ].mean.value,
+    lambda model: model.δ[0],
+    lambda model: model.Θ,
+    ax=a_mean_system_power,
+)
+a_mean_system_power.set_title(r"$\bar{P}_\mathrm{sys}/\Omega^2$")
+
+(_, _, (c_work, data_work)) = ot.plot_contour(
+    models,
+    lambda model: np.clip(-model.power(steady_idx=-2).value * model.Θ, 0, np.inf),
+    lambda model: model.δ[0],
+    lambda model: model.Θ,
+    ax=a_work,
+)
+a_work.set_title(r"$W/\Omega$")
+
+
+plt.tight_layout()
+contours = [c_power, c_efficiency, c_work, c_mean_inter_power, c_mean_system_power]
+datas = [data_power, data_efficiency, data_work, data_mean_inter_power, data_mean_system_power]
+
+for fig, contour in zip(figs, contours):
+    fig.colorbar(contour)
+
+fs.export_fig("coupling_speed_scan_power_contour", x_scaling=1, y_scaling=1, fig=f_power, data=data_power)
+fs.export_fig("coupling_speed_scan_work_contour", x_scaling=1, y_scaling=1, fig=f_work, data=data_work)
+fs.export_fig(
+    "coupling_speed_scan_efficiency_contour", x_scaling=1, y_scaling=1, fig=f_efficiency, data=data_efficiency
+)
+fs.export_fig(
+    "coupling_speed_scan_interpower_contour", x_scaling=1, y_scaling=1, fig=f_mean_inter_power, data=data_mean_inter_power
+)
+fs.export_fig(
+    "coupling_speed_scan_syspower_contour", x_scaling=1, y_scaling=1, fig=f_mean_system_power, data=data_mean_system_power
 )
 
 f = plt.figure()

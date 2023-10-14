@@ -18,7 +18,14 @@ val_path = Path(os.getcwd()) / "values"
 
 
 def export_fig(
-    name, fig=None, x_scaling=1, y_scaling=0.4, tikz=True, save_pickle=True, **kwargs
+    name,
+    fig=None,
+    x_scaling=1,
+    y_scaling=0.4,
+    tikz=True,
+    save_pickle=True,
+    data=None,
+    **kwargs,
 ):
     fig_path.mkdir(parents=True, exist_ok=True)
     if fig is None:
@@ -50,6 +57,10 @@ def export_fig(
     if save_pickle:
         with open(fig_path / f"{name}.pickle", "wb") as file:
             pickle.dump(fig, file)
+
+        if data is not None:
+            with open(fig_path / f"{name}.data.pickle", "wb") as file:
+                pickle.dump(data, file)
 
 
 def scientific_round(val, *err, retprec=False):
@@ -145,16 +156,16 @@ MPL_RC = {
     "axes.labelcolor": "black",
     "xtick.color": "black",
     "ytick.color": "black",
-    "figure.figsize": (3.4, 3.2),
+    "figure.figsize": (5.78, 2.4),
     "text.usetex": True,
     "font.family": "serif",
     # "font.serif": ["Roman"],
-    "font.size": 9,
-    "axes.labelsize": 10,
-    "axes.titlesize": 10,
-    "legend.fontsize": 9,
-    "xtick.labelsize": 8,
-    "ytick.labelsize": 8,
+    "font.size": 15,
+    "axes.labelsize": 13,
+    "axes.titlesize": 15,
+    "legend.fontsize": 13,
+    "xtick.labelsize": 13,
+    "ytick.labelsize": 13,
     "figure.constrained_layout.use": True,
     # "text.latex.preamble": r"\usepackage{mathtools}",
 }
