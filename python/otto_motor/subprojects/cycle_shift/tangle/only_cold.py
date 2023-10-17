@@ -22,4 +22,4 @@ logging_setup(logging.INFO)
 shifts = sc.make_shifts(extra_r=4)
 cold_models = [sc.make_model(shift, shift, switch_t=6., only_cold=True) for shift in shifts]
 
-ot.integrate_online_multi(cold_models, 1, increment=1, analyze_kwargs=dict(every=10_000))
+#ot.integrate_online_multi(cold_models, 1, increment=1, analyze_kwargs=dict(every=10_000))

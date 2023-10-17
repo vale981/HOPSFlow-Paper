@@ -67,6 +67,15 @@ fs.export_fig("state_evolution", y_scaling=.7)
 ot.plot_steady_energy_changes([baseline], 2, label_fn=lambda _: "")
 fs.export_fig("prototype_energy_change", y_scaling=.7)
 
+ot.plot_modulation_interaction_diagram(baseline, 2, 0)
+fs.export_fig("baseline_interaction_vs_modulation_cold", x_scaling=1, y_scaling=1)
+
+ot.plot_modulation_interaction_diagram(baseline, 2, 1)
+fs.export_fig("baseline_interaction_vs_modulation_hot", x_scaling=1, y_scaling=1)
+
+ot.plot_modulation_system_diagram(baseline, 2)
+fs.export_fig("baseline_system_vs_modulation", x_scaling=1, y_scaling=1)
+
 for model in models:
   print(model.power(steady_idx=2).value / baseline.power(steady_idx=2).value, model.efficiency(steady_idx=2).value)
 
@@ -290,7 +299,7 @@ plt.xlabel(r"$\tau$")
 plt.ylabel(r"$-\Delta \langle{H_{\mathrm{B},c}}\rangle/\Delta \langle{H_{\mathrm{B},h}}\rangle$")
 fs.export_fig("hot_vs_cold_bath", y_scaling=.7)
 
-aux.import_results(other_data_path="taurus/.data", other_results_path="taurus/results", models_to_import=cold_models)
+#aux.import_results(other_data_path="taurus/.data", other_results_path="taurus/results", models_to_import=cold_models)
 
 from itertools import cycle
 lines = ["--","-.",":", "-"]
@@ -327,6 +336,19 @@ fs.export_fig("cycle_shift_power_efficiency_longer_vs_only_cold", y_scaling=.7, 
 
 ot.plot_multi_powers_and_efficiencies(shifts, [models, long_models, cold_models], ["shifted", "shifted + slower modulation", "slower + only cold shifted"], xlabel=r"Shift $\delta$")
 fs.export_fig("shift_comparison", y_scaling=1, x_scaling=2)
+
+best_cold_shift = shifts[np.argmax([-model.power(steady_idx=2).value for model in cold_models])]
+best_cold_model = sc.make_model(best_cold_shift, best_cold_shift, switch_t=6., only_cold=True)
+best_cold_shift
+
+ot.plot_modulation_interaction_diagram(best_cold_model, 2, 0)
+fs.export_fig("best_model_interaction_vs_modulation_cold", x_scaling=1, y_scaling=1)
+
+ot.plot_modulation_interaction_diagram(best_cold_model, 2, 1)
+fs.export_fig("best_model_interaction_vs_modulation_hot", x_scaling=1, y_scaling=1)
+
+ot.plot_modulation_system_diagram(best_cold_model, 2)
+fs.export_fig("best_model_system_vs_modulation", x_scaling=1, y_scaling=1)
 
 aux.import_results(other_data_path="taurus/.data_oa", other_results_path="taurus/results")
 
