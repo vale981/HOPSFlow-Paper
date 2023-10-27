@@ -568,6 +568,73 @@ def plot_steady_energy_changes(
     return fig, ax
 
 
+def add_arrow(line, start_ind=None, direction="right", size=15, color=None):
+    """
+    add an arrow to a line.
+
+    line:       Line2D object
+    position:   x-position of the arrow. If None, mean of xdata is taken
+    direction:  'left' or 'right'
+    size:       size of the arrow in fontsize points
+    color:      if None, line color is taken.
+    """
+    if color is None:
+        color = line.get_color()
+
+    xdata = line.get_xdata()
+    ydata = line.get_ydata()
+
+    if direction == "right":
+        end_ind = start_ind + 1
+    else:
+        end_ind = start_ind - 1
+
+    line.axes.annotate(
+        "",
+        xytext=(xdata[start_ind], ydata[start_ind]),
+        xy=(xdata[end_ind], ydata[end_ind]),
+        arrowprops=dict(arrowstyle="->", color=color),
+        size=size,
+    )
+
+
+from collections import deque
+from itertools import islice
+from matplotlib import collections as mc
+from matplotlib.colors import colorConverter
+import numpy as np
+
+
+def sliding_window(iterable, n):
+    """
+    sliding_window('ABCDEFG', 4) -> ABCD BCDE CDEF DEFG
+
+    recipe from python docs
+    """
+    it = iter(iterable)
+    window = deque(islice(it, n), maxlen=n)
+    if len(window) == n:
+        yield tuple(window)
+    for x in it:
+        window.append(x)
+        yield tuple(window)
+
+
+def color_gradient(x, y, c1, c2, **kwargs):
+    """
+    Creates a line collection with a gradient from colors c1 to c2,
+    from data x and y.
+    """
+    n = len(x)
+    if len(y) != n:
+        raise ValueError("x and y data lengths differ")
+    return mc.LineCollection(
+        sliding_window(zip(x, y), 2),
+        colors=np.linspace(colorConverter.to_rgb(c1), colorConverter.to_rgb(c2), n - 1),
+        **kwargs,
+    )
+
+
 def plot_modulation_interaction_diagram(model, steady_idx, bath=0):
     fig, ax = plt.subplots()
 
@@ -578,8 +645,67 @@ def plot_modulation_interaction_diagram(model, steady_idx, bath=0):
     )
 
     modulation = model.coupling_operators[bath].operator_norm(t)
-    ax.plot(modulation, inter.value)
+    phase_indices = (
+        np.array(model.coupling_operators[bath]._matrix._timings) * (len(t) - 1)
+    ).astype(np.int64)
 
+    modulation_speed = modulation[1:] - modulation[:-1]
+    value_speed = inter.value[1:] - inter.value[:-1]
+
+    norm = np.sqrt((modulation_speed ** 2 + value_speed ** 2))
+    modulation_speed = np.divide(modulation_speed, norm, where=norm > 0)
+    value_speed = np.divide(value_speed, norm, where=norm > 0)
+    ax.add_collection(
+        color_gradient(modulation, inter.value, "blue", "red", linewidth=3)
+    )
+
+    for begin, end in zip(phase_indices[:-1], phase_indices[1:]):
+        modulation_segment = modulation[begin:end]
+        value_segment = inter.value[begin:end]
+
+        interior_begin = int((end - begin) * 0.2 + begin)
+        interior_end = int((end - begin) * 0.9 + begin)
+
+        modulation_directions = modulation_speed[interior_begin:interior_end]
+        value_directions = value_speed[interior_begin:interior_end]
+
+        # (line,) = ax.plot(modulation_segment, value_segment)
+
+        # arrow_interval = int(len(modulation_directions) / 3)
+
+        # plt.quiver(
+        #     modulation[interior_begin:interior_end:arrow_interval],
+        #     inter.value[interior_begin:interior_end:arrow_interval],
+        #     modulation_directions[::arrow_interval],
+        #     value_directions[::arrow_interval],
+        #     angles="xy",
+        #     headaxislength=3,
+        #     width=0.01 / 2,
+        #     headwidth=4,
+        #     headlength=4,
+        #     zorder=100,
+        #     scale=10,
+        #     color=line.get_color(),
+        # )
+        # add_arrow(line, start_ind=(end - begin) // 2, size=20)
+        ax.scatter(modulation[begin], inter.value[begin], zorder=100)
+
+    for i, index in enumerate(phase_indices[:-1]):
+        ax.text(
+            modulation[index] + np.max(modulation) * 0.02,
+            inter.value[index] + np.max(np.abs(inter.value)) * 0.01,
+            str(i + 1),
+        )
+    every = 50
+    # ax.quiver(
+    #     modulation[::every],
+    #     inter.value[::every],
+    #     1,
+    #     1,
+    #     angles="xy",
+    #     zorder=5,
+    #     pivot="mid",
+    # )
     bath_names = ["c", "h"]
     ax.set_xlabel(rf"$||L_{bath_names[bath]}(t)||$")
     ax.set_ylabel(r"$\langle{H_\mathrm{I}}\rangle$")

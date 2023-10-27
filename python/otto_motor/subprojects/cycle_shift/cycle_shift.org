@@ -69,7 +69,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/6d0d8d197c4e830b6e0e50ea98afa67a82e784a0.svg]]
+[[file:./.ob-jupyter/9d82da2b9de5536c2531d99dded751a02d14d12b.svg]]
 
 #+begin_src jupyter-python :tangle no
   #ot.plot_cycles(models, bath=0, legend=True)
@@ -93,7 +93,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/086b4554d6cf51c299dcc691e1b06497d5058290.svg]]
+[[file:./.ob-jupyter/b2cc580a1f2d0e5d4ab7e54ea1a4430810c036f0.svg]]
 
 ** Integrate
 Here we integrate/simulate the models. This should be run on the
@@ -206,7 +206,7 @@ Let's attempt to draw the p_v diagrams :).
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/27da068970de38194036b1f678174b509c170257.svg]]
+[[file:./.ob-jupyter/a85fb92dfb3cde613c524e8d3e97f7325a87275c.svg]]
 
 
 #+begin_src jupyter-python
@@ -215,7 +215,7 @@ Let's attempt to draw the p_v diagrams :).
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/30efb428dc7637437e0209b59d20a2ad42b1e507.svg]]
+[[file:./.ob-jupyter/7ced09d05012d2f5f96fd1c5633577d232d0336b.svg]]
 
 #+begin_src jupyter-python
   ot.plot_modulation_system_diagram(baseline, 2)
@@ -223,7 +223,7 @@ Let's attempt to draw the p_v diagrams :).
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/cead0c43d194623b38459a1c9feddf3a9dd05970.svg]]
+[[file:./.ob-jupyter/189be6530967f7dd9ae5131834606f53863c1ee5.svg]]
 
 *** Shifted Models
 Let us print the power output (relative to the baseline = unshifted model) and efficiency.
