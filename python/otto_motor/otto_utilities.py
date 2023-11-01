@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import plot_utils as pu
-from hiro_models.otto_cycle import OttoEngine
+from hiro_models.otto_cycle import OttoEngine, SmoothlyInterpolatdPeriodicMatrix
+from hops.util.dynamic_matrix import *
 import numpy as np
 import figsaver as fs
 import hiro_models.model_auxiliary as aux
@@ -503,14 +504,16 @@ def plot_contour(
     return cont, (x_labels, y_labels, values)
 
 
-def val_relative_to_steady(model, val, steady_idx, shift=0):
+def val_relative_to_steady(model, val, steady_idx, shift=0, absolute=False):
     shift_idx = int(1 / model.dt * shift)
     begin_idx = model.strobe[1][steady_idx] - shift_idx
     end_idx = -shift_idx if shift != 0 else -2
 
-    return model.t[begin_idx : end_idx + 1], (
-        val.slice(slice(begin_idx - 1, end_idx, 1)) - val.slice(begin_idx - 1)
-    )
+    final_value = val.slice(slice(begin_idx - 1, end_idx, 1))
+    if not absolute:
+        final_value = final_value - val.slice(begin_idx - 1)
+
+    return (model.t[begin_idx : end_idx + 1], final_value)
 
 
 def timings(τ_c, τ_i):
@@ -598,119 +601,55 @@ def add_arrow(line, start_ind=None, direction="right", size=15, color=None):
     )
 
 
-from collections import deque
-from itertools import islice
-from matplotlib import collections as mc
-from matplotlib.colors import colorConverter
-import numpy as np
-
-
-def sliding_window(iterable, n):
-    """
-    sliding_window('ABCDEFG', 4) -> ABCD BCDE CDEF DEFG
-
-    recipe from python docs
-    """
-    it = iter(iterable)
-    window = deque(islice(it, n), maxlen=n)
-    if len(window) == n:
-        yield tuple(window)
-    for x in it:
-        window.append(x)
-        yield tuple(window)
-
-
-def color_gradient(x, y, c1, c2, **kwargs):
-    """
-    Creates a line collection with a gradient from colors c1 to c2,
-    from data x and y.
-    """
-    n = len(x)
-    if len(y) != n:
-        raise ValueError("x and y data lengths differ")
-    return mc.LineCollection(
-        sliding_window(zip(x, y), 2),
-        colors=np.linspace(colorConverter.to_rgb(c1), colorConverter.to_rgb(c2), n - 1),
-        **kwargs,
-    )
-
-
-def plot_modulation_interaction_diagram(model, steady_idx, bath=0):
-    fig, ax = plt.subplots()
-
-    t, inter = val_relative_to_steady(
-        model,
-        (model.interaction_energy().for_bath(bath)),
-        steady_idx,
-    )
-
-    modulation = model.coupling_operators[bath].operator_norm(t)
+@pu.wrap_plot
+def plot_state_change_diagram(modulation, value, phase_indices, ax=None):
+    all_modulation = model.coupling_operators[bath].operator_norm(t)
     phase_indices = (
         np.array(model.coupling_operators[bath]._matrix._timings) * (len(t) - 1)
     ).astype(np.int64)
 
-    modulation_speed = modulation[1:] - modulation[:-1]
-    value_speed = inter.value[1:] - inter.value[:-1]
+    modulation_windowed = all_modulation[phase_indices[0] : phase_indices[-1]]
+    value_windowed = inter.value[phase_indices[0] : phase_indices[-1]]
 
-    norm = np.sqrt((modulation_speed ** 2 + value_speed ** 2))
-    modulation_speed = np.divide(modulation_speed, norm, where=norm > 0)
-    value_speed = np.divide(value_speed, norm, where=norm > 0)
+    ax.plot(modulation_windowed, value_windowed, linewidth=3, color="cornflowerblue")
     ax.add_collection(
-        color_gradient(modulation, inter.value, "blue", "red", linewidth=3)
+        color_gradient(
+            modulation_windowed, value_windowed, "cornflowerblue", "red", linewidth=3
+        )
     )
 
     for begin, end in zip(phase_indices[:-1], phase_indices[1:]):
-        modulation_segment = modulation[begin:end]
-        value_segment = inter.value[begin:end]
-
-        interior_begin = int((end - begin) * 0.2 + begin)
-        interior_end = int((end - begin) * 0.9 + begin)
-
-        modulation_directions = modulation_speed[interior_begin:interior_end]
-        value_directions = value_speed[interior_begin:interior_end]
-
-        # (line,) = ax.plot(modulation_segment, value_segment)
-
-        # arrow_interval = int(len(modulation_directions) / 3)
-
-        # plt.quiver(
-        #     modulation[interior_begin:interior_end:arrow_interval],
-        #     inter.value[interior_begin:interior_end:arrow_interval],
-        #     modulation_directions[::arrow_interval],
-        #     value_directions[::arrow_interval],
-        #     angles="xy",
-        #     headaxislength=3,
-        #     width=0.01 / 2,
-        #     headwidth=4,
-        #     headlength=4,
-        #     zorder=100,
-        #     scale=10,
-        #     color=line.get_color(),
-        # )
-        # add_arrow(line, start_ind=(end - begin) // 2, size=20)
-        ax.scatter(modulation[begin], inter.value[begin], zorder=100)
+        ax.scatter(modulation[begin], value[begin], zorder=100, marker=".", s=200)
 
     for i, index in enumerate(phase_indices[:-1]):
         ax.text(
             modulation[index] + np.max(modulation) * 0.02,
-            inter.value[index] + np.max(np.abs(inter.value)) * 0.01,
+            value[index] + np.max(np.abs(value)) * 0.01,
             str(i + 1),
         )
-    every = 50
-    # ax.quiver(
-    #     modulation[::every],
-    #     inter.value[::every],
-    #     1,
-    #     1,
-    #     angles="xy",
-    #     zorder=5,
-    #     pivot="mid",
-    # )
-    bath_names = ["c", "h"]
-    ax.set_xlabel(rf"$||L_{bath_names[bath]}(t)||$")
-    ax.set_ylabel(r"$\langle{H_\mathrm{I}}\rangle$")
 
     return fig, ax
+
+
+def get_modulation_and_value(model, operator, value, steady_idx=2):
+    shift = 0
+    timing_operator = operator
+    while not isinstance(timing_operator, SmoothlyInterpolatdPeriodicMatrix):
+        if isinstance(operator, Shift):
+            shift = operator._delta
+            timing_operator = operator._matrix
+
+        if isinstance(operator, DynamicMatrixSum):
+            timing_operator = operator._left
+
+    t, value = val_relative_to_steady(model, value, steady_idx, absolute=True)
+
+    all_modulation = operator.operator_norm(t)
+
+    timings = np.array(timing_operator._timings)
+    phase_indices = (((timings + shift / model.Θ) % 1) * (len(t) - 1)).astype(np.int64)
+
+    return value.value, all_modulation, phase_indices
 
 
 def plot_modulation_system_diagram(model, steady_idx):

@@ -67,14 +67,46 @@ fs.export_fig("state_evolution", y_scaling=.7)
 ot.plot_steady_energy_changes([baseline], 2, label_fn=lambda _: "")
 fs.export_fig("prototype_energy_change", y_scaling=.7)
 
-ot.plot_modulation_interaction_diagram(baseline, 2, 0)
-fs.export_fig("baseline_interaction_vs_modulation_cold", x_scaling=1, y_scaling=1)
+import pickle
 
-ot.plot_modulation_interaction_diagram(baseline, 2, 1)
-fs.export_fig("baseline_interaction_vs_modulation_hot", x_scaling=1, y_scaling=1)
+def save_data(model, name):
+    data = [
+        {
+            "name": f"bath_modulation_interaction_{bath_name}",
+            "xlabel": rf"$||L_{bath_name}(t)||$",
+            "ylabel": r"$\langle{H_\mathrm{I}}\rangle$",
+            "args": ot.get_modulation_and_value(
+                model,
+                model.coupling_operators[bath],
+                model.interaction_energy().for_bath(bath),
+            ),
+        }
+        for bath, bath_name in zip([0, 1], ["c", "h"])
+    ]  + [
+        {
+            "name": f"system_modulation_system_energy",
+            "xlabel": r"$||H_\mathrm{S}||$",
+            "ylabel": r"$\langle{H_\mathrm{S}}\rangle$",
+            "args": ot.get_modulation_and_value(
+                model,
+                model.H,
+                model.system_energy(),
+                steady_idx=2
+            ),
+        }
+    ]
 
-ot.plot_modulation_system_diagram(baseline, 2)
-fs.export_fig("baseline_system_vs_modulation", x_scaling=1, y_scaling=1)
+    with open(f"data/pv_{name}.pickle", "wb") as file:
+        pickle.dump(data, file)
+
+
+
+
+
+# vals = ot.get_modulation_and_value(model, model.coupling_operators[0], model.interaction_energy().for_bath(0))
+# plot_modulation_interaction_diagram(*vals)
+
+save_data(baseline, "baseline")
 
 for model in models:
   print(model.power(steady_idx=2).value / baseline.power(steady_idx=2).value, model.efficiency(steady_idx=2).value)
@@ -340,6 +372,11 @@ fs.export_fig("shift_comparison", y_scaling=1, x_scaling=2)
 best_cold_shift = shifts[np.argmax([-model.power(steady_idx=2).value for model in cold_models])]
 best_cold_model = sc.make_model(best_cold_shift, best_cold_shift, switch_t=6., only_cold=True)
 best_cold_shift
+
+plt.plot(best_cold_model.t, best_cold_model.coupling_operators[0].operator_norm(best_cold_model.t))
+plt.plot(best_cold_model.t, best_cold_model.H.operator_norm(best_cold_model.t))
+
+save_data(best_cold_model, "slow_shifted")
 
 ot.plot_modulation_interaction_diagram(best_cold_model, 2, 0)
 fs.export_fig("best_model_interaction_vs_modulation_cold", x_scaling=1, y_scaling=1)
