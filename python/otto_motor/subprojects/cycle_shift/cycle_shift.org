@@ -69,7 +69,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/2ec49a209af9eb6e1a91c6ba7d59e6ccffb59d86.svg]]
+[[file:./.ob-jupyter/bf3e79728b227169611c2bb164de0c39019d4d42.svg]]
 
 #+begin_src jupyter-python :tangle no
   #ot.plot_cycles(models, bath=0, legend=True)
@@ -93,7 +93,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/296d5b609e4df5b188f4a36cdeb21217e7fffaf2.svg]]
+[[file:./.ob-jupyter/a711a4ee574e382ee7666fed225d98c35dc52d1f.svg]]
 
 ** Integrate
 Here we integrate/simulate the models. This should be run on the
@@ -357,6 +357,8 @@ Let's attempt to draw the p_v diagrams :).
   save_data(baseline, "baseline")
 #+end_src
 
+#+RESULTS:
+
 
 #+begin_src jupyter-python :tangle scripts/plot_pv_diags.py
   plot_diagrams("baseline")
@@ -364,9 +366,9 @@ Let's attempt to draw the p_v diagrams :).
 
 #+RESULTS:
 :RESULTS:
-[[file:./.ob-jupyter/e20cfdce26aee3e6cc09aa2c71aab1d9c8fa0e6d.svg]]
-[[file:./.ob-jupyter/f32476d9a3f65abb9e89a849288cca3d8dd4b8ab.svg]]
-[[file:./.ob-jupyter/4dfab3022746c37d5d757f95907cda1233b06505.svg]]
+[[file:./.ob-jupyter/6b9fa7fa55f61230b07cbd6a233633bf7f257faa.svg]]
+[[file:./.ob-jupyter/0a766092ad2861998ba8a922784b6e6497c72124.svg]]
+[[file:./.ob-jupyter/b5f8cf75b1c0888d4ab8a2c1fb9987e8f3807c41.svg]]
 :END:
 
 
@@ -911,15 +913,17 @@ plt.plot(best_cold_model.t, best_cold_model.H.operator_norm(best_cold_model.t))
   save_data(best_cold_model, "slow_shifted")
 #+end_src
 
+#+RESULTS:
+
 #+begin_src jupyter-python :tangle scripts/plot_pv_diags.py
   plot_diagrams("slow_shifted")
 #+end_src
 
 #+RESULTS:
 :RESULTS:
-[[file:./.ob-jupyter/105a183ce89c8401f7e7d8f3066ef0f3ba6bcc8b.svg]]
-[[file:./.ob-jupyter/7935e5fd5e40c078825f4fd488cb28c4f9a0564c.svg]]
-[[file:./.ob-jupyter/87c5e40252e68db07bbebce0f5f30434f3646feb.svg]]
+[[file:./.ob-jupyter/b620cfd344faa2a1218d7122c8a562a9b1f96727.svg]]
+[[file:./.ob-jupyter/850f6dff33004c81c94cfbba5f6abd3f84ea313b.svg]]
+[[file:./.ob-jupyter/7c3c251e45ff17415aec6561235ea57b80bbe07b.svg]]
 :END:
 
 

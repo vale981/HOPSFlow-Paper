@@ -645,11 +645,21 @@ def get_modulation_and_value(model, operator, value, steady_idx=2):
     t, value = val_relative_to_steady(model, value, steady_idx, absolute=True)
 
     all_modulation = operator.operator_norm(t)
+    all_modulation_deriv = operator.derivative().operator_norm(t)
 
     timings = np.array(timing_operator._timings)
     phase_indices = (((timings + shift / model.Θ) % 1) * (len(t) - 1)).astype(np.int64)
 
-    return value.value, all_modulation, phase_indices
+    values = np.zeros_like(all_modulation)
+    np.divide(
+        value.value, all_modulation, where=np.abs(all_modulation) > 1e-3, out=values
+    ),
+
+    return (
+        values,
+        all_modulation,
+        phase_indices,
+    )
 
 
 def plot_modulation_system_diagram(model, steady_idx):
