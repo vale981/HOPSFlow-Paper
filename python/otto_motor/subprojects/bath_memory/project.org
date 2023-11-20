@@ -119,7 +119,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/5a3bab0efb62516d5f68e6b330770c6fd8740bf7.svg]]
+[[file:./.ob-jupyter/7cd4652956dbe71c4fde9b95d7ee096432644147.svg]]
 
 
 #+begin_src jupyter-python
@@ -129,7 +129,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/d309a0f5287133736614819b4698027c92c12fe1.svg]]
+[[file:./.ob-jupyter/67a2ccbd4ef5246c322756d0f0ce3049d54fca26.svg]]
 
 #+begin_src jupyter-python
   ot.plot_energy_deviation(models)
@@ -137,8 +137,8 @@ coupling-change/cycle time.
 
 #+RESULTS:
 :RESULTS:
-| <Figure | size | 340x320 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | $\Delta |   | H |   | /\max |   | H |   | $ | > |
-[[file:./.ob-jupyter/c04269e0edbcb54c512e19b6da56f23825778a43.svg]]
+| <Figure | size | 578x240 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | $\Delta |   | H |   | /\max |   | H |   | $ | > |
+[[file:./.ob-jupyter/64c3e2323df26b946a3d4f214b63ae6d06d42ce5.svg]]
 :END:
 
 
@@ -166,7 +166,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/a25ccbba91487a7d4ac757e0527d502a790830b1.svg]]
+[[file:./.ob-jupyter/2287fb919cb11c84e7f14e7eccba7082e915fe5e.svg]]
 
 #+begin_src jupyter-python
   fig, ax = plt.subplots()
@@ -196,7 +196,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/6037d87d2d4f3519db8d960319384d87040a33b8.svg]]
+[[file:./.ob-jupyter/3ec5c54f631b4e41f695054f1f927604248d54f1.svg]]
 
 
 #+begin_src jupyter-python
@@ -208,7 +208,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/8e98ea284e9c67db5146d91f0192923e1e68af2f.svg]]
+[[file:./.ob-jupyter/6531d94680eae9ed23ff7f5be921c7b77bad45ee.svg]]
 
 
 #+begin_src jupyter-python
@@ -233,7 +233,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/a5895bfb6815ee778c0fe011a6cf54a430b31570.svg]]
+[[file:./.ob-jupyter/46963903de121c7d24d3acf6c6f0c7b72cd40a2a.svg]]
 
 #+begin_src jupyter-python
   def thermal_state(T, Ω):
@@ -297,7 +297,7 @@ coupling-change/cycle time.
 :   pts[1:N+1, 1] = dep1slice
 : /nix/store/fai1b55231rnk4jyj0kjicdnqcgdf9ph-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5346: ComplexWarning: Casting complex values to real discards the imaginary part
 :   pts[N+2:, 1] = dep2slice[::-1]
-[[file:./.ob-jupyter/7b8184a84f8d317abf4dcee0d8c8db8b1c019cc6.svg]]
+[[file:./.ob-jupyter/89a0703dce099a82ee239a1414590a9cb312be58.svg]]
 :END:
 
 
@@ -353,7 +353,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/2fc96eaf090533398de5fb190bfab66b1bb3b120.svg]]
+[[file:./.ob-jupyter/46ede42b01c98fcfe172c1c5a155106bb5b96e28.svg]]
 
 
 #+begin_src jupyter-python
@@ -362,8 +362,8 @@ coupling-change/cycle time.
 
 #+RESULTS:
 :RESULTS:
-| <Figure | size | 340x320 | with | 2 | Axes> | <AxesSubplot: | xlabel= | $\omega_c$ | ylabel= | $\bar{P}$ | > | (<AxesSubplot: xlabel= $\omega_c$ ylabel= $\bar{P}$ > <AxesSubplot: ylabel= $\eta$ >) |
-[[file:./.ob-jupyter/197bccc7fe40338af6232a5f1ff24e8a06b3d0f7.svg]]
+| <Figure | size | 578x240 | with | 2 | Axes> | <AxesSubplot: | xlabel= | $\omega_c$ | ylabel= | $\bar{P}$ | > | (<AxesSubplot: xlabel= $\omega_c$ ylabel= $\bar{P}$ > <AxesSubplot: ylabel= $\eta$ >) |
+[[file:./.ob-jupyter/6ca171b158a9eb2cfee33e5416ee97a07e7ab331.svg]]
 :END:
 
 
@@ -374,8 +374,8 @@ coupling-change/cycle time.
 
 #+RESULTS:
 :RESULTS:
-| <Figure | size | 340x320 | with | 2 | Axes> | (<AxesSubplot: xlabel= $N$ ylabel= $P$ > <AxesSubplot: xlabel= $N$ ylabel= $\eta$ >) |
-[[file:./.ob-jupyter/92eb14fc6298a31f763a69186ae203923187aa38.svg]]
+| <Figure | size | 578x240 | with | 2 | Axes> | (<AxesSubplot: xlabel= $N$ ylabel= $P$ > <AxesSubplot: xlabel= $N$ ylabel= $\eta$ >) |
+[[file:./.ob-jupyter/e9189b3befd45cbd6e06b16a711722b7c3ffae3f.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -391,8 +391,8 @@ coupling-change/cycle time.
 
 #+RESULTS:
 :RESULTS:
-: <matplotlib.colorbar.Colorbar at 0x7ff4ac4da4c0>
-[[file:./.ob-jupyter/ac6550b4f2034c623c6f1ba7c59ec20ae037eccd.svg]]
+: <matplotlib.colorbar.Colorbar at 0x7f548330b0a0>
+[[file:./.ob-jupyter/63986ea2d20252a3701b1bd055cae1c284cfec2d.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -429,7 +429,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/5fc81f79f65d63721168aba9a472c104ac45df91.svg]]
+[[file:./.ob-jupyter/b5209e73946c9095b1f46ed2f616bdbb5450aa04.svg]]
 
 
 #+begin_src jupyter-python
@@ -466,7 +466,7 @@ coupling-change/cycle time.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/306565c079f017833496fccc16e3cf4f0b20a4aa.svg]]
+[[file:./.ob-jupyter/c74c871c8882bb295108ab0bffd85b1e466d4827.svg]]
 
 * Things to Look At
 - power and efficiency
