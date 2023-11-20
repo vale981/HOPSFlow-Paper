@@ -151,7 +151,7 @@ def tex_value(val, err=None, unit=None, prefix="", suffix="", prec=0, save=None)
 ###############################################################################
 
 MPL_RC = {
-    "lines.linewidth": 0.5,
+    "lines.linewidth": 1,
     "text.color": "black",
     "axes.labelcolor": "black",
     "xtick.color": "black",

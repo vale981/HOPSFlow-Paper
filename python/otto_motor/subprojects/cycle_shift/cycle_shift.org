@@ -62,6 +62,9 @@ We shift so that we just overlap with coupling/decoupling and one above.
 
 #+RESULTS:
 
+#+RESULTS:
+: b6b76ccdb68f1460bbfd6e6bb599e49904bfc6cf71b564aa2ab787f686d3048f
+
 
 #+begin_src jupyter-python
   ot.plot_cycle(baseline)
@@ -69,7 +72,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/bf3e79728b227169611c2bb164de0c39019d4d42.svg]]
+[[file:./.ob-jupyter/88b2f29cba74e6dddfc068859a14875d67986829.svg]]
 
 #+begin_src jupyter-python :tangle no
   #ot.plot_cycles(models, bath=0, legend=True)
@@ -93,7 +96,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/a711a4ee574e382ee7666fed225d98c35dc52d1f.svg]]
+[[file:./.ob-jupyter/c678ca75a3198d69068b38c794d7cf6c1e0f4dd2.svg]]
 
 ** Integrate
 Here we integrate/simulate the models. This should be run on the
@@ -121,7 +124,7 @@ This plots the full energy overview for the baseline model.
 #+RESULTS:
 :RESULTS:
 : \(N=80000\)
-[[file:./.ob-jupyter/73e9a2cd60b362f39b0b62a47056740f562e3d08.svg]]
+[[file:./.ob-jupyter/0f4903d2468d9eb8c3e8197cfb5203eebd20b745.svg]]
 :END:
 
 We would like to know how close all of this comes to the thermal states.
@@ -195,7 +198,7 @@ modulation over a cycle for the baseline model.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/888e4e87b2f952b2d1866055b087a2d0bfe38ed0.svg]]
+[[file:./.ob-jupyter/572e820ea06dd5afb80bd34993f9acb5e1e569b8.svg]]
 
 *** pV Diagrams
 Let's attempt to draw the p_v diagrams :).
@@ -366,9 +369,9 @@ Let's attempt to draw the p_v diagrams :).
 
 #+RESULTS:
 :RESULTS:
-[[file:./.ob-jupyter/6b9fa7fa55f61230b07cbd6a233633bf7f257faa.svg]]
-[[file:./.ob-jupyter/0a766092ad2861998ba8a922784b6e6497c72124.svg]]
-[[file:./.ob-jupyter/b5f8cf75b1c0888d4ab8a2c1fb9987e8f3807c41.svg]]
+[[file:./.ob-jupyter/ff029c620364e92b39002f58ac30f62505ec44cc.svg]]
+[[file:./.ob-jupyter/077b314b8737de056775acf18981e51ce94fa2e8.svg]]
+[[file:./.ob-jupyter/b4e936615392f4aecf6b8bd516d7e23c7909b6b6.svg]]
 :END:
 
 
@@ -827,7 +830,7 @@ The last section gave me the hunch, that only this shift matters.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/19a348fee767b34e589077f332bc113e9efef74c.svg]]
+[[file:./.ob-jupyter/d7d659fa712a5f59557a05e6b1901bdc747d939d.svg]]
 
 
 #+begin_src jupyter-python
@@ -895,6 +898,56 @@ And do it again, but in a more convenient format.
 #+RESULTS:
 : 0.18
 
+**** Check Numerics
+#+begin_src jupyter-python
+  ot.plot_energy_deviation([best_cold_model, baseline])
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+| <Figure | size | 578x240 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | $\Delta |   | H |   | /\max |   | H |   | $ | > |
+[[file:./.ob-jupyter/bf8541809abcfb4b192c93c276dbf7c69d89e679.svg]]
+:END:
+
+#+begin_src jupyter-python
+  ints = baseline.interaction_energy().for_bath(1).value
+  powers = baseline.interaction_power().for_bath(1).value
+  mods = baseline.coupling_operators[1].operator_norm(baseline.t)
+  mods_deriv = baseline.coupling_operators[1].derivative().operator_norm(baseline.t)
+  raw_interaction = np.divide(ints, mods, where=abs(mods) > 1e-2)
+  raw_interaction_from_power = -abs(np.divide(powers, mods_deriv, where=abs(mods_deriv) > 1e-3))
+  plt.plot(baseline.t, raw_interaction_from_power)
+  plt.plot(baseline.t, raw_interaction)
+  plt.yscale("symlog")
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/ff72cd553518d0a5adee242df97f911ccee0133a.svg]]
+
+
+#+begin_src jupyter-python
+  import scipy
+
+  plt.plot(mods, raw_interaction)
+  plt.plot(mods, raw_interaction_from_power)
+  scipy.integrate.simpson(raw_interaction, mods)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+: -0.13114885738211546
+[[file:./.ob-jupyter/86428471dde36f7ab02f5c5b69767b5dacabc15a.svg]]
+:END:
+
+#+begin_src jupyter-python
+  baseline.interaction_power().for_bath(1).integrate(baseline.t).value[-1]
+#+end_src
+
+#+RESULTS:
+: -0.1313390165442068
+
+
+
 **** pV Diagrams
 Let's attempt to draw the p_v diagrams :).
 
@@ -905,8 +958,8 @@ plt.plot(best_cold_model.t, best_cold_model.H.operator_norm(best_cold_model.t))
 
 #+RESULTS:
 :RESULTS:
-| <matplotlib.lines.Line2D | at | 0x7f24d9cb6370> |
-[[file:./.ob-jupyter/85b4e10a2cbe7c5dd912e90d64e1fba3df180eb7.svg]]
+| <matplotlib.lines.Line2D | at | 0x7fe87424f4c0> |
+[[file:./.ob-jupyter/08dc9da54b0f64215891ece89107f7a304627821.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -921,37 +974,10 @@ plt.plot(best_cold_model.t, best_cold_model.H.operator_norm(best_cold_model.t))
 
 #+RESULTS:
 :RESULTS:
-[[file:./.ob-jupyter/b620cfd344faa2a1218d7122c8a562a9b1f96727.svg]]
-[[file:./.ob-jupyter/850f6dff33004c81c94cfbba5f6abd3f84ea313b.svg]]
-[[file:./.ob-jupyter/7c3c251e45ff17415aec6561235ea57b80bbe07b.svg]]
+[[file:./.ob-jupyter/468a217425236ab484094b747391eebf9c8967e1.svg]]
+[[file:./.ob-jupyter/87f486eae8a8ac48bc846322ac444590a6a9aed1.svg]]
+[[file:./.ob-jupyter/5f284414a8dc0e135a04eb333a7400f334beb519.svg]]
 :END:
-
-
-#+begin_src jupyter-python
-  ot.plot_modulation_interaction_diagram(best_cold_model, 2, 0)
-  fs.export_fig("best_model_interaction_vs_modulation_cold", x_scaling=1, y_scaling=1)
-#+end_src
-
-#+RESULTS:
-[[file:./.ob-jupyter/fc76cd1eb3fb9be9361876a8d165846c7ceeeb50.svg]]
-
-
-#+begin_src jupyter-python
-  ot.plot_modulation_interaction_diagram(best_cold_model, 2, 1)
-  fs.export_fig("best_model_interaction_vs_modulation_hot", x_scaling=1, y_scaling=1)
-#+end_src
-
-#+RESULTS:
-[[file:./.ob-jupyter/96c12868425649b4c7d4bcb6a01397bb21700596.svg]]
-
-#+begin_src jupyter-python
-  ot.plot_modulation_system_diagram(best_cold_model, 2)
-  fs.export_fig("best_model_system_vs_modulation", x_scaling=1, y_scaling=1)
-#+end_src
-
-#+RESULTS:
-[[file:./.ob-jupyter/6263be35ebb899e9c8ca2cc66662efc5f175c9d0.svg]]
-
 
 
 

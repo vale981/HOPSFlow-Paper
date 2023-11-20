@@ -373,19 +373,30 @@ best_cold_shift = shifts[np.argmax([-model.power(steady_idx=2).value for model i
 best_cold_model = sc.make_model(best_cold_shift, best_cold_shift, switch_t=6., only_cold=True)
 best_cold_shift
 
+ot.plot_energy_deviation([best_cold_model, baseline])
+
+ints = baseline.interaction_energy().for_bath(1).value
+powers = baseline.interaction_power().for_bath(1).value
+mods = baseline.coupling_operators[1].operator_norm(baseline.t)
+mods_deriv = baseline.coupling_operators[1].derivative().operator_norm(baseline.t)
+raw_interaction = np.divide(ints, mods, where=abs(mods) > 1e-2)
+raw_interaction_from_power = -abs(np.divide(powers, mods_deriv, where=abs(mods_deriv) > 1e-3))
+plt.plot(baseline.t, raw_interaction_from_power)
+plt.plot(baseline.t, raw_interaction)
+plt.yscale("symlog")
+
+import scipy
+
+plt.plot(mods, raw_interaction)
+plt.plot(mods, raw_interaction_from_power)
+scipy.integrate.simpson(raw_interaction, mods)
+
+baseline.interaction_power().for_bath(1).integrate(baseline.t).value[-1]
+
 plt.plot(best_cold_model.t, best_cold_model.coupling_operators[0].operator_norm(best_cold_model.t))
 plt.plot(best_cold_model.t, best_cold_model.H.operator_norm(best_cold_model.t))
 
 save_data(best_cold_model, "slow_shifted")
-
-ot.plot_modulation_interaction_diagram(best_cold_model, 2, 0)
-fs.export_fig("best_model_interaction_vs_modulation_cold", x_scaling=1, y_scaling=1)
-
-ot.plot_modulation_interaction_diagram(best_cold_model, 2, 1)
-fs.export_fig("best_model_interaction_vs_modulation_hot", x_scaling=1, y_scaling=1)
-
-ot.plot_modulation_system_diagram(best_cold_model, 2)
-fs.export_fig("best_model_system_vs_modulation", x_scaling=1, y_scaling=1)
 
 aux.import_results(other_data_path="taurus/.data_oa", other_results_path="taurus/results")
 
