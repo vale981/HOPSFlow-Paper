@@ -72,7 +72,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/88b2f29cba74e6dddfc068859a14875d67986829.svg]]
+[[file:./.ob-jupyter/9539a8052b29a424457aba4eec6b42c541f6397d.svg]]
 
 #+begin_src jupyter-python :tangle no
   #ot.plot_cycles(models, bath=0, legend=True)
@@ -96,7 +96,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/c678ca75a3198d69068b38c794d7cf6c1e0f4dd2.svg]]
+[[file:./.ob-jupyter/4fe2e98f22e91318106161009f976e368454aeef.svg]]
 
 ** Integrate
 Here we integrate/simulate the models. This should be run on the
@@ -124,7 +124,7 @@ This plots the full energy overview for the baseline model.
 #+RESULTS:
 :RESULTS:
 : \(N=80000\)
-[[file:./.ob-jupyter/0f4903d2468d9eb8c3e8197cfb5203eebd20b745.svg]]
+[[file:./.ob-jupyter/dbf85000c76408dda5f60233f56a55d7b7319c71.svg]]
 :END:
 
 We would like to know how close all of this comes to the thermal states.
@@ -163,22 +163,13 @@ We would like to know how close all of this comes to the thermal states.
 #+end_src
 
 #+RESULTS:
-#+begin_example
-  [[0.11920292 0.        ]
-   [0.         0.88079708]]
-  [[0.37754067 0.        ]
-   [0.         0.62245933]]
-  /nix/store/fai1b55231rnk4jyj0kjicdnqcgdf9ph-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/cbook/__init__.py:1369: ComplexWarning: Casting complex values to real discards the imaginary part
-    return np.asarray(x, float)
-  /nix/store/fai1b55231rnk4jyj0kjicdnqcgdf9ph-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5340: ComplexWarning: Casting complex values to real discards the imaginary part
-    pts[0] = start
-  /nix/store/fai1b55231rnk4jyj0kjicdnqcgdf9ph-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5341: ComplexWarning: Casting complex values to real discards the imaginary part
-    pts[N + 1] = end
-  /nix/store/fai1b55231rnk4jyj0kjicdnqcgdf9ph-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5344: ComplexWarning: Casting complex values to real discards the imaginary part
-    pts[1:N+1, 1] = dep1slice
-  /nix/store/fai1b55231rnk4jyj0kjicdnqcgdf9ph-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5346: ComplexWarning: Casting complex values to real discards the imaginary part
-    pts[N+2:, 1] = dep2slice[::-1]
-#+end_example
+:RESULTS:
+: [[0.11920292 0.        ]
+:  [0.         0.88079708]]
+: [[0.37754067 0.        ]
+:  [0.         0.62245933]]
+[[file:./.ob-jupyter/957b9d9ce7d83dd22999817a3435b27d438b10c2.svg]]
+:END:
 
 Plotting the pauli matrix expectation values, we can see that the
 dynamics only take place on the z-axis. This is addressed in [[id:9d7a11f2-f479-4e95-8775-31050bcc4fb7][Off-Axis Hamiltonian]]
@@ -188,7 +179,7 @@ dynamics only take place on the z-axis. This is addressed in [[id:9d7a11f2-f479-
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/a645250e5f7a8890257674fe5de32b09d9de78f1.svg]]
+[[file:./.ob-jupyter/1a7a1045e5e11e65208a66cd4b6fe155e4649ae9.svg]]
 
 Let us plot an overview of the work done by system and interaction
 modulation over a cycle for the baseline model.
@@ -198,7 +189,7 @@ modulation over a cycle for the baseline model.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/572e820ea06dd5afb80bd34993f9acb5e1e569b8.svg]]
+[[file:./.ob-jupyter/f560e704e3340a93fbacf050418c51410ee9bfc3.svg]]
 
 *** pV Diagrams
 Let's attempt to draw the p_v diagrams :).
@@ -409,7 +400,7 @@ size to check convergence.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/8d9b7d2fcd5ef897070660fa264fd9e904a916ea.svg]]
+[[file:./.ob-jupyter/595c5a9a2268e7bbecb3062e31876847b963f4c5.svg]]
 
 We see that we get a pretty good picture after about 30k-40k samples.
 
@@ -420,7 +411,7 @@ This is an overview over powers and the efficiency.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/95ce996f5adf865114a7efc488992da2993495a8.svg]]
+[[file:./.ob-jupyter/8526ecc67b17cc9a88ac0550ffcc65306b7995e5.svg]]
 
 The best shift:
 #+begin_src jupyter-python
@@ -441,7 +432,7 @@ and the best shift model.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/1b65cbe8a112cceb40aa0440d33ed40dca30dcf1.svg]]
+[[file:./.ob-jupyter/e608e2c2a7a9d9e6f4cad0850d34750cb5b2370d.svg]]
 
 
 Let us plot the interaction power in the steady state for baseline and
@@ -495,7 +486,7 @@ best-shift. We have to shift the time to make them overlap correctly.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/ebdd9c91ce756ae30681a68a43f439514a96bf8d.svg]]
+[[file:./.ob-jupyter/c5fd49dc546f772a5d74cd2c6f2dbca28bd3ae4c.svg]]
 
 
 Let us zoom in on the cold bath decoupling process to understnad this better.
@@ -537,7 +528,7 @@ Let us zoom in on the cold bath decoupling process to understnad this better.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/15e1e2b441e6a10d9b69f585ff691d7e54d0320d.svg]]
+[[file:./.ob-jupyter/a881446b3a57bd5b58d90b080ba277d0a73603c2.svg]]
 
 How does this look like for the baseline?
 #+begin_src jupyter-python
@@ -579,7 +570,7 @@ How does this look like for the baseline?
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/392899a8a7f82eda25a92fad0cf029862311594f.svg]]
+[[file:./.ob-jupyter/48b0006cb857699688794641da363e5f927d56cc.svg]]
 
 
 * Slower switching
@@ -619,8 +610,8 @@ switch slower.
 
 #+RESULTS:
 :RESULTS:
-: <matplotlib.legend.Legend at 0x7f24dc503550>
-[[file:./.ob-jupyter/33dae463427019962039419fbf34de0e92f69a32.svg]]
+: <matplotlib.legend.Legend at 0x7fe86b9fca30>
+[[file:./.ob-jupyter/9159b128ade817a039583dfa82629cd4b01dde70.svg]]
 :END:
 
 
@@ -674,7 +665,7 @@ Here, we contrast the slow/fast coupling modulation protocols.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/2da75cadbb1995855015de60aeb90c920565d142.svg]]
+[[file:./.ob-jupyter/dc69ae659db2e320ac15c71030eb4972b7412f3a.svg]]
 
 Aho! The trick is just to slow down the coupling switching.
 
@@ -699,7 +690,7 @@ Let's contrast the energy change dynamics in slow vs fast modulation
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/5418d985119098ea7dd34a612cee7193d550431c.svg]]
+[[file:./.ob-jupyter/f648f231aaa03a43ca20795d4eecf649c2bd46d8.svg]]
 
 Now let's try to find out why the efficiency improved.
 
@@ -724,7 +715,7 @@ Now let's try to find out why the efficiency improved.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/9cecea40e225eaae34f9003fdf7e004ea0463e84.svg]]
+[[file:./.ob-jupyter/72c3ba490d2e16a7bd5a6a3e7668ff6b987875d4.svg]]
 Way less energy is dumped into the cold bath.
 #+begin_src jupyter-python
  t, rel_short_cold = ot.val_relative_to_steady(
@@ -772,17 +763,17 @@ Way less energy is dumped into the cold bath.
 
 #+RESULTS:
 :RESULTS:
-: /home/hiro/src/hopsflow/hopsflow/util.py:331: RuntimeWarning: divide by zero encountered in divide
+: /home/hiro/src/hopsflow/hopsflow/util.py:339: RuntimeWarning: divide by zero encountered in divide
 :   left_i[1] / right_i[1],
-: /home/hiro/src/hopsflow/hopsflow/util.py:331: RuntimeWarning: invalid value encountered in divide
+: /home/hiro/src/hopsflow/hopsflow/util.py:339: RuntimeWarning: invalid value encountered in divide
 :   left_i[1] / right_i[1],
-: /home/hiro/src/hopsflow/hopsflow/util.py:333: RuntimeWarning: divide by zero encountered in divide
+: /home/hiro/src/hopsflow/hopsflow/util.py:341: RuntimeWarning: divide by zero encountered in divide
 :   (left_i[2] / right_i[1]) ** 2
-: /home/hiro/src/hopsflow/hopsflow/util.py:334: RuntimeWarning: divide by zero encountered in divide
+: /home/hiro/src/hopsflow/hopsflow/util.py:342: RuntimeWarning: divide by zero encountered in divide
 :   + (left_i[1] / (right_i[1]) ** 2 * right_i[2]) ** 2
-: /home/hiro/src/hopsflow/hopsflow/util.py:334: RuntimeWarning: invalid value encountered in divide
+: /home/hiro/src/hopsflow/hopsflow/util.py:342: RuntimeWarning: invalid value encountered in divide
 :   + (left_i[1] / (right_i[1]) ** 2 * right_i[2]) ** 2
-[[file:./.ob-jupyter/8cc13fa6fb6a9a90c4d74df045df24daeb3632cb.svg]]
+[[file:./.ob-jupyter/300757d63768d7e5f1596fa80980735afeda62a4.svg]]
 :END:
 
 * Slower switching + Only Cold Bath Coupling Shifted
@@ -830,7 +821,7 @@ The last section gave me the hunch, that only this shift matters.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/d7d659fa712a5f59557a05e6b1901bdc747d939d.svg]]
+[[file:./.ob-jupyter/a5c930cf77d5c776b8f2d3881a01ff89ad7cf9de.svg]]
 
 
 #+begin_src jupyter-python
@@ -855,7 +846,7 @@ The last section gave me the hunch, that only this shift matters.
 #+RESULTS:
 :RESULTS:
 | 0.0 | 60.0 |
-[[file:./.ob-jupyter/d36dfec555f80de19d19f897d2126c0085360846.svg]]
+[[file:./.ob-jupyter/2b6c3455da6682ae90a0765f77fcca1c62e56577.svg]]
 :END:
 
 *** Analysis
@@ -879,7 +870,7 @@ Let's contrast all three protocols.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/bdb51a4a3f8c24984da621312c2898b079ee8d55.svg]]
+[[file:./.ob-jupyter/d9df02784d05dad9f95f9dc187126f488c7d0f01.svg]]
 
 And do it again, but in a more convenient format.
 #+begin_src jupyter-python
@@ -888,7 +879,9 @@ And do it again, but in a more convenient format.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/31768eb7041b22ce745ca08564de4479c81b662b.svg]]
+[[file:./.ob-jupyter/0ef015374d2f3a33799114eec39bc2f1dbf4ba52.svg]]
+
+
 #+begin_src jupyter-python
   best_cold_shift = shifts[np.argmax([-model.power(steady_idx=2).value for model in cold_models])]
   best_cold_model = sc.make_model(best_cold_shift, best_cold_shift, switch_t=6., only_cold=True)
