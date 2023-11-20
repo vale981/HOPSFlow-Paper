@@ -97,8 +97,8 @@ coupling-change/cycle time.
 
 #+RESULTS:
 :RESULTS:
-| <Figure | size | 340x320 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
-[[file:./.ob-jupyter/3da29ea23fbb86d0c258f8b077c4568444a3894e.svg]]
+| <Figure | size | 578x240 | with | 1 | Axes> | <AxesSubplot: | xlabel= | $\tau$ | ylabel= | Energy | > |
+[[file:./.ob-jupyter/50d509e8361dcc250178d474c1edeb64caa4fa67.svg]]
 :END:
 
 
@@ -212,6 +212,8 @@ coupling-change/cycle time.
 [[file:./.ob-jupyter/54d2889e653fd41dab4c17e9cc71bd7c03007295.svg]]
 [[file:./.ob-jupyter/6ffe6a67ffb005d5f582305846cdce6df560a1e7.svg]]
 :END:
+
+
 #+begin_src jupyter-python
   f_mean_system_power = plt.figure()
   a_mean_system_power = f_mean_system_power.add_subplot(1, 1, 1)
@@ -232,7 +234,7 @@ coupling-change/cycle time.
 #+RESULTS:
 :RESULTS:
 : Text(0.5, 1.0, '$\\bar{P}_\\mathrm{sys}/\\Omega^2$')
-[[file:./.ob-jupyter/8f10f47f9025c26b3b30a075c89c5cdc751d1e00.svg]]
+[[file:./.ob-jupyter/ae7f75b36d32010a4f43c6378e7942218be79459.svg]]
 :END:
 
 
@@ -334,11 +336,11 @@ coupling-change/cycle time.
 
 #+RESULTS:
 :RESULTS:
-[[file:./.ob-jupyter/67bf5c82306b318ce650433463e13e7dee354bd5.svg]]
-[[file:./.ob-jupyter/7e340c9e451d8dbd012b84be33801965f96122ac.svg]]
-[[file:./.ob-jupyter/32153d4bce153c132414c148d3e489130fdc87b3.svg]]
-[[file:./.ob-jupyter/6218def4404f7bf670a4d3e75c28d07ac6d9f101.svg]]
-[[file:./.ob-jupyter/806dbc342f97c822035fcf647f53b26b7cd846f0.svg]]
+[[file:./.ob-jupyter/7a5bba6cde56b3b600f905a5fd3a211125a4577d.svg]]
+[[file:./.ob-jupyter/2cc25689d731dec88d6c8f5f3ffd8a71945f91dc.svg]]
+[[file:./.ob-jupyter/4c9ca6a4953162156a6454408fc37486297dfe2f.svg]]
+[[file:./.ob-jupyter/013a990641a38318a78a83ea018acb8cc2747c81.svg]]
+[[file:./.ob-jupyter/5a82617cb01b949119bf43d0744b8b53e52846a2.svg]]
 :END:
 
 #+begin_src jupyter-python
