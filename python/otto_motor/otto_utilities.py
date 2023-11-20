@@ -513,7 +513,7 @@ def val_relative_to_steady(model, val, steady_idx, shift=0, absolute=False):
     if not absolute:
         final_value = final_value - val.slice(begin_idx - 1)
 
-    return (model.t[begin_idx : end_idx + 1], final_value)
+    return (model.t[begin_idx - 1 : end_idx], final_value)
 
 
 def timings(τ_c, τ_i):
@@ -554,14 +554,14 @@ def plot_steady_energy_changes(
             t,
             -1 * inter,
             ax=ax,
-            label=fr"$W_\mathrm{{int}}$ {label_fn(model)}",
+            label=rf"$W_\mathrm{{int}}$ {label_fn(model)}",
             linestyle="--",
         )
         pu.plot_with_σ(
             t,
             -1 * sys,
             ax=ax,
-            label=fr"$W_\mathrm{{sys}}$ {label_fn(model)}",
+            label=rf"$W_\mathrm{{sys}}$ {label_fn(model)}",
         )
 
     ax.set_xlabel(r"$\tau$")
@@ -699,14 +699,14 @@ def plot_steady_work_baths(models, steady_idx=2, label_fn=model_description):
             t,
             inter_c,
             ax=ax,
-            label=fr"$W_\mathrm{{int, c}}$ {label_fn(model)}",
+            label=rf"$W_\mathrm{{int, c}}$ {label_fn(model)}",
         )
 
         pu.plot_with_σ(
             t,
             inter_h,
             ax=ax,
-            label=fr"$W_\mathrm{{int, h}}$ {label_fn(model)}",
+            label=rf"$W_\mathrm{{int, h}}$ {label_fn(model)}",
             linestyle="--",
         )
     ax.set_xlabel(r"$\tau$")
