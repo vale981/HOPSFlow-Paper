@@ -72,7 +72,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/9539a8052b29a424457aba4eec6b42c541f6397d.svg]]
+[[file:./.ob-jupyter/e122e9a030752646c3d53d464178cd9143979a0c.svg]]
 
 #+begin_src jupyter-python :tangle no
   #ot.plot_cycles(models, bath=0, legend=True)
@@ -96,7 +96,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/4fe2e98f22e91318106161009f976e368454aeef.svg]]
+[[file:./.ob-jupyter/f4f995784e7b5f8314ee907acd62a68185efebab.svg]]
 
 ** Integrate
 Here we integrate/simulate the models. This should be run on the
@@ -360,9 +360,9 @@ Let's attempt to draw the p_v diagrams :).
 
 #+RESULTS:
 :RESULTS:
-[[file:./.ob-jupyter/ff029c620364e92b39002f58ac30f62505ec44cc.svg]]
-[[file:./.ob-jupyter/077b314b8737de056775acf18981e51ce94fa2e8.svg]]
-[[file:./.ob-jupyter/b4e936615392f4aecf6b8bd516d7e23c7909b6b6.svg]]
+[[file:./.ob-jupyter/a1bd8ac6fa5779521f06e09731c10b618eb2babc.svg]]
+[[file:./.ob-jupyter/128450a66f59fbc816a46550744b36dc8b050df4.svg]]
+[[file:./.ob-jupyter/dd472947254bd8cb7cb15a036cc74ff869fe0894.svg]]
 :END:
 
 
@@ -432,7 +432,7 @@ and the best shift model.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/e608e2c2a7a9d9e6f4cad0850d34750cb5b2370d.svg]]
+[[file:./.ob-jupyter/43de193d11e61247fd90492755846d0d6d396527.svg]]
 
 
 Let us plot the interaction power in the steady state for baseline and
@@ -486,7 +486,7 @@ best-shift. We have to shift the time to make them overlap correctly.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/c5fd49dc546f772a5d74cd2c6f2dbca28bd3ae4c.svg]]
+[[file:./.ob-jupyter/952468b4e90f6a5338b6661315390604bb1e3fbb.svg]]
 
 
 Let us zoom in on the cold bath decoupling process to understnad this better.
@@ -528,7 +528,7 @@ Let us zoom in on the cold bath decoupling process to understnad this better.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/a881446b3a57bd5b58d90b080ba277d0a73603c2.svg]]
+[[file:./.ob-jupyter/bed0753a474fbbc2c31753d4d0b5679cbc251257.svg]]
 
 How does this look like for the baseline?
 #+begin_src jupyter-python
@@ -715,7 +715,7 @@ Now let's try to find out why the efficiency improved.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/72c3ba490d2e16a7bd5a6a3e7668ff6b987875d4.svg]]
+[[file:./.ob-jupyter/cf4d1c4bc54bdc9722dda5b6367c939a8e407cb7.svg]]
 Way less energy is dumped into the cold bath.
 #+begin_src jupyter-python
  t, rel_short_cold = ot.val_relative_to_steady(
@@ -821,33 +821,7 @@ The last section gave me the hunch, that only this shift matters.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/a5c930cf77d5c776b8f2d3881a01ff89ad7cf9de.svg]]
-
-
-#+begin_src jupyter-python
- from itertools import cycle
- lines = ["--","-.",":", "-"]
- linecycler = cycle(lines)
- fig, ax = plt.subplots()
- t = np.linspace(0, models[0].Θ, 1000)
- #l, = ax.plot(t, models[0].H.operator_norm(t)/2-.5, linewidth=3, color="lightgrey")
- l, = ax.plot(t, cold_models[3].coupling_operators[1].operator_norm(t), linewidth=3, color="lightgrey")
- legend_1 = ax.legend([l], [r"$(||H||-1)/2$"], loc="center left", title="Reference")
- from cycler import cycler
- for model in cold_models:
-     ax.plot(t, model.coupling_operators[0].operator_norm(t), label=fr"${model.L_shift[0] * 100:.0f}\%$", linestyle=(next(linecycler)))
- ax.legend(title=r"Shift of $L_h$", fontsize="x-small", ncols=2)
- ax.set_xlabel(r"$\tau$")
- ax.set_ylabel(r"Operator Norm")
- ax.add_artist(legend_1)
- ax.set_xlim((0, models[0].Θ))
-#+end_src
-
-#+RESULTS:
-:RESULTS:
-| 0.0 | 60.0 |
-[[file:./.ob-jupyter/2b6c3455da6682ae90a0765f77fcca1c62e56577.svg]]
-:END:
+[[file:./.ob-jupyter/b9350f0147ff6d524439bf3a2e2fc716cf072004.svg]]
 
 *** Analysis
 Let's contrast all three protocols.
@@ -890,6 +864,56 @@ And do it again, but in a more convenient format.
 
 #+RESULTS:
 : 0.18
+
+
+Let's display the energy-dynamics in the steady state.
+#+begin_src jupyter-python
+ fig, ax =ot.plot_steady_energy_changes([best_cold_model], 2, label_fn=lambda m: "")
+ ax.legend(loc="lower left")
+
+ fs.export_fig("steady_energy_dynamics_slow_only_cold_shifted", y_scaling=.7)
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/fe91c3d2cab29c468cd1392161bd6c78665aec6e.svg]]
+
+#+begin_src jupyter-python
+  import matplotlib.pyplot as plt
+
+  names = {
+      baseline.hexhash: "Otto-Cycle",
+      best_shift_model.hexhash: "Shifted Strokes",
+      best_long_model.hexhash: "Slow Modulation + Both Strokes Shifted",
+      best_cold_model.hexhash: "Slow Modulation + Cold Stroke Shifted",
+  }
+
+  # Increase the size of the plot
+  fig, ax = plt.subplots(figsize=(15, 6))
+
+  # Assuming ot.plot_steady_energy_changes returns a Line2D object for each line
+  lines = ot.plot_steady_energy_changes(
+      [baseline, best_shift_model, best_long_model, best_cold_model],
+      2,
+      label_fn=lambda m: names[m.hexhash],
+      ax=ax,
+      shift_min_inter = False
+  )
+
+  # Move the legend outside the plot
+  ax.legend(loc="lower left", bbox_to_anchor=(1, 0.5), fontsize='small')
+
+
+  # Adjust layout to make room for the legend
+  plt.tight_layout()
+
+  fs.export_fig("steady_energy_dynamics_all_models", y_scaling=.7)
+#+end_src
+
+#+RESULTS:
+[[file:./.ob-jupyter/5b2f948c521549a31595f208a459aa8ebd16ab3c.svg]]
+
+
+
 
 **** Check Numerics
 #+begin_src jupyter-python
@@ -951,8 +975,8 @@ plt.plot(best_cold_model.t, best_cold_model.H.operator_norm(best_cold_model.t))
 
 #+RESULTS:
 :RESULTS:
-| <matplotlib.lines.Line2D | at | 0x7fe87424f4c0> |
-[[file:./.ob-jupyter/08dc9da54b0f64215891ece89107f7a304627821.svg]]
+| <matplotlib.lines.Line2D | at | 0x7f4a24fbf7c0> |
+[[file:./.ob-jupyter/70e6c82d904829fcfd19fcc1032564643a489a0f.svg]]
 :END:
 
 #+begin_src jupyter-python
@@ -967,9 +991,9 @@ plt.plot(best_cold_model.t, best_cold_model.H.operator_norm(best_cold_model.t))
 
 #+RESULTS:
 :RESULTS:
-[[file:./.ob-jupyter/468a217425236ab484094b747391eebf9c8967e1.svg]]
-[[file:./.ob-jupyter/87f486eae8a8ac48bc846322ac444590a6a9aed1.svg]]
-[[file:./.ob-jupyter/5f284414a8dc0e135a04eb333a7400f334beb519.svg]]
+[[file:./.ob-jupyter/de01830223c5d4bacd4c09f963ce3f06a76901ae.svg]]
+[[file:./.ob-jupyter/061672bcaafe9e32f8ee1a72bb0ece3a82083ccb.svg]]
+[[file:./.ob-jupyter/4a695cc2d74765c6386be4a5309067bc566d2ca6.svg]]
 :END:
 
 

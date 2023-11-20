@@ -531,11 +531,17 @@ def model_description(model):
     return model.description
 
 
+@pu.wrap_plot
 def plot_steady_energy_changes(
-    models, steady_idx=2, label_fn=model_description, bath=None
+    models,
+    steady_idx=2,
+    label_fn=model_description,
+    bath=None,
+    ax=None,
+    with_shift=False,
+    shift_min_inter=False,
 ):
-    fig, ax = plt.subplots()
-
+    times, inters, systems = [], [], []
     for model in models:
         t, inter = val_relative_to_steady(
             model,
@@ -545,12 +551,25 @@ def plot_steady_energy_changes(
                 else model.interaction_power().for_bath(bath)
             ).integrate(model.t),
             steady_idx,
+            shift=model.L_shift[0] if with_shift else 0,
         )
         t, sys = val_relative_to_steady(
-            model, model.system_power().sum_baths().integrate(model.t), steady_idx
+            model,
+            model.system_power().sum_baths().integrate(model.t),
+            steady_idx,
         )
 
-        pu.plot_with_σ(
+        inters.append(inter)
+        systems.append(sys)
+        times.append(t)
+
+    if shift_min_inter:
+        for i, inter in enumerate(inters):
+            length = len(inter.value)
+            inters[i] -= (inter.slice(slice(0, length // 3))).max.value
+
+    for inter, sys, t in zip(inters, systems, times):
+        _, _, (l, _) = pu.plot_with_σ(
             t,
             -1 * inter,
             ax=ax,
@@ -562,13 +581,12 @@ def plot_steady_energy_changes(
             -1 * sys,
             ax=ax,
             label=rf"$W_\mathrm{{sys}}$ {label_fn(model)}",
+            color=l[0].get_color(),
         )
 
     ax.set_xlabel(r"$\tau$")
     ax.set_ylabel(r"$W$")
     ax.legend()
-
-    return fig, ax
 
 
 def add_arrow(line, start_ind=None, direction="right", size=15, color=None):

@@ -333,23 +333,6 @@ fs.export_fig("hot_vs_cold_bath", y_scaling=.7)
 
 #aux.import_results(other_data_path="taurus/.data", other_results_path="taurus/results", models_to_import=cold_models)
 
-from itertools import cycle
-lines = ["--","-.",":", "-"]
-linecycler = cycle(lines)
-fig, ax = plt.subplots()
-t = np.linspace(0, models[0].Θ, 1000)
-#l, = ax.plot(t, models[0].H.operator_norm(t)/2-.5, linewidth=3, color="lightgrey")
-l, = ax.plot(t, cold_models[3].coupling_operators[1].operator_norm(t), linewidth=3, color="lightgrey")
-legend_1 = ax.legend([l], [r"$(||H||-1)/2$"], loc="center left", title="Reference")
-from cycler import cycler
-for model in cold_models:
-    ax.plot(t, model.coupling_operators[0].operator_norm(t), label=fr"${model.L_shift[0] * 100:.0f}\%$", linestyle=(next(linecycler)))
-ax.legend(title=r"Shift of $L_h$", fontsize="x-small", ncols=2)
-ax.set_xlabel(r"$\tau$")
-ax.set_ylabel(r"Operator Norm")
-ax.add_artist(legend_1)
-ax.set_xlim((0, models[0].Θ))
-
 fig, (ax2, ax1, ax3) = plt.subplots(nrows=1, ncols=3)
 _, ax1_right = ot.plot_powers_and_efficiencies(np.array(shifts) * 100, cold_models, xlabel="Cycle Shift", ax=ax1)[2]
 _, ax2_right = ot.plot_powers_and_efficiencies(np.array(shifts) * 100, long_models, xlabel="Cycle Shift", ax=ax2)[2]
@@ -372,6 +355,41 @@ fs.export_fig("shift_comparison", y_scaling=1, x_scaling=2)
 best_cold_shift = shifts[np.argmax([-model.power(steady_idx=2).value for model in cold_models])]
 best_cold_model = sc.make_model(best_cold_shift, best_cold_shift, switch_t=6., only_cold=True)
 best_cold_shift
+
+fig, ax =ot.plot_steady_energy_changes([best_cold_model], 2, label_fn=lambda m: "")
+ax.legend(loc="lower left")
+
+fs.export_fig("steady_energy_dynamics_slow_only_cold_shifted", y_scaling=.7)
+
+import matplotlib.pyplot as plt
+
+names = {
+    baseline.hexhash: "Otto-Cycle",
+    best_shift_model.hexhash: "Shifted Strokes",
+    best_long_model.hexhash: "Slow Modulation + Both Strokes Shifted",
+    best_cold_model.hexhash: "Slow Modulation + Cold Stroke Shifted",
+}
+
+# Increase the size of the plot
+fig, ax = plt.subplots(figsize=(15, 6))
+
+# Assuming ot.plot_steady_energy_changes returns a Line2D object for each line
+lines = ot.plot_steady_energy_changes(
+    [baseline, best_shift_model, best_long_model, best_cold_model],
+    2,
+    label_fn=lambda m: names[m.hexhash],
+    ax=ax,
+    shift_min_inter = False
+)
+
+# Move the legend outside the plot
+ax.legend(loc="lower left", bbox_to_anchor=(1, 0.5), fontsize='small')
+
+
+# Adjust layout to make room for the legend
+plt.tight_layout()
+
+fs.export_fig("steady_energy_dynamics_all_models", y_scaling=.7)
 
 ot.plot_energy_deviation([best_cold_model, baseline])
 
