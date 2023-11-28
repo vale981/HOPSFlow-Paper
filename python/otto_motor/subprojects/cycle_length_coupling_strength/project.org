@@ -92,6 +92,13 @@ coupling-change/cycle time.
 
 * Analysis
 #+begin_src jupyter-python
+  ot.max_energy_error(models), ot.max_energy_error(models, steady_idx=2)
+#+end_src
+
+#+RESULTS:
+| 2 | 1 |
+
+#+begin_src jupyter-python
     ot.plot_energy(models[5])
 #+end_src
 

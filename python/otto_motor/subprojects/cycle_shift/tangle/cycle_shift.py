@@ -271,7 +271,7 @@ ax.legend(loc="lower left")
 
 fs.export_fig("long_short_energy_change", y_scaling=.7)
 
-best_long_model = long_models[5]
+best_long_model = best_long_shift_model
 
 flow_long = -1*best_long_model.bath_energy_flow().for_bath(0)
 power_long = best_long_model.interaction_power().for_bath(0)
@@ -390,6 +390,30 @@ ax.legend(loc="lower left", bbox_to_anchor=(1, 0.5), fontsize='small')
 plt.tight_layout()
 
 fs.export_fig("steady_energy_dynamics_all_models", y_scaling=.7)
+
+def get_modulations(model, label):
+    t = ot.get_steady_times(model, 2)
+    t = np.linspace(t.min(), t.max(), 10000)
+    return {
+        "system": model.H.operator_norm(t),
+        "cold": model.coupling_operators[0].operator_norm(t) * 2,
+        "hot": model.coupling_operators[1].operator_norm(t) * 2,
+        "time": t,
+        "timings": t[0] +  np.array(model.timings_H) * model.Θ,
+        "timings_hot": t[0] +  (np.array(model.timings_L[1]) + model.L_shift[1]) * model.Θ,
+        "label": label
+    }
+
+modulations = {
+    "baseline": get_modulations(baseline, "Otto-like\ncycle"),
+    "best_shift_model": get_modulations(best_shift_model, "shifted\nstrokes"),
+    "best_long_model": get_modulations(best_long_model, "shifted strokes,\nslow mod."),
+    "best_cold_model": get_modulations(best_cold_model, "cold shifted,\nslow mod.")
+}
+
+import pickle
+with open("data/modulations.pickle", "wb") as f:
+    pickle.dump(modulations, f)
 
 ot.plot_energy_deviation([best_cold_model, baseline])
 

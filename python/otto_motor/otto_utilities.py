@@ -504,6 +504,15 @@ def plot_contour(
     return cont, (x_labels, y_labels, values)
 
 
+def get_steady_times(model, steady_idx, shift=0):
+    shift_idx = int(1 / model.dt * shift)
+
+    begin_idx = model.strobe[1][steady_idx] - shift_idx
+    end_idx = -shift_idx if shift != 0 else -2
+
+    return model.t[begin_idx - 1 : end_idx]
+
+
 def val_relative_to_steady(model, val, steady_idx, shift=0, absolute=False):
     shift_idx = int(1 / model.dt * shift)
     begin_idx = model.strobe[1][steady_idx] - shift_idx
@@ -568,7 +577,8 @@ def plot_steady_energy_changes(
             length = len(inter.value)
             inters[i] -= (inter.slice(slice(0, length // 3))).max.value
 
-    for inter, sys, t in zip(inters, systems, times):
+    for inter, sys, t, model in zip(inters, systems, times, models):
+        print(model.L_shift)
         _, _, (l, _) = pu.plot_with_σ(
             t,
             -1 * inter,
@@ -778,3 +788,24 @@ def plot_energy_deviation(models, ax=None, labels=None):
 
     if labels:
         ax.legend()
+
+
+def max_energy_error(models, steady_idx=None):
+    deviations = np.zeros(len(models))
+
+    for i, model in enumerate(models):
+        if steady_idx is None:
+            deviations[i] = abs(
+                model.total_energy_from_power().value - model.total_energy().value
+            ).max()
+        else:
+            deviations[i] = abs(
+                val_relative_to_steady(
+                    model, model.total_energy_from_power(), steady_idx=steady_idx
+                )[1].value
+                - val_relative_to_steady(
+                    model, model.total_energy(), steady_idx=steady_idx
+                )[1].value
+            ).max()
+
+    return round(deviations.max() * 100)

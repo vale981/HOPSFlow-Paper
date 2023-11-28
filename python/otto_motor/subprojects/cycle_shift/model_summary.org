@@ -1,0 +1,67 @@
+#+PROPERTY: header-args :session otto_cycle_shift_summary :kernel python :pandoc no :async yes :tangle no :noweb yes
+
+This is just a quick notebook to get all the model definitions in one
+place.
+
+#+begin_src jupyter-python
+  import plot_utils as pu
+  from hiro_models.one_qubit_model import StocProcTolerances
+  from hiro_models.otto_cycle import OttoEngine, get_energy_gap
+  import hiro_models.model_auxiliary as aux
+  import numpy as np
+  import utilities as ut
+  import matplotlib.pyplot as plt
+  import otto_utilities as ot
+  import shift_cycle as sc
+  import figsaver as fs
+#+end_src
+
+#+RESULTS:
+
+* Baseline and Shifts
+#+begin_src jupyter-python
+  baseline_shifts = sc.make_shifts(extra_r=4)
+  baseline_models = [sc.make_model(shift, shift) for shift in baseline_shifts]
+  baseline = baseline_models[3]
+#+end_src
+
+#+RESULTS:
+
+#+begin_src jupyter-python
+  ot.max_energy_error(models, steady_idx=2)
+#+end_src
+
+#+RESULTS:
+: 1
+
+* Slower
+#+begin_src jupyter-python
+slow_shifts = sc.make_shifts(extra_r=4)
+long_models = [sc.make_model(shift, shift, switch_t=6.) for shift in slow_shifts]
+long_baseline = sc.make_model(0., 0., switch_t=6.)
+#+end_src
+
+#+RESULTS:
+
+
+#+begin_src jupyter-python
+  ot.max_energy_error(long_models, steady_idx=2)
+#+end_src
+
+#+RESULTS:
+: 1
+
+* Slower Shifted
+#+begin_src jupyter-python
+  cold_shifts = sc.make_shifts(extra_r=4)
+  cold_models = [sc.make_model(shift, shift, switch_t=6., only_cold=True) for shift in cold_shifts]
+#+end_src
+
+#+RESULTS:
+
+#+begin_src jupyter-python
+  ot.max_energy_error(cold_models, steady_idx=2)
+#+end_src
+
+#+RESULTS:
+: 1

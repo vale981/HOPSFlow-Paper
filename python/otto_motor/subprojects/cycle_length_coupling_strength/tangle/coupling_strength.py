@@ -56,6 +56,8 @@ ot.integrate_online_multi(models, 50_000, increment=10_000, analyze_kwargs=dict(
 
 aux.import_results(other_data_path="taurus/.data", other_results_path="taurus/results", models_to_import=models)
 
+ot.max_energy_error(models), ot.max_energy_error(models, steady_idx=2)
+
 ot.plot_energy(models[5])
 
 f_power = plt.figure()

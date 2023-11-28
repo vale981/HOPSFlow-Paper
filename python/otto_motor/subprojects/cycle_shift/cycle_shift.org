@@ -62,17 +62,13 @@ We shift so that we just overlap with coupling/decoupling and one above.
 
 #+RESULTS:
 
-#+RESULTS:
-: b6b76ccdb68f1460bbfd6e6bb599e49904bfc6cf71b564aa2ab787f686d3048f
-
-
 #+begin_src jupyter-python
   ot.plot_cycle(baseline)
   fs.export_fig("cycle_prototype", y_scaling=.7)
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/e122e9a030752646c3d53d464178cd9143979a0c.svg]]
+[[file:./.ob-jupyter/25efaa069b119d1e001b1a4b8bd8663574ee32c8.svg]]
 
 #+begin_src jupyter-python :tangle no
   #ot.plot_cycles(models, bath=0, legend=True)
@@ -96,7 +92,7 @@ We shift so that we just overlap with coupling/decoupling and one above.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/f4f995784e7b5f8314ee907acd62a68185efebab.svg]]
+[[file:./.ob-jupyter/cc04d1bd998823195a907361f674eb1bf4dd1382.svg]]
 
 ** Integrate
 Here we integrate/simulate the models. This should be run on the
@@ -124,7 +120,7 @@ This plots the full energy overview for the baseline model.
 #+RESULTS:
 :RESULTS:
 : \(N=80000\)
-[[file:./.ob-jupyter/dbf85000c76408dda5f60233f56a55d7b7319c71.svg]]
+[[file:./.ob-jupyter/b61916bb1d56ed37255bd6586e171b8e01e35f17.svg]]
 :END:
 
 We would like to know how close all of this comes to the thermal states.
@@ -163,13 +159,22 @@ We would like to know how close all of this comes to the thermal states.
 #+end_src
 
 #+RESULTS:
-:RESULTS:
-: [[0.11920292 0.        ]
-:  [0.         0.88079708]]
-: [[0.37754067 0.        ]
-:  [0.         0.62245933]]
-[[file:./.ob-jupyter/957b9d9ce7d83dd22999817a3435b27d438b10c2.svg]]
-:END:
+#+begin_example
+  [[0.11920292 0.        ]
+   [0.         0.88079708]]
+  [[0.37754067 0.        ]
+   [0.         0.62245933]]
+  /nix/store/fai1b55231rnk4jyj0kjicdnqcgdf9ph-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/cbook/__init__.py:1369: ComplexWarning: Casting complex values to real discards the imaginary part
+    return np.asarray(x, float)
+  /nix/store/fai1b55231rnk4jyj0kjicdnqcgdf9ph-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5340: ComplexWarning: Casting complex values to real discards the imaginary part
+    pts[0] = start
+  /nix/store/fai1b55231rnk4jyj0kjicdnqcgdf9ph-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5341: ComplexWarning: Casting complex values to real discards the imaginary part
+    pts[N + 1] = end
+  /nix/store/fai1b55231rnk4jyj0kjicdnqcgdf9ph-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5344: ComplexWarning: Casting complex values to real discards the imaginary part
+    pts[1:N+1, 1] = dep1slice
+  /nix/store/fai1b55231rnk4jyj0kjicdnqcgdf9ph-python3-3.9.15-env/lib/python3.9/site-packages/matplotlib/axes/_axes.py:5346: ComplexWarning: Casting complex values to real discards the imaginary part
+    pts[N+2:, 1] = dep2slice[::-1]
+#+end_example
 
 Plotting the pauli matrix expectation values, we can see that the
 dynamics only take place on the z-axis. This is addressed in [[id:9d7a11f2-f479-4e95-8775-31050bcc4fb7][Off-Axis Hamiltonian]]
@@ -179,7 +184,7 @@ dynamics only take place on the z-axis. This is addressed in [[id:9d7a11f2-f479-
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/1a7a1045e5e11e65208a66cd4b6fe155e4649ae9.svg]]
+: 2b79a3e3-fa65-44b9-9b6a-c8005dedf15e
 
 Let us plot an overview of the work done by system and interaction
 modulation over a cycle for the baseline model.
@@ -189,7 +194,7 @@ modulation over a cycle for the baseline model.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/f560e704e3340a93fbacf050418c51410ee9bfc3.svg]]
+: 2d3de91f-dbec-4523-b955-20d955464ec0
 
 *** pV Diagrams
 Let's attempt to draw the p_v diagrams :).
@@ -360,9 +365,9 @@ Let's attempt to draw the p_v diagrams :).
 
 #+RESULTS:
 :RESULTS:
-[[file:./.ob-jupyter/a1bd8ac6fa5779521f06e09731c10b618eb2babc.svg]]
-[[file:./.ob-jupyter/128450a66f59fbc816a46550744b36dc8b050df4.svg]]
-[[file:./.ob-jupyter/dd472947254bd8cb7cb15a036cc74ff869fe0894.svg]]
+[[file:./.ob-jupyter/15d70ce53ba8ef693ceb2a1f5c48fbd6c2967c7d.svg]]
+[[file:./.ob-jupyter/e1a55fef13bf84e632813e1d9d83f3b07d1b3b13.svg]]
+[[file:./.ob-jupyter/8ce6e573e5899397c5cd898d6995b21ded4c2ade.svg]]
 :END:
 
 
@@ -400,7 +405,7 @@ size to check convergence.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/595c5a9a2268e7bbecb3062e31876847b963f4c5.svg]]
+[[file:./.ob-jupyter/4850e6c1e73b69fc22435523208849e6438ba5da.svg]]
 
 We see that we get a pretty good picture after about 30k-40k samples.
 
@@ -411,7 +416,7 @@ This is an overview over powers and the efficiency.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/8526ecc67b17cc9a88ac0550ffcc65306b7995e5.svg]]
+[[file:./.ob-jupyter/253a7015a97a02502bfe9aedd3ac5be7b4f8d42a.svg]]
 
 The best shift:
 #+begin_src jupyter-python
@@ -432,7 +437,11 @@ and the best shift model.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/43de193d11e61247fd90492755846d0d6d396527.svg]]
+:RESULTS:
+: (0.0, 0.0)
+: (0.18, 0.18)
+[[file:./.ob-jupyter/cc4b98be78e92674b9e9d139deecc097b865bd14.svg]]
+:END:
 
 
 Let us plot the interaction power in the steady state for baseline and
@@ -486,7 +495,7 @@ best-shift. We have to shift the time to make them overlap correctly.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/952468b4e90f6a5338b6661315390604bb1e3fbb.svg]]
+[[file:./.ob-jupyter/35bb646cde52845b392ba643713bbbf94fa1a118.svg]]
 
 
 Let us zoom in on the cold bath decoupling process to understnad this better.
@@ -528,7 +537,7 @@ Let us zoom in on the cold bath decoupling process to understnad this better.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/bed0753a474fbbc2c31753d4d0b5679cbc251257.svg]]
+[[file:./.ob-jupyter/044547cde61fc3f2513f5a75c3a5e5634c53d70a.svg]]
 
 How does this look like for the baseline?
 #+begin_src jupyter-python
@@ -570,7 +579,7 @@ How does this look like for the baseline?
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/48b0006cb857699688794641da363e5f927d56cc.svg]]
+[[file:./.ob-jupyter/33a5618aa01cce9429c01f4b4648c20616af5d7b.svg]]
 
 
 * Slower switching
@@ -585,10 +594,10 @@ switch slower.
 #+RESULTS:
 
 #+begin_src jupyter-python :tangle tangle/long.py
- shifts = sc.make_shifts(extra_r=4)
+  shifts = sc.make_shifts(extra_r=4)
 
- long_models = [sc.make_model(shift, shift, switch_t=6.) for shift in shifts]
- long_baseline = sc.make_model(0., 0., switch_t=6.)
+  long_models = [sc.make_model(shift, shift, switch_t=6.) for shift in shifts]
+  long_baseline = sc.make_model(0., 0., switch_t=6.)
 #+end_src
 
 #+RESULTS:
@@ -610,8 +619,8 @@ switch slower.
 
 #+RESULTS:
 :RESULTS:
-: <matplotlib.legend.Legend at 0x7fe86b9fca30>
-[[file:./.ob-jupyter/9159b128ade817a039583dfa82629cd4b01dde70.svg]]
+: <matplotlib.legend.Legend at 0x7f72a58bcf10>
+[[file:./.ob-jupyter/a415bd59a9a10baf0975d8c0d3da99312fd34d11.svg]]
 :END:
 
 
@@ -665,7 +674,10 @@ Here, we contrast the slow/fast coupling modulation protocols.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/dc69ae659db2e320ac15c71030eb4972b7412f3a.svg]]
+:RESULTS:
+[[file:./.ob-jupyter/20a166137ec738a4f917f1357052d057ed6b8889.svg]]
+[[file:./.ob-jupyter/c5fd92fa8f6e507b0a231098a0d2bd8afc5af6ec.svg]]
+:END:
 
 Aho! The trick is just to slow down the coupling switching.
 
@@ -678,7 +690,10 @@ I know, horrible code. I just wan't to finish this...
 #+end_src
 
 #+RESULTS:
+:RESULTS:
 : 0.18
+: 0.18
+:END:
 
 
 Let's contrast the energy change dynamics in slow vs fast modulation
@@ -690,12 +705,25 @@ Let's contrast the energy change dynamics in slow vs fast modulation
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/f648f231aaa03a43ca20795d4eecf649c2bd46d8.svg]]
+:RESULTS:
+: (0.18, 0.18)
+: (0.18, 0.18)
+[[file:./.ob-jupyter/1a143c267762d07306fb53cd405c46290d04ee52.svg]]
+# [goto error]
+: ---------------------------------------------------------------------------
+: NameError                                 Traceback (most recent call last)
+: Cell In[17], line 1
+: ----> 1 fig, ax =ot.plot_steady_energy_changes([best_long_shift_model, best_shift_model], 2, label_fn=lambda m: ("long" if m.hexhash == best_long_shift_model.hexhash else "short"))
+:       2 ax.legend(loc="lower left")
+:       4 fs.export_fig("long_short_energy_change", y_scaling=.7)
+: 
+: NameError: name 'best_shift_model' is not defined
+:END:
 
 Now let's try to find out why the efficiency improved.
 
 #+begin_src jupyter-python
- best_long_model = long_models[5]
+ best_long_model = best_long_shift_model
 
  flow_long = -1*best_long_model.bath_energy_flow().for_bath(0)
  power_long = best_long_model.interaction_power().for_bath(0)
@@ -715,7 +743,20 @@ Now let's try to find out why the efficiency improved.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/cf4d1c4bc54bdc9722dda5b6367c939a8e407cb7.svg]]
+:RESULTS:
+[[file:./.ob-jupyter/b20067d62baa34675e72d4605aa773aab410e39b.svg]]
+# [goto error]
+: ---------------------------------------------------------------------------
+: NameError                                 Traceback (most recent call last)
+: Cell In[18], line 6
+:       3 flow_long = -1*best_long_model.bath_energy_flow().for_bath(0)
+:       4 power_long = best_long_model.interaction_power().for_bath(0)
+: ----> 6 flow_short = -1*best_shift_model.bath_energy_flow().for_bath(0)
+:       7 power_short = best_shift_model.interaction_power().for_bath(0)
+:       9 plt.plot(best_shift_model.t, flow_short.value, label="fast coupling")
+: 
+: NameError: name 'best_shift_model' is not defined
+:END:
 Way less energy is dumped into the cold bath.
 #+begin_src jupyter-python
  t, rel_short_cold = ot.val_relative_to_steady(
@@ -773,7 +814,33 @@ Way less energy is dumped into the cold bath.
 :   + (left_i[1] / (right_i[1]) ** 2 * right_i[2]) ** 2
 : /home/hiro/src/hopsflow/hopsflow/util.py:342: RuntimeWarning: invalid value encountered in divide
 :   + (left_i[1] / (right_i[1]) ** 2 * right_i[2]) ** 2
-[[file:./.ob-jupyter/300757d63768d7e5f1596fa80980735afeda62a4.svg]]
+[[file:./.ob-jupyter/55384daa6a8b48dbeb2530fa448509c72814c0a0.svg]]
+# [goto error]
+#+begin_example
+  ---------------------------------------------------------------------------
+  NameError                                 Traceback (most recent call last)
+  Cell In[19], line 2
+        1 t, rel_short_cold = ot.val_relative_to_steady(
+  ----> 2     best_shift_model,
+        3     best_shift_model.bath_energy().for_bath(0),
+        4     2,
+        5     1-best_shift_model.L_shift[0]
+        6 )
+        8 t, rel_short_hot = ot.val_relative_to_steady(
+        9     best_shift_model,
+       10     best_shift_model.bath_energy().for_bath(1),
+       11     2,
+       12     1-best_shift_model.L_shift[0]
+       13 )
+       15 t, rel_long_cold = ot.val_relative_to_steady(
+       16     best_long_model,
+       17     best_long_model.bath_energy().for_bath(0),
+       18     2,
+       19     (1-best_long_model.L_shift[0])
+       20 )
+
+  NameError: name 'best_shift_model' is not defined
+#+end_example
 :END:
 
 * Slower switching + Only Cold Bath Coupling Shifted
@@ -821,7 +888,7 @@ The last section gave me the hunch, that only this shift matters.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/b9350f0147ff6d524439bf3a2e2fc716cf072004.svg]]
+[[file:./.ob-jupyter/9fdee2de4376d9f14d5f6ee876a5b0beb094fc18.svg]]
 
 *** Analysis
 Let's contrast all three protocols.
@@ -844,7 +911,7 @@ Let's contrast all three protocols.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/d9df02784d05dad9f95f9dc187126f488c7d0f01.svg]]
+[[file:./.ob-jupyter/b9c01f476cb8cd8e8ad5131efa82b0237a28c986.svg]]
 
 And do it again, but in a more convenient format.
 #+begin_src jupyter-python
@@ -853,7 +920,7 @@ And do it again, but in a more convenient format.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/0ef015374d2f3a33799114eec39bc2f1dbf4ba52.svg]]
+[[file:./.ob-jupyter/71222f4f0fccb7458185f53038f4f3ef2148ed69.svg]]
 
 
 #+begin_src jupyter-python
@@ -875,7 +942,10 @@ Let's display the energy-dynamics in the steady state.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/fe91c3d2cab29c468cd1392161bd6c78665aec6e.svg]]
+:RESULTS:
+: (0.18, 0)
+[[file:./.ob-jupyter/6a9993d89e11ca244b94bcc95b67264d72a2300f.svg]]
+:END:
 
 #+begin_src jupyter-python
   import matplotlib.pyplot as plt
@@ -910,10 +980,43 @@ Let's display the energy-dynamics in the steady state.
 #+end_src
 
 #+RESULTS:
-[[file:./.ob-jupyter/5b2f948c521549a31595f208a459aa8ebd16ab3c.svg]]
+:RESULTS:
+: (0.0, 0.0)
+: (0.18, 0.18)
+: (0.18, 0.18)
+: (0.18, 0)
+[[file:./.ob-jupyter/c93b43bcc87d742c437b4720cd13198eccbf8759.svg]]
+:END:
 
 
+**** Cycle Overview
+#+begin_src jupyter-python
+  def get_modulations(model, label):
+      t = ot.get_steady_times(model, 2)
+      t = np.linspace(t.min(), t.max(), 10000)
+      return {
+          "system": model.H.operator_norm(t),
+          "cold": model.coupling_operators[0].operator_norm(t) * 2,
+          "hot": model.coupling_operators[1].operator_norm(t) * 2,
+          "time": t,
+          "timings": t[0] +  np.array(model.timings_H) * model.Θ,
+          "timings_hot": t[0] +  (np.array(model.timings_L[1]) + model.L_shift[1]) * model.Θ,
+          "label": label
+      }
 
+  modulations = {
+      "baseline": get_modulations(baseline, "Otto-like\ncycle"),
+      "best_shift_model": get_modulations(best_shift_model, "shifted\nstrokes"),
+      "best_long_model": get_modulations(best_long_model, "shifted strokes,\nslow mod."),
+      "best_cold_model": get_modulations(best_cold_model, "cold shifted,\nslow mod.")
+  }
+
+  import pickle
+  with open("data/modulations.pickle", "wb") as f:
+      pickle.dump(modulations, f)
+#+end_src
+
+#+RESULTS:
 
 **** Check Numerics
 #+begin_src jupyter-python
@@ -975,8 +1078,14 @@ plt.plot(best_cold_model.t, best_cold_model.H.operator_norm(best_cold_model.t))
 
 #+RESULTS:
 :RESULTS:
-| <matplotlib.lines.Line2D | at | 0x7f4a24fbf7c0> |
-[[file:./.ob-jupyter/70e6c82d904829fcfd19fcc1032564643a489a0f.svg]]
+# [goto error]
+: ---------------------------------------------------------------------------
+: NameError                                 Traceback (most recent call last)
+: Cell In[30], line 1
+: ----> 1 plt.plot(best_cold_model.t, best_cold_model.coupling_operators[0].operator_norm(best_cold_model.t))
+:       2 plt.plot(best_cold_model.t, best_cold_model.H.operator_norm(best_cold_model.t))
+: 
+: NameError: name 'best_cold_model' is not defined
 :END:
 
 #+begin_src jupyter-python
@@ -984,6 +1093,15 @@ plt.plot(best_cold_model.t, best_cold_model.H.operator_norm(best_cold_model.t))
 #+end_src
 
 #+RESULTS:
+:RESULTS:
+# [goto error]
+: ---------------------------------------------------------------------------
+: NameError                                 Traceback (most recent call last)
+: Cell In[10], line 1
+: ----> 1 save_data(best_cold_model, "slow_shifted")
+: 
+: NameError: name 'save_data' is not defined
+:END:
 
 #+begin_src jupyter-python :tangle scripts/plot_pv_diags.py
   plot_diagrams("slow_shifted")
@@ -991,9 +1109,13 @@ plt.plot(best_cold_model.t, best_cold_model.H.operator_norm(best_cold_model.t))
 
 #+RESULTS:
 :RESULTS:
-[[file:./.ob-jupyter/de01830223c5d4bacd4c09f963ce3f06a76901ae.svg]]
-[[file:./.ob-jupyter/061672bcaafe9e32f8ee1a72bb0ece3a82083ccb.svg]]
-[[file:./.ob-jupyter/4a695cc2d74765c6386be4a5309067bc566d2ca6.svg]]
+# [goto error]
+: ---------------------------------------------------------------------------
+: NameError                                 Traceback (most recent call last)
+: Cell In[11], line 1
+: ----> 1 plot_diagrams("slow_shifted")
+: 
+: NameError: name 'plot_diagrams' is not defined
 :END:
 
 
