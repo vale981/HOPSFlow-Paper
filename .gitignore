@@ -8,7 +8,6 @@ __pycache__
 *.npz
 *.h5
 *.#*
-*.lock
 taurus
 taurus_b
 results
