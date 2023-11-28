@@ -23,4 +23,4 @@ It takes quite a lot to get the code to actually run, even on
 if you encounter trouble. I may not have much time to help you though.
 
 The actual simulation data is available upon request. Checking
-gigabytes of binary data into git is not a good idea.u
+gigabytes of binary data into git is not a good idea.
