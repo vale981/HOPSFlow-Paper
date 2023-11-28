@@ -22,4 +22,5 @@ It takes quite a lot to get the code to actually run, even on
 `nixos`. If you really want to embark on that route please contact me
 if you encounter trouble. I may not have much time to help you though.
 
-The actual simulation data is available upon request. Checking gigabytes of binary data into git is not a good idea.
+The actual simulation data is available upon request. Checking
+gigabytes of binary data into git is not a good idea.u
