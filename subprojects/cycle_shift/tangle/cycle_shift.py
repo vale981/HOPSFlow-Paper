@@ -22,6 +22,17 @@ logging_setup(logging.INFO)
 ot.plot_cycle(baseline)
 fs.export_fig("cycle_prototype", y_scaling=.7)
 
+system = [
+    np.divide(σ, val, where=val>0).mean()
+    for σ, val in zip(baseline.system_energy().σs, baseline.system_energy().values)
+]
+flow = [
+    np.divide(σ, val, where=val>0).mean()
+    for σ, val in zip(baseline.bath_energy_flow().σs, baseline.bath_energy_flow().values)
+]
+plt.plot(system)
+plt.plot(flow)
+
 ot.plot_energy(baseline)
 print(
     fs.tex_value(baseline.system_energy().N,  prefix="N="),
